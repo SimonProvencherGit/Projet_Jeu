@@ -59,7 +59,7 @@ void Gerer_Menu::peser() {
 			case 1:
 				audio.peser();
 				break;
-			case 2: //à compléter
+			case 2: //ï¿½ complï¿½ter
 				exit(0);
 				break;
 			case 3:
