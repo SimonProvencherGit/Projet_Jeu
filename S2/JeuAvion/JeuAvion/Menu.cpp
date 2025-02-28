@@ -29,6 +29,7 @@ void Gerer_Menu::peser() {
 	if(MainMenuOn== false)
 
 	{
+		music.stopMusic();
 		music.playMusic("MainMenu.wav");
 		MainMenuOn = true;
 	}
@@ -36,6 +37,13 @@ void Gerer_Menu::peser() {
 	while (true) {
 		afficher(choix_option);
 		touche_peser = _getch();
+		if (MainMenuOn == false)
+
+		{
+			music.stopMusic();
+			music.playMusic("MainMenu.wav");
+			MainMenuOn = true;
+		}
 
 		switch (touche_peser) {
 		case 'w':
