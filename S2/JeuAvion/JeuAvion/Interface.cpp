@@ -1,12 +1,9 @@
 #include "Interface.h"
 
-Music music;
-SFX sfx1;
 
 Interface::Interface()
 {
-    //initialisation des vairalbes 
-    music.setVolume(500);
+    //initialisation des vairalbes
     score = 0;
     gameOver = false;
     enemySpawnTimer = 0;
@@ -251,7 +248,7 @@ void Interface::progressionDifficulte()
             if (!bossMusicStart && !bossSpawnSound)
             {
                 music.stopMusic();
-				sfx1.playSFX("warning.wav");
+				sfx.playSFX("warning.wav");
 				bossSpawnSound = true;
 				enemySpawnTimer = 0;
             }
@@ -259,7 +256,7 @@ void Interface::progressionDifficulte()
             {  
                 if (enemySpawnTimer >= 150)
                 {
-					sfx1.stopSFX();
+					sfx.stopSFX();
                     music.playMusic("Boss1.wav");
                     bossMusicStart = true;
                 }
@@ -610,7 +607,6 @@ void Interface::executionJeu()
 {
     hideCursor();
     //music.stopMusic();
-	music.setVolume(500);
 	music.playMusic("OceanWorld.wav");
     while (!gameOver)
     {

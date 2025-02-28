@@ -16,7 +16,7 @@ public:
 private:
     void FadeOut();
     sf::Music music;
-    int volume = 200;
+    int volume = 100;
     std::thread musicThread;
 };
 

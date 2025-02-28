@@ -14,7 +14,7 @@ public:
     void pause();
 
 private:
-    float volume = 200; 
+    float volume = 100; 
     sf::SoundBuffer SoundBuffer;
     sf::Sound Sound;
 };

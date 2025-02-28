@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entites.cpp" />
+    <ClCompile Include="globalobjects.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="JeuAvion.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entites.h" />
+    <ClInclude Include="globalobjects.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Music.h" />

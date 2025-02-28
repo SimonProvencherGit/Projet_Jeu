@@ -33,10 +33,11 @@ void Music::stopMusic() {
 void Music::setVolume(float inputvolume)
 {
     music.setVolume(inputvolume);
+    volume = inputvolume;
 }
 
 void Music::FadeOut() {
-    for (int i = volume; i > 0; i=i-5) {
+    for (int i = volume; i > 0; i=i-1) {
         music.setVolume(i);
         this_thread::sleep_for(chrono::milliseconds(1));
     }

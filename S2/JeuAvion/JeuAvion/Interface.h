@@ -9,8 +9,7 @@
 #include <memory>  //pour unique_ptr 
 #include <conio.h>  //pour _kbhit()
 #include <string>
-#include "Music.h"
-#include "SFX.h"
+#include "globalobjects.h"
 
 void setConsoleSize();
 

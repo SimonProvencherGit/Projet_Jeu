@@ -3,9 +3,8 @@
 
 #include <iostream>
 #include "Interface.h"
-#include "Music.h"
 #include "Menu.h"
-#include "SFX.h"
+#include "globalobjects.h"
 
 int main() {
     //SFX sfx;

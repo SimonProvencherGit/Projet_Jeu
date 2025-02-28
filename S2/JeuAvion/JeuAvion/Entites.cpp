@@ -1,7 +1,5 @@
 #include "Entites.h"
 
-SFX sfx;
-
 Entite::Entite(int x, int y, char symb, int largeurEntite, int hauteurEntite)
 {
 	//donne des valeurs par defaut aux variables qui vont etre redefinies dans les classes enfant
@@ -66,7 +64,7 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(int x, int y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
-	nbVies = 10;
+	nbVies = 100;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 3;

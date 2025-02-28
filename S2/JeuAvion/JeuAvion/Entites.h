@@ -3,7 +3,7 @@
 
 #include <windows.h>    //pour le curseur de la console et sleep()
 //#include "Interface.h"
-#include "SFX.h"
+#include "globalobjects.h"
 using namespace std;
 
 //definit la taille du jeu

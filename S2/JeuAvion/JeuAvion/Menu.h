@@ -6,8 +6,7 @@
 #include <iostream>
 #include <conio.h>
 #include "Interface.h"
-#include "Music.h"
-#include "SFX.h"
+#include "globalobjects.h"
 
 using namespace std;
 
@@ -35,7 +34,7 @@ public:
 class Audio : public Menu {
 private:
 	Music musique;
-	int volume = 50;
+	int volume = 100;
 
 public:
 	void afficher(int choix_option);

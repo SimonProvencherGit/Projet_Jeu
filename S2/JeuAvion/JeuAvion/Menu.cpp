@@ -5,8 +5,7 @@ Jouer jouer;
 Audio audio;
 Classement classement;
 Quitter quitter;
-SFX sfx2;
-Music music2;
+double MainMenuOn = false;
 
 void Gerer_Menu::afficher(int choix_option) {
 	const int taille_menu = 4;
@@ -27,9 +26,12 @@ void Gerer_Menu::afficher(int choix_option) {
 void Gerer_Menu::peser() {
 	int choix_option = 0;
 	char touche_peser;
+	if(MainMenuOn== false)
 
-   music2.setVolume(500);
-   music2.playMusic("MainMenu.wav");
+	{
+		music.playMusic("MainMenu.wav");
+		MainMenuOn = true;
+	}
 
 	while (true) {
 		afficher(choix_option);
@@ -38,25 +40,35 @@ void Gerer_Menu::peser() {
 		switch (touche_peser) {
 		case 'w':
 			if (choix_option == 0)
+			{
 				choix_option = 0;
+			}
 
 			else
+			{
 				choix_option = choix_option - 1;
+				sfx.playSFX("pling.wav");
+			}
 			break;
 
 		case 's':
 			if (choix_option == 3)
 				choix_option = 3;
 			else
+			{
+				sfx.playSFX("pling.wav");
 				choix_option = choix_option + 1;
+			}
 			break;
 
 		case '\r':
 			switch (choix_option) {
 			case 0:
 				jouer.peser();
+				sfx.playSFX("Select.wav");
 				break;
 			case 1:
+				sfx.playSFX("Select.wav");
 				audio.peser();
 				break;
 			case 2: //� compl�ter
@@ -103,7 +115,7 @@ void Jouer::peser() {
 		}
 		
 			else {
-				sfx2.playSFX("pling.wav");
+				sfx.playSFX("pling.wav");
 				choix_option = choix_option - 1;
 			}
 			break;
@@ -111,8 +123,12 @@ void Jouer::peser() {
 			if (choix_option == 1)
 				choix_option = 1;
 			else
+			{
+				sfx.playSFX("pling.wav");
 				choix_option = choix_option + 1;
-			//sfx2.playSFX("pling.wav");
+				
+			}
+			
 			break;
 
 		case '\r':
@@ -120,14 +136,13 @@ void Jouer::peser() {
 			
 			switch (choix_option) {
 			case 0:
-				sfx2.playSFX("Select.wav");
-				music2.stopMusic();
+				MainMenuOn = false;
+				sfx.playSFX("Select.wav");
 				//music2.setVolume(500);
 				//music2.playMusic("OceanWorld.wav");
 				jeux.executionJeu();
 				return;
 			case 1:
-				sfx2.playSFX("Select.wav");
 				menu_principal.peser();
 				return;
 			}
@@ -164,14 +179,20 @@ void Quitter::peser() {
 			if (choix_option == 0)
 				choix_option = 0;
 			else
+			{
 				choix_option = choix_option - 1;
+				sfx.playSFX("pling.wav");
+			}
 			break;
 
 		case 's':
 			if (choix_option == 1)
 				choix_option = 1;
 			else
+			{
 				choix_option = choix_option + 1;
+				sfx.playSFX("pling.wav");
+			}
 			break;
 
 		case '\r':
@@ -238,12 +259,12 @@ void Audio::peser() {
 
 void Audio::augmenter_volume() {
 	volume = volume + 5;
-	//musique.SetVolume(volume);
+	music.setVolume(volume);
 }
 
 void Audio::diminuer_volume() {
 	volume = volume - 5;
-	//musique.SetVolume(volume);
+	music.setVolume(volume);
 }
 
 void Classement::afficher(int choix_option) {
