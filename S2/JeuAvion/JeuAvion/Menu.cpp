@@ -88,6 +88,7 @@ void Gerer_Menu::peser() {
 			}
 			break;
 		}
+		Sleep(20);
 	}
 }
 

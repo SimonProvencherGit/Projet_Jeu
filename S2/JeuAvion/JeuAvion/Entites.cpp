@@ -24,6 +24,7 @@ Entite::Entite(int x, int y, char symb, int largeurEntite, int hauteurEntite)
 	invincibleTimer = 0;
 	isPlayer = false;
 	barrelRollTimer = 0;
+	power_up = ADDLIFE;		//par defaut les powerups donnent des vies
 }
 
 
@@ -567,18 +568,33 @@ void Obstacle::update()
 		enVie = false;
 }
 
-/*
-PowerUp::PowerUp(int x, int y, typePowerUp type) : Entite(x, y, '*', 2, 2)
+
+PowerUp::PowerUp(int x, int y, typePowerUp type) : Entite(x, y, '$', 2, 2)
 {
+	typeEntite = POWERUP;
 	power_up = type;
-	enVie = true;
+	symbole = '$';
+	hauteur = 2;
+	largeur = 3;
 }
 
 void PowerUp::update()
 {
+	if (moveTimer% 30 == 0 && posY < HEIGHT)
+		posY++;
+	else if (posY >= HEIGHT)
+		enVie = false;
+	
+	moveTimer++;
 }
 
-void Joueur::TriggerPowerUp(typePowerUp power_up)
+AddLife::AddLife(int x, int y) : PowerUp(x, y, ADDLIFE)
+{
+	symbole = '+';
+	power_up = ADDLIFE;		//meme s'il est declarer par defaut je le declare ici pour un code plus clair
+}
+
+/*void Joueur::TriggerPowerUp(typePowerUp power_up)
 {
 	switch (power_up)
 	{
@@ -592,4 +608,8 @@ void Joueur::TriggerPowerUp(typePowerUp power_up)
 		nbVies = nbVies + 1;
 		break;
 	}
-}*/
+}
+*/
+
+
+

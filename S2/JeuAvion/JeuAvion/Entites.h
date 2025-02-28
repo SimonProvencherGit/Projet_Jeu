@@ -11,7 +11,7 @@ const int WIDTH = 100;
 const int HEIGHT = 37;
 const int CD_BARRELROLL = 75;
 
-enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS };
+enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP};
 enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE };
 enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING };
 enum typePowerUp { SPEEDDOUBLED, DAMAGEDOUBLED, ADDLIFE };
@@ -194,11 +194,18 @@ public:
 };
 
 
+//-----------------------------------------------------------  classes PowerUp -----------------------------------------------------------
+
 class PowerUp : public Entite {
 public:
     typePowerUp power_up;
     PowerUp(int x, int y, typePowerUp type);
-    void update();
+    virtual void update();
+};
+
+class AddLife : public PowerUp {
+public:
+	AddLife(int x, int y);
 };
 
 #endif 
