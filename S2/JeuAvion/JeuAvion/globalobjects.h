@@ -7,5 +7,6 @@
 // Declare global objects
 extern SFX sfx;
 extern Music music;
+extern SFX sfxWarning;
 
 #endif // GLOBALS_H

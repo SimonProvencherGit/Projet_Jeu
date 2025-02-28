@@ -1,4 +1,14 @@
 ﻿  Entites.cpp
+  Interface.cpp
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(575,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  JeuAvion.cpp
+  Menu.cpp
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(29,5): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(40,7): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(271,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(276,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  globalobjects.cpp
+  Generating Code...
 sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundSource.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info
@@ -23,6 +33,53 @@ sfml-system-s-d.lib(Err.obj) : warning LNK4099: PDB '' was not found with 'sfml-
 sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(FileInputStream.obj)' or at ''; linking object as if no debug info
 sfml-system-s-d.lib(MemoryInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(MemoryInputStream.obj)' or at ''; linking object as if no debug info
 sfml-system-s-d.lib(Utils.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Utils.obj)' or at ''; linking object as if no debug info
-  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+flacd.lib(stream_decoder.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_decoder.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder.obj)' or at ''; linking object as if no debug info
+flacd.lib(win_utf8_io.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(win_utf8_io.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_decoder_aspect.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_decoder_aspect.obj)' or at ''; linking object as if no debug info
+flacd.lib(cpu.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(cpu.obj)' or at ''; linking object as if no debug info
+flacd.lib(bitreader.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(bitreader.obj)' or at ''; linking object as if no debug info
+flacd.lib(crc.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(crc.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed.obj)' or at ''; linking object as if no debug info
+flacd.lib(format.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(format.obj)' or at ''; linking object as if no debug info
+flacd.lib(lpc.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(lpc.obj)' or at ''; linking object as if no debug info
+flacd.lib(md5.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(md5.obj)' or at ''; linking object as if no debug info
+flacd.lib(memory.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(memory.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_encoder_aspect.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_encoder_aspect.obj)' or at ''; linking object as if no debug info
+flacd.lib(bitwriter.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(bitwriter.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed_intrin_sse2.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed_intrin_sse2.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed_intrin_ssse3.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed_intrin_ssse3.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed_intrin_sse42.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed_intrin_sse42.obj)' or at ''; linking object as if no debug info
+flacd.lib(lpc_intrin_sse2.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(lpc_intrin_sse2.obj)' or at ''; linking object as if no debug info
+flacd.lib(lpc_intrin_sse41.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(lpc_intrin_sse41.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_helper.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_helper.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder_intrin_sse2.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder_intrin_sse2.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder_intrin_ssse3.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder_intrin_ssse3.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder_framing.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder_framing.obj)' or at ''; linking object as if no debug info
+flacd.lib(window.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(window.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_mapping.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_mapping.obj)' or at ''; linking object as if no debug info
+flacd.lib(bitmath.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(bitmath.obj)' or at ''; linking object as if no debug info
+vorbisencd.lib(vorbisenc.obj) : warning LNK4099: PDB '' was not found with 'vorbisencd.lib(vorbisenc.obj)' or at ''; linking object as if no debug info
+vorbisfiled.lib(vorbisfile.obj) : warning LNK4099: PDB '' was not found with 'vorbisfiled.lib(vorbisfile.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(info.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(info.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(block.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(block.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(analysis.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(analysis.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(bitrate.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(bitrate.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(synthesis.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(synthesis.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(sharedbook.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(sharedbook.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(codebook.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(codebook.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(psy.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(psy.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(registry.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(registry.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(mdct.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(mdct.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(envelope.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(envelope.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(smallft.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(smallft.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(window.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(window.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(lpc.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(lpc.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(floor0.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(floor0.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(floor1.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(floor1.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(res0.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(res0.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(mapping0.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(mapping0.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(lsp.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(lsp.obj)' or at ''; linking object as if no debug info
+oggd.lib(framing.obj) : warning LNK4099: PDB '' was not found with 'oggd.lib(framing.obj)' or at ''; linking object as if no debug info
+oggd.lib(bitwise.obj) : warning LNK4099: PDB '' was not found with 'oggd.lib(bitwise.obj)' or at ''; linking object as if no debug info
+  JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

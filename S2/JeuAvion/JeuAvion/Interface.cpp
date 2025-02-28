@@ -19,6 +19,7 @@ Interface::Interface()
     memScore = 1200;
     bossMusicStart = false;
 	bossSpawnSound = false;
+	powerUpSpawntimer = 0;
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
@@ -107,9 +108,8 @@ void Interface::explosion()
         {
             if (e->enVie && e->posY >= explosionPosY - 2 && e->posY <= explosionPosY + 2 && !e->isPlayer && e->typeEntite != BOSS)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
-
                 e->enVie = false;
-                score += customPoints(e->getTypeEnnemi());
+                //score += customPoints(e->getTypeEnnemi());
             }
         }
     }
@@ -180,6 +180,25 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
     }
 }
 
+void Interface::powerupSpawn(int nb, typePowerUp powerUpVoulu, int x, int y)
+{
+	for (int i = 0; i < nb; i++)
+    {
+        switch (powerUpVoulu)
+        {
+
+        case ADDLIFE:
+            listEntites.emplace_back(make_unique<AddLife>(x, y));
+            break;
+
+        case DAMAGEDOUBLED:
+            //listEntites.emplace_back(make_unique<DamageDoubled>(x, y));
+            break;
+        }
+	}
+}
+
+
 void Interface::positionSpawnRandom()       //on donne une position aleatoire a l'ennemi au spawn en evitant qu'il spawn avec une partie de lui hors de l'ecran
 {
     posRand = (rand() % (WIDTH - listEntites.back()->largeur - 1)) + 1;     //on genere une position aleatoire pour l'ennemi + 1 pour ne pas etre sur la bordure
@@ -194,7 +213,7 @@ void Interface::positionSpawnRandom()       //on donne une position aleatoire a 
 void Interface::progressionDifficulte()
 {
     enemySpawnTimer++;
-    // ******** je devrais probablement remplacer ca par des modulo du enemy spawn timer et remettre le compteur a 0 qd il est a une grande valeur  ********               
+                  
     if (score < 350)
     {
 
@@ -221,7 +240,7 @@ void Interface::progressionDifficulte()
     }
     if (score >= 800 && score < 1200)
     {
-        if (enemySpawnTimer >= 95)          //on fait spawn une vague d'ennemis a toutes les 50 frames
+        if (enemySpawnTimer >= 120 || cbVivant() < 3)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
             //enemySpawn(1, ARTILLEUR);
             //enemySpawn(4, BASIC);   //on fait spawn 5 ennemis a chaque vague
@@ -248,36 +267,39 @@ void Interface::progressionDifficulte()
             if (!bossMusicStart && !bossSpawnSound)
             {
                 music.stopMusic();
-				sfx.playSFX("warning.wav");
+				sfxWarning.playSFX("warning.wav");
 				bossSpawnSound = true;
 				enemySpawnTimer = 0;
+                //Sleep(5);
             }
             else if (!bossMusicStart && bossSpawnSound)
             {  
-                if (enemySpawnTimer >= 150)
+
+                if (enemySpawnTimer >= 150)         //
                 {
-					sfx.stopSFX();
+                    sfxWarning.stopSFX();
                     music.playMusic("Boss1.wav");
                     bossMusicStart = true;
+
                 }
             }
             
-            if (bossWaitTimer > 150)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+            if (bossWaitTimer > 225)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
-                enemySpawn(1, BOSS1_MAIN);
+                 enemySpawn(1, BOSS1_MAIN); 
                 boss1Spawned = true;
 
-                memScore = score + 250;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
+                memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
             }
             else
                 bossWaitTimer++;
         }
     }
-    if (score >= memScore && score <= memScore + 300 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score >= memScore && score <= memScore + 500 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
-        if (bossWaitTimer > 50)
+        if (bossWaitTimer > 100)
         {
             if (enemySpawnTimer >= 4)
             {
@@ -350,8 +372,7 @@ void Interface::gererCollisions()
 
     for (auto& e : listEntites)
     {
-        //if (e->enVie)
-        //{
+
         if (e->enCollision(joueur->posX, joueur->posY) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
         {
             if (e->typeEntite == ENNEMI && e->collisionJoueur == false)
@@ -374,6 +395,20 @@ void Interface::gererCollisions()
 
                 e->collisionJoueur = true;
             }
+            else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
+            {
+                switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+                {
+                case ADDLIFE:
+                    joueur->nbVies++;
+                    break;
+
+                case DAMAGEDOUBLED:
+                    //joueur->attkDmg += 2;
+                    break;
+                }
+                e->enVie = false;
+            }
         }
         //partie ou on gere les collision avec les bullets alliees
         else if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
@@ -382,7 +417,7 @@ void Interface::gererCollisions()
             {
                 if (e2->enVie)
                 {
-                    if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+                    if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                     {
                         if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
                             for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
@@ -392,7 +427,11 @@ void Interface::gererCollisions()
                         e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
                         if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
+                        {
                             score += customPoints(e2->getTypeEnnemi());
+							if (e2->typeEntite == BOSS)
+                                powerupSpawn(1, ADDLIFE, e->posX + e->largeur/2,  e->posY + e->hauteur/ 2);
+                        }
                     }
                 }
             }
@@ -452,6 +491,8 @@ void Interface::restart()
 	boss1Spawned = false;
 	bossWaitTimer = 0;
 	memScore = 1200;
+    bossMusicStart = false;
+    bossSpawnSound = false;
 
 }
 
@@ -562,20 +603,6 @@ void Interface::updateAffichage()
     for (size_t i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
         buffer[HEIGHT + 3][i] = texte[i];
 
-    /*for (auto& pUp : listPowerUps)
-    {
-        if (pUp->enVie)
-        {
-            for (int y = 0; y < pUp->hauteur; y++)
-            {
-                for (int x = 0; x < pUp->largeur; x++)
-                {
-                    buffer[pUp->posY + y][pUp->posX + x] = pUp->symbole;
-                }
-            }
-        }
-    }*/
-
     // on affiche chaque ligne du buffer
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (int y = 0; y < HEIGHT + 4; y++)
@@ -666,37 +693,3 @@ void Interface::showCursor()
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
-
-/*
-void Interface::powerupSpawn()
-{
-    powerUpSpawntimer++;
-
-    if (powerUpSpawntimer >= 300)
-    {
-        int x = rand() % WIDTH;
-        int y = rand() % HEIGHT / 2;
-        int randpower = rand() % 3;
-        typePowerUp type = static_cast<typePowerUp>(randpower);
-        listPowerUps.push_back(make_unique<PowerUp>(x, y + HEIGHT / 2, type));
-        powerUpSpawntimer = 0;
-    }
-}
-
-void Interface::gererCollisionsPowerUp()
-{
-    for (auto it = listPowerUps.begin(); it != listPowerUps.end();)
-    {
-        PowerUp* powerUp = it->get();
-
-        if (joueur->posX == powerUp->posX && joueur->posY == powerUp->posY)
-        {
-            joueur->TriggerPowerUp(powerUp->power_up);
-            it = listPowerUps.erase(it);
-        }
-        else
-        {
-            it++;
-        }
-    }
-}*/

@@ -34,7 +34,7 @@ private:
     bool bossMusicStart;
 	bool bossSpawnSound;
     int powerUpSpawntimer;
-    //vector<unique_ptr<PowerUp>> listPowerUps;
+	//vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
 
 public:
     Interface();
@@ -52,7 +52,7 @@ public:
     void explosion();
     int cbVivant();
     int customPoints(typeEnnemis);
-    void powerupSpawn();
+    void powerupSpawn(int nb, typePowerUp powerUpVoulu, int x, int y);
     void gererCollisionsPowerUp();
 	void restart();
 };
