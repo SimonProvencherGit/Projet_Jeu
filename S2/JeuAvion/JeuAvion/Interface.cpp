@@ -275,7 +275,7 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {  
 
-                if (enemySpawnTimer >= 150)         //
+                if (enemySpawnTimer >= 125)         //
                 {
                     sfxWarning.stopSFX();
                     music.playMusic("Boss1.wav");
@@ -284,7 +284,7 @@ void Interface::progressionDifficulte()
                 }
             }
             
-            if (bossWaitTimer > 225)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+            if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
                  enemySpawn(1, BOSS1_MAIN); 
                 boss1Spawned = true;
