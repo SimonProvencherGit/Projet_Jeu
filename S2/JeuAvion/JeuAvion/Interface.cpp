@@ -267,18 +267,20 @@ void Interface::progressionDifficulte()
             if (!bossMusicStart && !bossSpawnSound)
             {
                 music.stopMusic();
-				sfx.playSFX("warning.wav");
+				sfxWarning.playSFX("warning.wav");
 				bossSpawnSound = true;
 				enemySpawnTimer = 0;
-                Sleep(5);
+                //Sleep(5);
             }
             else if (!bossMusicStart && bossSpawnSound)
             {  
+
                 if (enemySpawnTimer >= 150)         //
                 {
-					sfx.stopSFX();
+                    sfxWarning.stopSFX();
                     music.playMusic("Boss1.wav");
                     bossMusicStart = true;
+
                 }
             }
             
