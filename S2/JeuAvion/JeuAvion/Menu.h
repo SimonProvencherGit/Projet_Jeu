@@ -34,13 +34,16 @@ public:
 class Audio : public Menu {
 private:
 	Music musique;
-	int volume = 100;
+	int volume_musique = 100;
+	int volume_SFX = 100;
 
 public:
 	void afficher(int choix_option);
 	void peser();
-	void augmenter_volume();
-	void diminuer_volume();
+	void augmenter_volumemusique();
+	void diminuer_volumemusique();
+	void augmenter_volumeSFX();
+	void diminuer_volumeSFX();
 };
 
 class Classement : public Menu {

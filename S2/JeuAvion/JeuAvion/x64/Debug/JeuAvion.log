@@ -1,3 +1,16 @@
-﻿  Interface.cpp
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(597,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
+﻿  Menu.cpp
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(29,5): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(42,7): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(28,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(162,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(231,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(304,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(388,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(393,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(399,16): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(400,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(407,16): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(408,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
