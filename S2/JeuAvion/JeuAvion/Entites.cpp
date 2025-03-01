@@ -279,11 +279,11 @@ void Artilleur::update()
 Zaper::Zaper(int x, int y) : Ennemi(x, y)
 {
 	shoots = true;
-	symbole = '*';
-	nbVies = 2;
+	symbole = '?';
+	nbVies = 3;
 	typeEnnemi = ZAPER;
 	hauteur = 2;
-	largeur = 3;
+	largeur = 5;
 	shootCooldown = 1;
 	ammoType = LASER;
 	//moveTimer = 0;		//poru qu'ils tirent tous en meme temps qd ils appaissent
@@ -451,14 +451,63 @@ SideBomber::SideBomber(int x, int y) : Ennemi(x, y)
 	nbVies = 2;
 	typeEnnemi = SIDEBOMBER;
 	hauteur = 1;
-	largeur = 4;
+	largeur = 1;	//on change la largeur au fur et a mesur qu'il entre 
 	shoots = false;
+
+	if (posX == 1)
+		side = true;
+	else
+		side = false;
 }
 
 
 void SideBomber::update()
 {
-	
+
+	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
+	{
+		if (side) 
+		{
+			if (posX < WIDTH - 5)
+			{
+				
+				if (largeur < 6)		//on augmente la largeur du bomber jusqu'a 6
+					largeur++;
+				else
+					posX++;		//its weird but needed dont touch
+			}
+			else if (posX >= WIDTH - 5)
+			{
+				posX++;
+				largeur--;
+				if (largeur <= 0)
+					enVie = false;
+			}
+
+			
+		}
+		else
+		{
+			if (posX > 0)
+			{
+				posX--;
+				if (largeur < 6)		//on augmente la largeur du bomber jusqu'a 6
+					largeur++;
+			}
+			if (posX <= 0)
+			{
+				largeur--;
+				if (largeur <= 0)
+					enVie = false;
+
+			}
+		}
+			
+	}
+	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
+		moveTimer = 0;
+
+	moveTimer++;
 }
 
 

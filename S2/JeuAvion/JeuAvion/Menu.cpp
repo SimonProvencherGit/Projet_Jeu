@@ -30,7 +30,7 @@ void Gerer_Menu::peser() {
 
 	{
 		music.stopMusic();
-		music.playMusic("MainMenu.wav");
+		music.playMusic("MainMenu.wav", 65548, 63989);
 		MainMenuOn = true;
 	}
 	afficher(choix_option);
@@ -43,7 +43,7 @@ void Gerer_Menu::peser() {
 
 		{
 			music.stopMusic();
-			music.playMusic("MainMenu.wav");
+			music.playMusic("MainMenu.wav", 65548, 63989);
 			MainMenuOn = true;
 			afficher(choix_option);
 		}

@@ -9,9 +9,10 @@ class Music {
 public:
     Music();
     ~Music();
-    void playMusic(std::string song);
+    void playMusic(string song, int start, int end);
     void stopMusic();
     void setVolume(float volume);
+    void StopWithFade();
 
 private:
     void FadeOut();
@@ -20,4 +21,4 @@ private:
     std::thread musicThread;
 };
 
-#endif // MUSIC_H
+#endif

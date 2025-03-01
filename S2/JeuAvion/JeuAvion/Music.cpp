@@ -2,28 +2,31 @@
 #include <iostream>
 #include <chrono>
 
-Music::Music(){
+Music::Music() {
+    music.setLooping(true);
 }
 
-Music::~Music() {;
+Music::~Music() {
+    ;
     if (musicThread.joinable()) {
         musicThread.join();
     }
 }
 
-void Music::playMusic(string song) {
-    thread([this, song]() {
+void Music::playMusic(string song, int start, int end) {
+    thread([this, song, start, end]() {
         if (music.getStatus() == sf::SoundSource::Status::Playing) {
             FadeOut();
         }
         if (!music.openFromFile("Music\\" + song)) {
             cout << "Erreur de lecture de musique" << endl;
-            return;
-        }
-        music.play();
-        music.setLooping(true);
-        }).detach();
+        return;
+    }
+    music.setLoopPoints({ sf::milliseconds(start), sf::milliseconds(end) });
+    music.play();
+}).detach();
 }
+
 
 
 void Music::stopMusic() {
@@ -37,9 +40,15 @@ void Music::setVolume(float inputvolume)
 }
 
 void Music::FadeOut() {
-    for (int i = volume; i > 0; i=i-1) {
+    for (int i = volume; i > 0; i = i - 1) {
         music.setVolume(i);
         this_thread::sleep_for(chrono::milliseconds(1));
     }
     music.setVolume(volume);
+}
+
+void Music::StopWithFade()
+{
+    FadeOut();
+    music.stop();
 }

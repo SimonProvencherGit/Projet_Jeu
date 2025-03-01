@@ -145,6 +145,8 @@ public:
 
 class SideBomber : public Ennemi
 {
+private:
+	bool side;
 public:
 	SideBomber(int x, int y);
 	void update();    //gere le deplacement de l'ennemi
