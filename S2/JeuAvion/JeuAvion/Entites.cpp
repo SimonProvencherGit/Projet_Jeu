@@ -445,6 +445,23 @@ void Boss1Side::update()
 	moveTimer++;
 }
 
+SideBomber::SideBomber(int x, int y) : Ennemi(x, y)
+{
+	symbole = 'S';
+	nbVies = 2;
+	typeEnnemi = SIDEBOMBER;
+	hauteur = 1;
+	largeur = 4;
+	shoots = false;
+}
+
+
+void SideBomber::update()
+{
+	
+}
+
+
 //******************************** classe bullet ***********************************
 
 Bullet::Bullet(int x, int y, bool isPlayerBullet) : Entite(x, y, '|', 1, 1)
@@ -568,6 +585,7 @@ void Obstacle::update()
 		enVie = false;
 }
 
+//******************************** classe powerup ***********************************
 
 PowerUp::PowerUp(int x, int y, typePowerUp type) : Entite(x, y, '$', 2, 2)
 {
@@ -593,23 +611,4 @@ AddLife::AddLife(int x, int y) : PowerUp(x, y, ADDLIFE)
 	symbole = '+';
 	power_up = ADDLIFE;		//meme s'il est declarer par defaut je le declare ici pour un code plus clair
 }
-
-/*void Joueur::TriggerPowerUp(typePowerUp power_up)
-{
-	switch (power_up)
-	{
-	case DAMAGEDOUBLED:
-		attkDmg = attkDmg * 2;
-		break;
-	case SPEEDDOUBLED:
-		vitesse = vitesse * 2;
-		break;
-	case ADDLIFE:
-		nbVies = nbVies + 1;
-		break;
-	}
-}
-*/
-
-
 

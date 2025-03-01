@@ -1,3 +1,10 @@
-﻿  Interface.cpp
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(575,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+﻿  Menu.cpp
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(29,5): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(42,7): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(28,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(162,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(231,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(292,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(330,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(335,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
