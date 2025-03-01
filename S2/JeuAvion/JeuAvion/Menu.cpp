@@ -30,22 +30,71 @@ void Gerer_Menu::peser() {
 
 	{
 		music.stopMusic();
-		music.playMusic("MainMenu.wav");
+		music.playMusic("MainMenu.wav", 65548, 63989);
 		MainMenuOn = true;
 	}
+	afficher(choix_option);
+	Sleep(100);
 
 	while (true) {
-		afficher(choix_option);
-		touche_peser = _getch();
+		//afficher(choix_option);
+		//touche_peser = _getch();
 		if (MainMenuOn == false)
 
 		{
 			music.stopMusic();
-			music.playMusic("MainMenu.wav");
+			music.playMusic("MainMenu.wav", 65548, 63989);
 			MainMenuOn = true;
+			afficher(choix_option);
+		}
+		if (GetAsyncKeyState('W') < 0)
+		{
+			if (choix_option == 0)
+			{
+				choix_option = 0;
+			}
+			else
+			{
+				choix_option = choix_option - 1;
+				sfx.playSFX("pling.wav");
+			}
+			afficher(choix_option);
+			//Sleep(25);
+		}
+		else if (GetAsyncKeyState('S') < 0)
+		{
+			if (choix_option == 3)
+				choix_option = 3;
+			else
+			{
+				sfx.playSFX("pling.wav");
+				choix_option = choix_option + 1;
+			}
+			afficher(choix_option);
+			//Sleep(25);
+		}
+		else if (GetAsyncKeyState('\r') < 0)
+		{
+			switch (choix_option) {
+			case 0:
+				jouer.peser();
+				sfx.playSFX("Select.wav");
+				break;
+			case 1:
+				sfx.playSFX("Select.wav");
+				audio.peser();
+				break;
+			case 2: 
+				exit(0);
+				break;
+			case 3:
+				quitter.peser();
+				break;
+			}
+
 		}
 
-		switch (touche_peser) {
+		/*switch (touche_peser) {
 		case 'w':
 			if (choix_option == 0)
 			{
@@ -87,8 +136,8 @@ void Gerer_Menu::peser() {
 				break;
 			}
 			break;
-		}
-		Sleep(20);
+		}*/
+		Sleep(75);
 	}
 }
 
@@ -112,38 +161,39 @@ void Jouer::peser() {
 	int choix_option = 0;
 	char touche_peser;
 
-	while (true) {
-		afficher(choix_option);
-		touche_peser = _getch();
+	afficher(choix_option);
 
-		switch (touche_peser) {
-		case 'w':
+	Sleep(100);	
+
+	while (true) {
+
+		if (GetAsyncKeyState('W') < 0)
+		{
 			if (choix_option == 0) {
-			choix_option = 0;
-			
-		}
-		
+				choix_option = 0;
+			}
 			else {
 				sfx.playSFX("pling.wav");
 				choix_option = choix_option - 1;
 			}
-			break;
-		case 's':
+			afficher(choix_option);
+		}
+		else if (GetAsyncKeyState('S') < 0)
+		{
 			if (choix_option == 1)
 				choix_option = 1;
 			else
 			{
 				sfx.playSFX("pling.wav");
 				choix_option = choix_option + 1;
-				
+
 			}
-			
-			break;
-
-		case '\r':
-
-			
-			switch (choix_option) {
+			afficher(choix_option);
+		}
+		else if (GetAsyncKeyState('\r') < 0)
+		{
+			switch (choix_option) 
+			{
 			case 0:
 				MainMenuOn = false;
 				sfx.playSFX("Select.wav");
@@ -156,6 +206,7 @@ void Jouer::peser() {
 				return;
 			}
 		}
+		Sleep(75);
 	}
 }
 
@@ -179,12 +230,13 @@ void Quitter::peser() {
 	int choix_option = 0;
 	char touche_peser;
 
-	while (true) {
-		afficher(choix_option);
-		touche_peser = _getch();
+	afficher(choix_option);
+	Sleep(200);
 
-		switch (touche_peser) {
-		case 'w':
+	while (true) {
+		
+		if (GetAsyncKeyState('W') < 0)
+		{
 			if (choix_option == 0)
 				choix_option = 0;
 			else
@@ -192,9 +244,10 @@ void Quitter::peser() {
 				choix_option = choix_option - 1;
 				sfx.playSFX("pling.wav");
 			}
-			break;
-
-		case 's':
+			afficher(choix_option);
+		}
+		else if (GetAsyncKeyState('S') < 0)
+		{
 			if (choix_option == 1)
 				choix_option = 1;
 			else
@@ -202,9 +255,10 @@ void Quitter::peser() {
 				choix_option = choix_option + 1;
 				sfx.playSFX("pling.wav");
 			}
-			break;
-
-		case '\r':
+			afficher(choix_option);
+		}
+		else if (GetAsyncKeyState('\r') < 0)
+		{
 			switch (choix_option) {
 			case 0:
 				exit(0);
@@ -213,6 +267,7 @@ void Quitter::peser() {
 				return;
 			}
 		}
+		Sleep(75);
 	}
 }
 
@@ -235,34 +290,38 @@ void Audio::afficher(int choix_option) {
 void Audio::peser() {
 	int choix_option = 0;
 	char touche_peser;
+	afficher(choix_option);
 	Sleep(200);
 	while (true) 
 	{
-		afficher(choix_option);
-		touche_peser = _getch();
-
-		switch (touche_peser) {
-		case 'a':
+		if (GetAsyncKeyState('A') < 0)
+		{
 			if (volume == 0)
 				volume = 0;
 			else
 				diminuer_volume();
-			break;
 
-		case 'd':
+			afficher(choix_option);
+		}
+		else if (GetAsyncKeyState('D') < 0)
+		{
 			if (volume == 100)
 				volume = 100;
 			else
 				augmenter_volume();
-			break;
 
-		case '\r':
+			afficher(choix_option);
+		}
+		else if (GetAsyncKeyState('\r') < 0)
+		{
 			switch (choix_option) {
 			case 0:
 				menu_principal.peser();
 				return;
 			}
 		}
+		Sleep(75);
+		
 	}
 }
 

@@ -176,6 +176,13 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
             listEntites.emplace_back(make_unique<Boss1Side>(WIDTH / 6, 4));
             listEntites.emplace_back(make_unique<Boss1Side>(WIDTH / 2, 4));
             break;
+        case SIDEBOMBER:
+			int coterand = rand() % 2;
+			if (coterand == 0)
+				listEntites.emplace_back(make_unique<SideBomber>(WIDTH - 1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de WIDTH - 2 se fait changer dans le constructeur dependant du sens de l'ennemi
+			else
+			    listEntites.emplace_back(make_unique<SideBomber>(1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de 1 se fait changer dans le constructeur dependant du sens de l'ennemi
+			break;
         }
     }
 }
@@ -214,10 +221,10 @@ void Interface::progressionDifficulte()
 {
     enemySpawnTimer++;
                   
-    if (score < 350)
+    if (score < 600)
     {
-
-        if (enemySpawnTimer >= 100 || cbVivant() < 3)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+        
+        if (enemySpawnTimer >= 100 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
             //enemySpawn(1, DIVEBOMBER);
@@ -225,11 +232,12 @@ void Interface::progressionDifficulte()
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(2, AIMBOT);
+			//enemySpawn(5, SIDEBOMBER);
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 300 && score < 800)
+    if (score >= 600 && score < 1500)
     {
         if (enemySpawnTimer >= 25)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -238,7 +246,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 800 && score < 1200)
+    if (score >= 1500 && score < 2200)
     {
         if (enemySpawnTimer >= 120 || cbVivant() < 3)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
@@ -260,7 +268,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 1200 && !boss1Spawned)
+    if (score >= 2200 && !boss1Spawned)
     {
         if (cbVivant() == 0)
         {
@@ -278,7 +286,7 @@ void Interface::progressionDifficulte()
                 if (enemySpawnTimer >= 125)         //
                 {
                     sfxWarning.stopSFX();
-                    music.playMusic("Boss1.wav");
+                    music.playMusic("Boss1.wav",0,100000);
                     bossMusicStart = true;
 
                 }
@@ -296,21 +304,32 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    if (score >= memScore && score <= memScore + 500 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score >= memScore && score <= memScore + 600 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 4)
+            if (enemySpawnTimer >= 120)
             {
-                enemySpawn(1, DIVEBOMBER);
+                enemySpawn(5, SIDEBOMBER);
+                enemySpawn(1, AIMBOT);
+                enemySpawn(1, ZAPER);
                 enemySpawnTimer = 0;
-                //bossWaitTimer = 0;
+                bossWaitTimer = 0;
             }
         }
         else
             bossWaitTimer++;
     }
+	if (score >= memScore + 600 && score <= memScore + 1200 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+	{
+        if (enemySpawnTimer >= 5)
+        {
+            enemySpawn(1, DIVEBOMBER);
+            enemySpawnTimer = 0;
+            //bossWaitTimer = 0;
+        }
+	}
 }
 
 
@@ -466,12 +485,15 @@ int Interface::customPoints(typeEnnemis e)
         return 20;
         break;
     case BOSS1_MAIN:
-        music.playMusic("Forest.wav");
+        music.playMusic("Forest.wav", 21639, 115195);
         return 100;
         break;
     case BOSS1_SIDE:
         return 50;
         break;
+	case SIDEBOMBER:
+		return 15;
+		break;
     }
     return 0;
 }
@@ -633,8 +655,8 @@ void Interface::enleverEntites()
 void Interface::executionJeu()
 {
     hideCursor();
-    //music.stopMusic();
-	music.playMusic("OceanWorld.wav");
+    music.stopMusic();
+    music.playMusic("Ocean.wav", 0, 117000);
     while (!gameOver)
     {
         gererInput();

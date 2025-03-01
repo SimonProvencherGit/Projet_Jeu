@@ -53,7 +53,7 @@ public:
     int cbVivant();
     int customPoints(typeEnnemis);
     void powerupSpawn(int nb, typePowerUp powerUpVoulu, int x, int y);
-    void gererCollisionsPowerUp();
+    //void gererCollisionsPowerUp();
 	void restart();
 };
 
