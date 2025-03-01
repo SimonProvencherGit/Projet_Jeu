@@ -656,7 +656,7 @@ void Interface::executionJeu()
 {
     hideCursor();
     music.stopMusic();
-    music.playMusic("Ocean.wav", 0, 117000);
+    music.playMusic("OceanWorld.wav", 0, 117000);
     while (!gameOver)
     {
         gererInput();
