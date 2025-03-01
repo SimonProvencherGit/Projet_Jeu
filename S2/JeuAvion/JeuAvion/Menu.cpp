@@ -26,7 +26,7 @@ void Gerer_Menu::afficher(int choix_option) {
 void Gerer_Menu::peser() {
 	int choix_option = 0;
 	char touche_peser;
-	if(MainMenuOn== false)
+	if (MainMenuOn == false)
 
 	{
 		music.stopMusic();
@@ -84,7 +84,7 @@ void Gerer_Menu::peser() {
 				sfx.playSFX("Select.wav");
 				audio.peser();
 				break;
-			case 2: 
+			case 2:
 				exit(0);
 				break;
 			case 3:
@@ -163,7 +163,7 @@ void Jouer::peser() {
 
 	afficher(choix_option);
 
-	Sleep(100);	
+	Sleep(100);
 
 	while (true) {
 
@@ -192,7 +192,7 @@ void Jouer::peser() {
 		}
 		else if (GetAsyncKeyState('\r') < 0)
 		{
-			switch (choix_option) 
+			switch (choix_option)
 			{
 			case 0:
 				MainMenuOn = false;
@@ -234,7 +234,7 @@ void Quitter::peser() {
 	Sleep(200);
 
 	while (true) {
-		
+
 		if (GetAsyncKeyState('W') < 0)
 		{
 			if (choix_option == 0)
@@ -272,8 +272,8 @@ void Quitter::peser() {
 }
 
 void Audio::afficher(int choix_option) {
-	const int taille_menu_audio = 1;
-	string menu[taille_menu_audio] = { "MUSIQUE: " };
+	const int taille_menu_audio = 3;
+	string menu[taille_menu_audio] = { "MUSIQUE: ","SFX: ", "RETOUR" };
 	system("cls");
 
 	cout << "===== AUDIO =====" << endl;
@@ -282,57 +282,131 @@ void Audio::afficher(int choix_option) {
 		if (i == choix_option) {
 			cout << "* ";
 		}
-		cout << menu[i] << volume << endl;
+		if (i == 0)
+		{
+			cout << menu[i] << volume_musique << endl;
+		}
+		if (i == 1)
+		{
+			cout << menu[i] << volume_SFX << endl;
+		}
+		if (i == 2)
+		{
+			cout << menu[i] << endl;
+		}
 	}
-	cout << "==================" << endl;
+	cout << "=================" << endl;
 }
+
 
 void Audio::peser() {
 	int choix_option = 0;
 	char touche_peser;
 	afficher(choix_option);
 	Sleep(200);
-	while (true) 
+	while (true)
 	{
+		if (GetAsyncKeyState('W') < 0)
+		{
+			if (choix_option == 0)
+				choix_option = 0;
+			else
+			{
+				choix_option = choix_option - 1;
+				sfx.playSFX("pling.wav");
+			}
+			afficher(choix_option);
+		}
+		else if (GetAsyncKeyState('S') < 0)
+		{
+			if (choix_option == 2)
+				choix_option = 2;
+			else
+			{
+				choix_option = choix_option + 1;
+				sfx.playSFX("pling.wav");
+			}
+			afficher(choix_option);
+		}
 		if (GetAsyncKeyState('A') < 0)
 		{
-			if (volume == 0)
-				volume = 0;
-			else
-				diminuer_volume();
+			if (choix_option == 0) {
+				if (volume_musique == 0)
+					volume_musique = 0;
+				else
+					diminuer_volumemusique();
 
-			afficher(choix_option);
+				afficher(choix_option);
+			}
+
+			if (choix_option == 1) {
+				if (volume_SFX == 0)
+					volume_SFX = 0;
+				else
+					diminuer_volumeSFX();
+
+				afficher(choix_option);
+			}
+
 		}
 		else if (GetAsyncKeyState('D') < 0)
 		{
-			if (volume == 100)
-				volume = 100;
-			else
-				augmenter_volume();
+			if (choix_option == 0)
+			{
+				if (volume_musique == 100)
+					volume_musique = 100;
+				else
+					augmenter_volumemusique();
 
-			afficher(choix_option);
+				afficher(choix_option);
+			}
+			if (choix_option == 1)
+			{
+				if (volume_SFX == 100)
+					volume_SFX = 100;
+				else
+					augmenter_volumeSFX();
+
+				afficher(choix_option);
+			}
+
 		}
 		else if (GetAsyncKeyState('\r') < 0)
 		{
-			switch (choix_option) {
-			case 0:
+			if (choix_option == 2)
+			{
 				menu_principal.peser();
-				return;
 			}
 		}
 		Sleep(75);
-		
+
 	}
 }
 
-void Audio::augmenter_volume() {
-	volume = volume + 5;
-	music.setVolume(volume);
+void Audio::augmenter_volumemusique() {
+	volume_musique = volume_musique + 5;
+	music.setVolume(volume_musique);
 }
 
-void Audio::diminuer_volume() {
-	volume = volume - 5;
-	music.setVolume(volume);
+void Audio::diminuer_volumemusique() {
+	volume_musique = volume_musique - 5;
+	music.setVolume(volume_musique);
+}
+
+void Audio::augmenter_volumeSFX() {
+	volume_SFX = volume_SFX + 5;
+	// mettre toute les objets SFX
+	sfx.setVolume(volume_SFX);
+	sfxWarning.setVolume(volume_SFX);
+	sfx.playSFX("pling.wav");
+}
+
+void Audio::diminuer_volumeSFX() {
+	volume_SFX = volume_SFX - 5;
+	// mettre toute les objets SFX
+	sfx.setVolume(volume_SFX);
+	sfxWarning.setVolume(volume_SFX);
+	sfx.playSFX("pling.wav");
 }
 
 void Classement::afficher(int choix_option) {

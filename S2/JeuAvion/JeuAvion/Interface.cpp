@@ -20,6 +20,8 @@ Interface::Interface()
     bossMusicStart = false;
 	bossSpawnSound = false;
 	powerUpSpawntimer = 0;
+	//spawnPowerUp = false;
+	//nextPup = 0;
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
@@ -237,7 +239,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 600 && score < 1500)
+    if (score >= 600 && score < 1300)
     {
         if (enemySpawnTimer >= 25)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -246,9 +248,9 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 1500 && score < 2200)
+    if (score >= 1300 && score < 2000)
     {
-        if (enemySpawnTimer >= 120 || cbVivant() < 3)          //on fait spawn une vague d'ennemis a toutes les 50 frames
+        if (enemySpawnTimer >= 150 || cbVivant() < 3)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
             //enemySpawn(1, ARTILLEUR);
             //enemySpawn(4, BASIC);   //on fait spawn 5 ennemis a chaque vague
@@ -268,7 +270,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 2200 && !boss1Spawned)
+    if (score >= 2000 && !boss1Spawned)
     {
         if (cbVivant() == 0)
         {
@@ -448,6 +450,10 @@ void Interface::gererCollisions()
                         if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
                         {
                             score += customPoints(e2->getTypeEnnemi());
+							if (score % 500 <= 10)      //on fait spawn un powerup a chaque 500 points
+							{
+								powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
+							}
 							if (e2->typeEntite == BOSS)
                                 powerupSpawn(1, ADDLIFE, e->posX + e->largeur/2,  e->posY + e->hauteur/ 2);
                         }
@@ -482,7 +488,7 @@ int Interface::customPoints(typeEnnemis e)
         return 30;
         break;
     case AIMBOT:
-        return 20;
+        return 30;
         break;
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);
