@@ -306,14 +306,14 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    if (score >= memScore && score <= memScore + 600 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score >= memScore && score <= memScore + 800 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 120)
+            if (enemySpawnTimer >= 120 || cbVivant() < 4)
             {
-                enemySpawn(5, SIDEBOMBER);
+                enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
                 enemySpawn(1, ZAPER);
                 enemySpawnTimer = 0;
@@ -323,9 +323,9 @@ void Interface::progressionDifficulte()
         else
             bossWaitTimer++;
     }
-	if (score >= memScore + 600 && score <= memScore + 1200 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+	if (score >= memScore + 800 && score <= memScore + 1300 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
 	{
-        if (enemySpawnTimer >= 5)
+        if (enemySpawnTimer >= 8)
         {
             enemySpawn(1, DIVEBOMBER);
             enemySpawnTimer = 0;
