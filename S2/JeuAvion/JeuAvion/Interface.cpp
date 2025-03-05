@@ -464,7 +464,7 @@ void Interface::gererCollisions()
                         if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
                         {
                             score += customPoints(e2->getTypeEnnemi());
-							if (score % 500 <= 10)      //on fait spawn un powerup a chaque 500 points
+							if (score % 500 <= 10 && score > 100)      //on fait spawn un powerup a chaque 500 points
 							{
 								powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
 							}
