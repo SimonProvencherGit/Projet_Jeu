@@ -226,15 +226,15 @@ void Interface::progressionDifficulte()
     if (score < 600)
     {
         
-        if (enemySpawnTimer >= 100 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+        if (enemySpawnTimer >= 100 || cbVivant() < 5)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, DIVEBOMBER);
+           // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
-            //enemySpawn(2, AIMBOT);
-			//enemySpawn(5, SIDEBOMBER);
+            //enemySpawn(1, AIMBOT);
+			//enemySpawn(2, SIDEBOMBER);
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -306,16 +306,16 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    if (score >= memScore && score <= memScore + 800 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score >= memScore && score <= memScore + 850 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 120 || cbVivant() < 4)
+            if (enemySpawnTimer >= 150 || cbVivant() < 5)
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
-                enemySpawn(1, ZAPER);
+                enemySpawn(2, ZAPER);
                 enemySpawnTimer = 0;
                 bossWaitTimer = 0;
             }
@@ -323,14 +323,28 @@ void Interface::progressionDifficulte()
         else
             bossWaitTimer++;
     }
-	if (score >= memScore + 800 && score <= memScore + 1300 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+	if (score >= memScore + 850 && score <= memScore + 1600 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
 	{
-        if (enemySpawnTimer >= 8)
+        if (enemySpawnTimer >= 5)
         {
             enemySpawn(1, DIVEBOMBER);
             enemySpawnTimer = 0;
             //bossWaitTimer = 0;
         }
+	}
+	if (score >= memScore + 1600 && score <= memScore + 2400 && boss1Spawned)
+	{
+		if (enemySpawnTimer >= 150)
+		{
+			enemySpawn(1, ARTILLEUR);
+			enemySpawn(1, SIDEBOMBER);
+			enemySpawn(1, TANK);
+			enemySpawn(1, AIMBOT);
+			enemySpawn(1, ZAPER);
+			enemySpawn(1, DIVEBOMBER);
+			enemySpawn(1, BASIC);
+			enemySpawnTimer = 0;
+		}
 	}
 }
 
