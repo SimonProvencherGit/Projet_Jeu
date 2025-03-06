@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿  Menu.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Menu.cpp')
@@ -16,9 +15,6 @@ C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(365,16): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(366,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   LINK : C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe not found or not built by the last incremental link; performing full link
-=======
-﻿  Entites.cpp
->>>>>>> parent of ba866b1 (warning works?)
 sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundSource.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info
@@ -43,7 +39,6 @@ sfml-system-s-d.lib(Err.obj) : warning LNK4099: PDB '' was not found with 'sfml-
 sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(FileInputStream.obj)' or at ''; linking object as if no debug info
 sfml-system-s-d.lib(MemoryInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(MemoryInputStream.obj)' or at ''; linking object as if no debug info
 sfml-system-s-d.lib(Utils.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Utils.obj)' or at ''; linking object as if no debug info
-<<<<<<< HEAD
 flacd.lib(stream_decoder.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_decoder.obj)' or at ''; linking object as if no debug info
 flacd.lib(stream_encoder.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder.obj)' or at ''; linking object as if no debug info
 flacd.lib(win_utf8_io.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(win_utf8_io.obj)' or at ''; linking object as if no debug info
@@ -94,8 +89,3 @@ vorbisd.lib(lsp.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(l
 oggd.lib(framing.obj) : warning LNK4099: PDB '' was not found with 'oggd.lib(framing.obj)' or at ''; linking object as if no debug info
 oggd.lib(bitwise.obj) : warning LNK4099: PDB '' was not found with 'oggd.lib(bitwise.obj)' or at ''; linking object as if no debug info
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
-=======
-  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
->>>>>>> parent of ba866b1 (warning works?)
