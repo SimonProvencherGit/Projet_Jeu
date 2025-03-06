@@ -31,6 +31,7 @@ private:
     bool enExplosion;
     int cdExplosion;
     bool boss1Spawned;
+	bool boss2Spawned;
     int bossWaitTimer;      //timer pour attendre un certain temps apres que les ennemis soient morts avant de spawn le boss
     int memScore;
     bool bossMusicStart;
