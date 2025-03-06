@@ -20,6 +20,7 @@ Interface::Interface()
     bossMusicStart = false;
 	bossSpawnSound = false;
 	powerUpSpawntimer = 0;
+	angleTirBoss = 0;
 	//spawnPowerUp = false;
 	//nextPup = 0;
 
@@ -49,7 +50,7 @@ void Interface::gererInput()
         }
 
         if (GetAsyncKeyState(VK_UP) < 0 || GetAsyncKeyState('W') < 0)
-            if (joueur->posY > HEIGHT / 3)      //le joueur a acces au 2/3 de l'ecran
+            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
                 joueur->posY--;
 
         if (GetAsyncKeyState(VK_DOWN) < 0 || GetAsyncKeyState('S') < 0)
@@ -141,7 +142,7 @@ int Interface::cbVivant()
 void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
 {
     posRand = (rand() % (WIDTH)) + 1;
-
+	int coterand;
     for (int i = 0; i < nbEnnemi; i++)  //on fait spawn un nombre d'ennemis egal a nbEnnemi
     {
         //anciennePos = posRand;
@@ -179,11 +180,14 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
             listEntites.emplace_back(make_unique<Boss1Side>(WIDTH / 2, 4));
             break;
         case SIDEBOMBER:
-			int coterand = rand() % 2;
+			coterand = rand() % 2;
 			if (coterand == 0)
 				listEntites.emplace_back(make_unique<SideBomber>(WIDTH - 1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de WIDTH - 2 se fait changer dans le constructeur dependant du sens de l'ennemi
 			else
 			    listEntites.emplace_back(make_unique<SideBomber>(1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de 1 se fait changer dans le constructeur dependant du sens de l'ennemi
+			break;
+		case BOSS2_MAIN:
+			listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 2));
 			break;
         }
     }
@@ -229,12 +233,18 @@ void Interface::progressionDifficulte()
         if (enemySpawnTimer >= 100 || cbVivant() < 5)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-           // enemySpawn(1, DIVEBOMBER);
-            //enemySpawn(1, TANK);
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
 			//enemySpawn(2, SIDEBOMBER);
+            // enemySpawn(1, DIVEBOMBER);
+            //enemySpawn(1, TANK);
+            
+            /*if (!boss1Spawned)
+            {
+                enemySpawn(1, BOSS2_MAIN);
+				boss1Spawned = true;
+            }*/
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -315,7 +325,7 @@ void Interface::progressionDifficulte()
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
-                enemySpawn(2, ZAPER);
+                enemySpawn(1, ZAPER);
                 enemySpawnTimer = 0;
                 bossWaitTimer = 0;
             }
@@ -352,7 +362,6 @@ void Interface::progressionDifficulte()
 //met a jour les entites a chaque frame
 void Interface::updateEntites()
 {
-    vector<unique_ptr<Entite>> bufferBullets;  //on fait un buffer pour les bullets
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -362,23 +371,23 @@ void Interface::updateEntites()
             e->update();    //on met a jour l'entite
 
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
-                bufferBullets.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
+                bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
             if (e->typeEntite == ENNEMI && e->ammoType == FRAGMENTING && e->moveTimer % e->shootCooldown == 0 && e->shoots)     //si c'est un ennemi qui tire des fragmenting bullets
-                bufferBullets.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
 
             if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
-                bufferBullets.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2, e->posY + e->hauteur, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2, e->posY + e->hauteur, false));
 
             if (e->getTypeEnnemi() == AIMBOT && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
-                bufferBullets.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
 
 
             if (e->getTypeEnnemi() == BOSS1_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss1 tire des 3 missiles
             {
-                bufferBullets.emplace_back(make_unique<Homing>(e->posX + e->largeur / 4, e->posY + e->hauteur + 1, false));
-                bufferBullets.emplace_back(make_unique<Homing>(e->posX + e->largeur - e->largeur / 4, e->posY + e->hauteur + 1, false));
-                bufferBullets.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 4, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur - e->largeur / 4, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
             }
 
             if (e->getTypeEnnemi() == BOSS1_MAIN)    //verifie si c'est le main boss pour faire qu'il est invincible si on a pas tuer ces side boss
@@ -393,12 +402,56 @@ void Interface::updateEntites()
                     }
                 }
             }
+
+            if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss
+            {
+                if (e->nbVies >= 140)
+                {
+                    balayageTir(3, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                }
+                else if (e->nbVies < 140 && e->nbVies >= 70)
+                {
+                    if (e->moveTimer % 110 == 0)
+						cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+
+					balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                }
+                else if (e->nbVies < 70)
+                {
+                    if (e->moveTimer % 100 == 0)
+                        cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+
+                    balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                }
+                angleTirBoss += 5;
+                if (angleTirBoss >= 360)
+                    angleTirBoss = 0;
+            }
         }
     }
-    for (auto& bullet : bufferBullets)
-        listEntites.push_back(move(bullet));	//on ajoute les bullets du buffer a la liste d'entites
+    for (auto& bullet : bufferBulletsUpdate)
+    {
+		if (bullet != nullptr)
+            listEntites.push_back(move(bullet));	//on ajoute les bullets du buffer a la liste d'entites
+    }
 }
 
+
+void Interface::cercleTir(int angle, int x, int y)
+{
+    for (int i = 0; i <= 360; i += angle)
+        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, i));
+}
+
+void Interface::balayageTir(int nbBranches, int vitesseAngulaire, int x, int y)
+{
+    for (int i = 0; i < 360; i += 360 / nbBranches)
+        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angleTirBoss + i));
+
+    angleTirBoss += vitesseAngulaire;
+    if (angleTirBoss >= 360)
+        angleTirBoss = 0;
+}
 
 //gere les collisions entre les entites
 void Interface::gererCollisions()
@@ -407,76 +460,79 @@ void Interface::gererCollisions()
 
     for (auto& e : listEntites)
     {
-
-        if (e->enCollision(joueur->posX, joueur->posY) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+        if (e->enVie)
         {
-            if (e->typeEntite == ENNEMI && e->collisionJoueur == false)
+            if (e->enCollision(joueur->posX, joueur->posY) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
             {
-                joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
-                joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-
-                if (!joueur->enVie)
-                    gameOver = true;
-
-                e->collisionJoueur = true;
-            }
-            else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
-            {
-                joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi   
-                joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-
-                if (!joueur->enVie)
-                    gameOver = true;
-
-                e->collisionJoueur = true;
-            }
-            else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
-            {
-                switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+                if (e->typeEntite == ENNEMI && e->collisionJoueur == false)
                 {
-                case ADDLIFE:
-                    joueur->nbVies++;
-                    break;
+                    joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
+                    joueur->invincible = true;     //le joueur est invincible pour un court moment apres
 
-                case DAMAGEDOUBLED:
-                    //joueur->attkDmg += 2;
-                    break;
+                    if (!joueur->enVie)
+                        gameOver = true;
+
+                    e->collisionJoueur = true;
                 }
-                e->enVie = false;
-            }
-        }
-        //partie ou on gere les collision avec les bullets alliees
-        else if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
-        {
-            for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
-            {
-                if (e2->enVie)
+                else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
                 {
-                    if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+                    joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
+                    joueur->invincible = true;     //le joueur est invincible pour un court moment apres
+
+                    if (!joueur->enVie)
+                        gameOver = true;
+
+                    e->collisionJoueur = true;
+                }
+                else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
+                {
+                    switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
                     {
-                        if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
-                            for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
-                                bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
+                    case ADDLIFE:
+                        joueur->nbVies++;
+                        break;
 
-                        e2->perdVie(1);
-                        e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
-
-                        if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
+                    case DAMAGEDOUBLED:
+                        //joueur->attkDmg += 2;
+                        break;
+                    }
+                    e->enVie = false;
+                }
+            }
+            //partie ou on gere les collision avec les bullets alliees
+            else if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
+            {
+                for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
+                {
+                    if (e2->enVie)
+                    {
+                        if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
-                            score += customPoints(e2->getTypeEnnemi());
-							if (score % 500 <= 10 && score > 100)      //on fait spawn un powerup a chaque 500 points
-							{
-								powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-							}
-							if (e2->typeEntite == BOSS)
-                                powerupSpawn(1, ADDLIFE, e->posX + e->largeur/2,  e->posY + e->hauteur/ 2);
+                            if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
+                                for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
+                                    bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
+
+                            e2->perdVie(1);
+                            if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
+                                e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
+
+                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
+                            {
+                                score += customPoints(e2->getTypeEnnemi());
+                                if (score % 500 <= 10 && score > 100)      //on fait spawn un powerup a chaque 500 points
+                                {
+                                    powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
+                                }
+                                if (e2->typeEntite == BOSS)
+                                    powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                            }
                         }
                     }
                 }
             }
+            else
+                e->collisionJoueur = false;
         }
-        else
-            e->collisionJoueur = false;
     }
     for (auto& bullet : bufferBullets)
         listEntites.push_back(move(bullet));	//on ajoute les bullets du buffer a la liste d'entites
@@ -538,6 +594,7 @@ void Interface::restart()
 
 }
 
+
 //met a jour l'affichage de la console 
 void Interface::updateAffichage()
 {
@@ -586,7 +643,7 @@ void Interface::updateAffichage()
             {
                 for (int x = 0; x < e->largeur; x++)    //on parcourt la largeur de l'entite
                 {
-                    buffer[e->posY + y][e->posX + x] = e->symbole;  //on met a jour la position de l'entite dans le buffer
+                    buffer[(int)e->posY + y][(int)e->posX + x] = e->symbole;  //on met a jour la position de l'entite dans le buffer
                 }
             }
         }

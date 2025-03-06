@@ -59,7 +59,7 @@ void Gerer_Menu::peser() {
 				sfx.playSFX("pling.wav");
 			}
 			afficher(choix_option);
-			//Sleep(25);
+			Sleep(20);
 		}
 		else if (GetAsyncKeyState('S') < 0)
 		{
@@ -71,7 +71,7 @@ void Gerer_Menu::peser() {
 				choix_option = choix_option + 1;
 			}
 			afficher(choix_option);
-			//Sleep(25);
+			Sleep(20);
 		}
 		else if (GetAsyncKeyState('\r') < 0)
 		{
@@ -134,6 +134,7 @@ void Jouer::peser() {
 				choix_option = choix_option - 1;
 			}
 			afficher(choix_option);
+			Sleep(20);
 		}
 		else if (GetAsyncKeyState('S') < 0)
 		{
@@ -143,9 +144,9 @@ void Jouer::peser() {
 			{
 				sfx.playSFX("pling.wav");
 				choix_option = choix_option + 1;
-
 			}
 			afficher(choix_option);
+			Sleep(20);
 		}
 		else if (GetAsyncKeyState('\r') < 0)
 		{

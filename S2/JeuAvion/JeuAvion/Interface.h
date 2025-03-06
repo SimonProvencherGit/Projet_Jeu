@@ -17,7 +17,9 @@ class Interface
 {
 private:
     Joueur* joueur;
+    vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
     vector<unique_ptr<Entite>> listEntites;
+    //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
     int score;
     bool gameOver;
     int enemySpawnTimer;
@@ -34,6 +36,7 @@ private:
     bool bossMusicStart;
 	bool bossSpawnSound;
     int powerUpSpawntimer;
+    int angleTirBoss = 0;
 	//bool spawnPowerUp;
 	//int nextPup;
 	//vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
@@ -57,6 +60,11 @@ public:
     void powerupSpawn(int nb, typePowerUp powerUpVoulu, int x, int y);
     //void gererCollisionsPowerUp();
 	void restart();
+    void cercleTir(int angle, int x , int y);
+	void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);
+	void randomTir();
+	void randomCibleTir();
+
 };
 
 #endif // INTERFACE_H

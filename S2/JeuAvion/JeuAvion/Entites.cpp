@@ -1,6 +1,6 @@
 #include "Entites.h"
 
-Entite::Entite(int x, int y, char symb, int largeurEntite, int hauteurEntite)
+Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite)
 {
 	//donne des valeurs par defaut aux variables qui vont etre redefinies dans les classes enfant
 	posX = x;
@@ -31,13 +31,13 @@ Entite::Entite(int x, int y, char symb, int largeurEntite, int hauteurEntite)
 
 bool Entite::enCollision(int px, int py)
 {
-	if (px >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < posY + hauteur)       // on fait une collision si les entites sont a la meme position (+ - 1 pour amelirer la detection)
+	if (px >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < (posY + hauteur ))       // on fait une collision si les entites sont a la meme position (+ - 1 pour amelirer la detection)
 		return 1;
 
 	return 0;
 }
 
-void Entite::getPosJoueur(int x, int y)
+void Entite::getPosJoueur(float x, float y)
 {
 	xJoueur = x;
 	yJoueur = y;
@@ -63,7 +63,7 @@ void Entite::perdVie(int nbVie)
 
 //******************************** classe joueur ***********************************
 
-Joueur::Joueur(int x, int y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
+Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
 	nbVies = 10;
 	attkDmg = 1;
@@ -76,6 +76,7 @@ Joueur::Joueur(int x, int y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par
 	barrelRoll = false;
 	coolDownBarrelRoll = 0;
 	isPlayer = true;
+	barrelRollTimer = 0;
 }
 
 
@@ -119,7 +120,7 @@ void Joueur::update()
 
 //******************************** classe ennemi ***********************************
 
-Ennemi::Ennemi(int x, int y) : Entite(x, y, 'X', 1, 1)
+Ennemi::Ennemi(float x, float y) : Entite(x, y, 'X', 1, 1)
 {
 	//set des valeurs par defaut pour les ennemis a etre redefinies dans les classes enfant
 	attkDmg = 1;
@@ -141,7 +142,7 @@ typeEnnemis Ennemi::getTypeEnnemi()
 	return typeEnnemi;
 }
 
-BasicEnnemi::BasicEnnemi(int x, int y) : Ennemi(x, y)
+BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'W';
 	nbVies = 3;
@@ -179,7 +180,7 @@ void BasicEnnemi::update()
 }
 
 
-DiveBomber::DiveBomber(int x, int y) : Ennemi(x, y)
+DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'V';
 	nbVies = 3;
@@ -211,7 +212,7 @@ void DiveBomber::update()
 	moveTimer++;
 }
 
-Tank::Tank(int x, int y) : Ennemi(x, y)
+Tank::Tank(float x, float y) : Ennemi(x, y)
 {
 	symbole = '@';
 	nbVies = 10;
@@ -245,7 +246,7 @@ void Tank::update()
 
 
 
-Artilleur::Artilleur(int x, int y) : Ennemi(x, y)
+Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 {
 	shoots = true;
 	symbole = 'H';
@@ -276,7 +277,7 @@ void Artilleur::update()
 	moveTimer++;
 }
 
-Zaper::Zaper(int x, int y) : Ennemi(x, y)
+Zaper::Zaper(float x, float y) : Ennemi(x, y)
 {
 	shoots = true;
 	symbole = '?';
@@ -318,7 +319,7 @@ void Zaper::update()
 		moveTimer = 0;
 }
 
-Aimbot::Aimbot(int x, int y) : Ennemi(x, y)
+Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 {
 	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
 	shoots = true;
@@ -351,7 +352,7 @@ void Aimbot::update()
 }
 
 
-Boss1::Boss1(int x, int y) : Ennemi(x, y)
+Boss1::Boss1(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
 	nbVies = 65;
@@ -385,7 +386,7 @@ void Boss1::update()
 	moveTimer++;
 }
 
-Boss1Side::Boss1Side(int x, int y) : Ennemi(x, y)
+Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
 	nbVies = 45;
@@ -445,7 +446,7 @@ void Boss1Side::update()
 	moveTimer++;
 }
 
-SideBomber::SideBomber(int x, int y) : Ennemi(x, y)
+SideBomber::SideBomber(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'S';
 	nbVies = 2;
@@ -510,10 +511,42 @@ void SideBomber::update()
 	moveTimer++;
 }
 
+Boss2::Boss2(float x, float y) : Ennemi(x, y)
+{
+	symbole = '%';
+	nbVies = 200;
+	typeEntite = BOSS;
+	typeEnnemi = BOSS2_MAIN;
+	ammoType = CERCLE;
+	hauteur = 6;
+	largeur = 10;
+	shootCooldown = 5;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
+	shoots = true;
+	angle = 0;
+	rayonMouv = 10;		//va faire un cercle de rayon 10
+}
+
+
+void Boss2::update()
+{
+	if (moveTimer % 1 == 0)
+	{
+		posX = WIDTH / 2 + (rayonMouv * cos((angle*2* PI)/360));
+		posY = HEIGHT / 2 + (rayonMouv/2 * sin((angle*2*PI)/360));
+
+		angle++;			//vitesse angulaire determine ici
+	}
+	if (angle >= 360)
+		angle = 0;
+	if(moveTimer >= 500)
+		moveTimer = 0;
+	moveTimer++;
+}
+
 
 //******************************** classe bullet ***********************************
 
-Bullet::Bullet(int x, int y, bool isPlayerBullet) : Entite(x, y, '|', 1, 1)
+Bullet::Bullet(float x, float y, bool isPlayerBullet) : Entite(x, y, '|', 1, 1)
 {
 	//set des valeurs par defaut pour les bullets a etre redefinies dans les classes enfant
 	nbVies = 0;
@@ -522,7 +555,7 @@ Bullet::Bullet(int x, int y, bool isPlayerBullet) : Entite(x, y, '|', 1, 1)
 	ammoType = NORMAL;
 }
 
-BasicBullet::BasicBullet(int x, int y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
+BasicBullet::BasicBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
 {
 	symbole = '|';
 	ammoType = NORMAL;
@@ -555,7 +588,7 @@ void BasicBullet::update()
 		moveTimer = 0;
 }
 
-FragmentingBullet::FragmentingBullet(int x, int y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
+FragmentingBullet::FragmentingBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
 {
 	symbole = 'o';
 	ammoType = FRAGMENTING;
@@ -574,7 +607,7 @@ void FragmentingBullet::update()
 
 }
 
-Laser::Laser(int x, int y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
+Laser::Laser(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
 {
 	symbole = '~';
 	ammoType = LASER;
@@ -592,7 +625,7 @@ void Laser::update()
 
 }
 
-Homing::Homing(int x, int y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
+Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
 {
 	symbole = 'V';
 	ammoType = HOMING;
@@ -621,9 +654,35 @@ void Homing::update()
 	moveTimer++;
 }
 
+angleBullet::angleBullet(float x, float y, int angle) : Entite(x, y, 'o', 1, 1)
+{
+	typeEntite = BULLET;
+	ammoType = CERCLE;
+	hauteur = 1;
+	largeur = 1;
+	nbVies = 0;
+	direction = angle;		//0 a 360 pour les directions possibles
+	bulletAllie = false;
+}
+
+
+void angleBullet::update()
+{
+	if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
+	{
+		posX += cos((direction * 2 * PI) / 360);
+		posY += sin((direction * 2 * PI) / 360)/2;
+	}
+
+	if (posY >= HEIGHT + 1 || posY <= 0 || posX >= WIDTH || posX <= 0)
+		enVie = false;
+
+	moveTimer++;
+}
+
 //******************************** classe obstacle ***********************************
 
-Obstacle::Obstacle(int x, int y, int longueur, int larg, int vie) : Entite(x, y, '#', 3, 1)
+Obstacle::Obstacle(float x, float y, int longueur, int larg, int vie) : Entite(x, y, '#', 3, 1)
 {
 	nbVies = vie;
 }
@@ -636,7 +695,7 @@ void Obstacle::update()
 
 //******************************** classe powerup ***********************************
 
-PowerUp::PowerUp(int x, int y, typePowerUp type) : Entite(x, y, '$', 2, 2)
+PowerUp::PowerUp(float x, float y, typePowerUp type) : Entite(x, y, '$', 2, 2)
 {
 	typeEntite = POWERUP;
 	power_up = type;
@@ -655,9 +714,10 @@ void PowerUp::update()
 	moveTimer++;
 }
 
-AddLife::AddLife(int x, int y) : PowerUp(x, y, ADDLIFE)
+AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 {
 	symbole = '+';
 	power_up = ADDLIFE;		//meme s'il est declarer par defaut je le declare ici pour un code plus clair
 }
+
 
