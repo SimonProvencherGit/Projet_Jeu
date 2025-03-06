@@ -36,10 +36,14 @@ private:
     bool bossMusicStart;
 	bool bossSpawnSound;
     int powerUpSpawntimer;
+<<<<<<< HEAD
     int angleTirBoss = 0;
 	//bool spawnPowerUp;
 	//int nextPup;
 	//vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
+=======
+    //vector<unique_ptr<PowerUp>> listPowerUps;
+>>>>>>> parent of ba866b1 (warning works?)
 
 public:
     Interface();
@@ -57,8 +61,13 @@ public:
     void explosion();
     int cbVivant();
     int customPoints(typeEnnemis);
+<<<<<<< HEAD
     void powerupSpawn(int nb, typePowerUp powerUpVoulu, int x, int y);
     //void gererCollisionsPowerUp();
+=======
+    void powerupSpawn();
+    void gererCollisionsPowerUp();
+>>>>>>> parent of ba866b1 (warning works?)
 	void restart();
     void cercleTir(int angle, int x , int y);
 	void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);

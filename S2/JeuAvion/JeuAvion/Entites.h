@@ -12,9 +12,15 @@ const int HEIGHT = 37;
 const int CD_BARRELROLL = 75;
 const float PI = 3.14159265359;
 
+<<<<<<< HEAD
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP};
 enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN};
 enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, CERCLE};
+=======
+enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS };
+enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE };
+enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING };
+>>>>>>> parent of ba866b1 (warning works?)
 enum typePowerUp { SPEEDDOUBLED, DAMAGEDOUBLED, ADDLIFE };
 
 
@@ -223,11 +229,10 @@ public:
 };
 
 
-//-----------------------------------------------------------  classes PowerUp -----------------------------------------------------------
-
 class PowerUp : public Entite {
 public:
     typePowerUp power_up;
+<<<<<<< HEAD
     PowerUp(float x, float y, typePowerUp type);
     virtual void update();
 };
@@ -235,6 +240,10 @@ public:
 class AddLife : public PowerUp {
 public:
 	AddLife(float x, float y);
+=======
+    PowerUp(int x, int y, typePowerUp type);
+    void update();
+>>>>>>> parent of ba866b1 (warning works?)
 };
 
 #endif 

@@ -24,7 +24,6 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	invincibleTimer = 0;
 	isPlayer = false;
 	barrelRollTimer = 0;
-	power_up = ADDLIFE;		//par defaut les powerups donnent des vies
 }
 
 
@@ -693,27 +692,24 @@ void Obstacle::update()
 		enVie = false;
 }
 
+<<<<<<< HEAD
 //******************************** classe powerup ***********************************
 
 PowerUp::PowerUp(float x, float y, typePowerUp type) : Entite(x, y, '$', 2, 2)
+=======
+/*
+PowerUp::PowerUp(int x, int y, typePowerUp type) : Entite(x, y, '*', 2, 2)
+>>>>>>> parent of ba866b1 (warning works?)
 {
-	typeEntite = POWERUP;
 	power_up = type;
-	symbole = '$';
-	hauteur = 2;
-	largeur = 3;
+	enVie = true;
 }
 
 void PowerUp::update()
 {
-	if (moveTimer% 30 == 0 && posY < HEIGHT)
-		posY++;
-	else if (posY >= HEIGHT)
-		enVie = false;
-	
-	moveTimer++;
 }
 
+<<<<<<< HEAD
 AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 {
 	symbole = '+';
@@ -721,3 +717,20 @@ AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 }
 
 
+=======
+void Joueur::TriggerPowerUp(typePowerUp power_up)
+{
+	switch (power_up)
+	{
+	case DAMAGEDOUBLED:
+		attkDmg = attkDmg * 2;
+		break;
+	case SPEEDDOUBLED:
+		vitesse = vitesse * 2;
+		break;
+	case ADDLIFE:
+		nbVies = nbVies + 1;
+		break;
+	}
+}*/
+>>>>>>> parent of ba866b1 (warning works?)

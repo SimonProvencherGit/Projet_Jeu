@@ -19,10 +19,13 @@ Interface::Interface()
     memScore = 1200;
     bossMusicStart = false;
 	bossSpawnSound = false;
+<<<<<<< HEAD
 	powerUpSpawntimer = 0;
 	angleTirBoss = 0;
 	//spawnPowerUp = false;
 	//nextPup = 0;
+=======
+>>>>>>> parent of ba866b1 (warning works?)
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
@@ -111,8 +114,9 @@ void Interface::explosion()
         {
             if (e->enVie && e->posY >= explosionPosY - 2 && e->posY <= explosionPosY + 2 && !e->isPlayer && e->typeEntite != BOSS)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
+
                 e->enVie = false;
-                //score += customPoints(e->getTypeEnnemi());
+                score += customPoints(e->getTypeEnnemi());
             }
         }
     }
@@ -193,25 +197,6 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
     }
 }
 
-void Interface::powerupSpawn(int nb, typePowerUp powerUpVoulu, int x, int y)
-{
-	for (int i = 0; i < nb; i++)
-    {
-        switch (powerUpVoulu)
-        {
-
-        case ADDLIFE:
-            listEntites.emplace_back(make_unique<AddLife>(x, y));
-            break;
-
-        case DAMAGEDOUBLED:
-            //listEntites.emplace_back(make_unique<DamageDoubled>(x, y));
-            break;
-        }
-	}
-}
-
-
 void Interface::positionSpawnRandom()       //on donne une position aleatoire a l'ennemi au spawn en evitant qu'il spawn avec une partie de lui hors de l'ecran
 {
     posRand = (rand() % (WIDTH - listEntites.back()->largeur - 1)) + 1;     //on genere une position aleatoire pour l'ennemi + 1 pour ne pas etre sur la bordure
@@ -226,8 +211,13 @@ void Interface::positionSpawnRandom()       //on donne une position aleatoire a 
 void Interface::progressionDifficulte()
 {
     enemySpawnTimer++;
+<<<<<<< HEAD
                   
     if (score < 600)
+=======
+    // ******** je devrais probablement remplacer ca par des modulo du enemy spawn timer et remettre le compteur a 0 qd il est a une grande valeur  ********               
+    if (score < 350)
+>>>>>>> parent of ba866b1 (warning works?)
     {
         
         if (enemySpawnTimer >= 100 || cbVivant() < 5)          //on fait spawn une vague d'ennemis a toutes les 70 frames
@@ -260,7 +250,11 @@ void Interface::progressionDifficulte()
     }
     if (score >= 1300 && score < 2000)
     {
+<<<<<<< HEAD
         if (enemySpawnTimer >= 150 || cbVivant() < 3)          //on fait spawn une vague d'ennemis a toutes les 50 frames
+=======
+        if (enemySpawnTimer >= 95)          //on fait spawn une vague d'ennemis a toutes les 50 frames
+>>>>>>> parent of ba866b1 (warning works?)
         {
             //enemySpawn(1, ARTILLEUR);
             //enemySpawn(4, BASIC);   //on fait spawn 5 ennemis a chaque vague
@@ -290,12 +284,19 @@ void Interface::progressionDifficulte()
 				sfxWarning.playSFX("warning.wav");
 				bossSpawnSound = true;
 				enemySpawnTimer = 0;
+<<<<<<< HEAD
                 //Sleep(5);
             }
             else if (!bossMusicStart && bossSpawnSound)
             {  
 
                 if (enemySpawnTimer >= 125)         //
+=======
+            }
+            else if (!bossMusicStart && bossSpawnSound)
+            {  
+                if (enemySpawnTimer >= 150)
+>>>>>>> parent of ba866b1 (warning works?)
                 {
                     sfxWarning.stopSFX();
                     music.playMusic("Boss1.wav",0,100000);
@@ -304,22 +305,30 @@ void Interface::progressionDifficulte()
                 }
             }
             
+<<<<<<< HEAD
             if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+=======
+            if (bossWaitTimer > 150)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+>>>>>>> parent of ba866b1 (warning works?)
             {
-                 enemySpawn(1, BOSS1_MAIN); 
+                enemySpawn(1, BOSS1_MAIN);
                 boss1Spawned = true;
 
-                memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
+                memScore = score + 250;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
             }
             else
                 bossWaitTimer++;
         }
     }
+<<<<<<< HEAD
     if (score >= memScore && score <= memScore + 850 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+=======
+    if (score >= memScore && score <= memScore + 300 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+>>>>>>> parent of ba866b1 (warning works?)
     {
 
-        if (bossWaitTimer > 100)
+        if (bossWaitTimer > 50)
         {
             if (enemySpawnTimer >= 150 || cbVivant() < 5)
             {
@@ -486,10 +495,17 @@ void Interface::gererCollisions()
 
     for (auto& e : listEntites)
     {
+<<<<<<< HEAD
         if (e->enVie)
+=======
+        //if (e->enVie)
+        //{
+        if (e->enCollision(joueur->posX, joueur->posY) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+>>>>>>> parent of ba866b1 (warning works?)
         {
             if (e->enCollision(joueur->posX, joueur->posY) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
             {
+<<<<<<< HEAD
                 if (e->typeEntite == ENNEMI && e->collisionJoueur == false)
                 {
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
@@ -513,11 +529,41 @@ void Interface::gererCollisions()
                 else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
                 {
                     switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+=======
+                joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
+                joueur->invincible = true;     //le joueur est invincible pour un court moment apres
+
+                if (!joueur->enVie)
+                    gameOver = true;
+
+                e->collisionJoueur = true;
+            }
+            else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
+            {
+                joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi   
+                joueur->invincible = true;     //le joueur est invincible pour un court moment apres
+
+                if (!joueur->enVie)
+                    gameOver = true;
+
+                e->collisionJoueur = true;
+            }
+        }
+        //partie ou on gere les collision avec les bullets alliees
+        else if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
+        {
+            for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
+            {
+                if (e2->enVie)
+                {
+                    if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+>>>>>>> parent of ba866b1 (warning works?)
                     {
                     case ADDLIFE:
                         joueur->nbVies++;
                         break;
 
+<<<<<<< HEAD
                     case DAMAGEDOUBLED:
                         //joueur->attkDmg += 2;
                         break;
@@ -553,6 +599,13 @@ void Interface::gererCollisions()
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                             }
                         }
+=======
+                        e2->perdVie(1);
+                        e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
+
+                        if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
+                            score += customPoints(e2->getTypeEnnemi());
+>>>>>>> parent of ba866b1 (warning works?)
                     }
                 }
             }
@@ -615,8 +668,6 @@ void Interface::restart()
 	boss1Spawned = false;
 	bossWaitTimer = 0;
 	memScore = 1200;
-    bossMusicStart = false;
-    bossSpawnSound = false;
 
 }
 
@@ -728,6 +779,20 @@ void Interface::updateAffichage()
     for (size_t i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
         buffer[HEIGHT + 3][i] = texte[i];
 
+    /*for (auto& pUp : listPowerUps)
+    {
+        if (pUp->enVie)
+        {
+            for (int y = 0; y < pUp->hauteur; y++)
+            {
+                for (int x = 0; x < pUp->largeur; x++)
+                {
+                    buffer[pUp->posY + y][pUp->posX + x] = pUp->symbole;
+                }
+            }
+        }
+    }*/
+
     // on affiche chaque ligne du buffer
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (int y = 0; y < HEIGHT + 4; y++)
@@ -818,3 +883,37 @@ void Interface::showCursor()
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
+
+/*
+void Interface::powerupSpawn()
+{
+    powerUpSpawntimer++;
+
+    if (powerUpSpawntimer >= 300)
+    {
+        int x = rand() % WIDTH;
+        int y = rand() % HEIGHT / 2;
+        int randpower = rand() % 3;
+        typePowerUp type = static_cast<typePowerUp>(randpower);
+        listPowerUps.push_back(make_unique<PowerUp>(x, y + HEIGHT / 2, type));
+        powerUpSpawntimer = 0;
+    }
+}
+
+void Interface::gererCollisionsPowerUp()
+{
+    for (auto it = listPowerUps.begin(); it != listPowerUps.end();)
+    {
+        PowerUp* powerUp = it->get();
+
+        if (joueur->posX == powerUp->posX && joueur->posY == powerUp->posY)
+        {
+            joueur->TriggerPowerUp(powerUp->power_up);
+            it = listPowerUps.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+}*/

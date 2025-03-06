@@ -93,8 +93,11 @@ void Gerer_Menu::peser() {
 			}
 
 		}
+<<<<<<< HEAD
 
 		Sleep(75);
+=======
+>>>>>>> parent of ba866b1 (warning works?)
 	}
 }
 
