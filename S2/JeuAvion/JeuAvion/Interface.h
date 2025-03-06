@@ -62,8 +62,8 @@ public:
 	void restart();
     void cercleTir(int angle, int x , int y);
 	void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);
-	void randomTir();
-	void randomCibleTir();
+	void randomTir(int x, int  y);
+	void randomCibleTir(int x, int y);
 
 };
 
