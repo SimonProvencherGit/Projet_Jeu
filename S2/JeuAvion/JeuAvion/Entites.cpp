@@ -65,7 +65,7 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
-	nbVies = 10;
+	nbVies = 15;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 3;

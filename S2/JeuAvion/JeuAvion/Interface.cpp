@@ -15,6 +15,7 @@ Interface::Interface()
     explosionPosY = 0;
     cdExplosion = 0;
     boss1Spawned = false;
+	boss2Spawned = false;
     bossWaitTimer = 0;
     memScore = 1200;
     bossMusicStart = false;
@@ -232,19 +233,19 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 100 || cbVivant() < 5)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, ARTILLEUR);
+            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
 
-            if (!boss1Spawned)
+            /*if (!boss1Spawned)
             {
                 enemySpawn(1, BOSS2_MAIN);
                 boss1Spawned = true;
-            }
+            }*/
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -321,7 +322,7 @@ void Interface::progressionDifficulte()
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 150 || cbVivant() < 5)
+            if (enemySpawnTimer >= 150 || cbVivant() < 6)
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
@@ -344,7 +345,7 @@ void Interface::progressionDifficulte()
     }
     if (score >= memScore + 1600 && score <= memScore + 2400 && boss1Spawned)
     {
-        if (enemySpawnTimer >= 150)
+        if (enemySpawnTimer >= 150 || cbVivant() < 7)
         {
             enemySpawn(1, ARTILLEUR);
             enemySpawn(1, SIDEBOMBER);
@@ -354,6 +355,23 @@ void Interface::progressionDifficulte()
             enemySpawn(1, DIVEBOMBER);
             enemySpawn(1, BASIC);
             enemySpawnTimer = 0;
+        }
+    }
+    if (score >= memScore + 2400 && !boss2Spawned)
+    {
+        if (cbVivant() == 0)
+        {
+
+            if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+            {
+                enemySpawn(1, BOSS2_MAIN);
+                boss2Spawned = true;
+
+                memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
+                bossWaitTimer = 0;
+            }
+            else
+                bossWaitTimer++;
         }
     }
 }
@@ -414,20 +432,20 @@ void Interface::updateEntites()
                 else if (e->nbVies % 70 != 0)
                     spawnPowerUp = true;
 
+                if (e->moveTimer % 2 == 0)
+                    randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+
                 if (e->nbVies >= 140)
-                {
-                    balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
-
-                    //randomTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
-
-
-                }
-                else if (e->nbVies < 140 && e->nbVies >= 70)
                 {
                     if (e->moveTimer % 90 == 0)
                         cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
-                    balayageTir(5, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    
+                }
+                else if (e->nbVies < 140 && e->nbVies >= 70)
+                {
+                    balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 else if (e->nbVies < 70)
                 {
@@ -476,7 +494,12 @@ void Interface::randomTir(int x, int  y)
 void Interface::randomCibleTir(int x, int y)
 {
     //calcule l'angle entre le joueur et le boss et tire aleatoirement dans un cone de 40 degres vers le joueur
-    float angle = atan2(joueur->posY - y, joueur->posX - x) * 180 / 3.14159265;
+	int dx = joueur->posX - x;
+	int dy = joueur->posY - y;
+    double angle = atan2(dy, dx) * 180 / 3.14159265;     //retourne l'angle en degres entre le boss et le joueur         https://www.w3schools.com/cpp/ref_math_atan2.asp
+	int randPos = rand() % 40;      //correspond a une variation possible de 40 degres
+	bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angle - 20 + randPos));         //on tire aleatoirement dans un cone de 40 degres vers le joueur
+    
 }
 
 //gere les collisions entre les entites
@@ -490,7 +513,7 @@ void Interface::gererCollisions()
         {
             if (e->enCollision(joueur->posX, joueur->posY) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
             {
-                if (e->typeEntite == ENNEMI && e->collisionJoueur == false)
+                if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                 {
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
