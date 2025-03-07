@@ -69,6 +69,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 3;
+	nbBulletTir = 1;
 	shootTimer = 0;
 	bulletAllie = true;
 	typeEntite = JOUEUR;
@@ -77,6 +78,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	coolDownBarrelRoll = 0;
 	isPlayer = true;
 	barrelRollTimer = 0;
+	
 }
 
 
@@ -115,6 +117,8 @@ void Joueur::update()
 	if (invincibleTimer > 0)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		invincibleTimer--;
 
+	//if (shootTimer > 0)
+		//shootTimer--;
 }
 
 
@@ -654,7 +658,7 @@ void Homing::update()
 	moveTimer++;
 }
 
-angleBullet::angleBullet(float x, float y, int angle) : Entite(x, y, 'o', 1, 1)
+angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPlayerBullet = false) : Entite(x, y, symb, 1, 1)
 {
 	typeEntite = BULLET;
 	ammoType = CERCLE;
@@ -662,7 +666,8 @@ angleBullet::angleBullet(float x, float y, int angle) : Entite(x, y, 'o', 1, 1)
 	largeur = 1;
 	nbVies = 0;
 	direction = angle;		//0 a 360 pour les directions possibles
-	bulletAllie = false;
+	bulletAllie = isPlayerBullet;
+	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
 }
 
 
@@ -670,14 +675,25 @@ void angleBullet::update()
 {
 	if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
 	{
-		posX += cos((direction * 2 * PI) / 360);
-		posY += sin((direction * 2 * PI) / 360) / 2;
+		if (bulletAllie)
+		{
+			posX += cos((direction * 2 * PI) / 360)*1.2;
+			posY += sin((direction * 2 * PI) / 360)*1.2;
+		}
+		else
+		{
+			posX += cos((direction * 2 * PI) / 360);
+			posY += sin((direction * 2 * PI) / 360) / 2;
+		}
 	}
 
 	if (posY >= HEIGHT + 1 || posY <= 0 || posX >= WIDTH || posX <= 0)
 		enVie = false;
 
 	moveTimer++;
+
+	if (moveTimer >= 100)
+		moveTimer = 0;
 }
 
 //******************************** classe obstacle ***********************************
@@ -717,5 +733,12 @@ void PowerUp::update()
 AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 {
 	symbole = '+';
-	power_up = ADDLIFE;		//meme s'il est declarer par defaut je le declare ici pour un code plus clair
+	power_up = ADDLIFE;		
 }
+
+AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
+{
+	symbole = 'a';
+	power_up = ADDBULLETS;
+}
+

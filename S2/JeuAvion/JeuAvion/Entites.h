@@ -15,7 +15,7 @@ const float PI = 3.14159265359;
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP };
 enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN };
 enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, CERCLE };
-enum typePowerUp { SPEEDDOUBLED, DAMAGEDOUBLED, ADDLIFE };
+enum typePowerUp { DAMAGEDOUBLED, ADDLIFE, ADDBULLETS};
 
 
 class Entite
@@ -63,6 +63,7 @@ public:
     bool barrelRoll;
     int barrelRollTimer;
     int coolDownBarrelRoll;
+    int nbBulletTir;
 
     Joueur(float x, float y);       //probalement autre chose a ajouter
     void update();     //gere le deplacement du joueur
@@ -206,7 +207,7 @@ class angleBullet : public Entite                                              /
 private:
     int direction;
 public:
-    angleBullet(float x, float y, int angle);      //direction va de 1 a 8 pour les directions possibles
+    angleBullet(float x, float y, int angle, char symbole, bool isPlayerBullet);      //direction va de 1 a 8 pour les directions possibles
     void update();    //gere le deplacement de la balle
 };
 
@@ -225,16 +226,24 @@ public:
 
 //-----------------------------------------------------------  classes PowerUp -----------------------------------------------------------
 
-class PowerUp : public Entite {
+class PowerUp : public Entite 
+{
 public:
-    typePowerUp power_up;
     PowerUp(float x, float y, typePowerUp type);
     virtual void update();
 };
 
-class AddLife : public PowerUp {
+class AddLife : public PowerUp 
+{
 public:
     AddLife(float x, float y);
+};
+
+class AddBullet : public PowerUp 
+{
+public:
+    AddBullet(float x, float y);
+
 };
 
 #endif 

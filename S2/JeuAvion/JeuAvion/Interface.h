@@ -65,7 +65,7 @@ public:
     void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);
     void randomTir(int x, int  y);
     void randomCibleTir(int x, int y);
-
+	void joueurTir();
 };
 
 #endif // INTERFACE_H
