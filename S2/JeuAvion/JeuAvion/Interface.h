@@ -17,6 +17,7 @@ class Interface
 {
 private:
     Joueur* joueur;
+	Joueur* joueur2;
     vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
     vector<unique_ptr<Entite>> listEntites;
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
@@ -40,6 +41,7 @@ private:
     int angleTirBoss = 0;
     bool spawnAddLife;
     bool spawnPowerUpStart;
+	int nbJoueur;
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
@@ -54,7 +56,7 @@ public:
     void updateAffichage();
     void enleverEntites();
     void gererCollisions();
-    void executionJeu();
+    void executionJeu(int version);
     void hideCursor();
     void showCursor();
     void explosion();
@@ -67,7 +69,7 @@ public:
     void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);
     void randomTir(int x, int  y);
     void randomCibleTir(int x, int y);
-	void joueurTir();
+	void joueurTir(Joueur* quelJoueur);
 };
 
 #endif // INTERFACE_H

@@ -24,10 +24,13 @@ Interface::Interface()
     angleTirBoss = 0;
     spawnAddLife = false;
     spawnPowerUpStart = true;      //temporaire pour faire spawn powerup au debut du match
+	nbJoueur = 1;
     //nextPup = 0;
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
+
+	joueur2 = nullptr;
 }
 
 
@@ -37,25 +40,25 @@ void Interface::gererInput()
     if (pause == false)
     {
 
-        if (GetAsyncKeyState(VK_LEFT) < 0 || GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
+        if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
         {
             if (joueur->posX > 2)
                 joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
             else if (joueur->posX > 1)
                 joueur->posX--;
         }
-        if (GetAsyncKeyState(VK_RIGHT) < 0 || GetAsyncKeyState('D') < 0) {
+        if (GetAsyncKeyState('D') < 0) {
             if (joueur->posX < WIDTH - 2)
                 joueur->posX += 2;
             else if (joueur->posX < WIDTH - 1)
                 joueur->posX++;
         }
 
-        if (GetAsyncKeyState(VK_UP) < 0 || GetAsyncKeyState('W') < 0)
+        if (GetAsyncKeyState('W') < 0)
             if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
                 joueur->posY--;
 
-        if (GetAsyncKeyState(VK_DOWN) < 0 || GetAsyncKeyState('S') < 0)
+        if (GetAsyncKeyState('S') < 0)
             if (joueur->posY < HEIGHT)
                 joueur->posY++;
         if (GetAsyncKeyState(VK_SPACE) < 0)
@@ -63,7 +66,7 @@ void Interface::gererInput()
             if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
             {
                 //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                joueurTir();
+                joueurTir(joueur);
                 joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
 				
             }
@@ -82,6 +85,56 @@ void Interface::gererInput()
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
+            }
+        }
+
+		//******************************************* controle 2e joueur *******************************************
+
+        if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
+        {
+            if (joueur2->posX > 2)
+                joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+            else if (joueur2->posX > 1)
+                joueur2->posX--;
+        }
+        if (GetAsyncKeyState(VK_RIGHT) < 0) {
+            if (joueur2->posX < WIDTH - 2)
+                joueur2->posX += 2;
+            else if (joueur2->posX < WIDTH - 1)
+                joueur2->posX++;
+        }
+
+        if (GetAsyncKeyState(VK_UP) < 0)
+            if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                joueur2->posY--;
+
+        if (GetAsyncKeyState(VK_DOWN) < 0)
+            if (joueur2->posY < HEIGHT)
+                joueur2->posY++;
+		if (GetAsyncKeyState(VK_INSERT) < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
+        {
+            if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+            {
+                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                joueurTir(joueur2);
+                joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+
+            }
+        }
+        if (GetAsyncKeyState(VK_DELETE) < 0)
+        {
+            if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
+                joueur2->barrelRoll = true;
+        }
+        if (GetAsyncKeyState(VK_END) < 0)
+        {
+            if (explosionTimer == 0)
+            {
+
+                cdExplosion = 500;      //set le cooldown de l'explosion
+                enExplosion = true;
+                explosionTimer = cdExplosion;
+                explosionPosY = joueur2->posY - 1;
             }
         }
     }
@@ -104,20 +157,21 @@ void Interface::gererInput()
         Sleep(200);
     }
 }
-void Interface::joueurTir()
+void Interface::joueurTir(Joueur* quelJoueur)
 {
-    switch (joueur->nbBulletTir)
+
+    switch (quelJoueur->nbBulletTir)
     {
 	case 1:
-		listEntites.emplace_back(make_unique<angleBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, 90 + 180, '|', true));
+		listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, 90 + 180, '|', true));
 		break;
 	case 3:
         for(int i=80;i<110;i+=10)
-			listEntites.emplace_back(make_unique<angleBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, i + 180, '|', true));
+			listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + joueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
 		break;
     case 5:
 		for (int i = 70; i < 120; i += 10)
-			listEntites.emplace_back(make_unique<angleBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, i + 180, '|', true));
+			listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
         break;
     }
 }
@@ -579,7 +633,7 @@ void Interface::gererCollisions()
                 {
                     if (e2->enVie)
                     {
-                        if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+                        if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
                             if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
                                 for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
@@ -605,6 +659,84 @@ void Interface::gererCollisions()
             }
             else
                 e->collisionJoueur = false;
+        }
+
+        if (nbJoueur > 0)       //s'il y a 2 joueur 
+        {
+            if (e->enVie)
+            {
+                if (e->enCollision(joueur2->posX, joueur2->posY) && joueur2->invincibleTimer <= 0 && joueur2->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+                {
+                    if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
+                    {
+                        joueur2->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
+                        joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
+
+                        if (!joueur2->enVie)
+                            gameOver = true;
+
+                        e->collisionJoueur = true;
+                    }
+                    else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
+                    {
+                        joueur2->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
+                        joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
+
+                        if (!joueur2->enVie)        //----------------------------------------------------------------------------------------  a changer, si un des 2 joueurs meurt en ce moment la game finit
+                            gameOver = true;
+
+                        e->collisionJoueur = true;
+                    }
+                    else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
+                    {
+                        switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+                        {
+                        case ADDLIFE:
+                            joueur2->nbVies++;
+                            break;
+
+                        case ADDBULLETS:
+                            joueur2->nbBulletTir += 2;
+                            joueur2->shootCooldown += 3;
+                            break;
+                        }
+                        e->enVie = false;
+                    }
+                }
+                //partie ou on gere les collision avec les bullets alliees
+                /*else if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
+                {
+                    for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
+                    {
+                        if (e2->enVie)
+                        {
+                            if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+                            {
+                                if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
+                                    for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
+                                        bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
+
+                                e2->perdVie(1);
+                                if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
+                                    e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
+
+                                if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
+                                {
+                                    score += customPoints(e2->getTypeEnnemi());
+                                    if (score % 500 <= 10 && score > 100)      //on fait spawn un powerup a chaque 500 points
+                                    {
+                                        powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
+                                    }
+                                    if (e2->typeEntite == BOSS)
+                                        powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                                }
+                            }
+                        }
+                    }
+                }*/
+                else
+                    e->collisionJoueur = false;
+            }
         }
     }
     for (auto& bullet : bufferBullets)
@@ -803,11 +935,18 @@ void Interface::enleverEntites()
 
 
 //execution du jeu
-void Interface::executionJeu()
+void Interface::executionJeu(int version)
 {
     hideCursor();
     music.stopMusic();
     music.playMusic("OceanWorld.wav", 0, 117000);
+    if (version > 0)     //si on a choisi autre chose que le mode seul
+    {
+        listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
+		joueur2 = static_cast<Joueur*>(listEntites.back().get());
+		joueur->posX = (WIDTH / 2) - 5;  
+		nbJoueur = 2;
+    }
     while (!gameOver)
     {
         gererInput();
