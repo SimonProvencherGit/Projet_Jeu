@@ -61,8 +61,10 @@ void Interface::gererInput()
         {
             if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
             {
-                listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                joueurTir();
                 joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+				
             }
         }
         if (GetAsyncKeyState('E') < 0)
@@ -99,6 +101,23 @@ void Interface::gererInput()
         else if (!pause)
             pause = true;
         Sleep(200);
+    }
+}
+void Interface::joueurTir()
+{
+    switch (joueur->nbBulletTir)
+    {
+	case 1:
+		listEntites.emplace_back(make_unique<angleBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, 90 + 180, '|', true));
+		break;
+	case 3:
+        for(int i=80;i<110;i+=10)
+			listEntites.emplace_back(make_unique<angleBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, i + 180, '|', true));
+		break;
+    case 5:
+		for (int i = 70; i < 120; i += 10)
+			listEntites.emplace_back(make_unique<angleBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, i + 180, '|', true));
+        break;
     }
 }
 
@@ -205,8 +224,8 @@ void Interface::powerupSpawn(int nb, typePowerUp powerUpVoulu, int x, int y)
             listEntites.emplace_back(make_unique<AddLife>(x, y));
             break;
 
-        case DAMAGEDOUBLED:
-            //listEntites.emplace_back(make_unique<DamageDoubled>(x, y));
+        case ADDBULLETS:
+            listEntites.emplace_back(make_unique<AddBullet>(x, y));
             break;
         }
     }
@@ -241,11 +260,13 @@ void Interface::progressionDifficulte()
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
 
-            /*if (!boss1Spawned)
+            if (!boss1Spawned)
             {
-                enemySpawn(1, BOSS2_MAIN);
+                //enemySpawn(1, BOSS2_MAIN);
                 boss1Spawned = true;
-            }*/
+				powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 -5);
+                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+            }
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -261,7 +282,7 @@ void Interface::progressionDifficulte()
     }
     if (score >= 1300 && score < 2000)
     {
-        if (enemySpawnTimer >= 150 || cbVivant() < 3)          //on fait spawn une vague d'ennemis a toutes les 50 frames
+        if (enemySpawnTimer >= 150 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
             //enemySpawn(1, ARTILLEUR);
             //enemySpawn(4, BASIC);   //on fait spawn 5 ennemis a chaque vague
@@ -328,7 +349,7 @@ void Interface::progressionDifficulte()
                 enemySpawn(1, AIMBOT);
                 enemySpawn(1, ZAPER);
                 enemySpawnTimer = 0;
-                bossWaitTimer = 0;
+                
             }
         }
         else
@@ -340,7 +361,7 @@ void Interface::progressionDifficulte()
         {
             enemySpawn(1, DIVEBOMBER);
             enemySpawnTimer = 0;
-            //bossWaitTimer = 0;
+            bossWaitTimer = 0;
         }
     }
     if (score >= memScore + 1600 && score <= memScore + 2400 && boss1Spawned)
@@ -471,13 +492,13 @@ void Interface::updateEntites()
 void Interface::cercleTir(int angle, int x, int y)
 {
     for (int i = 0; i <= 360; i += angle)
-        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, i));
+        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, i, 'o', false));
 }
 
 void Interface::balayageTir(int nbBranches, int vitesseAngulaire, int x, int y)
 {
     for (int i = 0; i < 360; i += 360 / nbBranches)
-        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angleTirBoss + i));
+        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angleTirBoss + i,'o', false));
 
     angleTirBoss += vitesseAngulaire;
     if (angleTirBoss >= 360)
@@ -487,8 +508,7 @@ void Interface::balayageTir(int nbBranches, int vitesseAngulaire, int x, int y)
 void Interface::randomTir(int x, int  y)
 {
     int randPos = rand() % 360;
-    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, randPos));
-
+    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, randPos, 'o', false));
 }
 
 void Interface::randomCibleTir(int x, int y)
@@ -498,9 +518,10 @@ void Interface::randomCibleTir(int x, int y)
 	int dy = joueur->posY - y;
     double angle = atan2(dy, dx) * 180 / 3.14159265;     //retourne l'angle en degres entre le boss et le joueur         https://www.w3schools.com/cpp/ref_math_atan2.asp
 	int randPos = rand() % 40;      //correspond a une variation possible de 40 degres
-	bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angle - 20 + randPos));         //on tire aleatoirement dans un cone de 40 degres vers le joueur
-    
+	bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angle - 20 + randPos, 'o', false));         //on tire aleatoirement dans un cone de 40 degres vers le joueur
 }
+
+
 
 //gere les collisions entre les entites
 void Interface::gererCollisions()
@@ -541,8 +562,9 @@ void Interface::gererCollisions()
                         joueur->nbVies++;
                         break;
 
-                    case DAMAGEDOUBLED:
-                        //joueur->attkDmg += 2;
+                    case ADDBULLETS:
+                        joueur->nbBulletTir += 2;
+                        joueur->shootCooldown += 3;
                         break;
                     }
                     e->enVie = false;
