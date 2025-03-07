@@ -595,8 +595,8 @@ void Interface::gererCollisions()
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
 
-                    if(!joueur->enVie)
-                        nbJoueur--;
+                    //if(!joueur->enVie)
+                        //nbJoueur--;
                         //gameOver = true;
 
                     e->collisionJoueur = true;
@@ -606,8 +606,8 @@ void Interface::gererCollisions()
                     joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
 
-                    if (!joueur->enVie)
-						nbJoueur--;
+                    //if (!joueur->enVie)
+						//nbJoueur--;
                         //gameOver = true;
 
                     e->collisionJoueur = true;
@@ -674,8 +674,8 @@ void Interface::gererCollisions()
                         joueur2->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
 
-                        if (!joueur2->enVie)
-							nbJoueur--;
+                        //if (!joueur2->enVie)
+							//nbJoueur--;
                             //gameOver = true;
 
                         e->collisionJoueur = true;
@@ -685,8 +685,8 @@ void Interface::gererCollisions()
                         joueur2->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
 
-                        if (!joueur2->enVie)        //----------------------------------------------------------------------------------------  a changer, si un des 2 joueurs meurt en ce moment la game finit
-							nbJoueur--;
+                        //if (!joueur2->enVie)        //----------------------------------------------------------------------------------------  a changer, si un des 2 joueurs meurt en ce moment la game finit
+							//nbJoueur--;
                             //gameOver = true;
 
                         e->collisionJoueur = true;
@@ -876,7 +876,12 @@ void Interface::updateAffichage()
     if (gameOver)
         texte = L"Game Over!  Score: " + to_wstring(score);
     else
-        texte = L"Score: " + to_wstring(score) + L"   Lives: " + to_wstring(joueur->nbVies);
+    {
+        if(joueur->nbVies >= 0)
+            texte = L"Score: " + to_wstring(score) + L"   Lives: " + to_wstring(joueur->nbVies);
+		else
+			texte = L"Score: " + to_wstring(score) + L"   Lives: 0";
+    }
 
     for (size_t i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
         buffer[HEIGHT + 3][i] = texte[i];
@@ -898,7 +903,12 @@ void Interface::enleverEntites()
 {
     for (int i = 0; i < listEntites.size(); i++)
     {
-        if (!listEntites[i]->enVie)
+        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)
+        {
+            listEntites.erase(listEntites.begin() + i);
+            i--;
+        }
+        else if (!listEntites[i]->enVie && listEntites[i]->isPlayer)
         {
             listEntites.erase(listEntites.begin() + i);
             i--;
@@ -936,7 +946,7 @@ void Interface::executionJeu(int version)
         updateAffichage();
         Sleep(20);
 
-		if (nbJoueur == 0)
+		if (!joueur->enVie && !joueur2->enVie)
 			gameOver = true;
     }
     restart();
