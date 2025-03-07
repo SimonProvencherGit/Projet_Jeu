@@ -4,31 +4,31 @@ C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.
   
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(83,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(242,32): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(450,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(450,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(457,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(457,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(462,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(462,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(464,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(464,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(469,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(469,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(474,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(474,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(476,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(476,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(517,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(451,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(451,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(458,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(458,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(463,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(463,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(465,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(465,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(470,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(470,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(475,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(475,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(477,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(477,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(518,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(535,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(535,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(580,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(580,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(595,99): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(595,71): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(598,96): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(598,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(745,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(519,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(536,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(536,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(581,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(581,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(596,99): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(596,71): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(599,96): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(599,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(746,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         with
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         [
@@ -51,7 +51,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.3443
   (compiling source file 'Interface.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
       the template instantiation context (the oldest one first) is
-          C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(521,35):
+          C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(522,35):
           see reference to function template instantiation 'std::unique_ptr<angleBullet,std::default_delete<angleBullet>> std::make_unique<angleBullet,int&,int&,double,char,bool,0>(int &,int &,double &&,char &&,bool &&)' being compiled
   
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

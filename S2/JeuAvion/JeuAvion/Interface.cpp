@@ -207,7 +207,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
                 listEntites.emplace_back(make_unique<SideBomber>(1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de 1 se fait changer dans le constructeur dependant du sens de l'ennemi
             break;
         case BOSS2_MAIN:
-            listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 2));
+            listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 3));
             break;
         }
     }
@@ -246,6 +246,7 @@ void Interface::positionSpawnRandom()       //on donne une position aleatoire a 
 void Interface::progressionDifficulte()
 {
     enemySpawnTimer++;
+    static bool spawnPup = false;
 
     if (score < 600)
     {
@@ -260,10 +261,10 @@ void Interface::progressionDifficulte()
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
 
-            if (!boss1Spawned)
+            if (!spawnPup)
             {
                 //enemySpawn(1, BOSS2_MAIN);
-                boss1Spawned = true;
+                spawnPup = true;
 				powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 -5);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }
@@ -329,7 +330,7 @@ void Interface::progressionDifficulte()
             if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
                 enemySpawn(1, BOSS1_MAIN);
-                boss1Spawned = true;
+                 boss1Spawned = true;
 
                 memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
