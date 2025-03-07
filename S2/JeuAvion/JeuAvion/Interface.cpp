@@ -22,7 +22,8 @@ Interface::Interface()
     bossSpawnSound = false;
     powerUpSpawntimer = 0;
     angleTirBoss = 0;
-    //spawnPowerUp = false;
+    spawnAddLife = false;
+    spawnPowerUpStart = true;      //temporaire pour faire spawn powerup au debut du match
     //nextPup = 0;
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
@@ -129,7 +130,7 @@ void Interface::explosion()
     {
         for (auto& e : listEntites)
         {
-            if (e->enVie && e->posY >= explosionPosY - 2 && e->posY <= explosionPosY + 2 && !e->isPlayer && e->typeEntite != BOSS)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
+            if (e->enVie && e->posY >= explosionPosY - 2 && e->posY <= explosionPosY + 2 && !e->isPlayer && e->typeEntite != BOSS && e->typeEntite != POWERUP)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
                 e->enVie = false;
                 //score += customPoints(e->getTypeEnnemi());
@@ -261,10 +262,10 @@ void Interface::progressionDifficulte()
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
 
-            if (!spawnPup)
+            if (spawnPowerUpStart)
             {
                 //enemySpawn(1, BOSS2_MAIN);
-                spawnPup = true;
+                spawnPowerUpStart = false;
 				powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 -5);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }
@@ -402,7 +403,7 @@ void Interface::progressionDifficulte()
 //met a jour les entites a chaque frame
 void Interface::updateEntites()
 {
-    static bool spawnPowerUp = true;
+
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -446,13 +447,13 @@ void Interface::updateEntites()
 
             if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le 2e boss
             {
-                if (e->nbVies % 70 == 0 && spawnPowerUp)
+                if (e->nbVies % 70 == 0 && spawnAddLife)
                 {
                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
-                    spawnPowerUp = false;
+                    spawnAddLife = false;
                 }
                 else if (e->nbVies % 70 != 0)
-                    spawnPowerUp = true;
+                    spawnAddLife = true;
 
                 if (e->moveTimer % 2 == 0)
                     randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -663,7 +664,8 @@ void Interface::restart()
     memScore = 1200;
     bossMusicStart = false;
     bossSpawnSound = false;
-
+    spawnAddLife = true;
+	spawnPowerUpStart = true;
 }
 
 
