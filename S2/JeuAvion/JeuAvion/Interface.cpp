@@ -167,7 +167,7 @@ void Interface::joueurTir(Joueur* quelJoueur)
 		break;
 	case 3:
         for(int i=80;i<110;i+=10)
-			listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + joueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
+			listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
 		break;
     case 5:
 		for (int i = 70; i < 120; i += 10)
@@ -595,8 +595,9 @@ void Interface::gererCollisions()
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
 
-                    if (!joueur->enVie)
-                        gameOver = true;
+                    if(!joueur->enVie)
+                        nbJoueur--;
+                        //gameOver = true;
 
                     e->collisionJoueur = true;
                 }
@@ -606,7 +607,8 @@ void Interface::gererCollisions()
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
 
                     if (!joueur->enVie)
-                        gameOver = true;
+						nbJoueur--;
+                        //gameOver = true;
 
                     e->collisionJoueur = true;
                 }
@@ -673,7 +675,8 @@ void Interface::gererCollisions()
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
 
                         if (!joueur2->enVie)
-                            gameOver = true;
+							nbJoueur--;
+                            //gameOver = true;
 
                         e->collisionJoueur = true;
                     }
@@ -683,7 +686,8 @@ void Interface::gererCollisions()
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
 
                         if (!joueur2->enVie)        //----------------------------------------------------------------------------------------  a changer, si un des 2 joueurs meurt en ce moment la game finit
-                            gameOver = true;
+							nbJoueur--;
+                            //gameOver = true;
 
                         e->collisionJoueur = true;
                     }
@@ -703,37 +707,6 @@ void Interface::gererCollisions()
                         e->enVie = false;
                     }
                 }
-                //partie ou on gere les collision avec les bullets alliees
-                /*else if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
-                {
-                    for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
-                    {
-                        if (e2->enVie)
-                        {
-                            if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
-                            {
-                                if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
-                                    for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
-                                        bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
-
-                                e2->perdVie(1);
-                                if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
-                                    e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
-
-                                if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
-                                {
-                                    score += customPoints(e2->getTypeEnnemi());
-                                    if (score % 500 <= 10 && score > 100)      //on fait spawn un powerup a chaque 500 points
-                                    {
-                                        powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-                                    }
-                                    if (e2->typeEntite == BOSS)
-                                        powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
-                                }
-                            }
-                        }
-                    }
-                }*/
                 else
                     e->collisionJoueur = false;
             }
@@ -963,6 +936,8 @@ void Interface::executionJeu(int version)
         updateAffichage();
         Sleep(20);
 
+		if (nbJoueur == 0)
+			gameOver = true;
     }
     restart();
 
