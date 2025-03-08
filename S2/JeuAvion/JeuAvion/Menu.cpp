@@ -155,7 +155,7 @@ void Jouer::peser() {
 				sfx.playSFX("Select.wav");
 				//music2.setVolume(500);
 				//music2.playMusic("OceanWorld.wav");
-				jeux.executionJeu(0);
+				jeux.executionJeu(1);
 				return;
 			case 1:
 				menu_principal.peser();
