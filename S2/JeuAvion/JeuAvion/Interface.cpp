@@ -457,14 +457,18 @@ void Interface::progressionDifficulte()
 //met a jour les entites a chaque frame
 void Interface::updateEntites()
 {
-
+    
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
         if (e->enVie)
         {
-            e->getPosJoueur(joueur->posX, joueur->posY);    //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.
-            e->update();    //on met a jour l'entite
+            if (nbJoueur == 1)
+                e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie);    //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.   
+            else if (nbJoueur == 2)
+                e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
+           
+            e->update();    //on met a jour chaque entite
 
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
@@ -649,9 +653,8 @@ void Interface::gererCollisions()
                             {
                                 score += customPoints(e2->getTypeEnnemi());
                                 if (score % 500 <= 10 && score > 100)      //on fait spawn un powerup a chaque 500 points
-                                {
                                     powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-                                }
+
                                 if (e2->typeEntite == BOSS)
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                             }
@@ -663,7 +666,7 @@ void Interface::gererCollisions()
                 e->collisionJoueur = false;
         }
 
-        if (nbJoueur > 0)       //s'il y a 2 joueur 
+        if (nbJoueur > 1)       //s'il y a 2 joueur 
         {
             if (e->enVie)
             {
@@ -963,6 +966,7 @@ void Interface::executionJeu(int version)
     {
         listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
 		joueur2 = static_cast<Joueur*>(listEntites.back().get());
+        joueur2->enVie = true;
 		joueur->posX = (WIDTH / 2) - 5;  
 		nbJoueur = 2;
     }
@@ -987,7 +991,7 @@ void Interface::executionJeu(int version)
     }
     restart();
 
-    Sleep(1500);
+    Sleep(1000);
     showCursor();
 }
 
