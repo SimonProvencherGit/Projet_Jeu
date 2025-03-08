@@ -777,16 +777,17 @@ void Interface::restart()
 //met a jour l'affichage de la console 
 void Interface::updateAffichage()
 {
-    wchar_t buffer[HEIGHT + 4][WIDTH + 2];  // +3 pour les bordures et le score, +2 pour les bordures
+    wchar_t buffer[HEIGHT + 5][WIDTH + 2];  // +3 pour les bordures et le score, +2 pour les bordures
     wchar_t progressExplosion[12];	//buffer pour afficher progression de l'explosion
     wchar_t progressBarrelRoll[12];	//buffer pour afficher progression du barrel roll
     float nbSymboleExplosion = 0;  //pour le nombre de symboles a afficher dans la progression de l'explosion
-    float nbSymboleBarrelRoll = 0;
+    float nbSymboleBarrelRollP1 = 0;
+    float nbSymboleBarrelRollP2 = 0;
     wstring texte;  //on cree un string pour afficher le score, le nombre de vies et autres textes
 
 
     // Remplir le tampon avec des espaces (effacer l'écran)
-    for (int y = 0; y < HEIGHT + 4; y++) {
+    for (int y = 0; y < HEIGHT + 5; y++) {
         for (int x = 0; x < WIDTH + 2; x++) {
             buffer[y][x] = L' ';
         }
@@ -853,24 +854,51 @@ void Interface::updateAffichage()
     int posCurseur = 12 + texte.size() + 5;
 
     if (joueur->coolDownBarrelRoll == 0)
-        nbSymboleBarrelRoll = 10;
+        nbSymboleBarrelRollP1 = 10;
     else
     {
-        nbSymboleBarrelRoll = ((float)(CD_BARRELROLL - joueur->coolDownBarrelRoll) / (float)CD_BARRELROLL) * 10;
-        if (nbSymboleBarrelRoll > 10)
-            nbSymboleBarrelRoll = 10;
+        nbSymboleBarrelRollP1 = ((float)(CD_BARRELROLL - joueur->coolDownBarrelRoll) / (float)CD_BARRELROLL) * 10;
+        if (nbSymboleBarrelRollP1 > 10)
+            nbSymboleBarrelRollP1 = 10;
     }
 
-    for (int i = 0; i < (int)nbSymboleBarrelRoll; i++)
+    for (int i = 0; i < (int)nbSymboleBarrelRollP1; i++)
         progressBarrelRoll[i + 1] = L'#';
 
-    texte = L"Barrel Roll: ";
+    texte = L"P1 Barrel Roll: ";
     for (int i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
         buffer[HEIGHT + 2][i + posCurseur] = texte[i];
 
     for (int i = 0; i < 12; i++)
         buffer[HEIGHT + 2][i + texte.size() + posCurseur] = progressBarrelRoll[i];
+   
+    if (nbJoueur > 1)
+    {
+        //rempli le buffer progressBarrelRoll avec des espaces
+        for (int i = 0; i < 12; i++)
+            progressBarrelRoll[i] = L' ';
 
+		progressBarrelRoll[0] = L'[';
+		progressBarrelRoll[11] = L']';
+		posCurseur = 12 + texte.size() + 5 + 25;
+		
+        if (joueur2->coolDownBarrelRoll == 0)
+            nbSymboleBarrelRollP2 = 10;
+		else
+		{
+            nbSymboleBarrelRollP2 = ((float)(CD_BARRELROLL - joueur2->coolDownBarrelRoll) / (float)CD_BARRELROLL) * 10;
+			if (nbSymboleBarrelRollP2 > 10)
+                nbSymboleBarrelRollP2 = 10;
+		}
+		for (int i = 0; i < (int)nbSymboleBarrelRollP2; i++)
+			progressBarrelRoll[i + 1] = L'#';
+		texte = L"P2 Barrel Roll: ";
+		for (int i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
+			buffer[HEIGHT + 2][i + posCurseur] = texte[i];
+		for (int i = 0; i < 12; i++)
+			buffer[HEIGHT + 2][i + texte.size() + posCurseur] = progressBarrelRoll[i]; 
+
+    }
 
     // Afficher le score
     if (gameOver)
@@ -878,12 +906,20 @@ void Interface::updateAffichage()
     else
     {
         if(joueur->nbVies >= 0)
-            texte = L"Score: " + to_wstring(score) + L"   Lives: " + to_wstring(joueur->nbVies);
+            texte = L"Score: " + to_wstring(score) + L"  P1 Lives: " + to_wstring(joueur->nbVies);
 		else
-			texte = L"Score: " + to_wstring(score) + L"   Lives: 0";
+			texte = L"Score: " + to_wstring(score) + L"  P1 Lives: 0";
     }
+    if (nbJoueur > 1)
+    {
+        if (joueur2->nbVies >= 0)
+            texte += L"         P2 Lives: " + to_wstring(joueur2->nbVies);
+        else
+            texte += L"         P2 Lives: 0";
+    }
+		
 
-    for (size_t i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
+    for (size_t i = 0; i < texte.size(); i++)   //on ajoute le score du joueur 1 au buffer
         buffer[HEIGHT + 3][i] = texte[i];
 
     // on affiche chaque ligne du buffer
@@ -946,7 +982,7 @@ void Interface::executionJeu(int version)
         updateAffichage();
         Sleep(20);
 
-		if (!joueur->enVie && !joueur2->enVie)
+		if (joueur->nbVies < 0 && joueur2->nbVies < 0)
 			gameOver = true;
     }
     restart();
