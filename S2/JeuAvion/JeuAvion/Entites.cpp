@@ -18,6 +18,11 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	typeEntite = ENNEMI;
 	xJoueur = 0;
 	yJoueur = 0;
+	xJoueur2 = 0;
+	yJoueur2 = 0;
+	p1EnVie = true;
+	p2EnVie = true;
+	//nbJoueurs = 1;
 	shoots = true;
 	ammoType = NORMAL;
 	invincible = false;
@@ -25,6 +30,7 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	isPlayer = false;
 	barrelRollTimer = 0;
 	power_up = ADDLIFE;		//par defaut les powerups donnent des vies
+
 }
 
 
@@ -37,10 +43,16 @@ bool Entite::enCollision(int px, int py)
 	return 0;
 }
 
-void Entite::getPosJoueur(float x, float y)
+//recoit la position des joueurs par interface.cpp pour que les entites schent toujours ou sont les joueurs
+void Entite::getPosJoueurs(float x1, float y1, bool p1Alive , float x2, float y2, bool p2Alive)
 {
-	xJoueur = x;
-	yJoueur = y;
+	xJoueur = x1;
+	yJoueur = y1;
+	xJoueur2 = x2;
+	yJoueur2 = y2;
+	p1EnVie = p1Alive;
+	p2EnVie = p2Alive;
+
 }
 
 typeEnnemis Entite::getTypeEnnemi()		// va etre redefinie dans la classe ennemi pour retourner le type d'ennemi
@@ -65,7 +77,7 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
-	nbVies = 15;
+	nbVies = 10;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 3;
@@ -191,19 +203,58 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	typeEnnemi = DIVEBOMBER;
 	hauteur = 4;
 	largeur = 2;
-	shoots = false;
+	shoots = false;	
+
+	if (p1EnVie == true && p2EnVie == true)
+		joueurRand = rand() % 2;	//choisi un joueur en vie aleatoirement pour le suivre
+	else if (!p1EnVie && p2EnVie)
+		joueurRand = 1;
+ 	else if (p1EnVie && !p2EnVie)
+		joueurRand = 0;
+	else
+		joueurRand = 0;
+
 }
 
 
 //le diveBomber est kamikaze qui va directement vers le joueur
 void DiveBomber::update()
 {
+
 	if (moveTimer % 2 == 0)         //on peut ajuster la vitesse en x du diveBomber
 	{
-		if (posX < xJoueur)
-			posX++;
-		else if (posX > xJoueur)
-			posX--;
+		if (p1EnVie && !p2EnVie)		//si juste p1 est viant
+		{
+			if (posX < xJoueur)
+				posX++;
+			else if (posX > xJoueur)
+				posX--;
+		}
+		else if (p1EnVie && p2EnVie)
+		{
+			//choisi un joueur en vie aleatoirement pour le suivre
+			if (joueurRand == 0)
+			{
+			if (posX < xJoueur)
+					posX++;
+				else if (posX > xJoueur)
+					posX--;
+			}
+			else if (joueurRand == 1)
+			{
+				if (posX < xJoueur2)
+					posX++;
+				else if (posX > xJoueur2)
+					posX--;
+			}
+		}
+		else if (!p1EnVie && p2EnVie)
+		{
+			if (posX < xJoueur2)
+				posX++;
+			else if (posX > xJoueur2)
+				posX--;
+		}
 	}
 	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
 	{
@@ -636,21 +687,62 @@ Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBul
 	hauteur = 2;
 	largeur = 1;
 	nbVies = 2;
+
+	if (p1EnVie == true && p2EnVie == true)
+		joueurRand = rand() % 2;	//choisi un joueur en vie aleatoirement pour le suivre
+	else if (!p1EnVie && p2EnVie)
+		joueurRand = 1;
+	else if (p1EnVie && !p2EnVie)
+		joueurRand = 0;
+	else
+		joueurRand = 0;
 }
+
 
 void Homing::update()
 {
 	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse en x du missile
 	{
-		if (posX < xJoueur)
-			posX++;
-		else if (posX > xJoueur)
-			posX--;
+		if (p1EnVie && !p2EnVie)
+		{
+
+			if (posX < xJoueur)
+				posX++;
+			else if (posX > xJoueur)
+				posX--;
+		}
+		else if (p1EnVie && p2EnVie)
+		{
+			//choisi un joueur en vie aleatoirement pour le suivre
+			if (joueurRand == 0)
+			{
+				if (posX < xJoueur)
+					posX++;
+				else if (posX > xJoueur)
+					posX--;
+			}
+			else if(joueurRand == 1)
+			{
+				if (posX < xJoueur2)
+					posX++;
+				else if (posX > xJoueur2)
+					posX--;
+			}
+		}
+		else if (!p1EnVie && p2EnVie)
+		{
+			if (posX < xJoueur2)
+				posX++;
+			else if (posX > xJoueur2)
+				posX--;
+		}
 	}
 	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du missile
 	{
 		posY++;
 	}
+	
+	
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
 	if (posY >= HEIGHT)     //si le missile atteint le bas de l'ecran is meurt

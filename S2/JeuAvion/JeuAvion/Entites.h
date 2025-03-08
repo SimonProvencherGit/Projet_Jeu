@@ -24,6 +24,8 @@ class Entite
 public:
     float posX, posY;
     int xJoueur, yJoueur;
+	int  xJoueur2, yJoueur2;
+	bool p1EnVie, p2EnVie;
     int largeur, hauteur;
     int shootCooldown;
     int shootTimer;
@@ -41,13 +43,14 @@ public:
     int invincibleTimer;
     bool isPlayer;
     int barrelRollTimer = 0;
+   // int nbJoueurs;  
 
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;
     void perdVie(int nbVie);
     virtual bool enCollision(int px, int py);  // retourne vrai si px et py sont egaux au x et y de l'entite
-    virtual void getPosJoueur(float x, float y);
+    virtual void getPosJoueurs(float x1, float y1, bool p1Alive, float x2 = 0, float y2 = 0, bool P2Alive = false);
     virtual typeEnnemis getTypeEnnemi();
 };
 
@@ -103,6 +106,8 @@ public:
 
 class DiveBomber : public Ennemi
 {
+private:
+    int joueurRand;
 public:
     DiveBomber(float x, float y);
     void update();    //gere le deplacement de l'ennemi
@@ -197,6 +202,8 @@ public:
 
 class Homing : public Bullet
 {
+private:
+    int joueurRand;
 public:
     Homing(float x, float y, bool isPlayerBullet);
     void update();    //gere le deplacement de la balle

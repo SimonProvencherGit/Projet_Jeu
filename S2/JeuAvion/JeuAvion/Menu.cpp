@@ -93,50 +93,6 @@ void Gerer_Menu::peser() {
 			}
 
 		}
-
-		/*switch (touche_peser) {
-		case 'w':
-			if (choix_option == 0)
-			{
-				choix_option = 0;
-			}
-
-			else
-			{
-				choix_option = choix_option - 1;
-				sfx.playSFX("pling.wav");
-			}
-			break;
-
-		case 's':
-			if (choix_option == 3)
-				choix_option = 3;
-			else
-			{
-				sfx.playSFX("pling.wav");
-				choix_option = choix_option + 1;
-			}
-			break;
-
-		case '\r':
-			switch (choix_option) {
-			case 0:
-				jouer.peser();
-				sfx.playSFX("Select.wav");
-				break;
-			case 1:
-				sfx.playSFX("Select.wav");
-				audio.peser();
-				break;
-			case 2: //� compl�ter
-				exit(0);
-				break;
-			case 3:
-				quitter.peser();
-				break;
-			}
-			break;
-		}*/
 		Sleep(75);
 	}
 }
@@ -199,7 +155,7 @@ void Jouer::peser() {
 				sfx.playSFX("Select.wav");
 				//music2.setVolume(500);
 				//music2.playMusic("OceanWorld.wav");
-				jeux.executionJeu();
+				jeux.executionJeu(1);
 				return;
 			case 1:
 				menu_principal.peser();
