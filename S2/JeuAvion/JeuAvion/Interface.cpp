@@ -320,13 +320,13 @@ void Interface::progressionDifficulte()
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
 
-            if (spawnPowerUpStart)
+            /*if (spawnPowerUpStart)
             {
                 //enemySpawn(1, BOSS2_MAIN);
                 spawnPowerUpStart = false;
 				powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 -5);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }
+            }*/
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -403,7 +403,7 @@ void Interface::progressionDifficulte()
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 150 || cbVivant() < 8)
+            if (enemySpawnTimer >= 150 || cbVivant() < 7)
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
@@ -758,6 +758,7 @@ int Interface::customPoints(typeEnnemis e)
         break;
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);
+        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
         return 100;
         break;
     case BOSS1_SIDE:
@@ -766,6 +767,9 @@ int Interface::customPoints(typeEnnemis e)
     case SIDEBOMBER:
         return 15;
         break;
+	case BOSS2_MAIN:
+        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+		return 300;
     }
     return 0;
 }
@@ -1001,7 +1005,9 @@ void Interface::executionJeu(int version)
         updateAffichage();
         Sleep(20);
 
-		if (joueur->nbVies < 0 && joueur2->nbVies < 0)
+		if (nbJoueur == 1 && joueur->nbVies < 0)
+			gameOver = true;
+		else if (nbJoueur == 2 && joueur->nbVies < 0 && joueur2->nbVies < 0)
 			gameOver = true;
     }
     restart();
