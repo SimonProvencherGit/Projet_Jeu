@@ -89,62 +89,64 @@ void Interface::gererInput()
         }
 
 		//******************************************* controle 2e joueur *******************************************
-
-        if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
+        if (nbJoueur > 1)
         {
-            if (joueur2->posX > 2)
-                joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
-            else if (joueur2->posX > 1)
-                joueur2->posX--;
-        }
-        if (GetAsyncKeyState(VK_RIGHT) < 0) {
-            if (joueur2->posX < WIDTH - 2)
-                joueur2->posX += 2;
-            else if (joueur2->posX < WIDTH - 1)
-                joueur2->posX++;
-        }
-
-        if (GetAsyncKeyState(VK_UP) < 0)
-            if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
-                joueur2->posY--;
-
-        if (GetAsyncKeyState(VK_DOWN) < 0)
-            if (joueur2->posY < HEIGHT)
-                joueur2->posY++;
-		if (GetAsyncKeyState(VK_INSERT) < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
-        {
-            if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+            if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
             {
-                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                joueurTir(joueur2);
-                joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+                if (joueur2->posX > 2)
+                    joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur2->posX > 1)
+                    joueur2->posX--;
+            }
+            if (GetAsyncKeyState(VK_RIGHT) < 0) {
+                if (joueur2->posX < WIDTH - 2)
+                    joueur2->posX += 2;
+                else if (joueur2->posX < WIDTH - 1)
+                    joueur2->posX++;
+            }
 
+            if (GetAsyncKeyState(VK_UP) < 0)
+                if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                    joueur2->posY--;
+
+            if (GetAsyncKeyState(VK_DOWN) < 0)
+                if (joueur2->posY < HEIGHT)
+                    joueur2->posY++;
+            if (GetAsyncKeyState(VK_INSERT) < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
+            {
+                if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+                {
+                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                    joueurTir(joueur2);
+                    joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+
+                }
+            }
+            if (GetAsyncKeyState(VK_DELETE) < 0)
+            {
+                if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
+                    joueur2->barrelRoll = true;
+            }
+            if (GetAsyncKeyState(VK_END) < 0)
+            {
+                if (explosionTimer == 0)
+                {
+
+                    cdExplosion = 500;      //set le cooldown de l'explosion
+                    enExplosion = true;
+                    explosionTimer = cdExplosion;
+                    explosionPosY = joueur2->posY - 1;
+                }
             }
         }
-        if (GetAsyncKeyState(VK_DELETE) < 0)
-        {
-            if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
-                joueur2->barrelRoll = true;
-        }
-        if (GetAsyncKeyState(VK_END) < 0)
-        {
-            if (explosionTimer == 0)
-            {
+    
 
-                cdExplosion = 500;      //set le cooldown de l'explosion
-                enExplosion = true;
-                explosionTimer = cdExplosion;
-                explosionPosY = joueur2->posY - 1;
-            }
+        if (explosionTimer > 0)
+        {
+            explosionTimer--;
+            explosion();
         }
     }
-
-    if (explosionTimer > 0)
-    {
-        explosionTimer--;
-        explosion();
-    }
-
     if (GetAsyncKeyState('Q') < 0)
         gameOver = true;
 
@@ -466,9 +468,16 @@ void Interface::updateEntites()
             if (nbJoueur == 1)
                 e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie);    //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.   
             else if (nbJoueur == 2)
-                e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
-           
-            e->update();    //on met a jour chaque entite
+            {
+				if ((joueur->posX < 0 || joueur->posY < 0) && joueur2->posX >= 0 && joueur2->posY >= 0)       //si le joueur 1 est mort et le joueur 2 est en vie
+                    e->getPosJoueurs(-1, -1, false, joueur2->posX, joueur2->posY, joueur2->enVie);
+				else if ((joueur2->posX < 0 || joueur2->posY < 0) && joueur->posX >= 0 && joueur->posY >= 0)       //si le joueur 2 est mort et le joueur 1 est en vie
+					e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, -1, -1, false);
+				else if (joueur->posX >= 0 && joueur->posY >= 0 && joueur2->posX >= 0 && joueur2->posY >= 0)       //si les 2 joueurs sont en vie
+				    e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
+            }
+
+             e->update();    //on met a jour chaque entite
 
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
@@ -587,6 +596,7 @@ void Interface::randomCibleTir(int x, int y)
 void Interface::gererCollisions()
 {
     vector<unique_ptr<Entite>> bufferBullets;  //on fait un buffer pour les bullets car on ne peut pas ajouter a la liste entite pendant qu`on itere a travers
+	static int scoreLastPup = 0;
 
     for (auto& e : listEntites)
     {
@@ -652,9 +662,11 @@ void Interface::gererCollisions()
                             if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
                             {
                                 score += customPoints(e2->getTypeEnnemi());
-                                if (score % 500 <= 10 && score > 100)      //on fait spawn un powerup a chaque 500 points
+                                if (score % 500 <= 10 && score > 100 && score > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
+                                {
                                     powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-
+                                    scoreLastPup = score;
+                                }
                                 if (e2->typeEntite == BOSS)
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                             }

@@ -43,7 +43,7 @@ public:
     int invincibleTimer;
     bool isPlayer;
     int barrelRollTimer = 0;
-    int nbJoueurs;  
+   // int nbJoueurs;  
 
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
@@ -202,6 +202,8 @@ public:
 
 class Homing : public Bullet
 {
+private:
+    int joueurRand;
 public:
     Homing(float x, float y, bool isPlayerBullet);
     void update();    //gere le deplacement de la balle
