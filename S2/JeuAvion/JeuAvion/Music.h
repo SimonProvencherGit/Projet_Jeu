@@ -13,6 +13,7 @@ public:
     void stopMusic();
     void setVolume(float volume);
     void StopWithFade();
+    float getvolume();
 
 private:
     void FadeOut();

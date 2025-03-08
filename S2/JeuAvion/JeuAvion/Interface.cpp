@@ -91,28 +91,28 @@ void Interface::gererInput()
 		//******************************************* controle 2e joueur *******************************************
         if (nbJoueur > 1)
         {
-            if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
+            if (GetAsyncKeyState('J') < 0)   //on verifie si la fleche gauche ou D est pressee
             {
                 if (joueur2->posX > 2)
                     joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
                 else if (joueur2->posX > 1)
                     joueur2->posX--;
             }
-            if (GetAsyncKeyState(VK_RIGHT) < 0) {
+            if (GetAsyncKeyState('L') < 0) {
                 if (joueur2->posX < WIDTH - 2)
                     joueur2->posX += 2;
                 else if (joueur2->posX < WIDTH - 1)
                     joueur2->posX++;
             }
 
-            if (GetAsyncKeyState(VK_UP) < 0)
+            if (GetAsyncKeyState('I') < 0)
                 if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
                     joueur2->posY--;
 
-            if (GetAsyncKeyState(VK_DOWN) < 0)
+            if (GetAsyncKeyState('K') < 0)
                 if (joueur2->posY < HEIGHT)
                     joueur2->posY++;
-            if (GetAsyncKeyState(VK_INSERT) < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
+            if (GetAsyncKeyState('M') < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
             {
                 if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
                 {
@@ -122,12 +122,12 @@ void Interface::gererInput()
 
                 }
             }
-            if (GetAsyncKeyState(VK_DELETE) < 0)
+            if (GetAsyncKeyState('U') < 0)
             {
                 if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
                     joueur2->barrelRoll = true;
             }
-            if (GetAsyncKeyState(VK_END) < 0)
+            if (GetAsyncKeyState('N') < 0)
             {
                 if (explosionTimer == 0)
                 {

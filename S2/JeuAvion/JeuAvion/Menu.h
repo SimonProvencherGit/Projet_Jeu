@@ -34,9 +34,6 @@ public:
 class Audio : public Menu {
 private:
 	Music musique;
-	int volume_musique = 100;
-	int volume_SFX = 100;
-
 public:
 	void afficher(int choix_option);
 	void peser();
@@ -57,6 +54,12 @@ public:
 };
 
 class Utilisateur : public Menu {
+public:
+	void afficher(int choix_option);
+	void peser();
+};
+
+class ChoixMode : public Menu {
 public:
 	void afficher(int choix_option);
 	void peser();

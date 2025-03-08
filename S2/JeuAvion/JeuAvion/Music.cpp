@@ -52,3 +52,8 @@ void Music::StopWithFade()
     FadeOut();
     music.stop();
 }
+
+float Music::getvolume()
+{
+    return volume;
+}
