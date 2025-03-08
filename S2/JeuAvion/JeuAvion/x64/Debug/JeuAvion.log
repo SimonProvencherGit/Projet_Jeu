@@ -1,49 +1,38 @@
-﻿  Entites.cpp
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
-  (compiling source file 'Entites.cpp')
-  
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(49,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(50,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(51,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(52,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(671,27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(772,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(773,43): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  Interface.cpp
+﻿  Interface.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(87,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(138,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(299,32): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(519,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(519,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(526,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(526,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(531,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(531,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(89,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(140,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(301,32): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(521,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(521,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(528,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(528,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(533,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(533,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(538,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(538,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(543,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(543,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(545,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(545,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(586,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(587,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(605,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(605,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(652,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(652,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(667,99): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(667,71): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(671,96): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(671,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(685,58): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(685,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(869,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(898,38): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(535,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(535,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(540,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(540,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(545,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(545,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(547,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(547,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(588,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(589,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(607,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(607,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(654,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(654,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(670,99): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(670,71): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(674,96): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(674,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(688,58): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(688,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(872,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(901,38): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         with
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         [
@@ -52,7 +41,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.3443
   (compiling source file 'Interface.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
       the template instantiation context (the oldest one first) is
-          C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(30,30):
+          C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(32,30):
           see reference to function template instantiation 'std::unique_ptr<Joueur,std::default_delete<Joueur>> std::make_unique<Joueur,int,int,0>(int &&,int &&)' being compiled
   
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
@@ -66,7 +55,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.3443
   (compiling source file 'Interface.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
       the template instantiation context (the oldest one first) is
-          C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(590,35):
+          C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(592,35):
           see reference to function template instantiation 'std::unique_ptr<angleBullet,std::default_delete<angleBullet>> std::make_unique<angleBullet,int&,int&,double,char,bool,0>(int &,int &,double &&,char &&,bool &&)' being compiled
   
   JeuAvion.cpp
@@ -90,4 +79,78 @@ C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(363,16): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(364,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating Code...
+  LINK : program database C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.pdb missing; performing full link
+sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundSource.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Sound.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Sound.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundBuffer.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundBuffer.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Miniaudio.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Miniaudio.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(AudioResource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(AudioResource.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(MiniaudioUtils.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(MiniaudioUtils.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(InputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(InputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(OutputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(OutputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(AudioDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(AudioDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileFactory.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileFactory.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(PlaybackDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(PlaybackDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderMp3.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderMp3.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderWav.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterWav.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(Err.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Err.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(FileInputStream.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(MemoryInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(MemoryInputStream.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(Utils.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Utils.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_decoder.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_decoder.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder.obj)' or at ''; linking object as if no debug info
+flacd.lib(win_utf8_io.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(win_utf8_io.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_decoder_aspect.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_decoder_aspect.obj)' or at ''; linking object as if no debug info
+flacd.lib(cpu.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(cpu.obj)' or at ''; linking object as if no debug info
+flacd.lib(bitreader.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(bitreader.obj)' or at ''; linking object as if no debug info
+flacd.lib(crc.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(crc.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed.obj)' or at ''; linking object as if no debug info
+flacd.lib(format.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(format.obj)' or at ''; linking object as if no debug info
+flacd.lib(lpc.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(lpc.obj)' or at ''; linking object as if no debug info
+flacd.lib(md5.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(md5.obj)' or at ''; linking object as if no debug info
+flacd.lib(memory.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(memory.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_encoder_aspect.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_encoder_aspect.obj)' or at ''; linking object as if no debug info
+flacd.lib(bitwriter.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(bitwriter.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed_intrin_sse2.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed_intrin_sse2.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed_intrin_ssse3.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed_intrin_ssse3.obj)' or at ''; linking object as if no debug info
+flacd.lib(fixed_intrin_sse42.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(fixed_intrin_sse42.obj)' or at ''; linking object as if no debug info
+flacd.lib(lpc_intrin_sse2.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(lpc_intrin_sse2.obj)' or at ''; linking object as if no debug info
+flacd.lib(lpc_intrin_sse41.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(lpc_intrin_sse41.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_helper.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_helper.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder_intrin_sse2.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder_intrin_sse2.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder_intrin_ssse3.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder_intrin_ssse3.obj)' or at ''; linking object as if no debug info
+flacd.lib(stream_encoder_framing.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(stream_encoder_framing.obj)' or at ''; linking object as if no debug info
+flacd.lib(window.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(window.obj)' or at ''; linking object as if no debug info
+flacd.lib(ogg_mapping.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(ogg_mapping.obj)' or at ''; linking object as if no debug info
+flacd.lib(bitmath.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(bitmath.obj)' or at ''; linking object as if no debug info
+vorbisencd.lib(vorbisenc.obj) : warning LNK4099: PDB '' was not found with 'vorbisencd.lib(vorbisenc.obj)' or at ''; linking object as if no debug info
+vorbisfiled.lib(vorbisfile.obj) : warning LNK4099: PDB '' was not found with 'vorbisfiled.lib(vorbisfile.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(info.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(info.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(block.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(block.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(analysis.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(analysis.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(bitrate.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(bitrate.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(synthesis.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(synthesis.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(sharedbook.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(sharedbook.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(codebook.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(codebook.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(psy.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(psy.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(registry.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(registry.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(mdct.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(mdct.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(envelope.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(envelope.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(smallft.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(smallft.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(window.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(window.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(lpc.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(lpc.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(floor0.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(floor0.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(floor1.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(floor1.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(res0.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(res0.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(mapping0.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(mapping0.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(lsp.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(lsp.obj)' or at ''; linking object as if no debug info
+oggd.lib(framing.obj) : warning LNK4099: PDB '' was not found with 'oggd.lib(framing.obj)' or at ''; linking object as if no debug info
+oggd.lib(bitwise.obj) : warning LNK4099: PDB '' was not found with 'oggd.lib(bitwise.obj)' or at ''; linking object as if no debug info
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

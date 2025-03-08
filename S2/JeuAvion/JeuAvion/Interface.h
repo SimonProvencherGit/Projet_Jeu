@@ -21,7 +21,9 @@ private:
     vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
     vector<unique_ptr<Entite>> listEntites;
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
-    int score;
+    int score1;
+    int score2;
+	int scoreTotal;
     bool gameOver;
     int enemySpawnTimer;
     bool pause;

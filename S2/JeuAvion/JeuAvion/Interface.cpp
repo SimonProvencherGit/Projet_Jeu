@@ -4,7 +4,9 @@
 Interface::Interface()
 {
     //initialisation des vairalbes
-    score = 0;
+    score1 = 0;
+	score2 = 0;
+	scoreTotal = 0;
     gameOver = false;
     enemySpawnTimer = 0;
     pause = false;
@@ -305,10 +307,10 @@ void Interface::progressionDifficulte()
     enemySpawnTimer++;
     static bool spawnPup = false;
 
-    if (score < 600)
+    if (score1 < 600)
     {
 
-        if (enemySpawnTimer >= 100 || cbVivant() < 5)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+        if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
             enemySpawn(1, ARTILLEUR);
@@ -329,7 +331,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 600 && score < 1300)
+    if (score1 >= 600 && score1 < 1300)
     {
         if (enemySpawnTimer >= 25)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -338,7 +340,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 1300 && score < 2000)
+    if (score1 >= 1300 && score1 < 2000)
     {
         if (enemySpawnTimer >= 150 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
@@ -360,7 +362,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 2000 && !boss1Spawned)
+    if (score1 >= 2000 && !boss1Spawned)
     {
         if (cbVivant() == 0)
         {
@@ -389,19 +391,19 @@ void Interface::progressionDifficulte()
                 enemySpawn(1, BOSS1_MAIN);
                  boss1Spawned = true;
 
-                memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
+                memScore = score1 + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
             }
             else
                 bossWaitTimer++;
         }
     }
-    if (score >= memScore && score <= memScore + 850 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score1 >= memScore && score1 <= memScore + 850 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 150 || cbVivant() < 6)
+            if (enemySpawnTimer >= 150 || cbVivant() < 8)
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
@@ -413,7 +415,7 @@ void Interface::progressionDifficulte()
         else
             bossWaitTimer++;
     }
-    if (score >= memScore + 850 && score <= memScore + 1600 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score1 >= memScore + 850 && score1 <= memScore + 1600 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
         if (enemySpawnTimer >= 5)
         {
@@ -422,9 +424,9 @@ void Interface::progressionDifficulte()
             bossWaitTimer = 0;
         }
     }
-    if (score >= memScore + 1600 && score <= memScore + 2400 && boss1Spawned)
+    if (score1 >= memScore + 1600 && score1 <= memScore + 2400 && boss1Spawned)
     {
-        if (enemySpawnTimer >= 150 || cbVivant() < 7)
+        if (enemySpawnTimer >= 150 || cbVivant() < 8)
         {
             enemySpawn(1, ARTILLEUR);
             enemySpawn(1, SIDEBOMBER);
@@ -436,7 +438,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;
         }
     }
-    if (score >= memScore + 2400 && !boss2Spawned)
+    if (score1 >= memScore + 2400 && !boss2Spawned)
     {
         if (cbVivant() == 0)
         {
@@ -446,7 +448,7 @@ void Interface::progressionDifficulte()
                 enemySpawn(1, BOSS2_MAIN);
                 boss2Spawned = true;
 
-                memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
+                memScore = score1 + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
             }
             else
@@ -661,11 +663,12 @@ void Interface::gererCollisions()
 
                             if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
                             {
-                                score += customPoints(e2->getTypeEnnemi());
-                                if (score % 500 <= 10 && score > 100 && score > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
+                               
+                                score1 += customPoints(e2->getTypeEnnemi());
+                                if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
                                 {
                                     powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-                                    scoreLastPup = score;
+                                    scoreLastPup = score1;
                                 }
                                 if (e2->typeEntite == BOSS)
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -775,7 +778,7 @@ void Interface::restart()
     gameOver = false;
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());
-    score = 0;
+    score1 = 0;
     explosionTimer = 0;
     enExplosion = false;
     cdExplosion = 0;
@@ -917,13 +920,13 @@ void Interface::updateAffichage()
 
     // Afficher le score
     if (gameOver)
-        texte = L"Game Over!  Score: " + to_wstring(score);
+        texte = L"Game Over!  Score: " + to_wstring(score1);
     else
     {
         if(joueur->nbVies >= 0)
-            texte = L"Score: " + to_wstring(score) + L"  P1 Lives: " + to_wstring(joueur->nbVies);
+            texte = L"Score: " + to_wstring(score1) + L"  P1 Lives: " + to_wstring(joueur->nbVies);
 		else
-			texte = L"Score: " + to_wstring(score) + L"  P1 Lives: 0";
+			texte = L"Score: " + to_wstring(score1) + L"  P1 Lives: 0";
     }
     if (nbJoueur > 1)
     {
