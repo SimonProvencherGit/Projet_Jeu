@@ -6,6 +6,12 @@
 #include "Menu.h"
 #include "globalobjects.h"
 
+
+
+
+
+
+
 int main() {
     //SFX sfx;
     //Music music;
@@ -14,6 +20,7 @@ int main() {
     //sfx.playSFX("Select.wav");
     //music.playMusic("OceanWorld.wav");
     setConsoleSize();
+    loadsettings();
     Gerer_Menu menu;
     menu.peser();
     //Interface game;

@@ -12,6 +12,7 @@ public:
     void stopSFX();
     void setVolume(float volume);
     void pause();
+    float getvolume();
 
 private:
     float volume = 100; 

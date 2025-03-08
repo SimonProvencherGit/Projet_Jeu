@@ -24,3 +24,8 @@ void SFX::setVolume(float inputvolume) {
 void SFX::pause() {
     Sound.pause();
 }
+
+float SFX::getvolume()
+{
+    return volume;
+}
