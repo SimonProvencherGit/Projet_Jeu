@@ -44,7 +44,7 @@ bool Entite::enCollision(int px, int py)
 }
 
 //recoit la position des joueurs par interface.cpp pour que les entites schent toujours ou sont les joueurs
-void Entite::getPosJoueurs(float x1, float y1, bool p1Alive , float x2, float y2, bool p2Alive)
+void Entite::getPosJoueurs(float x1, float y1, bool p1Alive, float x2, float y2, bool p2Alive)
 {
 	xJoueur = x1;
 	yJoueur = y1;
@@ -90,7 +90,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	coolDownBarrelRoll = 0;
 	isPlayer = true;
 	barrelRollTimer = 0;
-	
+
 }
 
 
@@ -203,13 +203,13 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	typeEnnemi = DIVEBOMBER;
 	hauteur = 4;
 	largeur = 2;
-	shoots = false;	
+	shoots = false;
 
 	if (p1EnVie == true && p2EnVie == true)
 		joueurRand = rand() % 2;	//choisi un joueur en vie aleatoirement pour le suivre
 	else if (!p1EnVie && p2EnVie)
 		joueurRand = 1;
- 	else if (p1EnVie && !p2EnVie)
+	else if (p1EnVie && !p2EnVie)
 		joueurRand = 0;
 	else
 		joueurRand = 0;
@@ -220,7 +220,6 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 //le diveBomber est kamikaze qui va directement vers le joueur
 void DiveBomber::update()
 {
-
 	if (moveTimer % 2 == 0)         //on peut ajuster la vitesse en x du diveBomber
 	{
 		if (p1EnVie && !p2EnVie)		//si juste p1 est viant
@@ -235,7 +234,7 @@ void DiveBomber::update()
 			//choisi un joueur en vie aleatoirement pour le suivre
 			if (joueurRand == 0)
 			{
-			if (posX < xJoueur)
+				if (posX < xJoueur)
 					posX++;
 				else if (posX > xJoueur)
 					posX--;
@@ -572,7 +571,7 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	nbVies = 200;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
-	ammoType = CERCLE;
+	ammoType = ANGLE;
 	hauteur = 6;
 	largeur = 10;
 	shootCooldown = 5;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
@@ -595,6 +594,66 @@ void Boss2::update()
 		angle = 0;
 	if (moveTimer >= 500)
 		moveTimer = 0;
+	moveTimer++;
+}
+
+Shotgunner::Shotgunner(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'J';
+	nbVies = 3;
+	typeEnnemi = SHOTGUNNER;
+	hauteur = 3;
+	largeur = 3;
+	shoots = true;
+	shootCooldown = 50;   // a toute les x frames l'entite va tirer
+	ammoType = ANGLE;
+	rayonMouv = 30;		//va faire un cercle de rayon 6 autour du joueur
+	angle = 270;
+	distance = 0;
+	orbiting = false;
+}
+
+
+void Shotgunner::update()
+{
+	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
+
+	distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+
+	if (posY < yJoueur - rayonMouv / 2 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	{
+		if (moveTimer % 2 == 0)
+		{
+			posY++;
+		}
+
+	}
+	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+	{
+		if (orbiting == false)
+		{
+			orbiting = true;
+		}
+		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+		if (moveTimer % 1 == 0)
+		{
+			posX = xJoueur + (rayonMouv * cos((angle * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+			posY = yJoueur + (rayonMouv / 2 * sin((angle * 2 * PI) / 360));
+			angle += 2;			//vitesse angulaire determine 
+		}
+		if (angle >= 360)
+			angle = 0;
+	}
+
+	if (posX < 1)
+		posX = 1;
+	else if (posX > WIDTH - 1)
+		posX = WIDTH - 1;
+	if (posY < 1)
+		posY = 1;
+	else if (posY > HEIGHT - 2)
+		posY = HEIGHT - 2;
+
 	moveTimer++;
 }
 
@@ -721,7 +780,7 @@ void Homing::update()
 				else if (posX > xJoueur)
 					posX--;
 			}
-			else if(joueurRand == 1)
+			else if (joueurRand == 1)
 			{
 				if (posX < xJoueur2)
 					posX++;
@@ -741,8 +800,8 @@ void Homing::update()
 	{
 		posY++;
 	}
-	
-	
+
+
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
 	if (posY >= HEIGHT)     //si le missile atteint le bas de l'ecran is meurt
@@ -753,7 +812,7 @@ void Homing::update()
 angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPlayerBullet = false) : Entite(x, y, symb, 1, 1)
 {
 	typeEntite = BULLET;
-	ammoType = CERCLE;
+	ammoType = ANGLE;
 	hauteur = 1;
 	largeur = 1;
 	nbVies = 0;
@@ -769,8 +828,8 @@ void angleBullet::update()
 	{
 		if (bulletAllie)
 		{
-			posX += cos((direction * 2 * PI) / 360)*1.2;
-			posY += sin((direction * 2 * PI) / 360)*1.2;
+			posX += cos((direction * 2 * PI) / 360) * 1.2;
+			posY += sin((direction * 2 * PI) / 360) * 1.2;
 		}
 		else
 		{
@@ -825,7 +884,7 @@ void PowerUp::update()
 AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 {
 	symbole = '+';
-	power_up = ADDLIFE;		
+	power_up = ADDLIFE;
 }
 
 AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)

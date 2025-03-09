@@ -13,9 +13,9 @@ const int CD_BARRELROLL = 75;
 const float PI = 3.14159265359;
 
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP };
-enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN };
-enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, CERCLE };
-enum typePowerUp { DAMAGEDOUBLED, ADDLIFE, ADDBULLETS};
+enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, SHOTGUNNER, SHOTGUNHOMING, EXPLODER, TURRET };
+enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE };
+enum typePowerUp { DAMAGEDOUBLED, ADDLIFE, ADDBULLETS };
 
 
 class Entite
@@ -24,8 +24,8 @@ class Entite
 public:
     float posX, posY;
     int xJoueur, yJoueur;
-	int  xJoueur2, yJoueur2;
-	bool p1EnVie, p2EnVie;
+    int  xJoueur2, yJoueur2;
+    bool p1EnVie, p2EnVie;
     int largeur, hauteur;
     int shootCooldown;
     int shootTimer;
@@ -43,7 +43,7 @@ public:
     int invincibleTimer;
     bool isPlayer;
     int barrelRollTimer = 0;
-   // int nbJoueurs;  
+    // int nbJoueurs;  
 
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
@@ -169,6 +169,39 @@ public:
     void update();    //gere le deplacement de l'ennemi
 };
 
+class Shotgunner : public Ennemi
+{
+private:
+    int rayonMouv;
+    int angle;
+    float distance;
+    bool orbiting;
+public:
+    Shotgunner(float x, float y);
+    void update();    //gere le deplacement de l'ennemi
+};
+
+class ShotgunHoming : public Ennemi
+{
+    ShotgunHoming(float x, float y);
+    void update();    //gere le deplacement de l'ennemi
+};
+
+class Exploder : public Ennemi
+{
+public:
+    Exploder(float x, float y);
+    void update();    //gere le deplacement de l'ennemi
+};
+
+class Turret : public Ennemi
+{
+public:
+    Turret(float x, float y);
+    void update();    //gere le deplacement de l'ennemi
+};
+
+
 //-----------------------------------------------------------  classes Bullet -----------------------------------------------------------
 
 class Bullet : public Entite
@@ -233,20 +266,20 @@ public:
 
 //-----------------------------------------------------------  classes PowerUp -----------------------------------------------------------
 
-class PowerUp : public Entite 
+class PowerUp : public Entite
 {
 public:
     PowerUp(float x, float y, typePowerUp type);
     virtual void update();
 };
 
-class AddLife : public PowerUp 
+class AddLife : public PowerUp
 {
 public:
     AddLife(float x, float y);
 };
 
-class AddBullet : public PowerUp 
+class AddBullet : public PowerUp
 {
 public:
     AddBullet(float x, float y);

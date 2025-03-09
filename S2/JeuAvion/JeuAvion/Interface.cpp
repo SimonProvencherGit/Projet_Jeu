@@ -4,7 +4,9 @@
 Interface::Interface()
 {
     //initialisation des vairalbes
-    score = 0;
+    score1 = 0;
+    score2 = 0;
+    scoreTotal = 0;
     gameOver = false;
     enemySpawnTimer = 0;
     pause = false;
@@ -15,7 +17,7 @@ Interface::Interface()
     explosionPosY = 0;
     cdExplosion = 0;
     boss1Spawned = false;
-	boss2Spawned = false;
+    boss2Spawned = false;
     bossWaitTimer = 0;
     memScore = 1200;
     bossMusicStart = false;
@@ -24,13 +26,13 @@ Interface::Interface()
     angleTirBoss = 0;
     spawnAddLife = false;
     spawnPowerUpStart = true;      //temporaire pour faire spawn powerup au debut du match
-	nbJoueur = 1;
+    nbJoueur = 1;
     //nextPup = 0;
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
 
-	joueur2 = nullptr;
+    joueur2 = nullptr;
 }
 
 
@@ -68,7 +70,7 @@ void Interface::gererInput()
                 //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
                 joueurTir(joueur);
                 joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
-				
+
             }
         }
         if (GetAsyncKeyState('E') < 0)
@@ -88,31 +90,31 @@ void Interface::gererInput()
             }
         }
 
-		//******************************************* controle 2e joueur *******************************************
+        //******************************************* controle 2e joueur *******************************************
         if (nbJoueur > 1)
         {
-            if (GetAsyncKeyState('J') < 0)   //on verifie si la fleche gauche ou D est pressee
+            if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
             {
                 if (joueur2->posX > 2)
                     joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
                 else if (joueur2->posX > 1)
                     joueur2->posX--;
             }
-            if (GetAsyncKeyState('L') < 0) {
+            if (GetAsyncKeyState(VK_RIGHT) < 0) {
                 if (joueur2->posX < WIDTH - 2)
                     joueur2->posX += 2;
                 else if (joueur2->posX < WIDTH - 1)
                     joueur2->posX++;
             }
 
-            if (GetAsyncKeyState('I') < 0)
+            if (GetAsyncKeyState(VK_UP) < 0)
                 if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
                     joueur2->posY--;
 
-            if (GetAsyncKeyState('K') < 0)
+            if (GetAsyncKeyState(VK_DOWN) < 0)
                 if (joueur2->posY < HEIGHT)
                     joueur2->posY++;
-            if (GetAsyncKeyState('M') < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
+            if (GetAsyncKeyState(VK_INSERT) < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
             {
                 if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
                 {
@@ -122,12 +124,12 @@ void Interface::gererInput()
 
                 }
             }
-            if (GetAsyncKeyState('U') < 0)
+            if (GetAsyncKeyState(VK_DELETE) < 0)
             {
                 if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
                     joueur2->barrelRoll = true;
             }
-            if (GetAsyncKeyState('N') < 0)
+            if (GetAsyncKeyState(VK_END) < 0)
             {
                 if (explosionTimer == 0)
                 {
@@ -139,7 +141,7 @@ void Interface::gererInput()
                 }
             }
         }
-    
+
 
         if (explosionTimer > 0)
         {
@@ -161,19 +163,18 @@ void Interface::gererInput()
 }
 void Interface::joueurTir(Joueur* quelJoueur)
 {
-
     switch (quelJoueur->nbBulletTir)
     {
-	case 1:
-		listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, 90 + 180, '|', true));
-		break;
-	case 3:
-        for(int i=80;i<110;i+=10)
-			listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
-		break;
+    case 1:
+        listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, 90 + 180, '|', true));
+        break;
+    case 3:
+        for (int i = 80;i < 110;i += 10)
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
+        break;
     case 5:
-		for (int i = 70; i < 120; i += 10)
-			listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
+        for (int i = 70; i < 120; i += 10)
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
         break;
     }
 }
@@ -266,6 +267,10 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
         case BOSS2_MAIN:
             listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 3));
             break;
+        case SHOTGUNNER:
+            listEntites.emplace_back(make_unique<Shotgunner>(posRand, 0));
+            positionSpawnRandom();
+            break;
         }
     }
 }
@@ -305,11 +310,12 @@ void Interface::progressionDifficulte()
     enemySpawnTimer++;
     static bool spawnPup = false;
 
-    if (score < 600)
+    if (score1 < 600)
     {
 
-        if (enemySpawnTimer >= 100 || cbVivant() < 5)          //on fait spawn une vague d'ennemis a toutes les 70 frames
-        {
+        if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+       // if (enemySpawnTimer >= 100) //pour des tests
+       {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
@@ -317,19 +323,18 @@ void Interface::progressionDifficulte()
             //enemySpawn(2, SIDEBOMBER);
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
+            //enemySpawn(1, SHOTGUNNER);
 
             if (spawnPowerUpStart)
             {
-                //enemySpawn(1, BOSS2_MAIN);
                 spawnPowerUpStart = false;
-				powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 -5);
+                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 5);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }
-
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
-        }
+       }
     }
-    if (score >= 600 && score < 1300)
+    if (score1 >= 600 && score1 < 1300)
     {
         if (enemySpawnTimer >= 25)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -338,7 +343,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 1300 && score < 2000)
+    if (score1 >= 1300 && score1 < 2000)
     {
         if (enemySpawnTimer >= 150 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
@@ -360,7 +365,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    if (score >= 2000 && !boss1Spawned)
+    if (score1 >= 2000 && !boss1Spawned)
     {
         if (cbVivant() == 0)
         {
@@ -387,33 +392,33 @@ void Interface::progressionDifficulte()
             if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
                 enemySpawn(1, BOSS1_MAIN);
-                 boss1Spawned = true;
+                boss1Spawned = true;
 
-                memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
+                memScore = score1 + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
             }
             else
                 bossWaitTimer++;
         }
     }
-    if (score >= memScore && score <= memScore + 850 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score1 >= memScore && score1 <= memScore + 850 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 150 || cbVivant() < 6)
+            if (enemySpawnTimer >= 150 || cbVivant() < 7)
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
                 enemySpawn(1, ZAPER);
                 enemySpawnTimer = 0;
-                
+
             }
         }
         else
             bossWaitTimer++;
     }
-    if (score >= memScore + 850 && score <= memScore + 1600 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    if (score1 >= memScore + 850 && score1 <= memScore + 1600 && boss1Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
         if (enemySpawnTimer >= 5)
         {
@@ -422,9 +427,9 @@ void Interface::progressionDifficulte()
             bossWaitTimer = 0;
         }
     }
-    if (score >= memScore + 1600 && score <= memScore + 2400 && boss1Spawned)
+    if (score1 >= memScore + 1600 && score1 <= memScore + 2400 && boss1Spawned)
     {
-        if (enemySpawnTimer >= 150 || cbVivant() < 7)
+        if (enemySpawnTimer >= 150 || cbVivant() < 8)
         {
             enemySpawn(1, ARTILLEUR);
             enemySpawn(1, SIDEBOMBER);
@@ -436,7 +441,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;
         }
     }
-    if (score >= memScore + 2400 && !boss2Spawned)
+    if (score1 >= memScore + 2400 && !boss2Spawned)
     {
         if (cbVivant() == 0)
         {
@@ -446,7 +451,7 @@ void Interface::progressionDifficulte()
                 enemySpawn(1, BOSS2_MAIN);
                 boss2Spawned = true;
 
-                memScore = score + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
+                memScore = score1 + 200;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
             }
             else
@@ -459,8 +464,6 @@ void Interface::progressionDifficulte()
 //met a jour les entites a chaque frame
 void Interface::updateEntites()
 {
-    
-
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
         if (e->enVie)
@@ -469,15 +472,15 @@ void Interface::updateEntites()
                 e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie);    //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.   
             else if (nbJoueur == 2)
             {
-				if ((joueur->posX < 0 || joueur->posY < 0) && joueur2->posX >= 0 && joueur2->posY >= 0)       //si le joueur 1 est mort et le joueur 2 est en vie
+                if ((joueur->posX < 0 || joueur->posY < 0) && joueur2->posX >= 0 && joueur2->posY >= 0)       //si le joueur 1 est mort et le joueur 2 est en vie
                     e->getPosJoueurs(-1, -1, false, joueur2->posX, joueur2->posY, joueur2->enVie);
-				else if ((joueur2->posX < 0 || joueur2->posY < 0) && joueur->posX >= 0 && joueur->posY >= 0)       //si le joueur 2 est mort et le joueur 1 est en vie
-					e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, -1, -1, false);
-				else if (joueur->posX >= 0 && joueur->posY >= 0 && joueur2->posX >= 0 && joueur2->posY >= 0)       //si les 2 joueurs sont en vie
-				    e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
+                else if ((joueur2->posX < 0 || joueur2->posY < 0) && joueur->posX >= 0 && joueur->posY >= 0)       //si le joueur 2 est mort et le joueur 1 est en vie
+                    e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, -1, -1, false);
+                else if (joueur->posX >= 0 && joueur->posY >= 0 && joueur2->posX >= 0 && joueur2->posY >= 0)       //si les 2 joueurs sont en vie
+                    e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
             }
 
-             e->update();    //on met a jour chaque entite
+            e->update();    //on met a jour chaque entite
 
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
@@ -531,7 +534,7 @@ void Interface::updateEntites()
                         cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
-                    
+
                 }
                 else if (e->nbVies < 140 && e->nbVies >= 70)
                 {
@@ -567,7 +570,7 @@ void Interface::cercleTir(int angle, int x, int y)
 void Interface::balayageTir(int nbBranches, int vitesseAngulaire, int x, int y)
 {
     for (int i = 0; i < 360; i += 360 / nbBranches)
-        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angleTirBoss + i,'o', false));
+        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angleTirBoss + i, 'o', false));
 
     angleTirBoss += vitesseAngulaire;
     if (angleTirBoss >= 360)
@@ -583,11 +586,11 @@ void Interface::randomTir(int x, int  y)
 void Interface::randomCibleTir(int x, int y)
 {
     //calcule l'angle entre le joueur et le boss et tire aleatoirement dans un cone de 40 degres vers le joueur
-	int dx = joueur->posX - x;
-	int dy = joueur->posY - y;
+    int dx = joueur->posX - x;
+    int dy = joueur->posY - y;
     double angle = atan2(dy, dx) * 180 / 3.14159265;     //retourne l'angle en degres entre le boss et le joueur         https://www.w3schools.com/cpp/ref_math_atan2.asp
-	int randPos = rand() % 40;      //correspond a une variation possible de 40 degres
-	bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angle - 20 + randPos, 'o', false));         //on tire aleatoirement dans un cone de 40 degres vers le joueur
+    int randPos = rand() % 40;      //correspond a une variation possible de 40 degres
+    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angle - 20 + randPos, 'o', false));         //on tire aleatoirement dans un cone de 40 degres vers le joueur
 }
 
 
@@ -596,7 +599,7 @@ void Interface::randomCibleTir(int x, int y)
 void Interface::gererCollisions()
 {
     vector<unique_ptr<Entite>> bufferBullets;  //on fait un buffer pour les bullets car on ne peut pas ajouter a la liste entite pendant qu`on itere a travers
-	static int scoreLastPup = 0;
+    static int scoreLastPup = 0;
 
     for (auto& e : listEntites)
     {
@@ -621,7 +624,7 @@ void Interface::gererCollisions()
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
 
                     //if (!joueur->enVie)
-						//nbJoueur--;
+                        //nbJoueur--;
                         //gameOver = true;
 
                     e->collisionJoueur = true;
@@ -661,11 +664,12 @@ void Interface::gererCollisions()
 
                             if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
                             {
-                                score += customPoints(e2->getTypeEnnemi());
-                                if (score % 500 <= 10 && score > 100 && score > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
+
+                                score1 += customPoints(e2->getTypeEnnemi());
+                                if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
                                 {
                                     powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-                                    scoreLastPup = score;
+                                    scoreLastPup = score1;
                                 }
                                 if (e2->typeEntite == BOSS)
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -690,7 +694,7 @@ void Interface::gererCollisions()
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
 
                         //if (!joueur2->enVie)
-							//nbJoueur--;
+                            //nbJoueur--;
                             //gameOver = true;
 
                         e->collisionJoueur = true;
@@ -701,7 +705,7 @@ void Interface::gererCollisions()
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
 
                         //if (!joueur2->enVie)        //----------------------------------------------------------------------------------------  a changer, si un des 2 joueurs meurt en ce moment la game finit
-							//nbJoueur--;
+                            //nbJoueur--;
                             //gameOver = true;
 
                         e->collisionJoueur = true;
@@ -755,6 +759,7 @@ int Interface::customPoints(typeEnnemis e)
         break;
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);
+        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
         return 100;
         break;
     case BOSS1_SIDE:
@@ -763,6 +768,9 @@ int Interface::customPoints(typeEnnemis e)
     case SIDEBOMBER:
         return 15;
         break;
+    case BOSS2_MAIN:
+        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+        return 300;
     }
     return 0;
 }
@@ -775,7 +783,7 @@ void Interface::restart()
     gameOver = false;
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());
-    score = 0;
+    score1 = 0;
     explosionTimer = 0;
     enExplosion = false;
     cdExplosion = 0;
@@ -785,7 +793,7 @@ void Interface::restart()
     bossMusicStart = false;
     bossSpawnSound = false;
     spawnAddLife = true;
-	spawnPowerUpStart = true;
+    spawnPowerUpStart = true;
 }
 
 
@@ -886,44 +894,44 @@ void Interface::updateAffichage()
 
     for (int i = 0; i < 12; i++)
         buffer[HEIGHT + 2][i + texte.size() + posCurseur] = progressBarrelRoll[i];
-   
+
     if (nbJoueur > 1)
     {
         //rempli le buffer progressBarrelRoll avec des espaces
         for (int i = 0; i < 12; i++)
             progressBarrelRoll[i] = L' ';
 
-		progressBarrelRoll[0] = L'[';
-		progressBarrelRoll[11] = L']';
-		posCurseur = 12 + texte.size() + 5 + 25;
-		
+        progressBarrelRoll[0] = L'[';
+        progressBarrelRoll[11] = L']';
+        posCurseur = 12 + texte.size() + 5 + 25;
+
         if (joueur2->coolDownBarrelRoll == 0)
             nbSymboleBarrelRollP2 = 10;
-		else
-		{
+        else
+        {
             nbSymboleBarrelRollP2 = ((float)(CD_BARRELROLL - joueur2->coolDownBarrelRoll) / (float)CD_BARRELROLL) * 10;
-			if (nbSymboleBarrelRollP2 > 10)
+            if (nbSymboleBarrelRollP2 > 10)
                 nbSymboleBarrelRollP2 = 10;
-		}
-		for (int i = 0; i < (int)nbSymboleBarrelRollP2; i++)
-			progressBarrelRoll[i + 1] = L'#';
-		texte = L"P2 Barrel Roll: ";
-		for (int i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
-			buffer[HEIGHT + 2][i + posCurseur] = texte[i];
-		for (int i = 0; i < 12; i++)
-			buffer[HEIGHT + 2][i + texte.size() + posCurseur] = progressBarrelRoll[i]; 
+        }
+        for (int i = 0; i < (int)nbSymboleBarrelRollP2; i++)
+            progressBarrelRoll[i + 1] = L'#';
+        texte = L"P2 Barrel Roll: ";
+        for (int i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
+            buffer[HEIGHT + 2][i + posCurseur] = texte[i];
+        for (int i = 0; i < 12; i++)
+            buffer[HEIGHT + 2][i + texte.size() + posCurseur] = progressBarrelRoll[i];
 
     }
 
     // Afficher le score
     if (gameOver)
-        texte = L"Game Over!  Score: " + to_wstring(score);
+        texte = L"Game Over!  Score: " + to_wstring(score1);
     else
     {
-        if(joueur->nbVies >= 0)
-            texte = L"Score: " + to_wstring(score) + L"  P1 Lives: " + to_wstring(joueur->nbVies);
-		else
-			texte = L"Score: " + to_wstring(score) + L"  P1 Lives: 0";
+        if (joueur->nbVies >= 0)
+            texte = L"Score: " + to_wstring(score1) + L"  P1 Lives: " + to_wstring(joueur->nbVies);
+        else
+            texte = L"Score: " + to_wstring(score1) + L"  P1 Lives: 0";
     }
     if (nbJoueur > 1)
     {
@@ -932,7 +940,7 @@ void Interface::updateAffichage()
         else
             texte += L"         P2 Lives: 0";
     }
-		
+
 
     for (size_t i = 0; i < texte.size(); i++)   //on ajoute le score du joueur 1 au buffer
         buffer[HEIGHT + 3][i] = texte[i];
@@ -977,10 +985,10 @@ void Interface::executionJeu(int version)
     if (version > 0)     //si on a choisi autre chose que le mode seul
     {
         listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
-		joueur2 = static_cast<Joueur*>(listEntites.back().get());
+        joueur2 = static_cast<Joueur*>(listEntites.back().get());
         joueur2->enVie = true;
-		joueur->posX = (WIDTH / 2) - 5;  
-		nbJoueur = 2;
+        joueur->posX = (WIDTH / 2) - 5;
+        nbJoueur = 2;
     }
     while (!gameOver)
     {
@@ -998,8 +1006,10 @@ void Interface::executionJeu(int version)
         updateAffichage();
         Sleep(20);
 
-		if (joueur->nbVies < 0 && joueur2->nbVies < 0)
-			gameOver = true;
+        if (nbJoueur == 1 && joueur->nbVies < 0)
+            gameOver = true;
+        else if (nbJoueur == 2 && joueur->nbVies < 0 && joueur2->nbVies < 0)
+            gameOver = true;
     }
     restart();
 
