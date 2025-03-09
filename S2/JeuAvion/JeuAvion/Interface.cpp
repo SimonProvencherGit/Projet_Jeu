@@ -313,17 +313,17 @@ void Interface::progressionDifficulte()
     if (score1 < 600)
     {
 
-        if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
-       // if (enemySpawnTimer >= 100) //pour des tests
+        //if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+       if (enemySpawnTimer >= 85) //pour des tests
        {
-            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            enemySpawn(1, ARTILLEUR);
+            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            //enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
-            //enemySpawn(1, SHOTGUNNER);
+            enemySpawn(1, SHOTGUNNER);
 
             if (spawnPowerUpStart)
             {
@@ -493,7 +493,12 @@ void Interface::updateEntites()
 
             if (e->getTypeEnnemi() == AIMBOT && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
                 bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
-
+            if (e->getTypeEnnemi() == SHOTGUNNER && e->moveTimer % e->shootCooldown == 0 && e->shoots)
+            {
+                double angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / 3.14159265;     //retourne l'angle en degres entre l'entite et le joueur
+                for (int i = -10; i <= 10; i += 10)
+                    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY - 1, angle + i, 'o', false));
+            }
 
             if (e->getTypeEnnemi() == BOSS1_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss1 tire des 3 missiles
             {

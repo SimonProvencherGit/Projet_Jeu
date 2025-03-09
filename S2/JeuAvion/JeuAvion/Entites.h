@@ -173,9 +173,10 @@ class Shotgunner : public Ennemi
 {
 private:
     int rayonMouv;
-    int angle;
     float distance;
     bool orbiting;
+	double angle;
+	bool sensRotation;
 public:
     Shotgunner(float x, float y);
     void update();    //gere le deplacement de l'ennemi

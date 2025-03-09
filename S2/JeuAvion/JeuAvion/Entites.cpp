@@ -605,20 +605,19 @@ Shotgunner::Shotgunner(float x, float y) : Ennemi(x, y)
 	hauteur = 3;
 	largeur = 3;
 	shoots = true;
-	shootCooldown = 50;   // a toute les x frames l'entite va tirer
+	shootCooldown = 70;   // a toute les x frames l'entite va tirer
 	ammoType = ANGLE;
 	rayonMouv = 30;		//va faire un cercle de rayon 6 autour du joueur
 	angle = 270;
 	distance = 0;
 	orbiting = false;
+	sensRotation = true;
 }
 
 
 void Shotgunner::update()
 {
 	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
-
-	distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
 
 	if (posY < yJoueur - rayonMouv / 2 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 	{
@@ -632,14 +631,27 @@ void Shotgunner::update()
 	{
 		if (orbiting == false)
 		{
+			distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
 			orbiting = true;
+			angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+			
+			if (posX < xJoueur)
+				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+			else
+				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
 		}
 		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
 		if (moveTimer % 1 == 0)
 		{
-			posX = xJoueur + (rayonMouv * cos((angle * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
-			posY = yJoueur + (rayonMouv / 2 * sin((angle * 2 * PI) / 360));
-			angle += 2;			//vitesse angulaire determine 
+			posX = xJoueur + (rayonMouv * cos(((angle+180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+			posY = yJoueur + (rayonMouv / 2 * sin(((angle+180) * 2 * PI) / 360));
+			
+			if(sensRotation)
+				angle += 2;			//vitesse angulaire determine
+			else
+				angle -= 2;			//vitesse angulaire determine
+
 		}
 		if (angle >= 360)
 			angle = 0;
