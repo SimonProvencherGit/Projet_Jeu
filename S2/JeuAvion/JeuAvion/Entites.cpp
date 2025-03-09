@@ -77,7 +77,7 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
-	nbVies = 10;
+	nbVies = 15;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 3;
@@ -568,7 +568,7 @@ void SideBomber::update()
 Boss2::Boss2(float x, float y) : Ennemi(x, y)
 {
 	symbole = '%';
-	nbVies = 200;
+	nbVies = 285;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
@@ -597,57 +597,67 @@ void Boss2::update()
 	moveTimer++;
 }
 
-Shotgunner::Shotgunner(float x, float y) : Ennemi(x, y)
+Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'J';
 	nbVies = 3;
-	typeEnnemi = SHOTGUNNER;
+	typeEnnemi = ORBITER;
 	hauteur = 3;
 	largeur = 3;
 	shoots = true;
 	shootCooldown = 70;   // a toute les x frames l'entite va tirer
 	ammoType = ANGLE;
-	rayonMouv = 30;		//va faire un cercle de rayon 6 autour du joueur
+	rayonMouv = 25;		//va faire un cercle de rayon 6 autour du joueur
 	angle = 270;
 	distance = 0;
 	orbiting = false;
 	sensRotation = true;
+	ancrageX = 0;
+	ancrageY = 0;
 }
 
 
-void Shotgunner::update()
+void Orbiter::update()
 {
+
 	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
 
-	if (posY < yJoueur - rayonMouv / 2 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	if (posY < (yJoueur - rayonMouv/4) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 	{
 		if (moveTimer % 2 == 0)
-		{
 			posY++;
-		}
 
 	}
 	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
 	{
 		if (orbiting == false)
 		{
+			ancrageX = xJoueur;
+			ancrageY = yJoueur;
 			distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
 			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
 			orbiting = true;
 			angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
 			
+			
 			if (posX < xJoueur)
+			{
 				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle + 2;
+			}
 			else
+			{
 				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle - 2;
+			}
 		}
 		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
 		if (moveTimer % 1 == 0)
 		{
-			posX = xJoueur + (rayonMouv * cos(((angle+180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
-			posY = yJoueur + (rayonMouv / 2 * sin(((angle+180) * 2 * PI) / 360));
+			posX = ancrageX + (rayonMouv * cos(((angle+180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+			posY = ancrageY + (rayonMouv / 2 * sin(((angle+180) * 2 * PI) / 360));
 			
-			if(sensRotation)
+			if (sensRotation)		//true = sens horaire false = sens anti-horaire
 				angle += 2;			//vitesse angulaire determine
 			else
 				angle -= 2;			//vitesse angulaire determine
@@ -669,6 +679,59 @@ void Shotgunner::update()
 	moveTimer++;
 }
 
+Exploder::Exploder(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'E';
+	nbVies = 8;
+	typeEnnemi = EXPLODER;
+	hauteur = 3;
+	largeur = 5;
+	shoots = false;
+	ammoType = ANGLE;
+	shootCooldown = 1;
+}
+
+void Exploder::update()
+{
+	//descend jusqu'a la moitie de l'ecran et explode
+	if (posY < HEIGHT / 2)
+	{
+		if (moveTimer % 5 == 0)
+			posY++;
+	}
+	else
+	{
+		shoots = true;
+	}
+	moveTimer++;
+	if(moveTimer>=500)
+		moveTimer = 0;
+}
+
+Turret::Turret(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'T';
+	nbVies = 8;
+	typeEnnemi = TURRET;
+	hauteur = 3;
+	largeur = 3;
+	shoots = true;
+	shootCooldown = 50;   // a toute les x frames l'entite va tirer
+	ammoType = ANGLE;
+
+}				
+
+
+void Turret::update()
+{
+	//descend jusqu'au 1/5 de l'ecran et commence a tirer
+	if (posY < HEIGHT / 5)
+	{
+		if (moveTimer % 4 == 0)
+			posY++;
+	}
+	moveTimer++;
+}
 
 //******************************** classe bullet ***********************************
 
@@ -904,4 +967,5 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	symbole = 'a';
 	power_up = ADDBULLETS;
 }
+
 

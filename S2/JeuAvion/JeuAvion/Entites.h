@@ -9,11 +9,11 @@ using namespace std;
 //definit la taille du jeu
 const int WIDTH = 100;
 const int HEIGHT = 37;
-const int CD_BARRELROLL = 75;
+const int CD_BARRELROLL = 70;
 const float PI = 3.14159265359;
 
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP };
-enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, SHOTGUNNER, SHOTGUNHOMING, EXPLODER, TURRET };
+enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, ORBITER, SHOTGUNHOMING, EXPLODER, TURRET, SHOTGUNNER };
 enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE };
 enum typePowerUp { DAMAGEDOUBLED, ADDLIFE, ADDBULLETS };
 
@@ -169,7 +169,7 @@ public:
     void update();    //gere le deplacement de l'ennemi
 };
 
-class Shotgunner : public Ennemi
+class Orbiter : public Ennemi
 {
 private:
     int rayonMouv;
@@ -177,8 +177,10 @@ private:
     bool orbiting;
 	double angle;
 	bool sensRotation;
+    int ancrageX = 0;
+    int ancrageY = 0;
 public:
-    Shotgunner(float x, float y);
+    Orbiter(float x, float y);
     void update();    //gere le deplacement de l'ennemi
 };
 
