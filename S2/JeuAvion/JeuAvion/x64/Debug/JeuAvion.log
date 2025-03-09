@@ -1,63 +1,39 @@
-﻿  Interface.cpp
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+﻿   Qt/MSBuild: 3.3.1.1
+   Qt: 6.8.2
+  Interface.cpp
+  main.cpp
+C:\Users\amran\Desktop\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(89,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(140,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(304,32): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(522,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(522,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(529,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(529,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(534,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(534,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(536,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(536,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(541,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(541,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(546,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(546,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(548,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(548,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(589,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(590,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(608,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(608,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(655,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(655,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(671,99): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(671,71): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(675,96): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(675,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(689,58): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(689,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(877,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(906,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         with
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         [
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:             _Ty=int
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         ]
-  (compiling source file 'Interface.cpp')
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
-      the template instantiation context (the oldest one first) is
-          C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(32,30):
-          see reference to function template instantiation 'std::unique_ptr<Joueur,std::default_delete<Joueur>> std::make_unique<Joueur,int,int,0>(int &&,int &&)' being compiled
+C:\Users\amran\Desktop\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'main.cpp')
   
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  (compiling source file 'Interface.cpp')
-  
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         with
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         [
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:             _Ty=double
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         ]
-  (compiling source file 'Interface.cpp')
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
-      the template instantiation context (the oldest one first) is
-          C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(593,38):
-          see reference to function template instantiation 'std::unique_ptr<angleBullet,std::default_delete<angleBullet>> std::make_unique<angleBullet,int&,int&,double,char,bool,0>(int &,int &,double &&,char &&,bool &&)' being compiled
-  
-  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
+C:\Users\amran\Desktop\JeuAvion\JeuAvion\Interface.cpp(877,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\amran\Desktop\JeuAvion\JeuAvion\Interface.cpp(906,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundSource.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Sound.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Sound.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundBuffer.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundBuffer.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Miniaudio.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Miniaudio.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(AudioResource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(AudioResource.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(MiniaudioUtils.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(MiniaudioUtils.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(InputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(InputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(OutputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(OutputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(AudioDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(AudioDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileFactory.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileFactory.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(PlaybackDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(PlaybackDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderMp3.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderMp3.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderWav.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterWav.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(Err.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Err.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(FileInputStream.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(MemoryInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(MemoryInputStream.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(Utils.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Utils.obj)' or at ''; linking object as if no debug info
+  JeuAvion.vcxproj -> C:\Users\amran\Desktop\JeuAvion\x64\Debug\JeuAvion.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.
