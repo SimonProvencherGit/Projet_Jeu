@@ -412,7 +412,7 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    else if (score1 >= memScore && score1 <= memScore + 850 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    else if (score1 >= memScore && score1 <= memScore + 1000 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
@@ -437,7 +437,7 @@ void Interface::progressionDifficulte()
         else
             bossWaitTimer++;
     }
-    else if (score1 >= memScore + 850 && score1 <= memScore + 1600 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    else if (score1 >= memScore + 1000 && score1 <= memScore + 1850 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
         if (enemySpawnTimer >= 5)
         {
@@ -446,7 +446,7 @@ void Interface::progressionDifficulte()
             bossWaitTimer = 0;
         }
     }
-    else if (score1 >= memScore + 1600 && score1 <= memScore + 2400 && boss1Spawned && !boss2Spawned)
+    else if (score1 >= memScore + 1850 && score1 <= memScore + 2800 && boss1Spawned && !boss2Spawned)
     {
         if (enemySpawnTimer >= 150 || cbVivant() < 8)
         {
@@ -460,7 +460,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;
         }
     }
-    else if (score1 >= memScore + 2400 && !boss2Spawned)
+    else if (score1 >= memScore + 2800 && !boss2Spawned)
     {
         if (cbVivant() == 0)
         {
