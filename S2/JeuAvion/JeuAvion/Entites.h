@@ -13,11 +13,11 @@ const int CD_BARRELROLL = 70;
 const float PI = 3.14159265359;
 
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP };
-enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, ORBITER, SHOTGUNHOMING, EXPLODER, TURRET, SHOTGUNNER };
-enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE };
+enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, ORBITER, SHOTGUNHOMING, EXPLODER, TURRET, BOSS3_MAIN, BOSS3_SIDE};
+enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE, MORTAR};
 enum typePowerUp { DAMAGEDOUBLED, ADDLIFE, ADDBULLETS };
 
-
+ 
 class Entite
 {
 
@@ -25,11 +25,12 @@ public:
     float posX, posY;
     int xJoueur, yJoueur;
     int  xJoueur2, yJoueur2;
+    int xBoss3, yBoss3;
     bool p1EnVie, p2EnVie;
     int largeur, hauteur;
     int shootCooldown;
-    int shootTimer;
     bool enVie;
+    int shootTimer;
     char symbole;
     int nbVies;
     bool bulletAllie;
@@ -51,6 +52,7 @@ public:
     void perdVie(int nbVie);
     virtual bool enCollision(int px, int py);  // retourne vrai si px et py sont egaux au x et y de l'entite
     virtual void getPosJoueurs(float x1, float y1, bool p1Alive, float x2 = 0, float y2 = 0, bool P2Alive = false);
+	virtual void getPosBoss3(float x3, float y3);
     virtual typeEnnemis getTypeEnnemi();
 };
 
@@ -204,6 +206,25 @@ public:
     void update();    //gere le deplacement de l'ennemi
 };
 
+class Boss3 : public Ennemi
+{
+public:
+    Boss3(float x, float y);
+    void update();    //gere le deplacement de l'ennemi
+};
+
+class Boss3Side : public Ennemi
+{
+private: 
+    int rayonMouv;
+    float distance;
+    bool orbiting;
+    double angle;
+    bool sensRotation;
+public:
+	Boss3Side(float x, float y);
+	void update();    //gere le deplacement de l'ennemi
+};
 
 //-----------------------------------------------------------  classes Bullet -----------------------------------------------------------
 

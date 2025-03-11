@@ -33,6 +33,7 @@ Interface::Interface()
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
 
     joueur2 = nullptr;
+	boss3 = nullptr;
 }
 
 
@@ -221,6 +222,8 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
 {
     posRand = (rand() % (WIDTH)) + 1;
     int coterand;
+	static int nbSideBoss3 = 0;
+
     for (int i = 0; i < nbEnnemi; i++)  //on fait spawn un nombre d'ennemis egal a nbEnnemi
     {
         //anciennePos = posRand;
@@ -279,6 +282,17 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
 			listEntites.emplace_back(make_unique<Turret>(posRand, 0));
 			positionSpawnRandom();
 			break;
+		case BOSS3_MAIN:
+			listEntites.emplace_back(make_unique<Boss3>(WIDTH / 2 - 2, 0));     // -2 car le boss est 4 de long et on veut qu'il soit centre
+			boss3 = static_cast<Boss3*>(listEntites.back().get());
+			break;
+		case BOSS3_SIDE:
+			//if (nbSideBoss3 % 2 == 0)
+				listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 2 - 20, 0));     
+			//else
+				//listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 2 + 15, 0));  
+			//nbSideBoss3++;
+            break;
         }
     }
 }
@@ -315,15 +329,16 @@ void Interface::positionSpawnRandom()       //on donne une position aleatoire a 
 
 void Interface::progressionDifficulte()
 {
-    enemySpawnTimer++;
+    static int nbPass = 0;
     static bool spawnPup = false;
-
+    
+    enemySpawnTimer++;
+    
     if (score1 < 600)
     {
-
-        if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
-       //if (enemySpawnTimer >= 100 || cbVivant() < 2) //pour des tests
-       {
+        
+       /* if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+        {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
@@ -332,18 +347,36 @@ void Interface::progressionDifficulte()
             // enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, ORBITER);
-			//enemySpawn(1, EXPLODER);
-			//enemySpawn(1, TURRET);
+            //enemySpawn(1, EXPLODER);
+            //enemySpawn(1, TURRET);
 
-           /* if (spawnPowerUpStart)
-            {
-                spawnPowerUpStart = false;
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
-				//enemySpawn(1, BOSS2_MAIN);
-            }*/
+            
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
-       }
+        }*/
+
+        if (boss3)
+            for (auto& e : listEntites)
+                e->getPosBoss3(boss3->posX + boss3->largeur / 2, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
+
+        if (spawnPowerUpStart)
+        {
+            spawnPowerUpStart = false;
+            powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+            powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
+            enemySpawn(1, BOSS3_MAIN);
+        }
+        if (boss3 != nullptr)
+        {
+            if (enemySpawnTimer >= 32)
+            {
+                if (cbVivant() < 6)
+                {
+                    enemySpawn(1, BOSS3_SIDE);
+                }
+                enemySpawnTimer = 0;
+            }
+        }
+
     }
     else if (score1 >= 600 && score1 < 1300)
     {
@@ -360,7 +393,7 @@ void Interface::progressionDifficulte()
         {
             //enemySpawn(1, ARTILLEUR);
             //enemySpawn(4, BASIC);   //on fait spawn 5 ennemis a chaque vague
-           // enemySpawn(2, DIVEBOMBER);
+            // enemySpawn(2, DIVEBOMBER);
             enemySpawn(2, AIMBOT);
 
             int nbTank = 0;
@@ -481,8 +514,8 @@ void Interface::progressionDifficulte()
     {
         if (enemySpawnTimer >= 100 || cbVivant() < 4)
         {
-			enemySpawn(1, TURRET);
-			enemySpawn(1, AIMBOT);
+            enemySpawn(1, TURRET);
+            enemySpawn(1, AIMBOT);
             enemySpawn(1, EXPLODER);
             enemySpawnTimer = 0;
         }
@@ -492,18 +525,21 @@ void Interface::progressionDifficulte()
         if (enemySpawnTimer >= 100 || cbVivant() < 4)
         {
             enemySpawn(1, ORBITER);
+            enemySpawnTimer = 0;
+            nbPass++;
+            if (nbPass == 2)
+            {
+                enemySpawn(1, EXPLODER);
+                nbPass = 0;
+            }
         }
-        if (enemySpawnTimer >= 200)
-        {
-            enemySpawn(1, EXPLODER);
-			enemySpawnTimer = 0;
-        }
+
     }
-	else if (score1 >= memScore + 1600 && score1 < memScore + 2400 && boss2Spawned)
-	{
+    else if (score1 >= memScore + 1600 && score1 < memScore + 2400 && boss2Spawned)
+    {
 
-	}
-
+    }
+    
 }
 
 
@@ -511,6 +547,7 @@ void Interface::progressionDifficulte()
 void Interface::updateEntites()
 {
 	double angle;       //pour les ennemis qui ont besoin de l'angle entre eux et le joueur
+    static int sideBoss3WaitTimer = 0;
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -533,33 +570,33 @@ void Interface::updateEntites()
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
-            if (e->typeEntite == ENNEMI && e->ammoType == FRAGMENTING && e->moveTimer % e->shootCooldown == 0 && e->shoots)     //si c'est un ennemi qui tire des fragmenting bullets
+            else if (e->typeEntite == ENNEMI && e->ammoType == FRAGMENTING && e->moveTimer % e->shootCooldown == 0 && e->shoots)     //si c'est un ennemi qui tire des fragmenting bullets
                 bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
 
-            if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
+            else if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
                 bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2, e->posY + e->hauteur, false));
 
-            if (e->getTypeEnnemi() == AIMBOT && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
+            else if (e->getTypeEnnemi() == AIMBOT && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
                 bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
-            if (e->getTypeEnnemi() == ORBITER && e->moveTimer % e->shootCooldown == 0 && e->shoots)
+            else if (e->getTypeEnnemi() == ORBITER && e->moveTimer % e->shootCooldown == 0 && e->shoots)
             {
-                angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / 3.14159265;     //retourne l'angle en degres entre l'entite et le joueur
+                angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
                 bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY - 1, angle, 'o', false));
             }
-            if (e->getTypeEnnemi() == EXPLODER && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
+            else if (e->getTypeEnnemi() == EXPLODER && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
             {
                 cercleTir(5, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 				e->enVie = false;
             }
-			if (e->getTypeEnnemi() == TURRET && e->moveTimer % e->shootCooldown == 0 && e->shoots)
+			else if (e->getTypeEnnemi() == TURRET && e->moveTimer % e->shootCooldown == 0 && e->shoots)
 			{
-                angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / 3.14159265;     //retourne l'angle en degres entre l'entite et le joueur
+                angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
 
 				for (int i = -10; i <= 10; i += 10)
 					bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY - 1, angle + i, 'o', false));
 			}
 
-            if (e->getTypeEnnemi() == BOSS1_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss1 tire des 3 missiles
+            else if (e->getTypeEnnemi() == BOSS1_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss1 tire des 3 missiles
             {
                 bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 4, e->posY + e->hauteur + 1, false));
                 bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur - e->largeur / 4, e->posY + e->hauteur + 1, false));
@@ -572,14 +609,14 @@ void Interface::updateEntites()
 
                 for (auto& e2 : listEntites)
                 {
-                    if (e2->enVie == true && e2->getTypeEnnemi() == BOSS1_SIDE)
+					if (e2->enVie == true && e2->getTypeEnnemi() == BOSS1_SIDE)	//si un des side boss est en vie le main boss est invincible
                     {
                         e->invincible = true;
                     }
                 }
             }
             //----------- update du 2e boss -------------------
-            if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le 2e boss
+            else if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le 2e boss
             {
                 if (e->nbVies % 70 == 0 && spawnAddLife)
                 {
@@ -619,6 +656,29 @@ void Interface::updateEntites()
                 if (angleTirBoss >= 360)
                     angleTirBoss = 0;
             }
+			//----------- update du 3e boss -------------------
+            else if (e->getTypeEnnemi() == BOSS3_MAIN)
+            {
+
+            }
+            else if (e->getTypeEnnemi() == BOSS3_SIDE)
+            {
+                if(sideBoss3WaitTimer < 175)
+					sideBoss3WaitTimer++;
+                else
+                {
+                    if (e->moveTimer % e->shootCooldown == 0)
+                    {
+						//randomTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+						//balayageTir(1, 10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        angle = atan2(e->posY - boss3 ->posY, e->posX - boss3->posX) * 180 / PI;
+                        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur , angle , 'o', false));
+                        
+						
+                        //cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    }
+                }
+            }
         }
     }
     for (auto& bullet : bufferBulletsUpdate)
@@ -656,7 +716,7 @@ void Interface::randomCibleTir(int x, int y)
     //calcule l'angle entre le joueur et le boss et tire aleatoirement dans un cone de 40 degres vers le joueur
     int dx = joueur->posX - x;
     int dy = joueur->posY - y;
-    double angle = atan2(dy, dx) * 180 / 3.14159265;     //retourne l'angle en degres entre le boss et le joueur         https://www.w3schools.com/cpp/ref_math_atan2.asp
+    double angle = atan2(dy, dx) * 180 / PI;     //retourne l'angle en degres entre le boss et le joueur         https://www.w3schools.com/cpp/ref_math_atan2.asp
     int randPos = rand() % 40;      //correspond a une variation possible de 40 degres
     bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angle - 20 + randPos, 'o', false));         //on tire aleatoirement dans un cone de 40 degres vers le joueur
 }

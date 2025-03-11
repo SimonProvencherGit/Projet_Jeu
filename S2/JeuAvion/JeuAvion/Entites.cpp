@@ -16,10 +16,12 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	nbVies = 1;
 	bulletAllie = false;
 	typeEntite = ENNEMI;
-	xJoueur = 0;
-	yJoueur = 0;
-	xJoueur2 = 0;
-	yJoueur2 = 0;
+	xJoueur = -1;
+	yJoueur = -1;
+	xJoueur2 = -1;
+	yJoueur2 = -1;
+	xBoss3 = -1;
+	yBoss3 = -1;
 	p1EnVie = true;
 	p2EnVie = true;
 	//nbJoueurs = 1;
@@ -30,14 +32,13 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	isPlayer = false;
 	barrelRollTimer = 0;
 	power_up = ADDLIFE;		//par defaut les powerups donnent des vies
-
 }
 
 
 
 bool Entite::enCollision(int px, int py)
 {
-	if (px >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < (posY + hauteur))       // on fait une collision si les entites sont a la meme position (+ - 1 pour amelirer la detection)
+	if (px >= posX - 1 && px <= posX + largeur + 1 && py >= posY -1 && py < (posY + hauteur))       // on fait une collision si les entites sont a la meme position (+ - 1 pour amelirer la detection)
 		return 1;
 
 	return 0;
@@ -53,6 +54,12 @@ void Entite::getPosJoueurs(float x1, float y1, bool p1Alive, float x2, float y2,
 	p1EnVie = p1Alive;
 	p2EnVie = p2Alive;
 
+}
+
+void Entite::getPosBoss3(float x, float y)
+{
+	xBoss3 = x;
+	yBoss3 = y;
 }
 
 typeEnnemis Entite::getTypeEnnemi()		// va etre redefinie dans la classe ennemi pour retourner le type d'ennemi
@@ -195,7 +202,6 @@ void BasicEnnemi::update()
 	moveTimer++;
 }
 
-
 DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'V';
@@ -215,7 +221,6 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 		joueurRand = 0;
 
 }
-
 
 //le diveBomber est kamikaze qui va directement vers le joueur
 void DiveBomber::update()
@@ -297,8 +302,6 @@ void Tank::update()
 		moveTimer = 0;
 	moveTimer++;
 }
-
-
 
 Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 {
@@ -405,7 +408,6 @@ void Aimbot::update()
 	moveTimer++;
 }
 
-
 Boss1::Boss1(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
@@ -460,7 +462,6 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 
 }
 
-
 void Boss1Side::update()
 {
 	if (moveTimer % 5 == 0 && posY <= 13)
@@ -514,7 +515,6 @@ SideBomber::SideBomber(float x, float y) : Ennemi(x, y)
 	else
 		side = false;
 }
-
 
 void SideBomber::update()
 {
@@ -579,7 +579,6 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	angle = 0;
 	rayonMouv = 7;		//va faire un cercle de rayon 7
 }
-
 
 void Boss2::update()
 {
@@ -733,6 +732,143 @@ void Turret::update()
 	moveTimer++;
 }
 
+Boss3::Boss3(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'M';
+	nbVies = 200;
+	typeEntite = BOSS;
+	typeEnnemi = BOSS3_MAIN;
+	hauteur = 4;
+	largeur = 8;
+	shoots = true;
+	shootCooldown = 100;   // a toute les x frames l'entite va tirer
+	ammoType = MORTAR;
+}
+
+void Boss3::update()
+{
+	static int waitTimer = 0;
+
+	//le boss descend et commence a faire des zigzags
+	if (posY < HEIGHT / 3.5)
+	{
+		if (moveTimer % 10  == 0)
+			posY++;
+	}
+	else if (posY >= HEIGHT / 3)
+	{
+		if (waitTimer < 100)
+			waitTimer++;
+		else
+		{
+			if (moveTimer % 10 == 0)
+			{
+				if (posX <= WIDTH / 3.5 || posX + largeur >= WIDTH - WIDTH / 3)
+					direction = 1 - direction; // Change de Direction
+				if (direction == 0)
+					posX -= 1;
+				else
+					posX += 1; // Bouger a gauche ou a droite
+			}
+		}
+	}
+	moveTimer++;
+	if (moveTimer >= 500)
+		moveTimer = 0;
+}
+
+Boss3Side::Boss3Side(float x, float y) : Ennemi(x,y)
+{
+	symbole = 'W';
+	nbVies = 50;
+	typeEntite = BOSS;
+	typeEnnemi = BOSS3_SIDE;
+	hauteur = 2;
+	largeur = 4;
+	shoots = true;
+	shootCooldown = 7;
+	ammoType = ANGLE;
+	rayonMouv = 15;		
+	angle = 0;
+	distance = 0;
+	orbiting = false;
+	sensRotation = true;
+}
+
+void Boss3Side::update()
+{
+	if (yBoss3 == -1){}
+
+	else if (posY < yBoss3 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	{
+		if (moveTimer % 2 == 0)
+			posY++;
+	}
+	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+	{
+		if (orbiting == false)
+		{
+
+			distance = sqrt(pow(xBoss3 - (posX + largeur/2), 2) + pow(yBoss3 - (posY+hauteur/2), 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+			orbiting = true;
+			angle = atan2(yBoss3 - posY, xBoss3 - posX) * 180 / 3.14159265;
+
+
+			if (posX < xBoss3)
+			{
+				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle + 2;
+			}
+			else
+			{
+				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle - 2;
+			}
+		}
+		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+		if (moveTimer % 1 == 0)
+		{
+			posX = xBoss3 + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//xboss3 + 4, le +4 est pour que l'ancrage soit au centre du boss3 et pas en haut a gauche
+			posY = yBoss3 + (rayonMouv / 2 * sin(((angle + 180) * 2 * PI) / 360));
+
+			if (sensRotation)		//true = sens horaire false = sens anti-horaire
+				angle += 2;			//vitesse angulaire determine
+			else
+				angle -= 2;			//vitesse angulaire determine
+
+			if (moveTimer % 4 == 0)
+			{
+				if (rayonMouv < 10 || rayonMouv > distance)
+
+					direction = 1 - direction; // bug somewhere here
+				if (direction == 0)
+					rayonMouv -= 0.5;
+				else
+					rayonMouv += 0.5;
+				
+			}
+
+		}
+		if (angle >= 360)
+			angle = 0;
+	}
+
+	if (posX < 1)
+		posX = 1;
+	else if (posX > WIDTH - 1)
+		posX = WIDTH - 1;
+	if (posY < 1)
+		posY = 1;
+	else if (posY > HEIGHT - 2)
+		posY = HEIGHT - 2;
+
+	moveTimer++;
+	if (moveTimer >= 500)
+		moveTimer = 0;
+}
+
+
 //******************************** classe bullet ***********************************
 
 Bullet::Bullet(float x, float y, bool isPlayerBullet) : Entite(x, y, '|', 1, 1)
@@ -832,7 +968,6 @@ Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBul
 		joueurRand = 0;
 }
 
-
 void Homing::update()
 {
 	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse en x du missile
@@ -895,7 +1030,6 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 	bulletAllie = isPlayerBullet;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
 }
-
 
 void angleBullet::update()
 {
@@ -967,5 +1101,4 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	symbole = 'a';
 	power_up = ADDBULLETS;
 }
-
 

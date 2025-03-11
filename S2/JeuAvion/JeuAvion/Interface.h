@@ -16,6 +16,7 @@ void setConsoleSize();
 class Interface
 {
 private:
+	Boss3* boss3;
     Joueur* joueur;
     Joueur* joueur2;
     vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
