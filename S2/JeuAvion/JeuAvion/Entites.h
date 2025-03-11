@@ -216,11 +216,12 @@ public:
 class Boss3Side : public Ennemi
 {
 private: 
-    int rayonMouv;
+    float rayonMouv;
     float distance;
     bool orbiting;
     double angle;
     bool sensRotation;
+    bool changTailleRayon;
 public:
 	Boss3Side(float x, float y);
 	void update();    //gere le deplacement de l'ennemi

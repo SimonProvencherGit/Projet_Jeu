@@ -331,6 +331,7 @@ void Interface::progressionDifficulte()
 {
     static int nbPass = 0;
     static bool spawnPup = false;
+	static bool allSideBossSpawned = false;
     
     enemySpawnTimer++;
     
@@ -356,7 +357,7 @@ void Interface::progressionDifficulte()
 
         if (boss3)
             for (auto& e : listEntites)
-                e->getPosBoss3(boss3->posX + boss3->largeur / 2, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
+                e->getPosBoss3(boss3->posX + boss3->largeur / 2 -1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
 
         if (spawnPowerUpStart)
         {
@@ -367,12 +368,14 @@ void Interface::progressionDifficulte()
         }
         if (boss3 != nullptr)
         {
-            if (enemySpawnTimer >= 32)
+            if (enemySpawnTimer >= 32 && !allSideBossSpawned)
             {
-                if (cbVivant() < 6)
-                {
+				nbPass++;
+                if(nbPass <= 5)
                     enemySpawn(1, BOSS3_SIDE);
-                }
+                else 
+					allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression
+
                 enemySpawnTimer = 0;
             }
         }
@@ -527,7 +530,7 @@ void Interface::progressionDifficulte()
             enemySpawn(1, ORBITER);
             enemySpawnTimer = 0;
             nbPass++;
-            if (nbPass == 2)
+            if (nbPass % 2 == 0)
             {
                 enemySpawn(1, EXPLODER);
                 nbPass = 0;
@@ -935,6 +938,7 @@ void Interface::restart()
     bossSpawnSound = false;
     spawnAddLife = true;
     spawnPowerUpStart = true;
+	
 }
 
 

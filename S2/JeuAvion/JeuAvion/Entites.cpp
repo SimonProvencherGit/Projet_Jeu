@@ -755,7 +755,7 @@ void Boss3::update()
 		if (moveTimer % 10  == 0)
 			posY++;
 	}
-	else if (posY >= HEIGHT / 3)
+	else if (posY >= HEIGHT / 3.5)
 	{
 		if (waitTimer < 100)
 			waitTimer++;
@@ -792,7 +792,8 @@ Boss3Side::Boss3Side(float x, float y) : Ennemi(x,y)
 	angle = 0;
 	distance = 0;
 	orbiting = false;
-	sensRotation = true;
+	sensRotation = true;		//true = sens horaire false = sens anti-horaire
+	changTailleRayon = true;	//true = le rayon diminue false = le rayon augmente
 }
 
 void Boss3Side::update()
@@ -826,7 +827,7 @@ void Boss3Side::update()
 				angle - 2;
 			}
 		}
-		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+
 		if (moveTimer % 1 == 0)
 		{
 			posX = xBoss3 + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//xboss3 + 4, le +4 est pour que l'ancrage soit au centre du boss3 et pas en haut a gauche
@@ -839,16 +840,21 @@ void Boss3Side::update()
 
 			if (moveTimer % 4 == 0)
 			{
-				if (rayonMouv < 10 || rayonMouv > distance)
-
-					direction = 1 - direction; // bug somewhere here
-				if (direction == 0)
-					rayonMouv -= 0.5;
-				else
-					rayonMouv += 0.5;
-				
+				if (changTailleRayon)
+				{
+					if (rayonMouv > 11)
+						rayonMouv -= 2.7;
+					else
+						changTailleRayon = false;
+				}
+				else if (!changTailleRayon)
+				{
+					if (rayonMouv < distance)
+						rayonMouv += 2.7;
+					else
+						changTailleRayon = true;
+				}	
 			}
-
 		}
 		if (angle >= 360)
 			angle = 0;
