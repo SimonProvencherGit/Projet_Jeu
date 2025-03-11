@@ -7,8 +7,8 @@
 using namespace std;
 
 //definit la taille du jeu
-const int WIDTH = 100;
-const int HEIGHT = 37;
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
 const int CD_BARRELROLL = 75;
 const float PI = 3.14159265359;
 

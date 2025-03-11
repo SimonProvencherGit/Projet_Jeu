@@ -9,9 +9,6 @@
 #include <memory>  //pour unique_ptr 
 #include <conio.h>  //pour _kbhit()
 #include <string>
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QThread>
 #include "globalobjects.h"
 
 void setConsoleSize();

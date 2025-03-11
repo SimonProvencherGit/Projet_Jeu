@@ -80,7 +80,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	nbVies = 10;
 	attkDmg = 1;
 	vitesse = 1;
-	shootCooldown = 3;
+	shootCooldown = 6;
 	nbBulletTir = 1;
 	shootTimer = 0;
 	bulletAllie = true;

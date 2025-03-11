@@ -1,5 +1,6 @@
 #include "Interface.h"
-
+#include <qdir.h>
+bool firststart = true;
 
 Interface::Interface()
 {
@@ -44,25 +45,32 @@ void Interface::gererInput()
 
         if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
         {
-            if (joueur->posX > 2)
-                joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
-            else if (joueur->posX > 1)
-                joueur->posX--;
+            if (joueur->posX > -1)
+            {
+                if (joueur->posX < 10)
+                {
+                    joueur->posX = joueur->posX - joueur->posX;
+                }
+                else
+                joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
+            }
+            else if (joueur->posX  <-1)
+                joueur->posX-=10;
         }
         if (GetAsyncKeyState('D') < 0) {
-            if (joueur->posX < WIDTH - 2)
-                joueur->posX += 2;
-            else if (joueur->posX < WIDTH - 1)
-                joueur->posX++;
+            if (joueur->posX < WIDTH)
+                joueur->posX += 10;
+            else if (joueur->posX < WIDTH)
+                joueur->posX+=10;
         }
 
         if (GetAsyncKeyState('W') < 0)
-            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
-                joueur->posY--;
+            if (joueur->posY > 0)      //le joueur a acces au 9/10 de l'ecran
+                joueur->posY -= 10;
 
         if (GetAsyncKeyState('S') < 0)
             if (joueur->posY < HEIGHT)
-                joueur->posY++;
+                joueur->posY += 10;
         if (GetAsyncKeyState(VK_SPACE) < 0)
         {
             if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
@@ -469,7 +477,8 @@ void Interface::updateEntites()
         if (e->enVie)
         {
             if (nbJoueur == 1)
-                e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie);    //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.   
+                e->getPosJoueurs(joueur->posX, joueur->posX, joueur->enVie);   //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.
+            
             else if (nbJoueur == 2)
             {
                 if ((joueur->posX < 0 || joueur->posY < 0) && joueur2->posX >= 0 && joueur2->posY >= 0)       //si le joueur 1 est mort et le joueur 2 est en vie
@@ -477,11 +486,11 @@ void Interface::updateEntites()
                 else if ((joueur2->posX < 0 || joueur2->posY < 0) && joueur->posX >= 0 && joueur->posY >= 0)       //si le joueur 2 est mort et le joueur 1 est en vie
                     e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, -1, -1, false);
                 else if (joueur->posX >= 0 && joueur->posY >= 0 && joueur2->posX >= 0 && joueur2->posY >= 0)       //si les 2 joueurs sont en vie
-                    e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
+                    e->getPosJoueurs(joueur->posX, joueur->posX, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
             }
 
             e->update();    //on met a jour chaque entite
-
+            player1->setPos(joueur->posX, joueur->posY);
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
@@ -800,7 +809,7 @@ void Interface::restart()
 //met a jour l'affichage de la console 
 void Interface::updateAffichage()
 {
-    wchar_t buffer[HEIGHT + 5][WIDTH + 2];  // +3 pour les bordures et le score, +2 pour les bordures
+   /* wchar_t buffer[HEIGHT + 5][WIDTH + 2];  // +3 pour les bordures et le score, +2 pour les bordures
     wchar_t progressExplosion[12];	//buffer pour afficher progression de l'explosion
     wchar_t progressBarrelRoll[12];	//buffer pour afficher progression du barrel roll
     float nbSymboleExplosion = 0;  //pour le nombre de symboles a afficher dans la progression de l'explosion
@@ -953,7 +962,7 @@ void Interface::updateAffichage()
         DWORD charsWritten;
 
         WriteConsoleOutputCharacterW(hConsole, buffer[y], WIDTH + 2, bufferCoord, &charsWritten);       //on ecrit chaque ligne du buffer
-    }
+    */
 }
 
 
@@ -978,19 +987,57 @@ void Interface::enleverEntites()
 
 //execution du jeu
 void Interface::executionJeu(int version)
+
 {
-    hideCursor();
-    music.stopMusic();
-    music.playMusic("OceanWorld.wav", 0, 117000);
-    if (version > 0)     //si on a choisi autre chose que le mode seul
+    if (firststart)
     {
-        listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
-        joueur2 = static_cast<Joueur*>(listEntites.back().get());
-        joueur2->enVie = true;
-        joueur->posX = (WIDTH / 2) - 5;
-        nbJoueur = 2;
+        QMovie* movie = new QMovie("water.gif");
+
+        // Set the size of the movie to match the QLabel
+        movie->setScaledSize(QSize(3040, 1712)); // Scale the GIF to 1920x1080
+        // Create a QLabel to hold the movie
+        QLabel* label = new QLabel();
+        label->setMovie(movie);
+        movie->start();
+
+        // Position and size the QLabel
+        label->setFixedSize(3040, 1712);
+        label->move(-500, -200);
+
+        // Use QGraphicsProxyWidget to add QLabel to the QGraphicsScene
+        QGraphicsProxyWidget* proxy = GameScene->addWidget(label);
+
+        //proxy->setpos(0, 0);
+        qDebug() << "Current working directory: " << QDir::currentPath();
+        //QPixmap pixmap("plane.png");
+       QPixmap pixmap("plane.png");
+       player1 = new QGraphicsPixmapItem(pixmap);
+
+       // Create a QGraphicsDropShadowEffect
+       QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
+       // Set the color of the shadow
+       shadowEffect->setOffset(50, 30);       // Set the offset of the shadow (x, y)
+           QColor shadowColor(0, 0, 255, 125); 
+
+       // Apply the drop shadow effect to the image item
+       player1->setGraphicsEffect(shadowEffect);
+       player1->setScale(0.25);
+       GameScene->addItem(player1);
+       player1->show();
+        hideCursor();
+        music.stopMusic();
+        music.playMusic("OceanWorld.wav", 0, 117000);
+        if (version > 0)     //si on a choisi autre chose que le mode seul
+        {
+            listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
+            joueur2 = static_cast<Joueur*>(listEntites.back().get());
+            joueur2->enVie = true;
+            joueur->posX = (WIDTH / 2) - 5;
+            nbJoueur = 2;
+        }
+        firststart = false;
     }
-    while (!gameOver)
+    if (!gameOver)
     {
         gererInput();
 
@@ -1004,16 +1051,18 @@ void Interface::executionJeu(int version)
         gererCollisions();
         enleverEntites();
         updateAffichage();
-        Sleep(20);
+        //Sleep(20);
 
         if (nbJoueur == 1 && joueur->nbVies < 0)
             gameOver = true;
         else if (nbJoueur == 2 && joueur->nbVies < 0 && joueur2->nbVies < 0)
             gameOver = true;
     }
-    restart();
-
-    Sleep(1000);
+    if (gameOver)
+    {
+        restart();
+    }
+    //Sleep(1000);
     showCursor();
 }
 

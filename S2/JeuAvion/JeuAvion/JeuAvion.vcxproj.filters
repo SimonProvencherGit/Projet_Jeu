@@ -23,15 +23,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <QtRcc Include="JeuAvion.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="JeuAvion.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <QtRcc Include="qml.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-    <None Include="main.qml">
-      <Filter>Source Files</Filter>
-    </None>
     <ClCompile Include="Entites.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
