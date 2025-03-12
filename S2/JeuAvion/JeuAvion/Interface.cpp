@@ -1,5 +1,6 @@
 #include "Interface.h"
 #include <qdir.h>
+#include <QPropertyAnimation>
 bool firststart = true;
 
 Interface::Interface()
@@ -991,21 +992,43 @@ void Interface::executionJeu(int version)
 {
     if (firststart)
     {
-        QMovie* movie = new QMovie("water.gif");
+      //Animation du Background qui bouge
+        QMovie* background1 = new QMovie("water.gif");
+        QMovie* background2 = new QMovie("water.gif");
 
-        // Set the size of the movie to match the QLabel
-        movie->setScaledSize(QSize(3040, 1712)); // Scale the GIF to 1920x1080
-        // Create a QLabel to hold the movie
-        QLabel* label = new QLabel();
-        label->setMovie(movie);
-        movie->start();
+        QLabel* labelBackground1 = new QLabel;
+        QLabel* labelBackground2 = new QLabel;
 
-        // Position and size the QLabel
-        label->setFixedSize(3040, 1712);
-        label->move(-500, -200);
+        labelBackground1->setMovie(background1);
+        labelBackground2->setMovie(background2);
 
-        // Use QGraphicsProxyWidget to add QLabel to the QGraphicsScene
-        QGraphicsProxyWidget* proxy = GameScene->addWidget(label);
+        background1->start();
+        background2->start();
+
+        labelBackground1->setFixedSize(2560, 1440);
+        labelBackground2->setFixedSize(2560, 1440);
+
+        
+        labelBackground1->move(-500, -1700);
+        labelBackground2->move(-500, -300);
+        QPropertyAnimation* animation1 = new QPropertyAnimation(labelBackground1, "geometry");
+        animation1->setDuration(5000); 
+        animation1->setStartValue(QRect(labelBackground1->x(), labelBackground1->y(), labelBackground1->width(), labelBackground1->height()));
+        animation1->setEndValue(QRect(labelBackground1->x(), labelBackground1->y() + 1700, labelBackground1->width(), labelBackground1->height()));
+
+        QPropertyAnimation* animation2 = new QPropertyAnimation(labelBackground2, "geometry");
+        animation2->setDuration(5000); 
+        animation2->setStartValue(QRect(labelBackground2->x(), labelBackground2->y(), labelBackground2->width(), labelBackground2->height()));
+        animation2->setEndValue(QRect(labelBackground2->x(), labelBackground2->y() + 1700, labelBackground2->width(), labelBackground2->height()));
+
+        animation1->setLoopCount(-1); 
+        animation2->setLoopCount(-1); 
+
+        animation1->start();
+        animation2->start();
+        GameScene->addWidget(labelBackground1);
+        GameScene->addWidget(labelBackground2);
+
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();

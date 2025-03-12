@@ -1,3 +1,9 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
-  JeuAvion.vcxproj -> C:\Users\amran\Desktop\JeuAvion\x64\Debug\JeuAvion.exe
+  Interface.cpp
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'Interface.cpp')
+  
+  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
