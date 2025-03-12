@@ -6,12 +6,6 @@
 #include "Menu.h"
 #include "globalobjects.h"
 
-
-
-
-
-
-
 int main() {
     //SFX sfx;
     //Music music;

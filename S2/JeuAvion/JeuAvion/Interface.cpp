@@ -338,9 +338,9 @@ void Interface::progressionDifficulte()
     if (score1 < 600)
     {
         
-       /* if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+       /*if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague 
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
@@ -355,9 +355,10 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }*/
 
-        if (boss3)
-            for (auto& e : listEntites)
-                e->getPosBoss3(boss3->posX + boss3->largeur / 2 -1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
+        if(boss3)
+            if (boss3->posX > 0 && boss3->posY > 0)
+                for (auto& e : listEntites)
+                    e->getPosBoss3(boss3->posX + boss3->largeur / 2 -1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
 
         if (spawnPowerUpStart)
         {
@@ -374,7 +375,7 @@ void Interface::progressionDifficulte()
                 if(nbPass <= 5)
                     enemySpawn(1, BOSS3_SIDE);
                 else 
-					allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression
+					allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
 
                 enemySpawnTimer = 0;
             }
@@ -519,7 +520,12 @@ void Interface::progressionDifficulte()
         {
             enemySpawn(1, TURRET);
             enemySpawn(1, AIMBOT);
-            enemySpawn(1, EXPLODER);
+            nbPass++;
+            if (nbPass % 2 == 0)
+            {
+                enemySpawn(1, EXPLODER);
+                nbPass = 0;
+            }
             enemySpawnTimer = 0;
         }
     }
@@ -551,6 +557,7 @@ void Interface::updateEntites()
 {
 	double angle;       //pour les ennemis qui ont besoin de l'angle entre eux et le joueur
     static int sideBoss3WaitTimer = 0;
+    static int boss3WaitTimer = 0;
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -662,7 +669,29 @@ void Interface::updateEntites()
 			//----------- update du 3e boss -------------------
             else if (e->getTypeEnnemi() == BOSS3_MAIN)
             {
-
+                if (boss3WaitTimer < 175)
+                    boss3WaitTimer++;
+                else
+                {
+                    if (e->moveTimer % 8 == 0)
+                    {
+                        if ((e->nbVies < 200 && e->nbVies >= 90) || cbVivant() > 5)
+                        {
+                            balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        }
+                        else if (e->nbVies < 90)
+                        {
+                            if (e->moveTimer % 110 == 0)
+                            {
+                                cercleTir(5, e->posX + e->largeur / 2 - 10, e->posY + e->hauteur / 2);
+                            }
+                            balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        }
+                        angleTirBoss += 5;
+                        if (angleTirBoss >= 360)
+                            angleTirBoss = 0;
+                    }
+                }
             }
             else if (e->getTypeEnnemi() == BOSS3_SIDE)
             {
@@ -677,7 +706,6 @@ void Interface::updateEntites()
                         angle = atan2(e->posY - boss3 ->posY, e->posX - boss3->posX) * 180 / PI;
                         bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur , angle , 'o', false));
                         
-						
                         //cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                     }
                 }
@@ -797,7 +825,7 @@ void Interface::gererCollisions()
                             {
 
                                 score1 += customPoints(e2->getTypeEnnemi());
-                                if(e2->getTypeEnnemi() == EXPLODER)
+                                if(e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
 									cercleTir(5, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
 
                                 if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
@@ -914,6 +942,12 @@ int Interface::customPoints(typeEnnemis e)
 		break;
 	case TURRET:
 		return 25;
+		break;
+    case BOSS3_MAIN:
+        return 300;
+        break;
+	case BOSS3_SIDE:
+        return 50;
 		break;
     }
     return 0;
@@ -1161,6 +1195,16 @@ void Interface::executionJeu(int version)
     Sleep(1000);
     showCursor();
 }
+
+
+void Interface::readSerial()
+{
+    //https://github.com/dmicha16/simple_serial_port
+    //https://docs.arduino.cc/language-reference/en/functions/communication/serial/
+
+
+}
+
 
 
 //Set la taille de la console

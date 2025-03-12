@@ -780,13 +780,13 @@ void Boss3::update()
 Boss3Side::Boss3Side(float x, float y) : Ennemi(x,y)
 {
 	symbole = 'W';
-	nbVies = 50;
+	nbVies = 60;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_SIDE;
 	hauteur = 2;
 	largeur = 4;
 	shoots = true;
-	shootCooldown = 7;
+	shootCooldown = 8;
 	ammoType = ANGLE;
 	rayonMouv = 15;		
 	angle = 0;

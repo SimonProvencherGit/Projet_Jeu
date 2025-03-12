@@ -10,6 +10,8 @@
 #include <conio.h>  //pour _kbhit()
 #include <string>
 #include "globalobjects.h"
+#include "SimpleSerial.h"
+
 
 void setConsoleSize();
 
@@ -73,6 +75,7 @@ public:
     void randomTir(int x, int  y);
     void randomCibleTir(int x, int y); 
     void joueurTir(Joueur* quelJoueur);
+	void readSerial();
 };
 
 #endif // INTERFACE_H
