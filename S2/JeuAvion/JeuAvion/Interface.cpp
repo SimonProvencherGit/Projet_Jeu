@@ -18,6 +18,7 @@ Interface::Interface()
     cdExplosion = 0;
     boss1Spawned = false;
     boss2Spawned = false;
+	boss3Spawned = false;
     bossWaitTimer = 0;
     memScore = 1200;
     bossMusicStart = false;
@@ -338,7 +339,7 @@ void Interface::progressionDifficulte()
     if (score1 < 600)
     {
         
-       /*if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+       if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague 
             enemySpawn(1, ARTILLEUR);
@@ -353,9 +354,9 @@ void Interface::progressionDifficulte()
 
             
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
-        }*/
+        }
 
-        if(boss3)
+        /*if (boss3)
             if (boss3->posX > 0 && boss3->posY > 0)
                 for (auto& e : listEntites)
                     e->getPosBoss3(boss3->posX + boss3->largeur / 2 -1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
@@ -379,7 +380,7 @@ void Interface::progressionDifficulte()
 
                 enemySpawnTimer = 0;
             }
-        }
+        }*/
 
     }
     else if (score1 >= 600 && score1 < 1300)
@@ -544,7 +545,7 @@ void Interface::progressionDifficulte()
         }
 
     }
-    else if (score1 >= memScore + 1600 && score1 < memScore + 2400 && boss2Spawned)
+    else if (score1 >= memScore + 1600 && score1 < memScore + 2400 && boss2Spawned && !boss3Spawned)
     {
 
     }
@@ -675,7 +676,7 @@ void Interface::updateEntites()
                 {
                     if (e->moveTimer % 8 == 0)
                     {
-                        if ((e->nbVies < 200 && e->nbVies >= 90) || cbVivant() > 5)
+                        if (e->nbVies < 200 && e->nbVies >= 90)
                         {
                             balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                         }
@@ -833,7 +834,7 @@ void Interface::gererCollisions()
                                     powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
                                     scoreLastPup = score1;
                                 }
-                                if (e2->typeEntite == BOSS)
+                                if (e2->typeEntite == BOSS && e2->getTypeEnnemi() != BOSS3_SIDE)
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                             }
                         }
