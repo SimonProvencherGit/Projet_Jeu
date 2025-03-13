@@ -6,19 +6,30 @@
 #include "Menu.h"
 #include "globalobjects.h"
 
-int main() {
-    //SFX sfx;
-    //Music music;
-    //music.setVolume(500);
-    //music.playMusic("MainMenu.wav");
-    //sfx.playSFX("Select.wav");
-    //music.playMusic("OceanWorld.wav");
+int main() 
+{
+	//-------------------section port série-------------------
+    /*char com_port[] = "\\\\.\\COM8";
+    DWORD COM_BAUD_RATE = CBR_9600;
+    SimpleSerial Serial(com_port, COM_BAUD_RATE);
+
+    if (Serial.IsConnected()) {
+        //do whatever
+    }
+    int reply_wait_time = 7;
+    string syntax_type = "JSON";
+
+    while (1)
+    {
+        string incoming = Serial.ReadSerialPort(reply_wait_time, syntax_type);
+        cout << incoming << endl;
+    }*/
+    //-------------------section port série-------------------
     setConsoleSize();
     loadsettings();
     Gerer_Menu menu;
     menu.peser();
-    //Interface game;
-    //game.executionJeu();
+ 
 
     return 0;
 }

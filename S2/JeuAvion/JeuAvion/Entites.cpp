@@ -1102,6 +1102,19 @@ void TempBullet::update()
 		moveTimer = 0;
 }
 
+Mortar::Mortar(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
+{
+	symbole = 'O';
+	ammoType = MORTAR;
+	hauteur = 1;
+	largeur = 1;
+	nbVies = 0;
+}
+
+void Mortar::update()
+{
+}
+
 
 //******************************** classe obstacle ***********************************
 
@@ -1148,6 +1161,4 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	symbole = 'a';
 	power_up = ADDBULLETS;
 }
-
-
 

@@ -73,11 +73,11 @@ public:
     void restart();
     void cercleTir(int angle, int x, int y);
 	void cercleExplosion(int angle, int x, int y);
-    void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);
+    void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y, int angleStart = 0);
     void randomTir(int x, int  y);
     void randomCibleTir(int x, int y); 
     void joueurTir(Joueur* quelJoueur);
-	void readSerial();
+    void readSerial();
 };
 
 #endif // INTERFACE_H

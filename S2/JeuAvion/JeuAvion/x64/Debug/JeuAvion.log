@@ -1,29 +1,154 @@
 ﻿  Entites.cpp
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Entites.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(50,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(51,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(52,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(53,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(61,11): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(62,11): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(636,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(637,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(645,11): warning C4552: '+': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(650,11): warning C4552: '-': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(656,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(657,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(813,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(822,11): warning C4552: '+': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(827,11): warning C4552: '-': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(833,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(834,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(846,20): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(853,20): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(947,27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1046,44): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1047,44): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1081,45): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1082,45): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(50,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(51,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(52,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(53,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(61,11): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(62,11): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(636,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(637,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(645,11): warning C4552: '+': result of expression not used
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(650,11): warning C4552: '-': result of expression not used
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(656,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(657,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(813,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(822,11): warning C4552: '+': result of expression not used
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(827,11): warning C4552: '-': result of expression not used
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(833,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(834,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(846,20): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(853,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(947,27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1046,44): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1047,44): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1081,45): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1082,45): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Interface.cpp
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'Interface.cpp')
+  
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(91,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(142,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(327,32): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(598,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(598,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(633,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(633,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(640,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(640,44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(646,78): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(646,64): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(647,60): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(647,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(649,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(649,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(654,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(654,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(660,77): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(660,63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(661,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(661,45): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(663,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(663,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(680,85): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(680,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(681,85): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(681,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(686,81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(686,55): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(752,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(753,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(771,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(771,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(818,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(818,59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(833,93): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(833,65): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(837,99): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(837,71): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(841,96): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(841,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(855,58): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(855,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1060,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1089,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:             _Ty=int
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         ]
+  (compiling source file 'Interface.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+      the template instantiation context (the oldest one first) is
+          C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(33,30):
+          see reference to function template instantiation 'std::unique_ptr<Joueur,std::default_delete<Joueur>> std::make_unique<Joueur,int,int,0>(int &&,int &&)' being compiled
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'Interface.cpp')
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  (compiling source file 'Interface.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+      the template instantiation context (the oldest one first) is
+          C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(594,50):
+          see reference to function template instantiation 'std::unique_ptr<angleBullet,std::default_delete<angleBullet>> std::make_unique<angleBullet,float,float,double&,char,bool,0>(float &&,float &&,double &,char &&,bool &&)' being compiled
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244: 'argument': conversion from '_Ty' to 'int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:             _Ty=double
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56): warning C4244:         ]
+  (compiling source file 'Interface.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+      the template instantiation context (the oldest one first) is
+          C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(606,39):
+          see reference to function template instantiation 'std::unique_ptr<angleBullet,std::default_delete<angleBullet>> std::make_unique<angleBullet,float,float,double,char,bool,0>(float &&,float &&,double &&,char &&,bool &&)' being compiled
+  
+  JeuAvion.cpp
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'JeuAvion.cpp')
+  
+  Menu.cpp
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'Menu.cpp')
+  
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(30,5): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(43,7): warning C4805: '==': unsafe mix of type 'double' and type 'bool' in operation
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(29,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(119,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(191,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(260,7): warning C4101: 'touche_peser': unreferenced local variable
+C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(333,7): warning C4101: 'touche_peser': unreferenced local variable
+  Generating Code...
+sfml-system-s-d.lib(Utils.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Utils.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(FileInputStream.obj)' or at ''; linking object as if no debug info
+flacd.lib(window.obj) : warning LNK4099: PDB '' was not found with 'flacd.lib(window.obj)' or at ''; linking object as if no debug info
+vorbisencd.lib(vorbisenc.obj) : warning LNK4099: PDB '' was not found with 'vorbisencd.lib(vorbisenc.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(mdct.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(mdct.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(envelope.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(envelope.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(lsp.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(lsp.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(psy.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(psy.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(info.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(info.obj)' or at ''; linking object as if no debug info
+vorbisd.lib(sharedbook.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(sharedbook.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(AudioDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(AudioDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Miniaudio.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Miniaudio.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(MiniaudioUtils.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(MiniaudioUtils.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(PlaybackDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(PlaybackDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Sound.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Sound.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundBuffer.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundBuffer.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(InputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(InputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(OutputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(OutputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileFactory.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileFactory.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderMp3.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderMp3.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderWav.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterWav.obj)' or at ''; linking object as if no debug info
+  JeuAvion.vcxproj -> C:\Users\simon\Documents\Ecole\S2\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

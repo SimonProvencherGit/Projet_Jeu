@@ -338,8 +338,7 @@ void Interface::progressionDifficulte()
     
     if (score1 < 600)
     {
-        
-       if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+       /*if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague 
             enemySpawn(1, ARTILLEUR);
@@ -354,9 +353,9 @@ void Interface::progressionDifficulte()
 
             
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
-        }
+        }*/
 
-        /*if (boss3)
+        if (boss3)
             if (boss3->posX > 0 && boss3->posY > 0)
                 for (auto& e : listEntites)
                     e->getPosBoss3(boss3->posX + boss3->largeur / 2 -1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
@@ -380,7 +379,7 @@ void Interface::progressionDifficulte()
 
                 enemySpawnTimer = 0;
             }
-        }*/
+        }
 
     }
     else if (score1 >= 600 && score1 < 1300)
@@ -678,14 +677,12 @@ void Interface::updateEntites()
                     {
                         if (e->nbVies < 200 && e->nbVies >= 90)
                         {
-                            balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                            balayageTir(1, 5, e->posX + e->largeur / 2 + 4, e->posY + e->hauteur / 2);
+                            balayageTir(1, 5, e->posX + e->largeur / 2 - 4, e->posY + e->hauteur / 2, 180);
                         }
                         else if (e->nbVies < 90)
                         {
-                            if (e->moveTimer % 110 == 0)
-                            {
-                                cercleTir(5, e->posX + e->largeur / 2 - 10, e->posY + e->hauteur / 2);
-                            }
+                            
                             balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                         }
                         angleTirBoss += 5;
@@ -733,10 +730,10 @@ void Interface::cercleExplosion(int angle, int x, int y)
         bufferBulletsUpdate.emplace_back(make_unique<TempBullet>(x, y, i, false));
 }
 
-void Interface::balayageTir(int nbBranches, int vitesseAngulaire, int x, int y)
+void Interface::balayageTir(int nbBranches, int vitesseAngulaire, int x, int y, int angleStart)
 {
     for (int i = 0; i < 360; i += 360 / nbBranches)
-        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angleTirBoss + i, 'o', false));
+        bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angleStart + angleTirBoss + i, 'o', false));
 
     angleTirBoss += vitesseAngulaire;
     if (angleTirBoss >= 360)
@@ -909,22 +906,22 @@ int Interface::customPoints(typeEnnemis e)
     switch (e)
     {
     case BASIC:
-        return 10;
+        return 15;
         break;
     case TANK:
-        return 20;
+        return 25;
         break;
     case ARTILLEUR:
-        return 25;
+        return 30;
         break;
     case DIVEBOMBER:
         return 20;
         break;
     case ZAPER:
-        return 30;
+        return 35;
         break;
     case AIMBOT:
-        return 30;
+        return 35;
         break;
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);

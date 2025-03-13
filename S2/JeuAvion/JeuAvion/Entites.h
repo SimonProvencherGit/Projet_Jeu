@@ -286,6 +286,13 @@ public:
 	void update();    //gere le deplacement de la balle
 };
 
+class Mortar : public Bullet
+{
+public:
+	Mortar(float x, float y, bool isPlayerBullet);
+	void update();    //gere le deplacement de la balle
+};
+
 //-----------------------------------------------------------  classes Obstacle -----------------------------------------------------------
 
 class Obstacle : public Entite
