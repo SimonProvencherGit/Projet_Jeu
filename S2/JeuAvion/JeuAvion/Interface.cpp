@@ -596,7 +596,7 @@ void Interface::updateEntites()
             }
             else if (e->getTypeEnnemi() == EXPLODER && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
             {
-                cercleTir(5, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                cercleExplosion(5, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 				e->enVie = false;
             }
 			else if (e->getTypeEnnemi() == TURRET && e->moveTimer % e->shootCooldown == 0 && e->shoots)
@@ -727,6 +727,12 @@ void Interface::cercleTir(int angle, int x, int y)
         bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, i, 'o', false));
 }
 
+void Interface::cercleExplosion(int angle, int x, int y)
+{
+    for (int i = 0; i <= 360; i += angle)
+        bufferBulletsUpdate.emplace_back(make_unique<TempBullet>(x, y, i, false));
+}
+
 void Interface::balayageTir(int nbBranches, int vitesseAngulaire, int x, int y)
 {
     for (int i = 0; i < 360; i += 360 / nbBranches)
@@ -827,7 +833,7 @@ void Interface::gererCollisions()
 
                                 score1 += customPoints(e2->getTypeEnnemi());
                                 if(e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
-									cercleTir(5, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
+                                    cercleExplosion(5, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
 
                                 if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
                                 {

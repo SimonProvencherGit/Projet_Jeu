@@ -686,7 +686,7 @@ Exploder::Exploder(float x, float y) : Ennemi(x, y)
 	hauteur = 3;
 	largeur = 5;
 	shoots = false;
-	ammoType = ANGLE;
+	ammoType = TEMP;
 	shootCooldown = 1;
 }
 
@@ -1062,6 +1062,47 @@ void angleBullet::update()
 		moveTimer = 0;
 }
 
+TempBullet::TempBullet(float x, float y, int angle, bool isPlayerBullet) : angleBullet(x, y, angle, symbole, isPlayerBullet)
+{
+	typeEntite = BULLET;
+	ammoType = TEMP;
+	direction = angle;
+	distBullet = 0;
+}
+
+void TempBullet::update()
+{
+	if (distBullet < 45)
+	{
+		if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
+		{
+			if (bulletAllie)
+			{
+				posX += cos((direction * 2 * PI) / 360) * 1.2;
+				posY += sin((direction * 2 * PI) / 360) * 1.2;
+			}
+			else
+			{
+				posX += cos((direction * 2 * PI) / 360);
+				posY += sin((direction * 2 * PI) / 360) / 2;
+			}
+		}
+
+		if (posY >= HEIGHT + 1 || posY <= 0 || posX >= WIDTH || posX <= 0)
+			enVie = false;
+
+		distBullet++;
+	}
+	else
+		enVie = false;
+
+	moveTimer++;
+
+	if (moveTimer >= 100)
+		moveTimer = 0;
+}
+
+
 //******************************** classe obstacle ***********************************
 
 Obstacle::Obstacle(float x, float y, int longueur, int larg, int vie) : Entite(x, y, '#', 3, 1)
@@ -1107,4 +1148,6 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	symbole = 'a';
 	power_up = ADDBULLETS;
 }
+
+
 

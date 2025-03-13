@@ -72,6 +72,7 @@ public:
     //void gererCollisionsPowerUp();
     void restart();
     void cercleTir(int angle, int x, int y);
+	void cercleExplosion(int angle, int x, int y);
     void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);
     void randomTir(int x, int  y);
     void randomCibleTir(int x, int y); 
