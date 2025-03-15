@@ -171,6 +171,10 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 	hauteur = 2;
 	largeur = 4;
 	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
+
+	//pngImg.load("plane.png");
+	//image = new QGraphicsPixmapItem(pngImg);
+
 }
 
 void BasicEnnemi::update()
@@ -679,6 +683,14 @@ BasicBullet::BasicBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, i
 	hauteur = 1;
 	largeur = 1;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
+	
+	gif = new QMovie("Textures\\bullets\\basicbullet.gif");
+	label = new QLabel;
+
+	label->setMovie(gif);
+	gif->start();
+	label->setAttribute(Qt::WA_TranslucentBackground);
+	GameScene->addWidget(label);
 }
 
 void BasicBullet::update()
@@ -686,7 +698,7 @@ void BasicBullet::update()
 	if (bulletAllie)
 	{
 		if (moveTimer % 1 == 0) {       //on va pouvoir changer la vitesse de la bullet dependant du modulo
-			posY--;
+			posY-= 10;
 			if (posY < 0)
 				enVie = false;
 		}
@@ -694,7 +706,7 @@ void BasicBullet::update()
 	else    //c'est une bullet ennemi
 	{
 		if (moveTimer % 1 == 0) {       //on peut aussi ajuster la vitesse des bullets ennemis
-			posY++;
+			posY+=10;
 			if (posY >= HEIGHT + 1)
 				enVie = false;
 		}
@@ -703,6 +715,8 @@ void BasicBullet::update()
 
 	if (moveTimer >= 100)
 		moveTimer = 0;
+
+	label->move(posX, posY);
 }
 
 FragmentingBullet::FragmentingBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
