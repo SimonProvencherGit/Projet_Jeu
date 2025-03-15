@@ -44,7 +44,7 @@ void loadsettings() {
         inFile.close();
     }
     else {
-        std::cout << "Erreur aucun fichier trouvé, réinitialisation des réglages" << std::endl;
+        std::cout << "Erreur aucun fichier trouvï¿½, rï¿½initialisation des rï¿½glages" << std::endl;
         savesettings();
     }
 }
