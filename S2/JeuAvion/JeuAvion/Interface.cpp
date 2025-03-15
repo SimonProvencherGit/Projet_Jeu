@@ -338,7 +338,7 @@ void Interface::progressionDifficulte()
     
     if (score1 < 600)
     {
-       /*if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+       if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague 
             enemySpawn(1, ARTILLEUR);
@@ -353,9 +353,9 @@ void Interface::progressionDifficulte()
 
             
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
-        }*/
+        }
 
-        if (boss3)
+        /*if (boss3)
             if (boss3->posX > 0 && boss3->posY > 0)
                 for (auto& e : listEntites)
                     e->getPosBoss3(boss3->posX + boss3->largeur / 2 -1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
@@ -379,7 +379,7 @@ void Interface::progressionDifficulte()
 
                 enemySpawnTimer = 0;
             }
-        }
+        }*/
 
     }
     else if (score1 >= 600 && score1 < 1300)
@@ -529,7 +529,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;
         }
     }
-    else if (score1 >= memScore + 850 && score1 < memScore + 1600 && boss2Spawned)
+    else if (score1 >= memScore + 850 && score1 < memScore + 1500 && boss2Spawned)
     {
         if (enemySpawnTimer >= 100 || cbVivant() < 4)
         {
@@ -546,7 +546,30 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore + 1600 && score1 < memScore + 2400 && boss2Spawned && !boss3Spawned)
     {
+        if (boss3)
+            if (boss3->posX > 0 && boss3->posY > 0)
+                for (auto& e : listEntites)
+                    e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
 
+        if (spawnPowerUpStart)
+        {
+            spawnPowerUpStart = false;
+            //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+            //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
+            enemySpawn(1, BOSS3_MAIN);
+        }
+        if (boss3 != nullptr)
+        {
+            if (enemySpawnTimer >= 32 && !allSideBossSpawned)
+            {
+                nbPass++;
+                if (nbPass <= 5)
+                    enemySpawn(1, BOSS3_SIDE);
+                else
+                    allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
+
+                enemySpawnTimer = 0;
+            }
     }
     
 }
@@ -818,8 +841,8 @@ void Interface::gererCollisions()
                         if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
                             if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
-                                for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
-                                    bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
+                                for (int i = 80; i < 110; i += 10)
+                                    bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2, e2->posY + 1, i, '|', false));
 
                             e2->perdVie(1);
                             if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme

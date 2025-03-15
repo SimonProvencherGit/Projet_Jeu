@@ -8,7 +8,7 @@
 
 int main() 
 {
-	//-------------------section port série-------------------
+	//-------------------section port sï¿½rie-------------------
     /*char com_port[] = "\\\\.\\COM8";
     DWORD COM_BAUD_RATE = CBR_9600;
     SimpleSerial Serial(com_port, COM_BAUD_RATE);
@@ -24,7 +24,7 @@ int main()
         string incoming = Serial.ReadSerialPort(reply_wait_time, syntax_type);
         cout << incoming << endl;
     }*/
-    //-------------------section port série-------------------
+    //-------------------section port sï¿½rie-------------------
     setConsoleSize();
     loadsettings();
     Gerer_Menu menu;
