@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
 
     QTimer timer;
-    QObject::connect(&timer, &QTimer::timeout, [&]() { jeux.executionJeu(1); });
+    QObject::connect(&timer, &QTimer::timeout, [&]() { jeux.executionJeu(0); });
     timer.start(16); // ~60 FPS (16 ms per frame)
 
     return app.exec();

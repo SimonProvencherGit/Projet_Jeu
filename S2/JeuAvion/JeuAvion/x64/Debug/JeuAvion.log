@@ -4,6 +4,8 @@
 C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(993,19): warning C4129: 'T': unrecognized character escape sequence
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(993,19): warning C4129: 'S': unrecognized character escape sequence
   JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

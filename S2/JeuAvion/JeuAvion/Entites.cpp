@@ -77,6 +77,8 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
+	hauteur = 250/4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
+	largeur = 290/4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	nbVies = 10;
 	attkDmg = 1;
 	vitesse = 1;
@@ -131,6 +133,7 @@ void Joueur::update()
 
 	//if (shootTimer > 0)
 		//shootTimer--;
+	player1->setPos(posX, posY);// update image du joueur
 }
 
 

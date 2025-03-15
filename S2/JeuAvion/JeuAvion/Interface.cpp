@@ -1,6 +1,7 @@
 #include "Interface.h"
 #include <qdir.h>
 #include <QPropertyAnimation>
+#include <qparallelanimationgroup.h>
 bool firststart = true;
 
 Interface::Interface()
@@ -31,9 +32,10 @@ Interface::Interface()
     nbJoueur = 1;
     //nextPup = 0;
 
-    listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
+    listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT));   //ajoute le joueur a la liste d'entites
+    //listEntites.emplace_back(make_unique<Joueur>(0, 0));
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
-
+    joueur->posY = HEIGHT - joueur->hauteur;
     joueur2 = nullptr;
 }
 
@@ -59,10 +61,8 @@ void Interface::gererInput()
                 joueur->posX-=10;
         }
         if (GetAsyncKeyState('D') < 0) {
-            if (joueur->posX < WIDTH)
+            if (joueur->posX < WIDTH-joueur->largeur)
                 joueur->posX += 10;
-            else if (joueur->posX < WIDTH)
-                joueur->posX+=10;
         }
 
         if (GetAsyncKeyState('W') < 0)
@@ -70,8 +70,9 @@ void Interface::gererInput()
                 joueur->posY -= 10;
 
         if (GetAsyncKeyState('S') < 0)
-            if (joueur->posY < HEIGHT)
+            if (joueur->posY < HEIGHT - joueur->hauteur)      //le joueur a acces au 9/10 de l'ecran
                 joueur->posY += 10;
+
         if (GetAsyncKeyState(VK_SPACE) < 0)
         {
             if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
@@ -172,6 +173,11 @@ void Interface::gererInput()
 }
 void Interface::joueurTir(Joueur* quelJoueur)
 {
+   /* QMovie* basicbullet = new QMovie("Textures\\bullets\\basicbullet.gif");
+    basicbullet->start();
+    QLabel* labelbasicbullet = new QLabel;
+    labelbasicbullet->setMovie(basicbullet);
+    labelbasicbullet->move(1, 2);*/
     switch (quelJoueur->nbBulletTir)
     {
     case 1:
@@ -491,7 +497,6 @@ void Interface::updateEntites()
             }
 
             e->update();    //on met a jour chaque entite
-            player1->setPos(joueur->posX, joueur->posY);
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
@@ -985,47 +990,56 @@ void Interface::enleverEntites()
     }
 }
 
-
+string location = "\Textures\Scenery";
 //execution du jeu
 void Interface::executionJeu(int version)
 
 {
     if (firststart)
     {
-      //Animation du Background qui bouge
-        QMovie* background1 = new QMovie("water.gif");
-        QMovie* background2 = new QMovie("water.gif");
 
+
+      //Animation du Background qui bouge
+        QMovie* background1 = new QMovie("Textures\\Scenery\\water.gif");
+        QMovie* background2 = new QMovie("Textures\\Scenery\\water.gif");
+        qDebug() << "Current working directory: " << QDir::currentPath();
         QLabel* labelBackground1 = new QLabel;
         QLabel* labelBackground2 = new QLabel;
 
         labelBackground1->setMovie(background1);
         labelBackground2->setMovie(background2);
-
+        QTimer::singleShot(0, [&]() {
         background1->start();
         background2->start();
+            });
+
 
         labelBackground1->setFixedSize(2560, 1440);
         labelBackground2->setFixedSize(2560, 1440);
 
         
-        labelBackground1->move(-500, -1700);
-        labelBackground2->move(-500, -300);
+        labelBackground1->move(-500, -1440);
+        labelBackground2->move(-500, 0);
         QPropertyAnimation* animation1 = new QPropertyAnimation(labelBackground1, "geometry");
-        animation1->setDuration(5000); 
+        animation1->setDuration(10000); 
         animation1->setStartValue(QRect(labelBackground1->x(), labelBackground1->y(), labelBackground1->width(), labelBackground1->height()));
-        animation1->setEndValue(QRect(labelBackground1->x(), labelBackground1->y() + 1700, labelBackground1->width(), labelBackground1->height()));
+        animation1->setEndValue(QRect(labelBackground1->x(), labelBackground1->y() + 1440, labelBackground1->width(), labelBackground1->height()));
 
         QPropertyAnimation* animation2 = new QPropertyAnimation(labelBackground2, "geometry");
-        animation2->setDuration(5000); 
+        animation2->setDuration(10000); 
         animation2->setStartValue(QRect(labelBackground2->x(), labelBackground2->y(), labelBackground2->width(), labelBackground2->height()));
-        animation2->setEndValue(QRect(labelBackground2->x(), labelBackground2->y() + 1700, labelBackground2->width(), labelBackground2->height()));
+        animation2->setEndValue(QRect(labelBackground2->x(), labelBackground2->y() + 1440, labelBackground2->width(), labelBackground2->height()));
+
 
         animation1->setLoopCount(-1); 
         animation2->setLoopCount(-1); 
 
-        animation1->start();
-        animation2->start();
+        QParallelAnimationGroup * group = new QParallelAnimationGroup;
+        group->addAnimation(animation1);
+        group->addAnimation(animation2);
+
+        group->setLoopCount(-1);
+        group->start();
         GameScene->addWidget(labelBackground1);
         GameScene->addWidget(labelBackground2);
 
