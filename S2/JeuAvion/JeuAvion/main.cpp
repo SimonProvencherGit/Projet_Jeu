@@ -6,7 +6,7 @@
 Interface jeux;
 
    // Global variables for the scene and shapes
-
+//
 
 QGraphicsEllipseItem* circle;
 int frameCount = 0;
