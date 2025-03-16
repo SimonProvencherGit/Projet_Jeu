@@ -35,9 +35,14 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 
 
 
-bool Entite::enCollision(int px, int py)
+bool Entite::enCollision(int px, int py, int larg, int haut)
 {
-	if (px >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < (posY + hauteur))       // on fait une collision si les entites sont a la meme position (+ - 1 pour amelirer la detection)
+	//if (px + larg >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < (posY + hauteur))		//ancienne facon de verifier les collisions
+
+	if (posX < px + larg &&         // Le bord gauche de l'entité A est à gauche du bord droit de B
+		posX + largeur > px + 5 &&      // Le bord droit de l'entité A est à droite du bord gauche de B
+		posY < py + haut &&         // Le bord supérieur de l'entité A est au-dessus du bord inférieur de B
+		posY + hauteur > py + 15)        // Le bord inférieur de l'entité A est en dessous du bord supérieur de B
 		return 1;
 
 	return 0;
@@ -214,8 +219,8 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	symbole = 'V';
 	nbVies = 3;
 	typeEnnemi = DIVEBOMBER;
-	hauteur = 4;
-	largeur = 2;
+	hauteur = 93;
+	largeur = 52;
 	shoots = false;
 
 	if (p1EnVie == true && p2EnVie == true)
@@ -227,20 +232,30 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	else
 		joueurRand = 0;
 
+	QPixmap pngImg("Textures\\Ennemis\\diveBomber.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->show();
+
 }
 
 
 //le diveBomber est kamikaze qui va directement vers le joueur
 void DiveBomber::update()
 {
-	if (moveTimer % 2 == 0)         //on peut ajuster la vitesse en x du diveBomber
-	{
+	//if (moveTimer % 2 == 0)         //on peut ajuster la vitesse en x du diveBomber
+	//{
 		if (p1EnVie && !p2EnVie)		//si juste p1 est viant
 		{
-			if (posX < xJoueur)
-				posX++;
+			if (posX > xJoueur - 10 && posX < xJoueur + 10)
+			{
+				//posx ne change pas car il est deja aligne avec le joueur
+			}
+			else if (posX < xJoueur)
+				posX+=5;
 			else if (posX > xJoueur)
-				posX--;
+				posX-=5;
 		}
 		else if (p1EnVie && p2EnVie)
 		{
@@ -248,35 +263,37 @@ void DiveBomber::update()
 			if (joueurRand == 0)
 			{
 				if (posX < xJoueur)
-					posX++;
+					posX+=5;
 				else if (posX > xJoueur)
-					posX--;
+					posX-=5;
 			}
 			else if (joueurRand == 1)
 			{
 				if (posX < xJoueur2)
-					posX++;
+					posX+=5;
 				else if (posX > xJoueur2)
-					posX--;
+					posX-=5;
 			}
 		}
 		else if (!p1EnVie && p2EnVie)
 		{
 			if (posX < xJoueur2)
-				posX++;
+				posX+=5;
 			else if (posX > xJoueur2)
-				posX--;
+				posX-=5;
 		}
-	}
-	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
-	{
-		posY++;
-	}
+	//}
+	//if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
+	//{
+		posY+=10;
+	//}
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
 	if (posY >= HEIGHT)     //si l'ennemi atteint le bas de l'ecran is meurt
 		enVie = false;
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 Tank::Tank(float x, float y) : Ennemi(x, y)
@@ -335,18 +352,18 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 
 void Artilleur::update()
 {
-	if (posY <= (HEIGHT / 15) + posRand && moveTimer % 8 == 0)
-		posY++;
+	if (posY <= (HEIGHT / 10) + posRand*10 && moveTimer % 8 == 0)
+		posY+=2;
 
-	if (moveTimer % 50 == 0)
-	{
+	//if (moveTimer % 50 == 0)
+	//{
 		if (posX <= 1 || posX + largeur >= WIDTH - 1)
 			direction = 1 - direction; // Change de Direction
 		if (direction == 0)
 			posX -= 1;
 		else
 			posX += 1; // Bouger a gauche ou a droite
-	}
+	//}
 
 	moveTimer++;
 	image->setPos(posX, posY);
@@ -908,18 +925,26 @@ PowerUp::PowerUp(float x, float y, typePowerUp type) : Entite(x, y, '$', 2, 2)
 	typeEntite = POWERUP;
 	power_up = type;
 	symbole = '$';
-	hauteur = 2;
-	largeur = 3;
+	hauteur = 50;
+	largeur = 50;
+
+	QPixmap pngImg("Textures\\Pup\\addLife.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(2);
+	image->show();
 }
 
 void PowerUp::update()
 {
-	if (moveTimer % 30 == 0 && posY < HEIGHT)
-		posY++;
+	if (posY < HEIGHT)
+		posY+= 1;
 	else if (posY >= HEIGHT)
 		enVie = false;
 
 	moveTimer++;
+	image->setPos(posX, posY);
 }
 
 AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
