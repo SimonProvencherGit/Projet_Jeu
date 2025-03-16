@@ -211,7 +211,7 @@ void Interface::explosion()
     }
 
     if (explosionPosY > 0)
-        explosionPosY--;
+        explosionPosY-=5;
     else
         enExplosion = false;
 }
@@ -336,7 +336,7 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
-            // enemySpawn(1, DIVEBOMBER);
+            enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
 
@@ -1049,6 +1049,11 @@ void Interface::executionJeu(int version)
         GameScene->addWidget(labelBackground1);
         GameScene->addWidget(labelBackground2);*/
 
+        QPixmap pngImg("Textures\\Scenery\\water.png");
+        QGraphicsPixmapItem* img = new QGraphicsPixmapItem(pngImg);
+        GameScene->addItem(img);
+        img->setScale(0.75);
+        img->show();
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();

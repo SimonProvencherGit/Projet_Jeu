@@ -214,8 +214,8 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	symbole = 'V';
 	nbVies = 3;
 	typeEnnemi = DIVEBOMBER;
-	hauteur = 4;
-	largeur = 2;
+	hauteur = 93;
+	largeur = 52;
 	shoots = false;
 
 	if (p1EnVie == true && p2EnVie == true)
@@ -227,20 +227,30 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	else
 		joueurRand = 0;
 
+	QPixmap pngImg("Textures\\Ennemis\\diveBomber.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->show();
+
 }
 
 
 //le diveBomber est kamikaze qui va directement vers le joueur
 void DiveBomber::update()
 {
-	if (moveTimer % 2 == 0)         //on peut ajuster la vitesse en x du diveBomber
-	{
+	//if (moveTimer % 2 == 0)         //on peut ajuster la vitesse en x du diveBomber
+	//{
 		if (p1EnVie && !p2EnVie)		//si juste p1 est viant
 		{
-			if (posX < xJoueur)
-				posX++;
+			if (posX > xJoueur - 10 && posX < xJoueur + 10)
+			{
+				//posx ne change pas car il est deja aligne avec le joueur
+			}
+			else if (posX < xJoueur)
+				posX+=5;
 			else if (posX > xJoueur)
-				posX--;
+				posX-=5;
 		}
 		else if (p1EnVie && p2EnVie)
 		{
@@ -248,35 +258,37 @@ void DiveBomber::update()
 			if (joueurRand == 0)
 			{
 				if (posX < xJoueur)
-					posX++;
+					posX+=5;
 				else if (posX > xJoueur)
-					posX--;
+					posX-=5;
 			}
 			else if (joueurRand == 1)
 			{
 				if (posX < xJoueur2)
-					posX++;
+					posX+=5;
 				else if (posX > xJoueur2)
-					posX--;
+					posX-=5;
 			}
 		}
 		else if (!p1EnVie && p2EnVie)
 		{
 			if (posX < xJoueur2)
-				posX++;
+				posX+=5;
 			else if (posX > xJoueur2)
-				posX--;
+				posX-=5;
 		}
-	}
-	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
-	{
-		posY++;
-	}
+	//}
+	//if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
+	//{
+		posY+=10;
+	//}
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
 	if (posY >= HEIGHT)     //si l'ennemi atteint le bas de l'ecran is meurt
 		enVie = false;
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 Tank::Tank(float x, float y) : Ennemi(x, y)
@@ -335,18 +347,18 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 
 void Artilleur::update()
 {
-	if (posY <= (HEIGHT / 15) + posRand && moveTimer % 8 == 0)
-		posY++;
+	if (posY <= (HEIGHT / 10) + posRand*10 && moveTimer % 8 == 0)
+		posY+=2;
 
-	if (moveTimer % 50 == 0)
-	{
+	//if (moveTimer % 50 == 0)
+	//{
 		if (posX <= 1 || posX + largeur >= WIDTH - 1)
 			direction = 1 - direction; // Change de Direction
 		if (direction == 0)
 			posX -= 1;
 		else
 			posX += 1; // Bouger a gauche ou a droite
-	}
+	//}
 
 	moveTimer++;
 	image->setPos(posX, posY);
