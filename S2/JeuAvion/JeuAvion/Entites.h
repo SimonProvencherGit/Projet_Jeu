@@ -50,7 +50,7 @@ public:
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;
     void perdVie(int nbVie);
-    virtual bool enCollision(int px, int py);  // retourne vrai si px et py sont egaux au x et y de l'entite
+    virtual bool enCollision(int px, int py, int larg, int haut);  // retourne vrai si px et py sont egaux au x et y de l'entite
     virtual void getPosJoueurs(float x1, float y1, bool p1Alive, float x2 = 0, float y2 = 0, bool P2Alive = false);
     virtual typeEnnemis getTypeEnnemi();
 };

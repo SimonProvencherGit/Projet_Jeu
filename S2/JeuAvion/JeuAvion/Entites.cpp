@@ -35,9 +35,14 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 
 
 
-bool Entite::enCollision(int px, int py)
+bool Entite::enCollision(int px, int py, int larg, int haut)
 {
-	if (px >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < (posY + hauteur))       // on fait une collision si les entites sont a la meme position (+ - 1 pour amelirer la detection)
+	//if (px + larg >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < (posY + hauteur))		//ancienne facon de verifier les collisions
+
+	if (posX < px + larg &&         // Le bord gauche de l'entité A est à gauche du bord droit de B
+		posX + largeur > px + 5 &&      // Le bord droit de l'entité A est à droite du bord gauche de B
+		posY < py + haut &&         // Le bord supérieur de l'entité A est au-dessus du bord inférieur de B
+		posY + hauteur > py + 15)        // Le bord inférieur de l'entité A est en dessous du bord supérieur de B
 		return 1;
 
 	return 0;
@@ -920,18 +925,26 @@ PowerUp::PowerUp(float x, float y, typePowerUp type) : Entite(x, y, '$', 2, 2)
 	typeEntite = POWERUP;
 	power_up = type;
 	symbole = '$';
-	hauteur = 2;
-	largeur = 3;
+	hauteur = 50;
+	largeur = 50;
+
+	QPixmap pngImg("Textures\\Pup\\addLife.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(2);
+	image->show();
 }
 
 void PowerUp::update()
 {
-	if (moveTimer % 30 == 0 && posY < HEIGHT)
-		posY++;
+	if (posY < HEIGHT)
+		posY+= 1;
 	else if (posY >= HEIGHT)
 		enVie = false;
 
 	moveTimer++;
+	image->setPos(posX, posY);
 }
 
 AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)

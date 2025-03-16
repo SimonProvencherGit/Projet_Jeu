@@ -328,7 +328,7 @@ void Interface::progressionDifficulte()
     if (score1 < 600)
     {
 
-        if (enemySpawnTimer >= 100 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+        if (enemySpawnTimer >= 200 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
        // if (enemySpawnTimer >= 100) //pour des tests
        {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
@@ -343,7 +343,7 @@ void Interface::progressionDifficulte()
             if (spawnPowerUpStart)
             {
                 spawnPowerUpStart = false;
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 5);
+                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
@@ -351,7 +351,7 @@ void Interface::progressionDifficulte()
     }
     if (score1 >= 600 && score1 < 1300)
     {
-        if (enemySpawnTimer >= 25)          //on fait spawn une vague d'ennemis a toutes les 60 frames
+        if (enemySpawnTimer >= 50)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
             //enemySpawn(3, BASIC);   //on fait spawn 4 ennemis a chaque vague
             enemySpawn(5, DIVEBOMBER);
@@ -621,7 +621,7 @@ void Interface::gererCollisions()
     {
         if (e->enVie)
         {
-            if (e->enCollision(joueur->posX, joueur->posY) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+            if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
             {
                 if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                 {
@@ -668,7 +668,7 @@ void Interface::gererCollisions()
                 {
                     if (e2->enVie)
                     {
-                        if (e2->enVie && e2->enCollision(e->posX, e->posY) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+                        if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
                             if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
                                 for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
@@ -702,7 +702,7 @@ void Interface::gererCollisions()
         {
             if (e->enVie)
             {
-                if (e->enCollision(joueur2->posX, joueur2->posY) && joueur2->invincibleTimer <= 0 && joueur2->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+                if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur2->invincibleTimer <= 0 && joueur2->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
                 {
                     if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                     {
