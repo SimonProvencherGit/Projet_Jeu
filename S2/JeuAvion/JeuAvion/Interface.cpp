@@ -52,7 +52,7 @@ void Interface::gererInput()
             {
                 if (joueur->posX < 10)
                 {
-                    joueur->posX = joueur->posX - joueur->posX;
+					joueur->posX = joueur->posX - joueur->posX;         //wtf is this line
                 }
                 else
                 joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
@@ -497,6 +497,7 @@ void Interface::updateEntites()
             }
 
             e->update();    //on met a jour chaque entite
+
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
@@ -977,13 +978,20 @@ void Interface::enleverEntites()
 {
     for (int i = 0; i < listEntites.size(); i++)
     {
-        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)
+		if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)	 //wtf is this if statement
         {
+            GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
+            delete listEntites[i]->image;
+
             listEntites.erase(listEntites.begin() + i);
             i--;
+			
         }
         else if (!listEntites[i]->enVie && listEntites[i]->isPlayer)
         {
+            GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
+            delete listEntites[i]->image;
+
             listEntites.erase(listEntites.begin() + i);
             i--;
         }
@@ -997,10 +1005,8 @@ void Interface::executionJeu(int version)
 {
     if (firststart)
     {
-
-
       //Animation du Background qui bouge
-        QMovie* background1 = new QMovie("Textures\\Scenery\\water.gif");
+        /*QMovie* background1 = new QMovie("Textures\\Scenery\\water.gif");
         QMovie* background2 = new QMovie("Textures\\Scenery\\water.gif");
         qDebug() << "Current working directory: " << QDir::currentPath();
         QLabel* labelBackground1 = new QLabel;
@@ -1041,7 +1047,7 @@ void Interface::executionJeu(int version)
         group->setLoopCount(-1);
         group->start();
         GameScene->addWidget(labelBackground1);
-        GameScene->addWidget(labelBackground2);
+        GameScene->addWidget(labelBackground2);*/
 
 
         //proxy->setpos(0, 0);

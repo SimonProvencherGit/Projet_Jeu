@@ -45,6 +45,7 @@ public:
     int barrelRollTimer = 0;
     // int nbJoueurs;  
 
+    QGraphicsPixmapItem* image;
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;
