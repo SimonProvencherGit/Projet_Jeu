@@ -44,10 +44,8 @@ public:
     bool isPlayer;
     int barrelRollTimer = 0;
     // int nbJoueurs;  
-	QMovie* gif;
-	QPixmap* pngImg;
+
     QGraphicsPixmapItem* image;
-    QLabel* label;
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;

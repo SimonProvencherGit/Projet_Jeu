@@ -1,6 +1,6 @@
 #include "Entites.h"
 
-Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite)
+Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite)	//constructeur de la classe entite
 {
 	//donne des valeurs par defaut aux variables qui vont etre redefinies dans les classes enfant
 	posX = x;
@@ -30,7 +30,7 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	isPlayer = false;
 	barrelRollTimer = 0;
 	power_up = ADDLIFE;		//par defaut les powerups donnent des vies
-
+	image = nullptr;
 }
 
 
@@ -82,7 +82,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	nbVies = 10;
 	attkDmg = 1;
 	vitesse = 1;
-	shootCooldown = 6;
+	shootCooldown = 8;
 	nbBulletTir = 1;
 	shootTimer = 0;
 	bulletAllie = true;
@@ -168,30 +168,34 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 	shootCooldown = 100;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	//shootTimer = rand() % shootCooldown;   //on set le timer de tir a un nombre aleatoire entre 0 et le cooldown de tir
 	typeEnnemi = BASIC;
-	hauteur = 2;
-	largeur = 4;
+	hauteur = 235/3;
+	largeur = 230/3;
 	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
 
-	//pngImg.load("plane.png");
-	//image = new QGraphicsPixmapItem(pngImg);
+	QPixmap pngImg("Textures\\Ennemis\\basicEnnemi.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(0.33);
+	//image->setRotation(180);
+	image->show();
 
 }
 
 void BasicEnnemi::update()
 {
-	if (moveTimer % 5 == 0)         //a toute les 5 update on peut bouger en X 
-	{
+	//if (moveTimer % 5 == 0)         //a toute les 5 update on peut bouger en X 
+	//{
 		if (posX <= 1 || posX + largeur >= WIDTH - 1)
 			direction = 1 - direction; // Change de Direction
 
 		if (direction == 0)
-			posX -= 1;
+			posX -= 2;
 		else
-			posX += 1; // Bouger a gauche ou a droite
-	}
+			posX += 2; // Bouger a gauche ou a droite
+	//}
 
-	if (moveTimer % 8 == 0)   //a toute les 8 update on peut bouger en Y
-		posY++;
+	//if (moveTimer % 8 == 0)   //a toute les 8 update on peut bouger en Y
+		posY+=0.40;
 
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
@@ -200,6 +204,8 @@ void BasicEnnemi::update()
 		enVie = false;
 
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 
@@ -313,11 +319,18 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 	symbole = 'H';
 	nbVies = 3;
 	typeEnnemi = ARTILLEUR;
-	hauteur = 2;
-	largeur = 2;
+	hauteur = 149/2.5;
+	largeur = 148/2.5;
 	shootCooldown = 80;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	posRand = rand() % 6;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
 	ammoType = FRAGMENTING;
+
+	QPixmap pngImg("Textures\\Ennemis\\artilleur.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(0.40);
+	//image->setRotation(180);
+	image->show();
 }
 
 void Artilleur::update()
@@ -336,6 +349,7 @@ void Artilleur::update()
 	}
 
 	moveTimer++;
+	image->setPos(posX, posY);
 }
 
 Zaper::Zaper(float x, float y) : Ennemi(x, y)
@@ -546,7 +560,6 @@ void SideBomber::update()
 					enVie = false;
 			}
 
-
 		}
 		else
 		{
@@ -684,13 +697,14 @@ BasicBullet::BasicBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, i
 	largeur = 1;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
 	
-	gif = new QMovie("Textures\\bullets\\basicbullet.gif");
-	label = new QLabel;
+	QPixmap pngImg("Textures\\bullets\\basicbullet.png");			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(0.5);
+	image->setRotation(180);	
+	image->show();
+	//label->setAttribute(Qt::WA_TranslucentBackground);
 
-	label->setMovie(gif);
-	gif->start();
-	label->setAttribute(Qt::WA_TranslucentBackground);
-	GameScene->addWidget(label);
 }
 
 void BasicBullet::update()
@@ -716,7 +730,8 @@ void BasicBullet::update()
 	if (moveTimer >= 100)
 		moveTimer = 0;
 
-	label->move(posX, posY);
+	image->setPos(posX, posY);
+	//label->move(posX, posY);
 }
 
 FragmentingBullet::FragmentingBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
@@ -836,6 +851,13 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 	direction = angle;		//0 a 360 pour les directions possibles
 	bulletAllie = isPlayerBullet;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
+
+	QPixmap pngImg("Textures\\bullets\\basicbullet.png");			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(0.5);
+	image->setRotation(angle+90);		//leave the +90, trust me bro
+	image->show();
 }
 
 
@@ -845,13 +867,13 @@ void angleBullet::update()
 	{
 		if (bulletAllie)
 		{
-			posX += cos((direction * 2 * PI) / 360) * 1.2;
-			posY += sin((direction * 2 * PI) / 360) * 1.2;
+			posX += 10 * cos((direction * 2 * PI) / 360) * 1.2;
+			posY += 10 * sin((direction * 2 * PI) / 360) * 1.2;
 		}
 		else
 		{
-			posX += cos((direction * 2 * PI) / 360);
-			posY += sin((direction * 2 * PI) / 360) / 2;
+			posX += 10 * cos((direction * 2 * PI) / 360);
+			posY += 10 * sin((direction * 2 * PI) / 360) / 2;
 		}
 	}
 
@@ -862,6 +884,8 @@ void angleBullet::update()
 
 	if (moveTimer >= 100)
 		moveTimer = 0;
+
+	image->setPos(posX, posY);
 }
 
 //******************************** classe obstacle ***********************************
