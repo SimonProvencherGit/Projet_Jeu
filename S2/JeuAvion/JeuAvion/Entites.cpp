@@ -98,6 +98,20 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	isPlayer = true;
 	barrelRollTimer = 0;
 
+	QPixmap pngImg("plane.png");
+	qDebug() << "QPixmap is null:" << pngImg.isNull();
+	image = new QGraphicsPixmapItem(pngImg);
+	Originalimage = new QGraphicsPixmapItem(pngImg);
+	
+	image->setScale(0.25);
+	shadow->setOffset(50, 10);       // Set the offset of the shadow (x, y)
+	image->setZValue(1);
+	qDebug() << "Image Z-Value:" << image->zValue();
+	QColor shadowColor(0, 0, 255, 255);
+	image->setPos(0, 0);
+	GameScene->addItem(image);
+	image->show();
+	GameScene->update();
 }
 
 
@@ -138,7 +152,7 @@ void Joueur::update()
 
 	//if (shootTimer > 0)
 		//shootTimer--;
-	player1->setPos(posX, posY);// update image du joueur
+	image->setPos(posX, posY);// update image du joueur
 }
 
 
@@ -182,6 +196,9 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 	Originalimage = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	image->setScale(0.33);
+	shadow->setOffset(50, 10);       // Set the offset of the shadow (x, y)
+	QColor shadowColor(0, 0, 255, 255);
+	image->setGraphicsEffect(shadow);
 	//image->setRotation(180);
 	image->show();
 

@@ -3,7 +3,7 @@
 #include "Menu.h"
 #include "globalobjects.h"
 
-Interface jeux;
+
 
    // Global variables for the scene and shapes
 //
@@ -36,6 +36,20 @@ bool fullscreen = false;
     view->showFullScreen();
     return app.exec();
 }*/
+bool first = true;
+std::unique_ptr<Interface> jeux = nullptr;
+
+void firststart() {
+    if (first) {
+        first = false; // Set first to false after the first run
+        jeux = std::make_unique<Interface>();// Create an instance of a concrete implementation
+    }
+    else {
+        if (jeux) {
+            jeux->executionJeu(0); // Call executionJeu if the object exists
+        }
+    }
+}
  
 
 int main(int argc, char* argv[]) {
@@ -61,7 +75,7 @@ int main(int argc, char* argv[]) {
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
 
     QTimer timer;
-    QObject::connect(&timer, &QTimer::timeout, [&]() { jeux.executionJeu(0); });
+    QObject::connect(&timer, &QTimer::timeout, [&]() { firststart(); });
     timer.start(16); // ~60 FPS (16 ms per frame)
 
     return app.exec();

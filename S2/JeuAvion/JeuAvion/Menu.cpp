@@ -1,4 +1,4 @@
-#include "Menu.h"
+/*#include "Menu.h"
 
 Gerer_Menu menu_principal;
 Jouer jouer;
@@ -457,3 +457,4 @@ void Utilisateur::afficher(int choix_option) {
 void Utilisateur::peser() {
 
 }
+*/

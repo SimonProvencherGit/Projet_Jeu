@@ -22,12 +22,14 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
     for (int y = 0; y < image.height(); ++y) {
         for (int x = 0; x < image.width(); ++x) {
             QColor color = image.pixelColor(x, y);
-            color.setRed((color.red() + color.blue()) / 2); 
-            color.setBlue((color.blue() + color.red()) / 2); 
-            color.setGreen(color.green() / 2);              
+            color.setRed(qBound(0, 1*color.red() + color.blue(), 255));
+            color.setBlue(qBound(0, (10*color.blue() + color.red()) / 2, 255));
+            color.setGreen(qBound(0, 4*color.green() / 2, 255));
+
             image.setPixelColor(x, y, color);
         }
     }
+
     e->flashing = true;
     pixmapItem->setPixmap(QPixmap::fromImage(image));
 
@@ -666,7 +668,7 @@ void Interface::gererCollisions()
                 {
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-
+                    applyPurpleEffect(joueur->image, 100, joueur);
                     //if(!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
@@ -681,7 +683,7 @@ void Interface::gererCollisions()
                     //if (!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
-
+                    applyPurpleEffect(joueur->image, 100, joueur);
                     e->collisionJoueur = true;
                 }
                 else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
@@ -1098,7 +1100,7 @@ void Interface::executionJeu(int version)
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
         //QPixmap pixmap("plane.png");
-       QPixmap pixmap("plane.png");
+     /*  QPixmap pixmap("plane.png");
        player1 = new QGraphicsPixmapItem(pixmap);
 
        // Create a QGraphicsDropShadowEffect
@@ -1111,10 +1113,11 @@ void Interface::executionJeu(int version)
        player1->setGraphicsEffect(shadowEffect);
        player1->setScale(0.25);
        GameScene->addItem(player1);
-       player1->show();
+       player1->show();*/
         hideCursor();
         music.stopMusic();
-        music.playMusic("OceanWorld.wav", 0, 117000);
+        music.playMusic("Space.wav", 74016, 56609);
+        //music.playMusic("OceanWorld.wav", 0, 117000);
         if (version > 0)     //si on a choisi autre chose que le mode seul
         {
             listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
