@@ -10,7 +10,7 @@
 #include <conio.h>  //pour _kbhit()
 #include <string>
 #include "globalobjects.h"
-#include "SimpleSerial.h"
+
 
 
 void setConsoleSize();

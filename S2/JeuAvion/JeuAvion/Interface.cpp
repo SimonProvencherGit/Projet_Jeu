@@ -570,6 +570,7 @@ void Interface::progressionDifficulte()
 
                 enemySpawnTimer = 0;
             }
+        }
     }
     
 }
