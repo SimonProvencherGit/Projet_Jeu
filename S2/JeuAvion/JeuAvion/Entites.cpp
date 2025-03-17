@@ -179,6 +179,7 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 
 	QPixmap pngImg("Textures\\Ennemis\\basicEnnemi.png");
 	image = new QGraphicsPixmapItem(pngImg);
+	Originalimage = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	image->setScale(0.33);
 	//image->setRotation(180);
@@ -234,6 +235,7 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 
 	QPixmap pngImg("Textures\\Ennemis\\diveBomber.png");
 	image = new QGraphicsPixmapItem(pngImg);
+	Originalimage = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->show();
@@ -344,6 +346,7 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 
 	QPixmap pngImg("Textures\\Ennemis\\artilleur.png");
 	image = new QGraphicsPixmapItem(pngImg);
+	Originalimage = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	image->setScale(0.40);
 	//image->setRotation(180);
