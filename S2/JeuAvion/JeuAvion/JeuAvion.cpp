@@ -1,23 +1,23 @@
-// JeuAvion.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// JeuAvion.cpp : 
 //
 
-#include <iostream>
+
 #include "Interface.h"
 #include "Menu.h"
 #include "globalobjects.h"
-#include "SimpleSerial.h"
-#include <json.hpp>
+//#include "SimpleSerial.h"
+//#include <json.hpp>
 
-//using namespace asio;
-using json = nlohmann::json;
+//using json = nlohmann::json;
+                       
 
-int dataManette[6];
 
 int main() 
 {
-	//-------------------section port s�rie-------------------
+    /*
+	//-------------------section port serie-------------------
     // Ouvrir le port série
-    HANDLE hSerial = CreateFile(L"COM5", GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);  // Remplace COM5 par ton port
+	HANDLE hSerial = CreateFile(L"COM3", GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);  // selectionne le port serie
     if (hSerial == INVALID_HANDLE_VALUE) {
         cerr << "Erreur d'ouverture du port série." << endl;
         return 1;
@@ -38,7 +38,7 @@ int main()
     SetCommState(hSerial, &dcbSerialParams);
 
     // Lecture de données série
-    char buffer[52];        //taille du buffer qu'on s'attends de recevoir
+    char buffer[12];        //taille du buffer qu'on s'attends de recevoir
     DWORD bytesRead;
     string response;
 
@@ -71,15 +71,15 @@ int main()
             }
         }
     }
-
+    
     CloseHandle(hSerial);  // Fermer le port série
-
-    //-------------------section port s�rie-------------------
+    */
+    
+    ////-------------------section port serie-------------------
     setConsoleSize();
     loadsettings();
     Gerer_Menu menu;
     menu.peser();
  
-
     return 0;
 }

@@ -29,6 +29,7 @@ Interface::Interface()
     spawnPowerUpStart = true;      //temporaire pour faire spawn powerup au debut du match
     nbJoueur = 1;
     //nextPup = 0;
+    dataManette[6] = {0};
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
@@ -1186,6 +1187,34 @@ void Interface::enleverEntites()
 //execution du jeu
 void Interface::executionJeu(int version)
 {
+	//------------------section port serie---------------------
+    // Ouvrir le port série
+    HANDLE hSerial = CreateFile(L"COM3", GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);  // selectionne le port serie
+    if (hSerial == INVALID_HANDLE_VALUE) {
+        cerr << "Erreur d'ouverture du port série." << endl;
+    }
+
+    // Configurer les paramètres du port série
+    DCB dcbSerialParams = { 0 };
+    dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+    if (!GetCommState(hSerial, &dcbSerialParams)) {
+        cerr << "Impossible de lire l'état du port série." << endl;
+        CloseHandle(hSerial);
+    }
+    dcbSerialParams.BaudRate = CBR_9600;  // Assure-toi que le baud rate est correct
+    dcbSerialParams.ByteSize = 8;
+    dcbSerialParams.StopBits = ONESTOPBIT;
+    dcbSerialParams.Parity = NOPARITY;
+    SetCommState(hSerial, &dcbSerialParams);
+   
+    // Configurer les timeouts pour éviter le blocage
+    //COMMTIMEOUTS timeouts = { 0 };
+    //timeouts.ReadIntervalTimeout = 1;   // Petit délai entre les caractères
+    //timeouts.ReadTotalTimeoutConstant = 1;  // Timeout global très court
+    //timeouts.ReadTotalTimeoutMultiplier = 1;
+    //SetCommTimeouts(hSerial, &timeouts);
+
+
     hideCursor();
     music.stopMusic();
     music.playMusic("OceanWorld.wav", 0, 117000);
@@ -1199,6 +1228,7 @@ void Interface::executionJeu(int version)
     }
     while (!gameOver)
     {
+		readSerial(hSerial);
         gererInput();
 
         while (pause == true)
@@ -1219,17 +1249,55 @@ void Interface::executionJeu(int version)
             gameOver = true;
     }
     restart();
+    CloseHandle(hSerial);  // Fermer le port série
 
     Sleep(1000);
     showCursor();
 }
 
 
-void Interface::readSerial()
+void Interface::readSerial(HANDLE hSerial)
 {
-    //https://github.com/dmicha16/simple_serial_port
-    //https://docs.arduino.cc/language-reference/en/functions/communication/serial/
+    //-------------------------------------------- test -------------------------------------
+    char buffer[12];  // Taille du buffer attendue
+    DWORD bytesRead;
+    static string response;  // Garde les données incomplètes d'une lecture à l'autre
 
+    // Lire les données du port série si disponibles
+    DWORD errors;
+    COMSTAT status;
+    ClearCommError(hSerial, &errors, &status);
+
+    if (status.cbInQue > 0) { // Il y a des données à lire
+        if (ReadFile(hSerial, buffer, sizeof(buffer) - 1, &bytesRead, NULL) && bytesRead > 0) {
+            buffer[bytesRead] = '\0';  // Terminer la chaîne
+            response += buffer;  // Ajouter au buffer accumulé
+
+            // Vérifier si on a une ligne complète (avec \r\n)
+            size_t pos;
+            while ((pos = response.find("\r\n")) != string::npos) {
+                string line = response.substr(0, pos);  // Extraire la ligne complète
+                response.erase(0, pos + 2);  // Supprimer la ligne traitée
+
+                try {
+                    // Parser le JSON
+                    json jsonData = json::parse(line);
+                    //cout << "JSON reçu : " << jsonData.dump(4) << endl;
+
+                    // Mettre à jour les données de la manette
+                    dataManette[0] = jsonData["Joy"];
+                    dataManette[1] = jsonData["acc"];
+                    dataManette[2] = jsonData["but1"];
+                    dataManette[3] = jsonData["but2"];
+                    dataManette[4] = jsonData["but3"];
+                    dataManette[5] = jsonData["but4"];
+                }
+                catch (json::parse_error& e) {
+                    cerr << "Erreur JSON : " << e.what() << endl;
+                }
+            }
+        }
+    }
 
 }
 

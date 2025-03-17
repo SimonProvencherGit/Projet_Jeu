@@ -10,8 +10,9 @@
 #include <conio.h>  //pour _kbhit()
 #include <string>
 #include "globalobjects.h"
+#include <json.hpp>
 
-
+using json = nlohmann::json;
 
 void setConsoleSize();
 
@@ -51,6 +52,7 @@ private:
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
+	int dataManette[6];     //donnes recues de la manette
 
 public:
     Interface();
@@ -77,7 +79,9 @@ public:
     void randomTir(int x, int  y);
     void randomCibleTir(int x, int y); 
     void joueurTir(Joueur* quelJoueur);
-    void readSerial();
+    void readSerial(HANDLE hSerial);
+
+
 };
 
 #endif // INTERFACE_H
