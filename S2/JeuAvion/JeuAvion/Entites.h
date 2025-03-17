@@ -22,6 +22,7 @@ class Entite
 {
 
 public:
+    bool flashing = false;
     float posX, posY;
     int xJoueur, yJoueur;
     int  xJoueur2, yJoueur2;
@@ -46,6 +47,7 @@ public:
     // int nbJoueurs;  
 
     QGraphicsPixmapItem* image;
+    QGraphicsPixmapItem* Originalimage;
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;

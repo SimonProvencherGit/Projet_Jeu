@@ -4,6 +4,45 @@
 #include <qparallelanimationgroup.h>
 bool firststart = true;
 
+void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
+    if (e->enVie == false)
+    {
+        return;
+    }
+    if (e->flashing == true)
+    {
+        return;
+    }
+    
+    
+    QPixmap originalPixmap = pixmapItem->pixmap();
+    QImage image = originalPixmap.toImage();
+
+    //Convertir l'image a mauve
+    for (int y = 0; y < image.height(); ++y) {
+        for (int x = 0; x < image.width(); ++x) {
+            QColor color = image.pixelColor(x, y);
+            color.setRed((color.red() + color.blue()) / 2); 
+            color.setBlue((color.blue() + color.red()) / 2); 
+            color.setGreen(color.green() / 2);              
+            image.setPixelColor(x, y, color);
+        }
+    }
+    e->flashing = true;
+    pixmapItem->setPixmap(QPixmap::fromImage(image));
+
+   //Retourner l'image a l'originale
+    QTimer::singleShot(durationMs, [pixmapItem, originalPixmap, e]() {
+        if (e->enVie == true) {
+
+           e->flashing = false;
+           pixmapItem->setPixmap(e->Originalimage->pixmap());
+        }
+        });
+}
+
+
+
 Interface::Interface()
 {
     //initialisation des vairalbes
@@ -675,6 +714,7 @@ void Interface::gererCollisions()
                                     bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
 
                             e2->perdVie(1);
+                            applyPurpleEffect(e2->image, 100, e2.get());
                             if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
