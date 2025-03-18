@@ -29,7 +29,7 @@ Interface::Interface()
     spawnPowerUpStart = true;      //temporaire pour faire spawn powerup au debut du match
     nbJoueur = 1;
     //nextPup = 0;
-    dataManette[6] = {0};
+
 
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
@@ -42,10 +42,126 @@ Interface::Interface()
 //gere les inputs du joueur
 void Interface::gererInput()
 {
+	bool newInput = false;
+
     if (pause == false)
     {
+			switch (dataManette[0])     //premiere valeur du data de la manette est un chiffre de 1 a 9 du joystick
+            {
+            case 1:
+                if (joueur->posX > 2)
+                    joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur->posX > 1)
+                    joueur->posX--;
+                if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                    joueur->posY--;
+                break;
 
-        if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
+			case 2:
+                if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                    joueur->posY--;
+				break;
+
+			case 3:
+                if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                    joueur->posY--;
+                if (joueur->posX < WIDTH - 2)
+                    joueur->posX += 2;
+                else if (joueur->posX < WIDTH - 1)
+                    joueur->posX++;
+				break;
+
+			case 4:
+                if (joueur->posX > 2)
+                    joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur->posX > 1)
+                    joueur->posX--;
+				break;
+			case 5:
+				//le joystick est au centre donc on ne fait rien
+				break;
+
+			case 6:
+                if (joueur->posX < WIDTH - 2)
+                    joueur->posX += 2;
+                else if (joueur->posX < WIDTH - 1)
+                    joueur->posX++;
+				break;
+
+			case 7:
+                if (joueur->posY < HEIGHT)
+                    joueur->posY++;
+                if (joueur->posX > 2)
+                    joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur->posX > 1)
+                    joueur->posX--;
+				break;
+
+			case 8:
+				if (joueur->posY < HEIGHT)
+					joueur->posY++;
+				break;
+
+			case 9:
+				if (joueur->posY < HEIGHT)
+					joueur->posY++;
+                if (joueur->posX < WIDTH - 2)
+                    joueur->posX += 2;
+                else if (joueur->posX < WIDTH - 1)
+                    joueur->posX++;
+				break;
+            
+			
+            }
+
+            if (dataManette[3] == 1)
+            {
+                if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
+                {
+                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                    joueurTir(joueur);
+                    joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+                }
+            }
+
+            if (dataManette[2] == 1)
+            {
+                if (pause)
+                    pause = false;
+                else if (!pause)
+                    pause = true;
+                Sleep(200);
+            }
+
+			if (dataManette[1] == 1)
+			{
+                if (explosionTimer == 0)
+                {
+                    cdExplosion = 500;      //set le cooldown de l'explosion
+                    enExplosion = true;
+                    explosionTimer = cdExplosion;
+                    explosionPosY = joueur->posY - 1;
+                }
+			}
+
+            if (dataManette[4] == 1)
+            {
+                if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+                    joueur->barrelRoll = true;
+            }
+
+            if (dataManette[5] == 1)
+            {
+                gameOver = true;
+                dataManette[5] = 0; 
+            }
+
+
+
+		//for (int i = 0; i < 6; i++)
+			//oldDataManette[i] = dataManette[i];
+
+        /*if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
         {
             if (joueur->posX > 2)
                 joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
@@ -91,7 +207,7 @@ void Interface::gererInput()
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
             }
-        }
+        }*/
 
         //******************************************* controle 2e joueur *******************************************
         if (nbJoueur > 1)
@@ -152,6 +268,17 @@ void Interface::gererInput()
             explosion();
         }
     }
+    else {
+
+        if (dataManette[2] == 1)
+        {
+            if (pause)
+                pause = false;
+            else if (!pause)
+                pause = true;
+            Sleep(200);
+        }
+    }
     if (GetAsyncKeyState('Q') < 0)
         gameOver = true;
 
@@ -163,6 +290,7 @@ void Interface::gererInput()
             pause = true;
         Sleep(200);
     }
+
 }
 void Interface::joueurTir(Joueur* quelJoueur)
 {
@@ -1201,23 +1329,25 @@ void Interface::executionJeu(int version)
         cerr << "Impossible de lire l'état du port série." << endl;
         CloseHandle(hSerial);
     }
-    dcbSerialParams.BaudRate = CBR_9600;  // Assure-toi que le baud rate est correct
+	dcbSerialParams.BaudRate = CBR_9600;  // set baud rate
     dcbSerialParams.ByteSize = 8;
     dcbSerialParams.StopBits = ONESTOPBIT;
     dcbSerialParams.Parity = NOPARITY;
     SetCommState(hSerial, &dcbSerialParams);
-   
-    // Configurer les timeouts pour éviter le blocage
-    //COMMTIMEOUTS timeouts = { 0 };
-    //timeouts.ReadIntervalTimeout = 1;   // Petit délai entre les caractères
-    //timeouts.ReadTotalTimeoutConstant = 1;  // Timeout global très court
-    //timeouts.ReadTotalTimeoutMultiplier = 1;
-    //SetCommTimeouts(hSerial, &timeouts);
+	
+    /*COMMTIMEOUTS timeouts = {0};
+    timeouts.ReadIntervalTimeout = 1;
+    timeouts.ReadTotalTimeoutConstant = 1;
+    timeouts.ReadTotalTimeoutMultiplier = 1;
+    SetCommTimeouts(hSerial, &timeouts);*/
 
+    COMSTAT status;     //pour verifier si des donnees sont dispo dans le port serie avant de call la lecture du port serie
+    DWORD errors;
 
     hideCursor();
     music.stopMusic();
     music.playMusic("OceanWorld.wav", 0, 117000);
+    
     if (version > 0)     //si on a choisi autre chose que le mode seul
     {
         listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
@@ -1228,11 +1358,19 @@ void Interface::executionJeu(int version)
     }
     while (!gameOver)
     {
-		readSerial(hSerial);
+        ClearCommError(hSerial, &errors, &status);
+        if (status.cbInQue > 0) {  // Lire seulement si des données sont dispo
+            readSerial(hSerial);
+        }
+
         gererInput();
 
         while (pause == true)
         {
+            ClearCommError(hSerial, &errors, &status);
+            if (status.cbInQue > 0) {  // Lire seulement si des données sont dispo
+                readSerial(hSerial);
+            }
             gererInput();   //sert a revenir au jeu si on a fait pause
             Sleep(10);
         }
@@ -1258,24 +1396,24 @@ void Interface::executionJeu(int version)
 
 void Interface::readSerial(HANDLE hSerial)
 {
-    //-------------------------------------------- test -------------------------------------
-    char buffer[12];  // Taille du buffer attendue
+    char buffer[56];  // Taille du buffer attendue
     DWORD bytesRead;
     static string response;  // Garde les données incomplètes d'une lecture à l'autre
 
     // Lire les données du port série si disponibles
-    DWORD errors;
-    COMSTAT status;
-    ClearCommError(hSerial, &errors, &status);
+    //DWORD errors;
+    //COMSTAT status;
+    //ClearCommError(hSerial, &errors, &status);
 
-    if (status.cbInQue > 0) { // Il y a des données à lire
+    //if (status.cbInQue > 0) { // s'il y a des données à lire
         if (ReadFile(hSerial, buffer, sizeof(buffer) - 1, &bytesRead, NULL) && bytesRead > 0) {
             buffer[bytesRead] = '\0';  // Terminer la chaîne
             response += buffer;  // Ajouter au buffer accumulé
 
-            // Vérifier si on a une ligne complète (avec \r\n)
+            // Vérifier si on a une ligne complète (avec \r\n a la fin)
             size_t pos;
-            while ((pos = response.find("\r\n")) != string::npos) {
+			while ((pos = response.find("\r\n")) != string::npos)       
+            {
                 string line = response.substr(0, pos);  // Extraire la ligne complète
                 response.erase(0, pos + 2);  // Supprimer la ligne traitée
 
@@ -1287,20 +1425,19 @@ void Interface::readSerial(HANDLE hSerial)
                     // Mettre à jour les données de la manette
                     dataManette[0] = jsonData["Joy"];
                     dataManette[1] = jsonData["acc"];
-                    dataManette[2] = jsonData["but1"];
-                    dataManette[3] = jsonData["but2"];
-                    dataManette[4] = jsonData["but3"];
-                    dataManette[5] = jsonData["but4"];
+                    dataManette[2] = jsonData["but1"];      //en haut
+                    dataManette[3] = jsonData["but2"];      //en bas
+                    dataManette[4] = jsonData["but3"];      //gauche
+                    dataManette[5] = jsonData["but4"];      //droite
                 }
                 catch (json::parse_error& e) {
-                    cerr << "Erreur JSON : " << e.what() << endl;
+                    //cerr << "Erreur JSON : " << e.what() << endl;
                 }
             }
         }
-    }
+    //}
 
 }
-
 
 
 //Set la taille de la console

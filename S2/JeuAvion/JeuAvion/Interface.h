@@ -52,7 +52,8 @@ private:
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
-	int dataManette[6];     //donnes recues de la manette
+	int dataManette[6] = {0};     //donnes recues de la manette
+	int oldDataManette[6] = {0};  //donnes precedentes de la manette
 
 public:
     Interface();
@@ -80,8 +81,6 @@ public:
     void randomCibleTir(int x, int y); 
     void joueurTir(Joueur* quelJoueur);
     void readSerial(HANDLE hSerial);
-
-
 };
 
 #endif // INTERFACE_H
