@@ -60,6 +60,12 @@ void Entite::getPosJoueurs(float x1, float y1, bool p1Alive, float x2, float y2,
 
 }
 
+void Entite::getPosBoss3(float x, float y)
+{
+	xBoss3 = x;
+	yBoss3 = y;
+}
+
 typeEnnemis Entite::getTypeEnnemi()		// va etre redefinie dans la classe ennemi pour retourner le type d'ennemi
 {
 	return BASIC;	//retourne BASIC par defaut
@@ -637,49 +643,71 @@ void Boss2::update()
 	moveTimer++;
 }
 
-Shotgunner::Shotgunner(float x, float y) : Ennemi(x, y)
+Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'J';
 	nbVies = 3;
-	typeEnnemi = SHOTGUNNER;
+	typeEnnemi = ORBITER;
 	hauteur = 3;
 	largeur = 3;
 	shoots = true;
-	shootCooldown = 50;   // a toute les x frames l'entite va tirer
+	shootCooldown = 70;   // a toute les x frames l'entite va tirer
 	ammoType = ANGLE;
-	rayonMouv = 30;		//va faire un cercle de rayon 6 autour du joueur
+	rayonMouv = 25;		//va faire un cercle de rayon 6 autour du joueur
 	angle = 270;
 	distance = 0;
 	orbiting = false;
+	sensRotation = true;
+	ancrageX = 0;
+	ancrageY = 0;
 }
 
 
-void Shotgunner::update()
+void Orbiter::update()
 {
+
 	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
 
-	distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
-
-	if (posY < yJoueur - rayonMouv / 2 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	if (posY < (yJoueur - rayonMouv / 4) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 	{
 		if (moveTimer % 2 == 0)
-		{
 			posY++;
-		}
 
 	}
 	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
 	{
 		if (orbiting == false)
 		{
+			ancrageX = xJoueur;
+			ancrageY = yJoueur;
+			distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
 			orbiting = true;
+			angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+
+
+			if (posX < xJoueur)
+			{
+				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle + 2;
+			}
+			else
+			{
+				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle - 2;
+			}
 		}
 		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
 		if (moveTimer % 1 == 0)
 		{
-			posX = xJoueur + (rayonMouv * cos((angle * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
-			posY = yJoueur + (rayonMouv / 2 * sin((angle * 2 * PI) / 360));
-			angle += 2;			//vitesse angulaire determine 
+			posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+			posY = ancrageY + (rayonMouv / 2 * sin(((angle + 180) * 2 * PI) / 360));
+
+			if (sensRotation)		//true = sens horaire false = sens anti-horaire
+				angle += 2;			//vitesse angulaire determine
+			else
+				angle -= 2;			//vitesse angulaire determine
+
 		}
 		if (angle >= 360)
 			angle = 0;
@@ -696,6 +724,203 @@ void Shotgunner::update()
 
 	moveTimer++;
 }
+
+Exploder::Exploder(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'E';
+	nbVies = 8;
+	typeEnnemi = EXPLODER;
+	hauteur = 3;
+	largeur = 5;
+	shoots = false;
+	ammoType = TEMP;
+	shootCooldown = 1;
+}
+
+void Exploder::update()
+{
+	//descend jusqu'a la moitie de l'ecran et explode
+	if (posY < HEIGHT / 2)
+	{
+		if (moveTimer % 5 == 0)
+			posY++;
+	}
+	else
+	{
+		shoots = true;
+	}
+	moveTimer++;
+	if (moveTimer >= 500)
+		moveTimer = 0;
+}
+
+Turret::Turret(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'T';
+	nbVies = 8;
+	typeEnnemi = TURRET;
+	hauteur = 3;
+	largeur = 3;
+	shoots = true;
+	shootCooldown = 50;   // a toute les x frames l'entite va tirer
+	ammoType = ANGLE;
+
+}
+
+
+void Turret::update()
+{
+	//descend jusqu'au 1/5 de l'ecran et commence a tirer
+	if (posY < HEIGHT / 5)
+	{
+		if (moveTimer % 4 == 0)
+			posY++;
+	}
+	moveTimer++;
+}
+
+Boss3::Boss3(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'M';
+	nbVies = 200;
+	typeEntite = BOSS;
+	typeEnnemi = BOSS3_MAIN;
+	hauteur = 4;
+	largeur = 8;
+	shoots = true;
+	shootCooldown = 100;   // a toute les x frames l'entite va tirer
+	ammoType = MORTAR;
+}
+
+void Boss3::update()
+{
+	static int waitTimer = 0;
+
+	//le boss descend et commence a faire des zigzags
+	if (posY < HEIGHT / 3.5)
+	{
+		if (moveTimer % 10 == 0)
+			posY++;
+	}
+	else if (posY >= HEIGHT / 3.5)
+	{
+		if (waitTimer < 100)
+			waitTimer++;
+		else
+		{
+			if (moveTimer % 10 == 0)
+			{
+				if (posX <= WIDTH / 3.5 || posX + largeur >= WIDTH - WIDTH / 3)
+					direction = 1 - direction; // Change de Direction
+				if (direction == 0)
+					posX -= 1;
+				else
+					posX += 1; // Bouger a gauche ou a droite
+			}
+		}
+	}
+	moveTimer++;
+	if (moveTimer >= 500)
+		moveTimer = 0;
+}
+
+Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
+{
+	symbole = 'W';
+	nbVies = 60;
+	typeEntite = BOSS;
+	typeEnnemi = BOSS3_SIDE;
+	hauteur = 2;
+	largeur = 4;
+	shoots = true;
+	shootCooldown = 8;
+	ammoType = ANGLE;
+	rayonMouv = 15;
+	angle = 0;
+	distance = 0;
+	orbiting = false;
+	sensRotation = true;		//true = sens horaire false = sens anti-horaire
+	changTailleRayon = true;	//true = le rayon diminue false = le rayon augmente
+}
+
+void Boss3Side::update()
+{
+	if (yBoss3 == -1) {}
+
+	else if (posY < yBoss3 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	{
+		if (moveTimer % 2 == 0)
+			posY++;
+	}
+	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+	{
+		if (orbiting == false)
+		{
+
+			distance = sqrt(pow(xBoss3 - (posX + largeur / 2), 2) + pow(yBoss3 - (posY + hauteur / 2), 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+			orbiting = true;
+			angle = atan2(yBoss3 - posY, xBoss3 - posX) * 180 / 3.14159265;
+
+
+			if (posX < xBoss3)
+			{
+				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle + 2;
+			}
+			else
+			{
+				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+				angle - 2;
+			}
+		}
+
+		if (moveTimer % 1 == 0)
+		{
+			posX = xBoss3 + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//xboss3 + 4, le +4 est pour que l'ancrage soit au centre du boss3 et pas en haut a gauche
+			posY = yBoss3 + (rayonMouv / 2 * sin(((angle + 180) * 2 * PI) / 360));
+
+			if (sensRotation)		//true = sens horaire false = sens anti-horaire
+				angle += 2;			//vitesse angulaire determine
+			else
+				angle -= 2;			//vitesse angulaire determine
+
+			if (moveTimer % 4 == 0)
+			{
+				if (changTailleRayon)
+				{
+					if (rayonMouv > 11)
+						rayonMouv -= 2.7;
+					else
+						changTailleRayon = false;
+				}
+				else if (!changTailleRayon)
+				{
+					if (rayonMouv < distance)
+						rayonMouv += 2.7;
+					else
+						changTailleRayon = true;
+				}
+			}
+		}
+		if (angle >= 360)
+			angle = 0;
+	}
+
+	if (posX < 1)
+		posX = 1;
+	else if (posX > WIDTH - 1)
+		posX = WIDTH - 1;
+	if (posY < 1)
+		posY = 1;
+	else if (posY > HEIGHT - 2)
+		posY = HEIGHT - 2;
+
+	moveTimer++;
+	if (moveTimer >= 500)
+		moveTimer = 0;
+}
+
 
 
 //******************************** classe bullet ***********************************

@@ -201,7 +201,7 @@ void Interface::gererInput()
     if (GetAsyncKeyState('Q') < 0)
         gameOver = true;
 
-    if (GetAsyncKeyState('P') < 0)
+     if (GetAsyncKeyState('P') < 0)
     {
         if (pause)
             pause = false;
@@ -321,10 +321,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
         case BOSS2_MAIN:
             listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 3));
             break;
-        case SHOTGUNNER:
-            listEntites.emplace_back(make_unique<Shotgunner>(posRand, 0));
-            positionSpawnRandom();
-            break;
+;
         }
     }
 }
