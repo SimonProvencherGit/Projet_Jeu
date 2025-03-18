@@ -1362,6 +1362,10 @@ void Interface::executionJeu(int version)
         if (status.cbInQue > 0) {  // Lire seulement si des données sont dispo
             readSerial(hSerial);
         }
+        else
+        {
+            Sleep(20);
+        }
 
         gererInput();
 
@@ -1372,14 +1376,14 @@ void Interface::executionJeu(int version)
                 readSerial(hSerial);
             }
             gererInput();   //sert a revenir au jeu si on a fait pause
-            Sleep(10);
+            Sleep(20);
         }
         progressionDifficulte();
         updateEntites();
         gererCollisions();
         enleverEntites();
         updateAffichage();
-        Sleep(20);
+        //Sleep(20);
 
         if (nbJoueur == 1 && joueur->nbVies < 0)
             gameOver = true;
