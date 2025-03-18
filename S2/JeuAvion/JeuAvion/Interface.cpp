@@ -113,7 +113,7 @@ void Interface::gererInput()
             
 			
             }
-
+			//pour les boutons de la manette a l'emplacement 2->haut 3->bas 4->gauche 5->droite 
             if (dataManette[3] == 1)
             {
                 if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
@@ -126,11 +126,8 @@ void Interface::gererInput()
 
             if (dataManette[2] == 1)
             {
-                if (pause)
-                    pause = false;
-                else if (!pause)
-                    pause = true;
-                Sleep(200);
+                gameOver = true;
+                dataManette[5] = 0;
             }
 
 			if (dataManette[1] == 1)
@@ -144,16 +141,12 @@ void Interface::gererInput()
                 }
 			}
 
-            if (dataManette[4] == 1)
-            {
-                if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
-                    joueur->barrelRoll = true;
-            }
+            //dataManette[4] est declare en bas de la fonction hors du if(!pause)
 
             if (dataManette[5] == 1)
             {
-                gameOver = true;
-                dataManette[5] = 0; 
+                if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+                    joueur->barrelRoll = true;
             }
 
 
@@ -212,7 +205,54 @@ void Interface::gererInput()
         //******************************************* controle 2e joueur *******************************************
         if (nbJoueur > 1)
         {
-            if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
+            if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
+            {
+                if (joueur2->posX > 2)
+                    joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur2->posX > 1)
+                    joueur2->posX--;
+            }
+            if (GetAsyncKeyState('D') < 0) {
+                if (joueur2->posX < WIDTH - 2)
+                    joueur2->posX += 2;
+                else if (joueur2->posX < WIDTH - 1)
+                    joueur2->posX++;
+            }
+
+            if (GetAsyncKeyState('W') < 0)
+                if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                    joueur2->posY--;
+
+            if (GetAsyncKeyState('S') < 0)
+                if (joueur2->posY < HEIGHT)
+                    joueur2->posY++;
+            if (GetAsyncKeyState(VK_SPACE) < 0)
+            {
+                if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+                {
+                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                    joueurTir(joueur2);
+                    joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+
+                }
+            }
+            if (GetAsyncKeyState('E') < 0)
+            {
+                if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
+                    joueur2->barrelRoll = true;
+            }
+            if (GetAsyncKeyState('R') < 0)
+            {
+                if (explosionTimer == 0)
+                {
+
+                    cdExplosion = 500;      //set le cooldown de l'explosion
+                    enExplosion = true;
+                    explosionTimer = cdExplosion;
+                    explosionPosY = joueur2->posY - 1;
+                }
+            }
+            /*if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
             {
                 if (joueur2->posX > 2)
                     joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
@@ -258,7 +298,7 @@ void Interface::gererInput()
                     explosionTimer = cdExplosion;
                     explosionPosY = joueur2->posY - 1;
                 }
-            }
+            }*/
         }
 
 
@@ -268,17 +308,17 @@ void Interface::gererInput()
             explosion();
         }
     }
-    else {
 
-        if (dataManette[2] == 1)
-        {
-            if (pause)
-                pause = false;
-            else if (!pause)
-                pause = true;
-            Sleep(200);
-        }
+
+    if (dataManette[4] == 1)
+    {
+        if (pause)
+            pause = false;
+        else if (!pause)
+            pause = true;
+        Sleep(200);
     }
+    
     if (GetAsyncKeyState('Q') < 0)
         gameOver = true;
 
@@ -1335,11 +1375,11 @@ void Interface::executionJeu(int version)
     dcbSerialParams.Parity = NOPARITY;
     SetCommState(hSerial, &dcbSerialParams);
 	
-    /*COMMTIMEOUTS timeouts = {0};
-    timeouts.ReadIntervalTimeout = 1;
-    timeouts.ReadTotalTimeoutConstant = 1;
-    timeouts.ReadTotalTimeoutMultiplier = 1;
-    SetCommTimeouts(hSerial, &timeouts);*/
+    COMMTIMEOUTS timeouts = { 0 };
+    timeouts.ReadIntervalTimeout = MAXDWORD;  // Returns immediately if no data is available
+    timeouts.ReadTotalTimeoutConstant = 0;    // No additional wait time
+    timeouts.ReadTotalTimeoutMultiplier = 0;  // No per-byte delay
+    SetCommTimeouts(hSerial, &timeouts);
 
     COMSTAT status;     //pour verifier si des donnees sont dispo dans le port serie avant de call la lecture du port serie
     DWORD errors;
@@ -1364,7 +1404,7 @@ void Interface::executionJeu(int version)
         }
         else
         {
-            Sleep(20);
+            //Sleep(20);
         }
 
         gererInput();
@@ -1374,6 +1414,7 @@ void Interface::executionJeu(int version)
             ClearCommError(hSerial, &errors, &status);
             if (status.cbInQue > 0) {  // Lire seulement si des données sont dispo
                 readSerial(hSerial);
+
             }
             gererInput();   //sert a revenir au jeu si on a fait pause
             Sleep(20);
@@ -1383,7 +1424,7 @@ void Interface::executionJeu(int version)
         gererCollisions();
         enleverEntites();
         updateAffichage();
-        //Sleep(20);
+        Sleep(20);
 
         if (nbJoueur == 1 && joueur->nbVies < 0)
             gameOver = true;
