@@ -5,9 +5,10 @@
 #include <QTimer>
 #include <QRandomGenerator>
 #include <QGraphicsView>
+#include <QThread>
 bool firststart = true;
 
-
+QThread EffectThread;
 
 void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
     QRectF originalScene = scene->sceneRect();
@@ -16,7 +17,7 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
 
     QObject::connect(timer, &QTimer::timeout, [=]() mutable {
         if (elapsed < duration) {
-            int offset = (rand() % (magnitude / 2)) + (magnitude / 2);
+            int offset = (rand() % (-magnitude)) + (magnitude);
             scene->setSceneRect(originalScene.translated(offset, 0)); // Shift the scene left and right
             elapsed += 20;
         }
@@ -52,7 +53,6 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
             color.setRed(qBound(0, 1*color.red() + color.blue(), 255));
             color.setBlue(qBound(0, (10*color.blue() + color.red()) / 2, 255));
             color.setGreen(qBound(0, 4*color.green() / 2, 255));
-
             image.setPixelColor(x, y, color);
         }
     }
@@ -62,16 +62,24 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
 
    //Retourner l'image a l'originale
     QTimer::singleShot(durationMs, [pixmapItem, originalPixmap, e]() {
+        
         if (e->enVie == true) {
-
-           e->flashing = false;
+             
+           
            if (pixmapItem == nullptr)
            {
                return;
            }
-    
-           pixmapItem->setPixmap(e->Originalimage->pixmap());
-        }
+          try{
+          pixmapItem->setPixmap(e->Originalimage->pixmap());
+          }
+          catch(...)
+          {
+              qDebug() << "Failed to revert image";
+           // erreur
+          }
+          e->flashing = false;
+       }
         });
 }
 

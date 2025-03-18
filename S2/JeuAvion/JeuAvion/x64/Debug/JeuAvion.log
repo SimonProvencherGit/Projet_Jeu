@@ -1,11 +1,13 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
   Interface.cpp
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(18,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Youssef\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(18,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1075,19): warning C4129: 'T': unrecognized character escape sequence
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1075,19): warning C4129: 'S': unrecognized character escape sequence
-  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+C:\Users\Youssef\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1083,19): warning C4129: 'T': unrecognized character escape sequence
+C:\Users\Youssef\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1083,19): warning C4129: 'S': unrecognized character escape sequence
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterWav.obj)' or at ''; linking object as if no debug info
+  JeuAvion.vcxproj -> C:\Users\Youssef\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
