@@ -1,12 +1,12 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
-  Interface.cpp
   Menu.cpp
+  Interface.cpp
   main.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
-  (compiling source file 'main.cpp')
+  (compiling source file 'Interface.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.h(13,10): error C1083: Cannot open include file: 'json.hpp': No such file or directory
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'main.cpp')
   
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
@@ -15,9 +15,9 @@ C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.h(13,10): error C1083: Cannot open include file: 'json.hpp': No such file or directory
   (compiling source file 'Menu.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.h(13,10): error C1083: Cannot open include file: 'json.hpp': No such file or directory
   (compiling source file 'Interface.cpp')
   
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.h(13,10): error C1083: Cannot open include file: 'json.hpp': No such file or directory
-  (compiling source file 'Interface.cpp')
+  (compiling source file 'main.cpp')
   

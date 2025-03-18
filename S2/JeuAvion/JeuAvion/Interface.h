@@ -57,6 +57,7 @@ private:
 
 public:
     Interface();
+    void applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e);
     void gererInput();
     void progressionDifficulte();
     void enemySpawn(int nbEnnemi, typeEnnemis enemiVoulu);
