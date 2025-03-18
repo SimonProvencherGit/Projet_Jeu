@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     GameScene = new QGraphicsScene();
     GameScene->setSceneRect(0, 0, 1920, 1080); // Set the scene dimensions
 
-    QGraphicsView* view = new QGraphicsView(GameScene);
+    view = new QGraphicsView(GameScene);
     //view->setRenderHint(QPainter::Antialiasing); // Enable smooth rendering
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

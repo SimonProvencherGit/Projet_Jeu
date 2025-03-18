@@ -19,6 +19,7 @@
 
 
 // Declare global objects
+extern QGraphicsView* view;
 extern QGraphicsScene* GameScene;
 extern QGraphicsPixmapItem* player1;
 extern void setallSFXVolume(float inputvolume);

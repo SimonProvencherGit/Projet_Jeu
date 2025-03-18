@@ -2,7 +2,34 @@
 #include <qdir.h>
 #include <QPropertyAnimation>
 #include <qparallelanimationgroup.h>
+#include <QTimer>
+#include <QRandomGenerator>
+#include <QGraphicsView>
 bool firststart = true;
+
+
+
+void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
+    QRectF originalScene = scene->sceneRect();
+    QTimer* timer = new QTimer(view); 
+    int elapsed = 0;
+
+    QObject::connect(timer, &QTimer::timeout, [=]() mutable {
+        if (elapsed < duration) {
+            int offset = (rand() % (magnitude / 2)) + (magnitude / 2);
+            scene->setSceneRect(originalScene.translated(offset, 0)); // Shift the scene left and right
+            elapsed += 20;
+        }
+        else {
+            scene->setSceneRect(originalScene); //Remetre le Scene a l'orginal
+            timer->stop();
+            timer->deleteLater();
+        }
+        });
+
+    timer->start(20);
+}
+
 
 void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     if (e->enVie == false)
@@ -17,7 +44,7 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
     
     QPixmap originalPixmap = pixmapItem->pixmap();
     QImage image = originalPixmap.toImage();
-
+    e->flashing = true;
     //Convertir l'image a mauve
     for (int y = 0; y < image.height(); ++y) {
         for (int x = 0; x < image.width(); ++x) {
@@ -30,7 +57,7 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
         }
     }
 
-    e->flashing = true;
+   
     pixmapItem->setPixmap(QPixmap::fromImage(image));
 
    //Retourner l'image a l'originale
@@ -38,6 +65,11 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
         if (e->enVie == true) {
 
            e->flashing = false;
+           if (pixmapItem == nullptr)
+           {
+               return;
+           }
+    
            pixmapItem->setPixmap(e->Originalimage->pixmap());
         }
         });
@@ -133,11 +165,11 @@ void Interface::gererInput()
         {
             if (explosionTimer == 0)
             {
-
                 cdExplosion = 500;      //set le cooldown de l'explosion
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
+                shakeScene(GameScene, view, 1000, 100);
             }
         }
 

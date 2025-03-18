@@ -4,10 +4,12 @@
 
 //Test image avion
 //
+
 SFX sfx;
 Music music;
 SFX sfxWarning;
 QGraphicsScene * GameScene = nullptr;
+extern QGraphicsView* view = nullptr;
 QGraphicsPixmapItem* player1;
 QRect * basicbullet;
  // Players thats a square
