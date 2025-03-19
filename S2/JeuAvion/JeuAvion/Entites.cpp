@@ -256,13 +256,13 @@ void DiveBomber::update()
 	//{
 		if (p1EnVie && !p2EnVie)		//si juste p1 est viant
 		{
-			if (posX > xJoueur - 10 && posX < xJoueur + 10)
+			if (posX > xJoueur + 50 - 10 && posX < xJoueur + 50 + 10)
 			{
 				//posx ne change pas car il est deja aligne avec le joueur
 			}
-			else if (posX < xJoueur)
+			else if (posX < xJoueur+50)
 				posX+=5;
-			else if (posX > xJoueur)
+			else if (posX > xJoueur+50)
 				posX-=5;
 		}
 		else if (p1EnVie && p2EnVie)
@@ -309,31 +309,38 @@ Tank::Tank(float x, float y) : Ennemi(x, y)
 	symbole = '@';
 	nbVies = 10;
 	typeEnnemi = TANK;
-	hauteur = 1;
-	largeur = 9;
+	hauteur = 267/6;
+	largeur = 874/6;
 	shoots = false;
 	posRand = rand() % 4;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
+
+	QPixmap pngImg("Textures\\Ennemis\\tank.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(0.16);
+	image->show();
 }
 
 void Tank::update()
 {
-	if (moveTimer % 5 == 0)
-	{
-		if (posY <= HEIGHT / 3 + posRand)
-			posY++;
-	}
-	if (moveTimer % 50 == 0)
-	{
-		if (posX <= 1 || posX + largeur >= WIDTH - 1)
+	//if (moveTimer % 50 == 0)
+	//{
+		if (posX <= 0 || posX + largeur >= WIDTH)
+		{
 			direction = 1 - direction; // Change de Direction
-		if (direction == 0)
+			//image->setRotation(180);
+		}
+			if (direction == 0)
 			posX -= 1;
 		else
 			posX += 1; // Bouger a gauche ou a droite
-	}
+	//}
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 
@@ -427,29 +434,38 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 	symbole = 'X';
 	nbVies = 3;
 	typeEnnemi = AIMBOT;
-	hauteur = 2;
-	largeur = 3;
+	hauteur = 228/4;
+	largeur = 204/4;
 	shootCooldown = 50;   // a toute les x frames l'entite va tirer
 	posRand = rand() % 6;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
 	ammoType = HOMING;
+
+	QPixmap pngImg("Textures\\Ennemis\\aimbot.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(0.25);
+	image->show();
 }
 
 void Aimbot::update()
 {
 	if (posY <= (HEIGHT / 20) + posRand && moveTimer % 8 == 0)
-		posY++;
+		posY+=5;
 
 	if (moveTimer % 50 == 0)
 	{
 		if (posX <= 1 || posX + largeur >= WIDTH - 1)
 			direction = 1 - direction; // Change de Direction
 		if (direction == 0)
-			posX -= 1;
+			posX -= 5;
 		else
-			posX += 1; // Bouger a gauche ou a droite
+			posX += 5; // Bouger a gauche ou a droite
 	}
 
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 
@@ -464,6 +480,7 @@ Boss1::Boss1(float x, float y) : Ennemi(x, y)
 	largeur = 15;
 	shootCooldown = 50;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = true;
+
 }
 
 void Boss1::update()
@@ -1027,8 +1044,8 @@ Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBul
 {
 	symbole = 'V';
 	ammoType = HOMING;
-	hauteur = 30;
-	largeur = 24;
+	hauteur = 28*3;
+	largeur = 7*3;
 	nbVies = 2;
 
 	if (p1EnVie == true && p2EnVie == true)
@@ -1039,20 +1056,28 @@ Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBul
 		joueurRand = 0;
 	else
 		joueurRand = 0;
+
+	QPixmap pngImg("Textures\\bullets\\homing.png");			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(3);
+	image->setRotation(180);
+	image->show();
 }
 
 
 void Homing::update()
 {
-	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse en x du missile
-	{
+	//if (moveTimer % 1 == 0)         //on peut ajuster la vitesse en x du missile
+	//{
 		if (p1EnVie && !p2EnVie)
 		{
-
-			if (posX < xJoueur)
-				posX+=10;
-			else if (posX > xJoueur)
-				posX-=10;
+			if (posX > xJoueur + 50 - 5 && posX < xJoueur + 50 + 5){
+			} //si le missile est alligne avec le joueur on fait rien
+			else if (posX < xJoueur + 50)		// +50 pour que le missile arrive au centre du joueur
+				posX+=5;
+			else if (posX > xJoueur + 50)
+				posX-=5;
 		}
 		else if (p1EnVie && p2EnVie)
 		{
@@ -1060,16 +1085,16 @@ void Homing::update()
 			if (joueurRand == 0)
 			{
 				if (posX < xJoueur)
-					posX+=10;
+					posX+=5;
 				else if (posX > xJoueur)
-					posX-=10;
+					posX-=5;
 			}
 			else if (joueurRand == 1)
 			{
 				if (posX < xJoueur2)
-					posX+=10;
+					posX+=5;
 				else if (posX > xJoueur2)
-					posX-=10;
+					posX-=5;
 			}
 		}
 		else if (!p1EnVie && p2EnVie)
@@ -1079,11 +1104,11 @@ void Homing::update()
 			else if (posX > xJoueur2)
 				posX-=10;
 		}
-	}
-	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du missile
-	{
+	//}
+	//if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du missile
+	//{
 		posY+=10;
-	}
+	//}
 
 
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
@@ -1091,6 +1116,8 @@ void Homing::update()
 	if (posY >= HEIGHT)     //si le missile atteint le bas de l'ecran is meurt
 		enVie = false;
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPlayerBullet = false) : Entite(x, y, symb, 1, 1)
@@ -1216,12 +1243,7 @@ PowerUp::PowerUp(float x, float y, typePowerUp type) : Entite(x, y, '$', 2, 2)
 	hauteur = 50;
 	largeur = 50;
 
-	QPixmap pngImg("Textures\\Pup\\addLife.png");
-	image = new QGraphicsPixmapItem(pngImg);
-	GameScene->addItem(image);
-	//image->setRotation(180);
-	image->setScale(2);
-	image->show();
+	
 }
 
 void PowerUp::update()
@@ -1239,11 +1261,25 @@ AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 {
 	symbole = '+';
 	power_up = ADDLIFE;
+	
+	QPixmap pngImg("Textures\\Pup\\addLife.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(2.2);
+	image->show();
 }
 
 AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 {
 	symbole = 'a';
 	power_up = ADDBULLETS;
+	
+	QPixmap pngImg("Textures\\Pup\\addAmo.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(0.6);
+	image->show();
 }
 

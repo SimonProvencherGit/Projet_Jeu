@@ -5,6 +5,9 @@
 bool firststart = true;
 
 
+// lien pour un sprite : https://opengameart.org/content/custom-missiles
+
+
 Interface::Interface()
 {
     //initialisation des vairalbes
@@ -293,135 +296,6 @@ void Interface::gererInput()
         Sleep(200);
     }
 
-
-	// ------------------------------------------------  fin test manette ------------------------------------------------
-    /*if (pause == false)
-    {
-
-        if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
-        {
-            if (joueur->posX > -1)
-            {
-                if (joueur->posX < 10)
-                {
-					joueur->posX = joueur->posX - joueur->posX;         //wtf is this line
-                }
-                else
-                joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
-            }
-            else if (joueur->posX  <-1)
-                joueur->posX-=10;
-        }
-        if (GetAsyncKeyState('D') < 0) {
-            if (joueur->posX < WIDTH-joueur->largeur)
-                joueur->posX += 10;
-        }
-
-        if (GetAsyncKeyState('W') < 0)
-            if (joueur->posY > 0)      //le joueur a acces au 9/10 de l'ecran
-                joueur->posY -= 10;
-
-        if (GetAsyncKeyState('S') < 0)
-            if (joueur->posY < HEIGHT - joueur->hauteur)      //le joueur a acces au 9/10 de l'ecran
-                joueur->posY += 10;
-
-        if (GetAsyncKeyState(VK_SPACE) < 0)
-        {
-            if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
-            {
-                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                joueurTir(joueur);
-                joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
-
-            }
-        }
-        if (GetAsyncKeyState('E') < 0)
-        {
-            if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
-                joueur->barrelRoll = true;
-        }
-        if (GetAsyncKeyState('R') < 0)
-        {
-            if (explosionTimer == 0)
-            {
-
-                cdExplosion = 500;      //set le cooldown de l'explosion
-                enExplosion = true;
-                explosionTimer = cdExplosion;
-                explosionPosY = joueur->posY - 1;
-            }
-        }
-
-        //******************************************* controle 2e joueur *******************************************
-        if (nbJoueur > 1)
-        {
-            if (GetAsyncKeyState(VK_LEFT) < 0)   //on verifie si la fleche gauche ou D est pressee
-            {
-                if (joueur2->posX > 2)
-                    joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
-                else if (joueur2->posX > 1)
-                    joueur2->posX--;
-            }
-            if (GetAsyncKeyState(VK_RIGHT) < 0) {
-                if (joueur2->posX < WIDTH - 2)
-                    joueur2->posX += 2;
-                else if (joueur2->posX < WIDTH - 1)
-                    joueur2->posX++;
-            }
-
-            if (GetAsyncKeyState(VK_UP) < 0)
-                if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
-                    joueur2->posY--;
-
-            if (GetAsyncKeyState(VK_DOWN) < 0)
-                if (joueur2->posY < HEIGHT)
-                    joueur2->posY++;
-            if (GetAsyncKeyState(VK_INSERT) < 0)       // touche controle pour tirer pour ce joueur, mais ca va changer qd la manette va etre implementee
-            {
-                if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
-                {
-                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                    joueurTir(joueur2);
-                    joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
-
-                }
-            }
-            if (GetAsyncKeyState(VK_DELETE) < 0)
-            {
-                if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
-                    joueur2->barrelRoll = true;
-            }
-            if (GetAsyncKeyState(VK_END) < 0)
-            {
-                if (explosionTimer == 0)
-                {
-
-                    cdExplosion = 500;      //set le cooldown de l'explosion
-                    enExplosion = true;
-                    explosionTimer = cdExplosion;
-                    explosionPosY = joueur2->posY - 1;
-                }
-            }
-        }
-
-
-        if (explosionTimer > 0)
-        {
-            explosionTimer--;
-            explosion();
-        }
-    }
-    if (GetAsyncKeyState('Q') < 0)
-        gameOver = true;
-
-     if (GetAsyncKeyState('P') < 0)
-    {
-        if (pause)
-            pause = false;
-        else if (!pause)
-            pause = true;
-        Sleep(200);
-    }*/
 }
 void Interface::joueurTir(Joueur* quelJoueur)
 {
@@ -499,8 +373,11 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
             positionSpawnRandom();
             break;
         case TANK:
-            listEntites.emplace_back(make_unique<Tank>(posRand, 0));
-            positionSpawnRandom();
+            coterand = rand() % 2;
+            if (coterand == 0)
+                listEntites.emplace_back(make_unique<Tank>(WIDTH - 1, rand() % HEIGHT / 2));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de WIDTH - 2 se fait changer dans le constructeur dependant du sens de l'ennemi
+            else
+                listEntites.emplace_back(make_unique<Tank>(1, rand() % HEIGHT/2));
             break;
         case ARTILLEUR:
             listEntites.emplace_back(make_unique<Artilleur>(posRand, 0));
@@ -577,24 +454,24 @@ void Interface::progressionDifficulte()
     if (score1 < 600)
     {
 
-        if (enemySpawnTimer >= 200 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
+        if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
        // if (enemySpawnTimer >= 100) //pour des tests
        {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
-            //enemySpawn(1, AIMBOT);
+            enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             enemySpawn(1, DIVEBOMBER);
-            //enemySpawn(1, TANK);
+            enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
 
-            /*if (spawnPowerUpStart)
+            if (spawnPowerUpStart)
             {
                 spawnPowerUpStart = false;
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }*/
+            }
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
        }
     }
@@ -1249,7 +1126,7 @@ void Interface::readSerial(HANDLE hSerial)
 }
 
 void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
-    if (e->enVie == false)
+    /*if (e->enVie == false)
     {
         return;
     }
@@ -1282,7 +1159,7 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
             e->flashing = false;
             pixmapItem->setPixmap(e->Originalimage->pixmap());
         }
-    });
+    });*/
 }
 
 //Set la taille de la console
