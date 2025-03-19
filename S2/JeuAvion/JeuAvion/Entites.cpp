@@ -179,8 +179,8 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 	shootCooldown = 100;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	//shootTimer = rand() % shootCooldown;   //on set le timer de tir a un nombre aleatoire entre 0 et le cooldown de tir
 	typeEnnemi = BASIC;
-	hauteur = 235/3;
-	largeur = 230/3;
+	hauteur = 264/3;
+	largeur = 275/3;
 	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
 
 	QPixmap pngImg("Textures\\Ennemis\\basicEnnemi.png");
@@ -938,8 +938,8 @@ BasicBullet::BasicBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, i
 {
 	symbole = '|';
 	ammoType = NORMAL;
-	hauteur = 1;
-	largeur = 1;
+	hauteur = 24;
+	largeur = 24;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
 	
 	QPixmap pngImg("Textures\\bullets\\basicbullet.png");			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
@@ -983,19 +983,27 @@ FragmentingBullet::FragmentingBullet(float x, float y, bool isPlayerBullet) : Bu
 {
 	symbole = 'o';
 	ammoType = FRAGMENTING;
-	hauteur = 1;
-	largeur = 2;
+	hauteur = 24;
+	largeur = 24;
 	nbVies = 1;
+
+    QPixmap pngImg("Textures\\bullets\\basicbullet.png");			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(0.5);
+	image->setRotation(180);
+	image->show();
 }
 
 void FragmentingBullet::update()
 {
 	if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
-		posY++;
+		posY+=10;
 
 	if (posY >= HEIGHT + 1)
 		enVie = false;
 
+	image->setPos(posX, posY);
 }
 
 Laser::Laser(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
@@ -1005,7 +1013,6 @@ Laser::Laser(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBulle
 	largeur = 1;
 	if (!isPlayerBullet)
 		hauteur = HEIGHT - posY + 1;
-
 }
 
 
@@ -1020,8 +1027,8 @@ Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBul
 {
 	symbole = 'V';
 	ammoType = HOMING;
-	hauteur = 2;
-	largeur = 1;
+	hauteur = 30;
+	largeur = 24;
 	nbVies = 2;
 
 	if (p1EnVie == true && p2EnVie == true)
@@ -1043,9 +1050,9 @@ void Homing::update()
 		{
 
 			if (posX < xJoueur)
-				posX++;
+				posX+=10;
 			else if (posX > xJoueur)
-				posX--;
+				posX-=10;
 		}
 		else if (p1EnVie && p2EnVie)
 		{
@@ -1053,29 +1060,29 @@ void Homing::update()
 			if (joueurRand == 0)
 			{
 				if (posX < xJoueur)
-					posX++;
+					posX+=10;
 				else if (posX > xJoueur)
-					posX--;
+					posX-=10;
 			}
 			else if (joueurRand == 1)
 			{
 				if (posX < xJoueur2)
-					posX++;
+					posX+=10;
 				else if (posX > xJoueur2)
-					posX--;
+					posX-=10;
 			}
 		}
 		else if (!p1EnVie && p2EnVie)
 		{
 			if (posX < xJoueur2)
-				posX++;
+				posX+=10;
 			else if (posX > xJoueur2)
-				posX--;
+				posX-=10;
 		}
 	}
 	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du missile
 	{
-		posY++;
+		posY+=10;
 	}
 
 
@@ -1090,8 +1097,8 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 {
 	typeEntite = BULLET;
 	ammoType = ANGLE;
-	hauteur = 1;
-	largeur = 1;
+	hauteur = 25;
+	largeur = 25;
 	nbVies = 0;
 	direction = angle;		//0 a 360 pour les directions possibles
 	bulletAllie = isPlayerBullet;
@@ -1131,6 +1138,59 @@ void angleBullet::update()
 		moveTimer = 0;
 
 	image->setPos(posX, posY);
+}
+
+TempBullet::TempBullet(float x, float y, int angle, bool isPlayerBullet) : angleBullet(x, y, angle, symbole, isPlayerBullet)
+{
+	typeEntite = BULLET;
+	ammoType = TEMP;
+	direction = angle;
+	distBullet = 0;
+}
+
+void TempBullet::update()
+{
+	if (distBullet < 45)
+	{
+		if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
+		{
+			if (bulletAllie)
+			{
+				posX += cos((direction * 2 * PI) / 360) * 1.2;
+				posY += sin((direction * 2 * PI) / 360) * 1.2;
+			}
+			else
+			{
+				posX += cos((direction * 2 * PI) / 360);
+				posY += sin((direction * 2 * PI) / 360) / 2;
+			}
+		}
+
+		if (posY >= HEIGHT + 1 || posY <= 0 || posX >= WIDTH || posX <= 0)
+			enVie = false;
+
+		distBullet++;
+	}
+	else
+		enVie = false;
+
+	moveTimer++;
+
+	if (moveTimer >= 100)
+		moveTimer = 0;
+}
+
+Mortar::Mortar(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
+{
+	symbole = 'O';
+	ammoType = MORTAR;
+	hauteur = 1;
+	largeur = 1;
+	nbVies = 0;
+}
+
+void Mortar::update()
+{
 }
 
 //******************************** classe obstacle ***********************************

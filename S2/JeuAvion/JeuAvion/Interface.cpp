@@ -37,14 +37,265 @@ Interface::Interface()
     //listEntites.emplace_back(make_unique<Joueur>(0, 0));
     joueur = static_cast<Joueur*>(listEntites.back().get());                //on recupere le * du joueur de la liste d'entites
     joueur->posY = HEIGHT - joueur->hauteur;
+    
     joueur2 = nullptr;
+    boss3 = nullptr;
 }
 
 
 //gere les inputs du joueur
 void Interface::gererInput()
 {
+	//----------------------------------------------   test manette   ----------------------------------------------
     if (pause == false)
+    {
+        
+        switch (dataManette[0])     //premiere valeur du data de la manette est un chiffre de 1 a 9 du joystick
+        {
+        case 1:
+            if (joueur->posX > 2)
+                joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+            else if (joueur->posX > 1)
+                joueur->posX--;
+            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                joueur->posY--;
+            break;
+
+        case 2:
+            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                joueur->posY--;
+            break;
+
+        case 3:
+            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                joueur->posY--;
+            if (joueur->posX < WIDTH - 2)
+                joueur->posX += 2;
+            else if (joueur->posX < WIDTH - 1)
+                joueur->posX++;
+            break;
+
+        case 4:
+            if (joueur->posX > 2)
+                joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+            else if (joueur->posX > 1)
+                joueur->posX--;
+            break;
+        case 5:
+            //le joystick est au centre donc on ne fait rien
+            break;
+
+        case 6:
+            if (joueur->posX < WIDTH - 2)
+                joueur->posX += 2;
+            else if (joueur->posX < WIDTH - 1)
+                joueur->posX++;
+            break;
+
+        case 7:
+            if (joueur->posY < HEIGHT)
+                joueur->posY++;
+            if (joueur->posX > 2)
+                joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+            else if (joueur->posX > 1)
+                joueur->posX--;
+            break;
+
+        case 8:
+            if (joueur->posY < HEIGHT)
+                joueur->posY++;
+            break;
+
+        case 9:
+            if (joueur->posY < HEIGHT)
+                joueur->posY++;
+            if (joueur->posX < WIDTH - 2)
+                joueur->posX += 2;
+            else if (joueur->posX < WIDTH - 1)
+                joueur->posX++;
+            break;
+
+
+        }
+        //pour les boutons de la manette a l'emplacement 2->haut 3->bas 4->gauche 5->droite 
+        if (dataManette[3] == 1)
+        {
+            if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
+            {
+                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                joueurTir(joueur);
+                joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+            }
+        }
+
+        if (dataManette[2] == 1)
+        {
+            gameOver = true;
+            dataManette[5] = 0;
+        }
+
+        if (dataManette[1] == 1)
+        {
+            if (explosionTimer == 0)
+            {
+                cdExplosion = 500;      //set le cooldown de l'explosion
+                enExplosion = true;
+                explosionTimer = cdExplosion;
+                explosionPosY = joueur->posY - 1;
+            }
+        }
+
+        //dataManette[4] est declare en bas de la fonction hors du if(!pause)
+
+        if (dataManette[5] == 1)
+        {
+            if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+                joueur->barrelRoll = true;
+        }
+        
+
+        if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
+        {
+            if (joueur->posX > 0)
+                joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
+			if (joueur->posX < 0)
+				joueur->posX = 0;
+        }
+        if (GetAsyncKeyState('D') < 0) 
+        {
+            if (joueur->posX < WIDTH - joueur->largeur)
+                joueur->posX += 10;
+            if (joueur->posX > WIDTH - joueur->largeur)
+                joueur->posX = WIDTH - joueur->largeur;
+        }
+
+        if (GetAsyncKeyState('W') < 0)
+        { 
+            if (joueur->posY > 0)      //le joueur a acces au 9/10 de l'ecran
+                joueur->posY-=10;
+		    if (joueur->posY < 0)
+				joueur->posY = 0;
+		}
+
+        if (GetAsyncKeyState('S') < 0)
+        {
+            if (joueur->posY < HEIGHT - joueur->hauteur)
+                joueur->posY += 10;
+			if (joueur->posY > HEIGHT - joueur->hauteur)
+				joueur->posY = HEIGHT;
+        }
+        if (GetAsyncKeyState(VK_SPACE) < 0)
+        {
+            if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
+            {
+                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                joueurTir(joueur);
+                joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+
+            }
+        }
+        if (GetAsyncKeyState('E') < 0)
+        {
+            if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+                joueur->barrelRoll = true;
+        }
+        if (GetAsyncKeyState('R') < 0)
+        {
+            if (explosionTimer == 0)
+            {
+
+                cdExplosion = 500;      //set le cooldown de l'explosion
+                enExplosion = true;
+                explosionTimer = cdExplosion;
+                explosionPosY = joueur->posY - 1;
+            }
+        }
+
+        //******************************************* controle 2e joueur *******************************************
+        if (nbJoueur > 1)
+        {
+            if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
+            {
+                if (joueur2->posX > 2)
+                    joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur2->posX > 1)
+                    joueur2->posX--;
+            }
+            if (GetAsyncKeyState('D') < 0) {
+                if (joueur2->posX < WIDTH - 2)
+                    joueur2->posX += 2;
+                else if (joueur2->posX < WIDTH - 1)
+                    joueur2->posX++;
+            }
+
+            if (GetAsyncKeyState('W') < 0)
+                if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
+                    joueur2->posY--;
+
+            if (GetAsyncKeyState('S') < 0)
+                if (joueur2->posY < HEIGHT)
+                    joueur2->posY++;
+            if (GetAsyncKeyState(VK_SPACE) < 0)
+            {
+                if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+                {
+                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                    joueurTir(joueur2);
+                    joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+
+                }
+            }
+            if (GetAsyncKeyState('E') < 0)
+            {
+                if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
+                    joueur2->barrelRoll = true;
+            }
+            if (GetAsyncKeyState('R') < 0)
+            {
+                if (explosionTimer == 0)
+                {
+
+                    cdExplosion = 500;      //set le cooldown de l'explosion
+                    enExplosion = true;
+                    explosionTimer = cdExplosion;
+                    explosionPosY = joueur2->posY - 1;
+                }
+            }
+        }
+
+
+        if (explosionTimer > 0)
+        {
+            explosionTimer--;
+            explosion();
+        }
+    }
+
+
+    if (dataManette[4] == 1)
+    {
+        if (pause)
+            pause = false;
+        else if (!pause)
+            pause = true;
+        Sleep(200);
+    }
+
+    if (GetAsyncKeyState('Q') < 0)
+        gameOver = true;
+
+    if (GetAsyncKeyState('P') < 0)
+    {
+        if (pause)
+            pause = false;
+        else if (!pause)
+            pause = true;
+        Sleep(200);
+    }
+
+
+	// ------------------------------------------------  fin test manette ------------------------------------------------
+    /*if (pause == false)
     {
 
         if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
@@ -170,7 +421,7 @@ void Interface::gererInput()
         else if (!pause)
             pause = true;
         Sleep(200);
-    }
+    }*/
 }
 void Interface::joueurTir(Joueur* quelJoueur)
 {
@@ -182,15 +433,15 @@ void Interface::joueurTir(Joueur* quelJoueur)
     switch (quelJoueur->nbBulletTir)
     {
     case 1:
-        listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, 90 + 180, '|', true));
+        listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, 90 + 180, '|', true));
         break;
     case 3:
         for (int i = 80;i < 110;i += 10)
-            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, i + 180, '|', true));
         break;
     case 5:
         for (int i = 70; i < 120; i += 10)
-            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2, quelJoueur->posY - 1, i + 180, '|', true));
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, i + 180, '|', true));
         break;
     }
 }
@@ -338,12 +589,12 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
 
-            if (spawnPowerUpStart)
+            /*if (spawnPowerUpStart)
             {
                 spawnPowerUpStart = false;
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }
+            }*/
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
        }
     }
@@ -497,16 +748,16 @@ void Interface::updateEntites()
             e->update();    //on met a jour chaque entite
 
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
-                bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
+                bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
             if (e->typeEntite == ENNEMI && e->ammoType == FRAGMENTING && e->moveTimer % e->shootCooldown == 0 && e->shoots)     //si c'est un ennemi qui tire des fragmenting bullets
-                bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
 
             if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
                 bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2, e->posY + e->hauteur, false));
 
             if (e->getTypeEnnemi() == AIMBOT && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
-                bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
 
 
             if (e->getTypeEnnemi() == BOSS1_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss1 tire des 3 missiles
@@ -574,6 +825,11 @@ void Interface::updateEntites()
     }
 }
 
+void Interface::cercleExplosion(int angle, int x, int y)
+{
+    for (int i = 0; i <= 360; i += angle)
+        bufferBulletsUpdate.emplace_back(make_unique<TempBullet>(x, y, i, false));
+}
 
 void Interface::cercleTir(int angle, int x, int y)
 {
@@ -669,8 +925,8 @@ void Interface::gererCollisions()
                         if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
                             if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
-                                for (int i = -1; i < 2; i++)	//commence a -1 pour que le premier fragment commence a la gauche de la bullet
-                                    bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
+                                for (int i = 80; i < 110; i += 10)
+                                    bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i , '|', false));
 
                             e2->perdVie(1);
                             applyPurpleEffect(e2->image, 100, e2.get());
@@ -811,167 +1067,6 @@ void Interface::restart()
     spawnPowerUpStart = true;
 }
 
-
-//met a jour l'affichage de la console 
-void Interface::updateAffichage()
-{
-   /* wchar_t buffer[HEIGHT + 5][WIDTH + 2];  // +3 pour les bordures et le score, +2 pour les bordures
-    wchar_t progressExplosion[12];	//buffer pour afficher progression de l'explosion
-    wchar_t progressBarrelRoll[12];	//buffer pour afficher progression du barrel roll
-    float nbSymboleExplosion = 0;  //pour le nombre de symboles a afficher dans la progression de l'explosion
-    float nbSymboleBarrelRollP1 = 0;
-    float nbSymboleBarrelRollP2 = 0;
-    wstring texte;  //on cree un string pour afficher le score, le nombre de vies et autres textes
-
-
-    // Remplir le tampon avec des espaces (effacer l'écran)
-    for (int y = 0; y < HEIGHT + 5; y++) {
-        for (int x = 0; x < WIDTH + 2; x++) {
-            buffer[y][x] = L' ';
-        }
-    }
-
-    //rempli le buffer progressexplosion avec des espaces
-    for (int i = 0; i < 12; i++)
-        progressExplosion[i] = L' ';
-
-    //rempli le buffer progressBarrelRoll avec des espaces
-    for (int i = 0; i < 12; i++)
-        progressBarrelRoll[i] = L' ';
-
-
-    // Mettre à jour les bordures
-    for (int x = 0; x < WIDTH + 2; x++)     //on met les bordures du haut et du bas
-    {
-        buffer[0][x] = L'#';
-        buffer[HEIGHT + 1][x] = L'#';
-    }
-    for (int y = 1; y <= HEIGHT; y++)   //on met les bordures de gauche et de droite, on commence a 1 et finit a HEIGHT pour pas ecraser les bordures du haut et du bas
-    {
-        buffer[y][0] = L'#';
-        buffer[y][WIDTH + 1] = L'#';
-    }
-
-    // Mettre à jour les entités vivantes
-    for (auto& e : listEntites)
-    {
-        if (e->enVie)
-        {
-            for (int y = 0; y < e->hauteur; y++)        //on parcourt la hauteur de l'entite
-            {
-                for (int x = 0; x < e->largeur; x++)    //on parcourt la largeur de l'entite
-                {
-                    buffer[(int)e->posY + y][(int)e->posX + x] = e->symbole;  //on met a jour la position de l'entite dans le buffer
-                }
-            }
-        }
-    }
-
-    //Affiche progression pour l'explosion
-    progressExplosion[0] = L'[';
-    progressExplosion[11] = L']';
-
-    if (explosionTimer == 0)
-        nbSymboleExplosion = 10;
-    else
-        nbSymboleExplosion = ((float)(cdExplosion - explosionTimer) / (float)cdExplosion) * 10;
-
-    for (int i = 0; i < (int)nbSymboleExplosion; i++)
-        progressExplosion[i + 1] = L'#';
-
-    texte = L"Explosion: ";
-    for (int i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
-        buffer[HEIGHT + 2][i] = texte[i];
-
-    for (int i = 0; i < 12; i++)
-        buffer[HEIGHT + 2][i + texte.size()] = progressExplosion[i];
-
-    //Affiche progression pour le barrel roll
-    progressBarrelRoll[0] = L'[';
-    progressBarrelRoll[11] = L']';
-    int posCurseur = 12 + texte.size() + 5;
-
-    if (joueur->coolDownBarrelRoll == 0)
-        nbSymboleBarrelRollP1 = 10;
-    else
-    {
-        nbSymboleBarrelRollP1 = ((float)(CD_BARRELROLL - joueur->coolDownBarrelRoll) / (float)CD_BARRELROLL) * 10;
-        if (nbSymboleBarrelRollP1 > 10)
-            nbSymboleBarrelRollP1 = 10;
-    }
-
-    for (int i = 0; i < (int)nbSymboleBarrelRollP1; i++)
-        progressBarrelRoll[i + 1] = L'#';
-
-    texte = L"P1 Barrel Roll: ";
-    for (int i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
-        buffer[HEIGHT + 2][i + posCurseur] = texte[i];
-
-    for (int i = 0; i < 12; i++)
-        buffer[HEIGHT + 2][i + texte.size() + posCurseur] = progressBarrelRoll[i];
-
-    if (nbJoueur > 1)
-    {
-        //rempli le buffer progressBarrelRoll avec des espaces
-        for (int i = 0; i < 12; i++)
-            progressBarrelRoll[i] = L' ';
-
-        progressBarrelRoll[0] = L'[';
-        progressBarrelRoll[11] = L']';
-        posCurseur = 12 + texte.size() + 5 + 25;
-
-        if (joueur2->coolDownBarrelRoll == 0)
-            nbSymboleBarrelRollP2 = 10;
-        else
-        {
-            nbSymboleBarrelRollP2 = ((float)(CD_BARRELROLL - joueur2->coolDownBarrelRoll) / (float)CD_BARRELROLL) * 10;
-            if (nbSymboleBarrelRollP2 > 10)
-                nbSymboleBarrelRollP2 = 10;
-        }
-        for (int i = 0; i < (int)nbSymboleBarrelRollP2; i++)
-            progressBarrelRoll[i + 1] = L'#';
-        texte = L"P2 Barrel Roll: ";
-        for (int i = 0; i < texte.size(); i++)   //on ajoute le score au buffer
-            buffer[HEIGHT + 2][i + posCurseur] = texte[i];
-        for (int i = 0; i < 12; i++)
-            buffer[HEIGHT + 2][i + texte.size() + posCurseur] = progressBarrelRoll[i];
-
-    }
-
-    // Afficher le score
-    if (gameOver)
-        texte = L"Game Over!  Score: " + to_wstring(score1);
-    else
-    {
-        if (joueur->nbVies >= 0)
-            texte = L"Score: " + to_wstring(score1) + L"  P1 Lives: " + to_wstring(joueur->nbVies);
-        else
-            texte = L"Score: " + to_wstring(score1) + L"  P1 Lives: 0";
-    }
-    if (nbJoueur > 1)
-    {
-        if (joueur2->nbVies >= 0)
-            texte += L"         P2 Lives: " + to_wstring(joueur2->nbVies);
-        else
-            texte += L"         P2 Lives: 0";
-    }
-
-
-    for (size_t i = 0; i < texte.size(); i++)   //on ajoute le score du joueur 1 au buffer
-        buffer[HEIGHT + 3][i] = texte[i];
-
-    // on affiche chaque ligne du buffer
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    for (int y = 0; y < HEIGHT + 4; y++)
-    {
-        COORD bufferCoord = { 0, static_cast<SHORT>(y) };
-        DWORD charsWritten;
-
-        WriteConsoleOutputCharacterW(hConsole, buffer[y], WIDTH + 2, bufferCoord, &charsWritten);       //on ecrit chaque ligne du buffer
-    */
-}
-
-
 //enleve les entites mortes de la liste d'entites
 void Interface::enleverEntites()
 {
@@ -997,57 +1092,42 @@ void Interface::enleverEntites()
     }
 }
 
-string location = "\Textures\Scenery";
+//string location = "\Textures\Scenery";
 //execution du jeu
 void Interface::executionJeu(int version)
-
 {
+    //------------------section port serie---------------------
+      // Ouvrir le port série
+    HANDLE hSerial = CreateFile(L"COM3", GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);  // selectionne le port serie
+    if (hSerial == INVALID_HANDLE_VALUE) {
+        cerr << "Erreur d'ouverture du port série." << endl;
+    }
+
+    // Configurer les paramètres du port série
+    DCB dcbSerialParams = { 0 };
+    dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+    if (!GetCommState(hSerial, &dcbSerialParams)) {
+        cerr << "Impossible de lire l'état du port série." << endl;
+        CloseHandle(hSerial);
+    }
+    dcbSerialParams.BaudRate = CBR_9600;  // set baud rate
+    dcbSerialParams.ByteSize = 8;
+    dcbSerialParams.StopBits = ONESTOPBIT;
+    dcbSerialParams.Parity = NOPARITY;
+    SetCommState(hSerial, &dcbSerialParams);
+
+    COMMTIMEOUTS timeouts = { 0 };
+    timeouts.ReadIntervalTimeout = MAXDWORD;  // Returns immediately if no data is available
+    timeouts.ReadTotalTimeoutConstant = 0;    // No additional wait time
+    timeouts.ReadTotalTimeoutMultiplier = 0;  // No per-byte delay
+    SetCommTimeouts(hSerial, &timeouts);
+
+    COMSTAT status;     //pour verifier si des donnees sont dispo dans le port serie avant de call la lecture du port serie
+    DWORD errors;
+
     if (firststart)
     {
-      //Animation du Background qui bouge
-        /*QMovie* background1 = new QMovie("Textures\\Scenery\\water.gif");
-        QMovie* background2 = new QMovie("Textures\\Scenery\\water.gif");
-        qDebug() << "Current working directory: " << QDir::currentPath();
-        QLabel* labelBackground1 = new QLabel;
-        QLabel* labelBackground2 = new QLabel;
-
-        labelBackground1->setMovie(background1);
-        labelBackground2->setMovie(background2);
-        QTimer::singleShot(0, [&]() {
-        background1->start();
-        background2->start();
-            });
-
-
-        labelBackground1->setFixedSize(2560, 1440);
-        labelBackground2->setFixedSize(2560, 1440);
-
-        
-        labelBackground1->move(-500, -1440);
-        labelBackground2->move(-500, 0);
-        QPropertyAnimation* animation1 = new QPropertyAnimation(labelBackground1, "geometry");
-        animation1->setDuration(10000); 
-        animation1->setStartValue(QRect(labelBackground1->x(), labelBackground1->y(), labelBackground1->width(), labelBackground1->height()));
-        animation1->setEndValue(QRect(labelBackground1->x(), labelBackground1->y() + 1440, labelBackground1->width(), labelBackground1->height()));
-
-        QPropertyAnimation* animation2 = new QPropertyAnimation(labelBackground2, "geometry");
-        animation2->setDuration(10000); 
-        animation2->setStartValue(QRect(labelBackground2->x(), labelBackground2->y(), labelBackground2->width(), labelBackground2->height()));
-        animation2->setEndValue(QRect(labelBackground2->x(), labelBackground2->y() + 1440, labelBackground2->width(), labelBackground2->height()));
-
-
-        animation1->setLoopCount(-1); 
-        animation2->setLoopCount(-1); 
-
-        QParallelAnimationGroup * group = new QParallelAnimationGroup;
-        group->addAnimation(animation1);
-        group->addAnimation(animation2);
-
-        group->setLoopCount(-1);
-        group->start();
-        GameScene->addWidget(labelBackground1);
-        GameScene->addWidget(labelBackground2);*/
-
+		//------------------------ section graphique ---------------------
         QPixmap pngImg("Textures\\Scenery\\water.png");
         QGraphicsPixmapItem* img = new QGraphicsPixmapItem(pngImg);
         GameScene->addItem(img);
@@ -1071,9 +1151,10 @@ void Interface::executionJeu(int version)
        player1->setScale(0.25);
        GameScene->addItem(player1);
        player1->show();
-        hideCursor();
+        //hideCursor();
         music.stopMusic();
         music.playMusic("OceanWorld.wav", 0, 117000);
+
         if (version > 0)     //si on a choisi autre chose que le mode seul
         {
             listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
@@ -1086,10 +1167,17 @@ void Interface::executionJeu(int version)
     }
     if (!gameOver)
     {
+        ClearCommError(hSerial, &errors, &status);
+        if (status.cbInQue > 0)   // Lire seulement si des données sont dispo
+            readSerial(hSerial);
         gererInput();
 
         while (pause == true)
         {
+            ClearCommError(hSerial, &errors, &status);
+            if (status.cbInQue > 0)   // Lire seulement si des données sont dispo
+                readSerial(hSerial);
+            
             gererInput();   //sert a revenir au jeu si on a fait pause
             Sleep(10);
         }
@@ -1097,7 +1185,7 @@ void Interface::executionJeu(int version)
         updateEntites();
         gererCollisions();
         enleverEntites();
-        updateAffichage();
+        //updateAffichage();
         //Sleep(20);
 
         if (nbJoueur == 1 && joueur->nbVies < 0)
@@ -1108,9 +1196,56 @@ void Interface::executionJeu(int version)
     if (gameOver)
     {
         restart();
+        CloseHandle(hSerial);  // Fermer le port série
     }
     //Sleep(1000);
-    showCursor();
+    //showCursor();
+}
+
+
+void Interface::readSerial(HANDLE hSerial)
+{
+    char buffer[56];  // Taille du buffer attendue
+    DWORD bytesRead;
+    static string response;  // Garde les données incomplètes d'une lecture à l'autre
+
+    // Lire les données du port série si disponibles
+    //DWORD errors;
+    //COMSTAT status;
+    //ClearCommError(hSerial, &errors, &status);
+
+    //if (status.cbInQue > 0) { // s'il y a des données à lire
+    if (ReadFile(hSerial, buffer, sizeof(buffer) - 1, &bytesRead, NULL) && bytesRead > 0) {
+        buffer[bytesRead] = '\0';  // Terminer la chaîne
+        response += buffer;  // Ajouter au buffer accumulé
+
+        // Vérifier si on a une ligne complète (avec \r\n a la fin)
+        size_t pos;
+        while ((pos = response.find("\r\n")) != string::npos)
+        {
+            string line = response.substr(0, pos);  // Extraire la ligne complète
+            response.erase(0, pos + 2);  // Supprimer la ligne traitée
+
+            try {
+                // Parser le JSON
+                json jsonData = json::parse(line);
+                //cout << "JSON reçu : " << jsonData.dump(4) << endl;
+
+                // Mettre à jour les données de la manette
+                dataManette[0] = jsonData["Joy"];
+                dataManette[1] = jsonData["acc"];
+                dataManette[2] = jsonData["but1"];      //en haut
+                dataManette[3] = jsonData["but2"];      //en bas
+                dataManette[4] = jsonData["but3"];      //gauche
+                dataManette[5] = jsonData["but4"];      //droite
+            }
+            catch (json::parse_error& e) {
+                //cerr << "Erreur JSON : " << e.what() << endl;
+            }
+        }
+    }
+    //}
+
 }
 
 void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
@@ -1164,22 +1299,4 @@ void setConsoleSize()
     // Set la taille de la console
     SMALL_RECT windowSize = { 0, 0, WIDTH + 3, HEIGHT + 3 };
     SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
-}
-
-//cache le curseur de la console
-void Interface::hideCursor()
-{
-    CONSOLE_CURSOR_INFO cursorInfo;
-    GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
-    cursorInfo.bVisible = false;
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
-}
-
-//affiche le curseur de la console
-void Interface::showCursor()
-{
-    CONSOLE_CURSOR_INFO cursorInfo;
-    GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
-    cursorInfo.bVisible = true;
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
