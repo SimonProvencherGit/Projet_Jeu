@@ -33,7 +33,7 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
 }
 
 
-void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
+void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
     if (e->enVie == false)
     {
@@ -702,7 +702,7 @@ void Interface::gererCollisions()
                 {
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-                    applyPurpleEffect(joueur->image, 100, joueur);
+                    damageeffect(joueur->image, 100, joueur);
                     //if(!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
@@ -717,7 +717,7 @@ void Interface::gererCollisions()
                     //if (!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
-                    applyPurpleEffect(joueur->image, 100, joueur);
+                    damageeffect(joueur->image, 100, joueur);
                     e->collisionJoueur = true;
                 }
                 else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
@@ -750,7 +750,7 @@ void Interface::gererCollisions()
                                     bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
 
                             e2->perdVie(1);
-                            applyPurpleEffect(e2->image, 100, e2.get());
+                            damageeffect(e2->image, 100, e2.get());
                             if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 

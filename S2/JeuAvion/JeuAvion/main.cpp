@@ -13,7 +13,7 @@ bool fullscreen = false;
 bool first = true;
 extern std::unique_ptr<Interface> jeux = nullptr;
 
-void loadimages(){ //Initalisation de toute les images.
+void loadimages(){ //Initialisation de toute les images.
     ListImages[0] = make_unique<QPixmap>();
     ListImages[0]->load("Textures\\Ennemis\\BasicEnnemi.png");
     ListImages[1] = make_unique<QPixmap>();
