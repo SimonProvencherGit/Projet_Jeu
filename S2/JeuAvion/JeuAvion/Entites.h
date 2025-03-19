@@ -54,6 +54,7 @@ public:
 
     QGraphicsPixmapItem* image;
     QGraphicsPixmapItem* Originalimage;
+    QGraphicsPixmapItem* DamageImage;
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;

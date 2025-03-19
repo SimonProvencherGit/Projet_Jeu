@@ -6,6 +6,7 @@
 #include <QRandomGenerator>
 #include <QGraphicsView>
 #include <QThread>
+#include <chrono>
 bool firststart = true;
 
 QThread EffectThread;
@@ -33,6 +34,7 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
 
 
 void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
+    auto start = std::chrono::high_resolution_clock::now();
     if (e->enVie == false)
     {
         return;
@@ -44,22 +46,13 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
     
     
     QPixmap originalPixmap = pixmapItem->pixmap();
-    QImage image = originalPixmap.toImage();
-    e->flashing = true;
-    //Convertir l'image a mauve
-    for (int y = 0; y < image.height(); ++y) {
-        for (int x = 0; x < image.width(); ++x) {
-            QColor color = image.pixelColor(x, y);
-            color.setRed(qBound(0, 1*color.red() + color.blue(), 255));
-            color.setBlue(qBound(0, (10*color.blue() + color.red()) / 2, 255));
-            color.setGreen(qBound(0, 4*color.green() / 2, 255));
-            image.setPixelColor(x, y, color);
-        }
-    }
 
    
-    pixmapItem->setPixmap(QPixmap::fromImage(image));
+    pixmapItem->setPixmap(e->DamageImage->pixmap());
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
+    qDebug() << "Execution time: " << duration << " ms";
    //Retourner l'image a l'originale
     QTimer::singleShot(durationMs, [pixmapItem, originalPixmap, e]() {
         
@@ -71,7 +64,8 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
                return;
            }
           try{
-          pixmapItem->setPixmap(e->Originalimage->pixmap());
+              QPixmap revertpix = e->Originalimage->pixmap();
+          e->image->setPixmap(revertpix);
           }
           catch(...)
           {
@@ -177,7 +171,7 @@ void Interface::gererInput()
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
-                shakeScene(GameScene, view, 1000, 100);
+                shakeScene(GameScene, view, 1000, 10);
             }
         }
 
