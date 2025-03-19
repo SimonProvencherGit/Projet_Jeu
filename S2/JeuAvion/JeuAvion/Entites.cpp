@@ -256,13 +256,13 @@ void DiveBomber::update()
 	//{
 		if (p1EnVie && !p2EnVie)		//si juste p1 est viant
 		{
-			if (posX > xJoueur + 50 - 10 && posX < xJoueur + 50 + 10)
+			if (posX > xJoueur - 10 && posX < xJoueur + 10)
 			{
 				//posx ne change pas car il est deja aligne avec le joueur
 			}
-			else if (posX < xJoueur+50)
+			else if (posX < xJoueur)
 				posX+=5;
-			else if (posX > xJoueur+50)
+			else if (posX > xJoueur)
 				posX-=5;
 		}
 		else if (p1EnVie && p2EnVie)
