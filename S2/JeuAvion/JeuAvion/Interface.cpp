@@ -453,7 +453,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
         case TANK:
             coterand = rand() % 2;
             if (coterand == 0)
-                listEntites.emplace_back(make_unique<Tank>(WIDTH - 1, rand() % HEIGHT / 2));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de WIDTH - 2 se fait changer dans le constructeur dependant du sens de l'ennemi
+                listEntites.emplace_back(make_unique<Tank>(WIDTH - 146, rand() % HEIGHT / 2));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de WIDTH - 2 se fait changer dans le constructeur dependant du sens de l'ennemi
             else
                 listEntites.emplace_back(make_unique<Tank>(1, rand() % HEIGHT / 2));
             break;
@@ -560,15 +560,15 @@ void Interface::progressionDifficulte()
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
             // if (enemySpawnTimer >= 100) //pour des tests
         {
-            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, ARTILLEUR);
+            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             //enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-            enemySpawn(1, BOSS1_MAIN);
+            //enemySpawn(1, BOSS1_MAIN);
 
             if (spawnPowerUpStart)
             {
