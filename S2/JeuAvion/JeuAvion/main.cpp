@@ -35,9 +35,29 @@ void loadimages(){ //Initialisation de toute les images.
     ListImages[6] = make_unique<QPixmap>();
     ListImages[6]->load("Textures\\bullets\\basicbullet.png");
     ListImages[7] = make_unique<QPixmap>();
-    ListImages[7]->load("Textures\\Ennemis\\BasicEnnemi-d.png");
+    ListImages[7]->load("Textures\\Ennemis\\aimbot.png");
     ListImages[8] = make_unique<QPixmap>();
-    ListImages[8]->load("Textures\\Ennemis\\BasicEnnemi-d.png");
+    ListImages[8]->load("Textures\\Ennemis\\aimbot-d.png");
+    ListImages[9] = make_unique<QPixmap>();
+    ListImages[9]->load("Textures\\Ennemis\\big_mama.png");
+    ListImages[10] = make_unique<QPixmap>();
+    ListImages[10]->load("Textures\\Ennemis\\big_mama-d.png");
+    ListImages[11] = make_unique<QPixmap>();
+    ListImages[11]->load("Textures\\Ennemis\\boss_main1.png");
+    ListImages[12] = make_unique<QPixmap>();
+    ListImages[12]->load("Textures\\Ennemis\\boss_main1-d.png");
+    ListImages[13] = make_unique<QPixmap>();
+    ListImages[13]->load("Textures\\Ennemis\\boss1_side.png");
+    ListImages[14] = make_unique<QPixmap>();
+    ListImages[14]->load("Textures\\Ennemis\\boss1_side-d.png");
+    ListImages[15] = make_unique<QPixmap>();
+    ListImages[15]->load("Textures\\Ennemis\\tank.png");
+    ListImages[16] = make_unique<QPixmap>();
+    ListImages[16]->load("Textures\\Ennemis\\tank-d.png");
+    ListImages[17] = make_unique<QPixmap>();
+    ListImages[17]->load("Textures\\bullets\\homing.png");
+    ListImages[18] = make_unique<QPixmap>();
+    ListImages[18]->load("Textures\\bullets\\homing-d.png");
 
 
 }
@@ -75,11 +95,11 @@ int main(int argc, char* argv[]) {
     // Remove the border and background
     view->setFrameStyle(QFrame::NoFrame); 
     view->setBackgroundBrush(Qt::NoBrush); 
-    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
-    view->setViewport(glWidget);// set le view pour opengl
+    //QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+   // view->setViewport(glWidget);// set le view pour opengl
 
     // Ajouter du antialiasing et Smoothing des pixels.
-    view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    //view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
     view->showFullScreen(); 
