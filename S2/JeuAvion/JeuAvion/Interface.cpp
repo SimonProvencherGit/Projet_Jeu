@@ -1125,9 +1125,10 @@ void Interface::executionJeu(int version)
         GameScene->addWidget(labelBackground1);
         GameScene->addWidget(labelBackground2);*/
 
-        QPixmap pngImg("Textures\\Scenery\\water.png");
+        QPixmap pngImg("Textures\\Scenery\\space.png");
         QGraphicsPixmapItem* img = new QGraphicsPixmapItem(pngImg);
         GameScene->addItem(img);
+        img->moveBy(-50, -50);
         img->setScale(0.75);
         img->show();
 

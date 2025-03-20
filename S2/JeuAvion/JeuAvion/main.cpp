@@ -2,7 +2,7 @@
 #include "Interface.h"
 #include "Menu.h"
 #include "globalobjects.h"
-
+#include <QOpenGLwidget>
 
 
 //Variables globales pour le main
@@ -49,7 +49,7 @@ void firststart() {
         }
     }
 }
- 
+;
 
 int main(int argc, char* argv[]) {
     //QPixmap ListImage[50];
@@ -57,26 +57,29 @@ int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
     GameScene = new QGraphicsScene();
-    GameScene->setSceneRect(0, 0, 1920, 1080); // Set the scene dimensions
+    GameScene->setSceneRect(0, 0, 1920, 1080);
 
     view = new QGraphicsView(GameScene);
-    //view->setRenderHint(QPainter::Antialiasing); // Enable smooth rendering
+
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setContentsMargins(0, 0, 0, 0);
     // Remove the border and background
-    view->setFrameStyle(QFrame::NoFrame); // Removes the frame (border)
-    view->setBackgroundBrush(Qt::NoBrush); // Removes the background color
+    view->setFrameStyle(QFrame::NoFrame); 
+    view->setBackgroundBrush(Qt::NoBrush); 
+    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+    view->setViewport(glWidget);// set le view pour opengl
+
+    // Ajouter du antialiasing et Smoothing des pixels.
+    view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
-    view->showFullScreen(); // Show in full-screen mode
-
-    // Call fitInView again after switching to full screen
+    view->showFullScreen(); 
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
 
     QTimer timer;
     QObject::connect(&timer, &QTimer::timeout, [&]() { firststart(); });
-    timer.start(16); // ~60 FPS (16 ms per frame)
+    timer.start(16); // 60 FPS (16 ms per frame)
 
     return app.exec();
 }
