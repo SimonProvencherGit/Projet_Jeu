@@ -70,6 +70,14 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
             {
                 return;
             }
+            if (e->Originalimage == nullptr)
+            {
+                return;
+            }
+            if (e->image == nullptr)
+            {
+                return;
+            }
             try {
                 QPixmap revertpix = e->Originalimage->pixmap();
                 e->image->setPixmap(revertpix);
@@ -568,7 +576,7 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-            //enemySpawn(1, BOSS1_MAIN);
+           // enemySpawn(1, BOSS1_MAIN);
 
             if (spawnPowerUpStart)
             {
