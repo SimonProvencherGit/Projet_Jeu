@@ -31,7 +31,7 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
             timer->stop();
             timer->deleteLater();
         }
-        });
+    });
 
     timer->start(20);
 }
@@ -81,7 +81,7 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
             }
             e->flashing = false;
         }
-        });
+    });
 }
 Interface::Interface()
 {
@@ -388,7 +388,7 @@ void Interface::joueurTir(Joueur* quelJoueur)
         listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, 90 + 180, '|', true));
         break;
     case 3:
-        for (int i = 80;i < 110;i += 10)
+        for (int i = 80; i < 110; i += 10)
             listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, i + 180, '|', true));
         break;
     case 5:

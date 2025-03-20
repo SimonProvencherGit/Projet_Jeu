@@ -204,7 +204,7 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[0]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[0]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[1]);
-	
+
 	GameScene->addItem(image);
 	image->setScale(0.33);
 	//image->setRotation(180);
@@ -1321,4 +1321,3 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	image->setScale(0.6);
 	image->show();
 }
-
