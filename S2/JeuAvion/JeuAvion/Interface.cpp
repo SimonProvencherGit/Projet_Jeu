@@ -269,7 +269,7 @@ void Interface::gererInput()
             if (joueur->posY < HEIGHT - joueur->hauteur)
                 joueur->posY += 10;
             if (joueur->posY > HEIGHT - joueur->hauteur)
-                joueur->posY = HEIGHT;
+                joueur->posY = HEIGHT - joueur->hauteur;
         }
         if (GetAsyncKeyState(VK_SPACE) < 0)
         {
@@ -414,7 +414,7 @@ void Interface::explosion()
     {
         for (auto& e : listEntites)
         {
-            if (e->enVie && e->posY >= explosionPosY - 2 && e->posY <= explosionPosY + 2 && !e->isPlayer && e->typeEntite != BOSS && e->typeEntite != POWERUP)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
+            if (e->enVie && e->posY >= explosionPosY && e->posY <= explosionPosY + 50 && !e->isPlayer && e->typeEntite != BOSS && e->typeEntite != POWERUP)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
                 e->enVie = false;
                 //score += customPoints(e->getTypeEnnemi());
@@ -423,7 +423,7 @@ void Interface::explosion()
     }
 
     if (explosionPosY > 0)
-        explosionPosY -= 5;
+        explosionPosY -= 8;
     else
         enExplosion = false;
 }
@@ -566,7 +566,6 @@ void Interface::progressionDifficulte()
     {
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
-            // if (enemySpawnTimer >= 100) //pour des tests
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
             enemySpawn(1, ARTILLEUR);
@@ -576,13 +575,14 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-           // enemySpawn(1, BOSS1_MAIN);
+            
 
             if (spawnPowerUpStart)
             {
+                //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -598,7 +598,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= 1300 && score1 < 2000)
     {
-        if (enemySpawnTimer >= 150 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 50 frames
+        if (enemySpawnTimer >= 200 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
             //enemySpawn(1, ARTILLEUR);
             //enemySpawn(4, BASIC);   //on fait spawn 5 ennemis a chaque vague
@@ -814,7 +814,7 @@ void Interface::updateEntites()
                 bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
 
             if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
-                bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2, e->posY + e->hauteur, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2 - 14, e->posY + e->hauteur, false));
 
             if (e->getTypeEnnemi() == AIMBOT && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
                 bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
@@ -1005,6 +1005,8 @@ void Interface::gererCollisions()
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
                     damageeffect(joueur->image, 100, joueur);
+                    
+
                     //if(!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
@@ -1016,6 +1018,7 @@ void Interface::gererCollisions()
                     joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
 
+					e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueurw
                     //if (!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
@@ -1052,7 +1055,9 @@ void Interface::gererCollisions()
                                     bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
                             e2->perdVie(1);
-                            damageeffect(e2->image, 100, e2.get());
+                            if(e2->typeEntite != BULLET && e2->ammoType != LASER)
+                                damageeffect(e2->image, 100, e2.get());
+
                             if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
@@ -1213,9 +1218,11 @@ void Interface::restart()
 //enleve les entites mortes de la liste d'entites
 void Interface::enleverEntites()
 {
+	Laser* laser;
+
     for (int i = 0; i < listEntites.size(); i++)
     {
-        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)	 //wtf is this if statement
+        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)	
         {
             GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
             delete listEntites[i]->image;

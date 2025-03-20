@@ -133,7 +133,7 @@ void Joueur::update()
 	if (barrelRoll)					//si le joueur fait un barrel roll
 	{
 		barrelRoll = false;
-		barrelRollTimer = 30;		//temps du barrel roll
+		barrelRollTimer = 60;		//temps du barrel roll
 		//invincible = true;
 		symbole = '&';
 		coolDownBarrelRoll = CD_BARRELROLL;		// cooldown du barrel roll
@@ -141,7 +141,7 @@ void Joueur::update()
 	else if (invincible)		//NE MONTRE PAS LE SYMBOLE DE $ SI ININVINCILE APRES ETRE TOUCHE
 	{
 		invincible = false;
-		invincibleTimer = 50;
+		invincibleTimer = 100;
 		symbole = '$';
 
 	}
@@ -243,7 +243,7 @@ void BasicEnnemi::update()
 DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'V';
-	nbVies = 3;
+	nbVies = 2;
 	typeEnnemi = DIVEBOMBER;
 	hauteur = 93;
 	largeur = 52;
@@ -326,7 +326,7 @@ void DiveBomber::update()
 Tank::Tank(float x, float y) : Ennemi(x, y)
 {
 	symbole = '@';
-	nbVies = 10;
+	nbVies = 8;
 	typeEnnemi = TANK;
 	hauteur = 267 / 6;
 	largeur = 874 / 6;
@@ -410,11 +410,20 @@ Zaper::Zaper(float x, float y) : Ennemi(x, y)
 	symbole = '?';
 	nbVies = 3;
 	typeEnnemi = ZAPER;
-	hauteur = 2;
-	largeur = 5;
+	hauteur = 30;
+	largeur = 50;
 	shootCooldown = 1;
 	ammoType = LASER;
 	//moveTimer = 0;		//poru qu'ils tirent tous en meme temps qd ils appaissent
+
+	image = new QGraphicsPixmapItem(*ListImages[15]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[15]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[16]);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(0.16);
+	image->show();
+
 
 }
 
@@ -444,6 +453,8 @@ void Zaper::update()
 	moveTimer++;
 	if (moveTimer >= 500)
 		moveTimer = 0;
+
+	image->setPos(posX, posY);
 }
 
 Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
@@ -455,7 +466,7 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 	typeEnnemi = AIMBOT;
 	hauteur = 228 / 4;
 	largeur = 204 / 4;
-	shootCooldown = 100;   // a toute les x frames l'entite va tirer
+	shootCooldown = 200;   // a toute les x frames l'entite va tirer
 	posRand = rand() % 6;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
 	ammoType = HOMING;
 
@@ -562,7 +573,7 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 
 void Boss1Side::update()
 {
-	if (posY <= 13)
+	if (posY <= HEIGHT/5)
 		posY += 3;
 	else if (posY >= 13)
 	{
@@ -1063,19 +1074,44 @@ void FragmentingBullet::update()
 
 Laser::Laser(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
 {
+	nbVies = 0;
 	symbole = '~';
 	ammoType = LASER;
-	largeur = 1;
-	if (!isPlayerBullet)
-		hauteur = HEIGHT - posY + 1;
+	largeur = 50;
+	hauteur = 1;
+	//if (!isPlayerBullet)
+		//hauteur = HEIGHT - posY + 1;
+
+	while (hauteur < HEIGHT) 
+	{
+		QGraphicsPixmapItem* segment;
+		if (hauteur == 1) {
+			segment = new QGraphicsPixmapItem(*ListImages[19]);
+			segment->setScale(3);
+			hauteur += 30;
+		}
+		else {
+			segment = new QGraphicsPixmapItem(*ListImages[20]);
+			segment->setScale(4);
+			hauteur += 50;
+		}
+		segment->setPos(posX, posY + hauteur);
+		GameScene->addItem(segment);
+		laserSegments.push_back(segment);
+	}
 }
 
 
 void Laser::update()
 {
-	if (posY >= HEIGHT - hauteur)
-		enVie = false;
 
+	for (auto segment : laserSegments) {
+		GameScene->removeItem(segment);
+		delete segment;
+	}
+	laserSegments.clear();
+	
+	enVie = false;
 }
 
 Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)

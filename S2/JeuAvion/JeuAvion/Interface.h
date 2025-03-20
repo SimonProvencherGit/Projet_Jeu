@@ -63,12 +63,12 @@ public:
     void enemySpawn(int nbEnnemi, typeEnnemis enemiVoulu);
     void positionSpawnRandom();
     void updateEntites();
-    void updateAffichage();
+    //void updateAffichage();
     void enleverEntites();
     void gererCollisions();
     void executionJeu(int version);
-    void hideCursor();
-    void showCursor();
+    //void hideCursor();
+    //void showCursor();
     void explosion();
     int cbVivant();
     int customPoints(typeEnnemis);

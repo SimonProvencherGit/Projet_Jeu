@@ -43,9 +43,9 @@ void loadimages(){ //Initialisation de toute les images.
     ListImages[10] = make_unique<QPixmap>();
     ListImages[10]->load("Textures\\Ennemis\\big_mama-d.png");
     ListImages[11] = make_unique<QPixmap>();
-    ListImages[11]->load("Textures\\Ennemis\\boss_main1.png");
+    ListImages[11]->load("Textures\\Ennemis\\boss1_main.png");
     ListImages[12] = make_unique<QPixmap>();
-    ListImages[12]->load("Textures\\Ennemis\\boss_main1-d.png");
+    ListImages[12]->load("Textures\\Ennemis\\boss1_main-d.png");
     ListImages[13] = make_unique<QPixmap>();
     ListImages[13]->load("Textures\\Ennemis\\boss1_side.png");
     ListImages[14] = make_unique<QPixmap>();
@@ -58,6 +58,10 @@ void loadimages(){ //Initialisation de toute les images.
     ListImages[17]->load("Textures\\bullets\\homing.png");
     ListImages[18] = make_unique<QPixmap>();
     ListImages[18]->load("Textures\\bullets\\homing-d.png");
+    ListImages[19] = make_unique<QPixmap>();
+    ListImages[19]->load("Textures\\bullets\\laser.png");
+    ListImages[20] = make_unique<QPixmap>();
+    ListImages[20]->load("Textures\\bullets\\laser2.png");
 
 
 }

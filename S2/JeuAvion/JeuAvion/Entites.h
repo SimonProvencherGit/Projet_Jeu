@@ -257,7 +257,9 @@ public:
 
 class Laser : public Bullet
 {
+    
 public:
+    vector<QGraphicsPixmapItem*> laserSegments;
     Laser(float x, float y, bool isPlayerBullet);
     void update();    //gere le deplacement de la balle
 };
