@@ -13,6 +13,12 @@ bool fullscreen = false;
 bool first = true;
 extern std::unique_ptr<Interface> jeux = nullptr;
 
+void updateframes()
+{
+    GameScene->update();
+}
+
+
 void loadimages(){ //Initialisation de toute les images.
     ListImages[0] = make_unique<QPixmap>();
     ListImages[0]->load("Textures\\Ennemis\\BasicEnnemi.png");
@@ -35,6 +41,8 @@ void loadimages(){ //Initialisation de toute les images.
 
 
 }
+
+
 
 void firststart() {
     if (first) {
@@ -80,6 +88,11 @@ int main(int argc, char* argv[]) {
     QTimer timer;
     QObject::connect(&timer, &QTimer::timeout, [&]() { firststart(); });
     timer.start(16); // 60 FPS (16 ms per frame)
+
+    //Augmenter Framerate
+    //QTimer frametimer;
+   // QObject::connect(&frametimer, &QTimer::timeout, [&]() { updateframes(); });
+    //frametimer.start(30);
 
     return app.exec();
 }

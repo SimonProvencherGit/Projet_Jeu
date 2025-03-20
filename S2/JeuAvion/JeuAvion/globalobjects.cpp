@@ -7,7 +7,6 @@ SFX sfxWarning;
 QGraphicsScene * GameScene = nullptr;
 QGraphicsView* view = nullptr;
 unique_ptr<QPixmap> ListImages[50];
-QGraphicsPixmapItem* player1;
 QRect * basicbullet;
 
 

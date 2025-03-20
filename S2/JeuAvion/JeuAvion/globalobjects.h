@@ -21,7 +21,6 @@
 // Declare global objects
 extern QGraphicsView* view;
 extern QGraphicsScene* GameScene;
-extern QGraphicsPixmapItem* player1;
 extern unique_ptr<QPixmap> ListImages[50]; // list global d'images de pixmap. A faire load au debut du jeux
 
 extern void setallSFXVolume(float inputvolume);
