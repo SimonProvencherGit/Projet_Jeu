@@ -476,11 +476,17 @@ Boss1::Boss1(float x, float y) : Ennemi(x, y)
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_MAIN;
 	ammoType = HOMING;
-	hauteur = 8;
-	largeur = 15;
-	shootCooldown = 50;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
+	hauteur = 101;
+	largeur = 123;
+	shootCooldown = 100;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = true;
 
+	QPixmap pngImg("Textures\\Ennemis\\boss1_main.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	Originalimage = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->show();
 }
 
 void Boss1::update()
@@ -502,6 +508,8 @@ void Boss1::update()
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
@@ -510,8 +518,8 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 	nbVies = 45;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_SIDE;
-	hauteur = 3;
-	largeur = 8;
+	hauteur = 30*2;
+	largeur = 30*2;
 	shoots = false;
 	shootCooldown = 1;
 	ammoType = LASER;
@@ -522,13 +530,20 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 	else
 		shootTiming = false;
 
+	QPixmap pngImg("Textures\\Ennemis\\boss1_side.png");
+	image = new QGraphicsPixmapItem(pngImg);
+	Originalimage = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(2);
+	//image->setRotation(180);
+	image->show();
 }
 
 
 void Boss1Side::update()
 {
-	if (moveTimer % 5 == 0 && posY <= 13)
-		posY++;
+	if (posY <= 13)
+		posY+=3;
 	else if (posY >= 13)
 	{
 		if (firstEntry)
@@ -537,19 +552,19 @@ void Boss1Side::update()
 			firstEntry = false;
 		}
 
-		if (moveTimer % 2 == 0)         //a toute les 5 update on peut bouger en X 
-		{
+ 		//if (moveTimer % 2 == 0)         //a toute les 5 update on peut bouger en X 
+		//{
 			if (posX <= 1 || posX + largeur >= WIDTH - 1)
 				direction = 1 - direction; // Change de Direction
 
 			// Bouger a gauche ou a droite
 			if (direction == 0)
-				posX -= 1;
+				posX -= 3;
 			else
-				posX += 1;
-		}
+				posX += 3;
+		//}
 
-		if (moveTimer % 100 == 0)   //determine le temps on et off du laser
+		if (moveTimer % 300 == 0)   //determine le temps on et off du laser
 		{
 			if (!shoots)
 				shoots = true;
@@ -558,10 +573,12 @@ void Boss1Side::update()
 		}
 	}
 
-	if (moveTimer >= 500)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
+	if (moveTimer >= 5000)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
 
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 SideBomber::SideBomber(float x, float y) : Ennemi(x, y)

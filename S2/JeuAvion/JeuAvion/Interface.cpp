@@ -490,6 +490,7 @@ void Interface::progressionDifficulte()
             enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
+			//enemySpawn(1, BOSS1_MAIN);
 
             if (spawnPowerUpStart)
             {
