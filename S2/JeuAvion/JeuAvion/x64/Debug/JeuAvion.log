@@ -1,10 +1,8 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
   Interface.cpp
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1371,39): warning C4101: 'e': unreferenced local variable
-  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1371,39): warning C4101: 'e': unreferenced local variable
+  JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

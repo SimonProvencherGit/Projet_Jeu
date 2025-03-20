@@ -461,7 +461,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
         case TANK:
             coterand = rand() % 2;
             if (coterand == 0)
-                listEntites.emplace_back(make_unique<Tank>(WIDTH - 1, rand() % HEIGHT / 2));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de WIDTH - 2 se fait changer dans le constructeur dependant du sens de l'ennemi
+                listEntites.emplace_back(make_unique<Tank>(WIDTH - 146, rand() % HEIGHT / 2));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de WIDTH - 2 se fait changer dans le constructeur dependant du sens de l'ennemi
             else
                 listEntites.emplace_back(make_unique<Tank>(1, rand() % HEIGHT / 2));
             break;
