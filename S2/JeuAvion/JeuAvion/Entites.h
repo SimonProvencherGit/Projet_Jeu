@@ -7,14 +7,14 @@
 using namespace std;
 
 //definit la taille du jeu
-const int WIDTH = 100;
-const int HEIGHT = 37;
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
 const int CD_BARRELROLL = 75;
 const float PI = 3.14159265359;
 
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP };
-enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, SHOTGUNNER, SHOTGUNHOMING, EXPLODER, TURRET };
-enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE };
+enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, ORBITER, SHOTGUNHOMING, EXPLODER, TURRET, BOSS3_MAIN, BOSS3_SIDE };
+enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE, MORTAR, TEMP };
 enum typePowerUp { DAMAGEDOUBLED, ADDLIFE, ADDBULLETS };
 
 
@@ -22,11 +22,13 @@ class Entite
 {
 
 public:
+    bool flashing = false;
     float posX, posY;
     int xJoueur, yJoueur;
     int  xJoueur2, yJoueur2;
     bool p1EnVie, p2EnVie;
     int largeur, hauteur;
+    int xBoss3, yBoss3;
     int shootCooldown;
     int shootTimer;
     bool enVie;
@@ -45,13 +47,16 @@ public:
     int barrelRollTimer = 0;
     // int nbJoueurs;  
 
+    QGraphicsPixmapItem* image;
+    QGraphicsPixmapItem* Originalimage;
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;
     void perdVie(int nbVie);
-    virtual bool enCollision(int px, int py);  // retourne vrai si px et py sont egaux au x et y de l'entite
+    virtual bool enCollision(int px, int py, int larg, int haut);  // retourne vrai si px et py sont egaux au x et y de l'entite
     virtual void getPosJoueurs(float x1, float y1, bool p1Alive, float x2 = 0, float y2 = 0, bool P2Alive = false);
     virtual typeEnnemis getTypeEnnemi();
+    virtual void getPosBoss3(float x3, float y3);
 };
 
 //-----------------------------------------------------------  classe Joueur -----------------------------------------------------------
@@ -168,16 +173,18 @@ public:
     Boss2(float x, float y);
     void update();    //gere le deplacement de l'ennemi
 };
-
-class Shotgunner : public Ennemi
+class Orbiter : public Ennemi
 {
 private:
     int rayonMouv;
-    int angle;
     float distance;
     bool orbiting;
+    double angle;
+    bool sensRotation;
+    int ancrageX = 0;
+    int ancrageY = 0;
 public:
-    Shotgunner(float x, float y);
+    Orbiter(float x, float y);
     void update();    //gere le deplacement de l'ennemi
 };
 
@@ -198,6 +205,27 @@ class Turret : public Ennemi
 {
 public:
     Turret(float x, float y);
+    void update();    //gere le deplacement de l'ennemi
+};
+
+class Boss3 : public Ennemi
+{
+public:
+    Boss3(float x, float y);
+    void update();    //gere le deplacement de l'ennemi
+};
+
+class Boss3Side : public Ennemi
+{
+private:
+    float rayonMouv;
+    float distance;
+    bool orbiting;
+    double angle;
+    bool sensRotation;
+    bool changTailleRayon;
+public:
+    Boss3Side(float x, float y);
     void update();    //gere le deplacement de l'ennemi
 };
 
@@ -248,6 +276,23 @@ private:
     int direction;
 public:
     angleBullet(float x, float y, int angle, char symbole, bool isPlayerBullet);      //direction va de 1 a 8 pour les directions possibles
+    void update();    //gere le deplacement de la balle
+};
+
+class TempBullet : public angleBullet
+{
+private:
+    int direction;
+    int distBullet;
+public:
+    TempBullet(float x, float y, int angle, bool isPlayerBullet);
+    void update();    //gere le deplacement de la balle
+};
+
+class Mortar : public Bullet
+{
+public:
+    Mortar(float x, float y, bool isPlayerBullet);
     void update();    //gere le deplacement de la balle
 };
 

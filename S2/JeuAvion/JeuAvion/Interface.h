@@ -10,12 +10,16 @@
 #include <conio.h>  //pour _kbhit()
 #include <string>
 #include "globalobjects.h"
+#include <json.hpp>
+
+using json = nlohmann::json;
 
 void setConsoleSize();
 
 class Interface
 {
 private:
+    Boss3* boss3;
     Joueur* joueur;
     Joueur* joueur2;
     vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
@@ -35,6 +39,7 @@ private:
     int cdExplosion;
     bool boss1Spawned;
     bool boss2Spawned;
+    bool boss3Spawned;
     int bossWaitTimer;      //timer pour attendre un certain temps apres que les ennemis soient morts avant de spawn le boss
     int memScore;
     bool bossMusicStart;
@@ -47,9 +52,12 @@ private:
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
+    int dataManette[6] = { 0 };     //donnes recues de la manette
+    int oldDataManette[6] = { 0 };  //donnes precedentes de la manette
 
 public:
     Interface();
+    void applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e);
     void gererInput();
     void progressionDifficulte();
     void enemySpawn(int nbEnnemi, typeEnnemis enemiVoulu);
@@ -68,10 +76,12 @@ public:
     //void gererCollisionsPowerUp();
     void restart();
     void cercleTir(int angle, int x, int y);
-    void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y);
+    void cercleExplosion(int angle, int x, int y);
+    void balayageTir(int nbBranches, int vitesseAngulaire, int x, int y, int angleStart = 0);
     void randomTir(int x, int  y);
     void randomCibleTir(int x, int y);
     void joueurTir(Joueur* quelJoueur);
+    void readSerial(HANDLE hSerial);
 };
 
 #endif // INTERFACE_H
