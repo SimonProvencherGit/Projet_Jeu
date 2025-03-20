@@ -70,6 +70,14 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
             {
                 return;
             }
+            if (e->Originalimage == nullptr)
+            {
+                return;
+            }
+            if (e->image == nullptr)
+            {
+                return;
+            }
             try {
                 QPixmap revertpix = e->Originalimage->pixmap();
                 e->image->setPixmap(revertpix);
@@ -560,15 +568,15 @@ void Interface::progressionDifficulte()
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
             // if (enemySpawnTimer >= 100) //pour des tests
         {
-            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, ARTILLEUR);
+            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             //enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-            enemySpawn(1, BOSS1_MAIN);
+           // enemySpawn(1, BOSS1_MAIN);
 
             if (spawnPowerUpStart)
             {
