@@ -98,6 +98,22 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	isPlayer = true;
 	barrelRollTimer = 0;
 
+	QPixmap pngImg("plane.png");
+	QPixmap dmgPngImg("plane-d.png");
+	qDebug() << "QPixmap is null:" << pngImg.isNull();
+	image = new QGraphicsPixmapItem(pngImg);
+	Originalimage = new QGraphicsPixmapItem(pngImg);
+	DamageImage = new QGraphicsPixmapItem(dmgPngImg);
+	
+	image->setScale(0.25);
+	shadow->setOffset(50, 10);       // Set the offset of the shadow (x, y)
+	image->setZValue(1);
+	qDebug() << "Image Z-Value:" << image->zValue();
+	QColor shadowColor(0, 0, 255, 255);
+	image->setPos(0, 0);
+	GameScene->addItem(image);
+	image->show();
+	GameScene->update();
 }
 
 
@@ -138,7 +154,7 @@ void Joueur::update()
 
 	//if (shootTimer > 0)
 		//shootTimer--;
-	player1->setPos(posX, posY);// update image du joueur
+	image->setPos(posX, posY);// update image du joueur
 }
 
 
@@ -177,11 +193,15 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 	largeur = 230/3;
 	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
 
-	QPixmap pngImg("Textures\\Ennemis\\basicEnnemi.png");
-	image = new QGraphicsPixmapItem(pngImg);
-	Originalimage = new QGraphicsPixmapItem(pngImg);
+	
+	image = new QGraphicsPixmapItem(*ListImages[0].get());
+	Originalimage = new QGraphicsPixmapItem(*ListImages[0].get());
+	DamageImage = new QGraphicsPixmapItem(*ListImages[1].get());
 	GameScene->addItem(image);
 	image->setScale(0.33);
+	shadow->setOffset(50, 10);       // Set the offset of the shadow (x, y)
+	QColor shadowColor(0, 0, 255, 255);
+	image->setGraphicsEffect(shadow);
 	//image->setRotation(180);
 	image->show();
 
@@ -233,9 +253,9 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	else
 		joueurRand = 0;
 
-	QPixmap pngImg("Textures\\Ennemis\\diveBomber.png");
-	image = new QGraphicsPixmapItem(pngImg);
-	Originalimage = new QGraphicsPixmapItem(pngImg);
+	image = new QGraphicsPixmapItem(*ListImages[4].get());
+	Originalimage = new QGraphicsPixmapItem(*ListImages[4].get());
+	DamageImage = new QGraphicsPixmapItem(*ListImages[5].get());
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->show();
@@ -343,10 +363,9 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 	shootCooldown = 80;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	posRand = rand() % 6;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
 	ammoType = FRAGMENTING;
-
-	QPixmap pngImg("Textures\\Ennemis\\artilleur.png");
-	image = new QGraphicsPixmapItem(pngImg);
-	Originalimage = new QGraphicsPixmapItem(pngImg);
+	image = new QGraphicsPixmapItem(*ListImages[2].get());
+	Originalimage = new QGraphicsPixmapItem(*ListImages[2].get());
+	DamageImage = new QGraphicsPixmapItem(*ListImages[3].get());
 	GameScene->addItem(image);
 	image->setScale(0.40);
 	//image->setRotation(180);
@@ -717,8 +736,8 @@ BasicBullet::BasicBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, i
 	largeur = 1;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
 	
-	QPixmap pngImg("Textures\\bullets\\basicbullet.png");			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
-	image = new QGraphicsPixmapItem(pngImg);
+			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
+	image = new QGraphicsPixmapItem(*ListImages[6].get());
 	GameScene->addItem(image);
 	image->setScale(0.5);
 	image->setRotation(180);	

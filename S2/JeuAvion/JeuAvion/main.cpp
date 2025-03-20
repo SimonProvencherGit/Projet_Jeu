@@ -2,67 +2,97 @@
 #include "Interface.h"
 #include "Menu.h"
 #include "globalobjects.h"
+#include <QOpenGLwidget>
 
-Interface jeux;
 
-   // Global variables for the scene and shapes
-//
-
-QGraphicsEllipseItem* circle;
+//Variables globales pour le main
 int frameCount = 0;
 bool isSquareVisible = true;
 bool fullscreen = false;
 
-/*int main(int argc, char* argv[]) {
-    loadsettings();
-    QApplication app(argc, argv);
-    
-    GameScene = new QGraphicsScene();
-    QGraphicsView* view = new QGraphicsView(GameScene);
+bool first = true;
+extern std::unique_ptr<Interface> jeux = nullptr;
 
-    
-    
-    QTimer timer;
-    QObject::connect(&timer, &QTimer::timeout, [&]() { jeux.executionJeu(1); });
-    timer.start(16); // ~60 FPS (16 ms per frame)
- 
-    view->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+void updateframes()
+{
+    GameScene->update();
+}
 
 
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    
-    view->show();
-    view->showFullScreen();
-    return app.exec();
-}*/
- 
+void loadimages(){ //Initialisation de toute les images.
+    ListImages[0] = make_unique<QPixmap>();
+    ListImages[0]->load("Textures\\Ennemis\\BasicEnnemi.png");
+    ListImages[1] = make_unique<QPixmap>();
+    ListImages[1]->load("Textures\\Ennemis\\BasicEnnemi-d.png");
+    ListImages[2] = make_unique<QPixmap>();
+    ListImages[2]->load("Textures\\Ennemis\\artilleur.png");
+    ListImages[3] = make_unique<QPixmap>();
+    ListImages[3]->load("Textures\\Ennemis\\artilleur-d.png");
+    ListImages[4] = make_unique<QPixmap>();
+    ListImages[4]->load("Textures\\Ennemis\\divebomber.png");
+    ListImages[5] = make_unique<QPixmap>();
+    ListImages[5]->load("Textures\\Ennemis\\divebomber-d.png");
+    ListImages[6] = make_unique<QPixmap>();
+    ListImages[6]->load("Textures\\bullets\\basicbullet.png");
+    ListImages[7] = make_unique<QPixmap>();
+    ListImages[7]->load("Textures\\Ennemis\\BasicEnnemi-d.png");
+    ListImages[8] = make_unique<QPixmap>();
+    ListImages[8]->load("Textures\\Ennemis\\BasicEnnemi-d.png");
+
+
+}
+
+
+
+void firststart() {
+    if (first) {
+        loadimages();
+        first = false; // Set first to false after the first run
+        jeux = std::make_unique<Interface>();// Create an instance of a concrete implementation
+        //loadimages();
+    }
+    else {
+        if (jeux) {
+            jeux->executionJeu(0); // Call executionJeu if the object exists
+        }
+    }
+}
+;
 
 int main(int argc, char* argv[]) {
+    //QPixmap ListImage[50];
     loadsettings();
     QApplication app(argc, argv);
 
     GameScene = new QGraphicsScene();
-    GameScene->setSceneRect(0, 0, 1920, 1080); // Set the scene dimensions
+    GameScene->setSceneRect(0, 0, 1920, 1080);
 
-    QGraphicsView* view = new QGraphicsView(GameScene);
-    //view->setRenderHint(QPainter::Antialiasing); // Enable smooth rendering
+    view = new QGraphicsView(GameScene);
+
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setContentsMargins(0, 0, 0, 0);
     // Remove the border and background
-    view->setFrameStyle(QFrame::NoFrame); // Removes the frame (border)
-    view->setBackgroundBrush(Qt::NoBrush); // Removes the background color
+    view->setFrameStyle(QFrame::NoFrame); 
+    view->setBackgroundBrush(Qt::NoBrush); 
+    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+    view->setViewport(glWidget);// set le view pour opengl
+
+    // Ajouter du antialiasing et Smoothing des pixels.
+    view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
-    view->showFullScreen(); // Show in full-screen mode
-
-    // Call fitInView again after switching to full screen
+    view->showFullScreen(); 
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
 
     QTimer timer;
-    QObject::connect(&timer, &QTimer::timeout, [&]() { jeux.executionJeu(0); });
-    timer.start(16); // ~60 FPS (16 ms per frame)
+    QObject::connect(&timer, &QTimer::timeout, [&]() { firststart(); });
+    timer.start(16); // 60 FPS (16 ms per frame)
+
+    //Augmenter Framerate
+    //QTimer frametimer;
+   // QObject::connect(&frametimer, &QTimer::timeout, [&]() { updateframes(); });
+    //frametimer.start(30);
 
     return app.exec();
 }

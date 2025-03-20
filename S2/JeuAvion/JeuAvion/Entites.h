@@ -1,10 +1,15 @@
 #ifndef ENTITES_H
 #define ENTITES_H
+//Shadow effect
 
 #include <windows.h>    //pour le curseur de la console et sleep()
+#include <QGraphicsDropShadowEffect>
 //#include "Interface.h"
 #include "globalobjects.h"
 using namespace std;
+
+
+
 
 //definit la taille du jeu
 const int WIDTH = 1920;
@@ -22,6 +27,7 @@ class Entite
 {
 
 public:
+    QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect();
     bool flashing = false;
     float posX, posY;
     int xJoueur, yJoueur;
@@ -48,6 +54,7 @@ public:
 
     QGraphicsPixmapItem* image;
     QGraphicsPixmapItem* Originalimage;
+    QGraphicsPixmapItem* DamageImage;
 
     Entite(float x, float y, char symb, int longueurEntite, int largeurEntite);
     virtual void update() = 0;

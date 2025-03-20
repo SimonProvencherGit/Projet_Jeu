@@ -1,11 +1,21 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
+  Entites.cpp
   Interface.cpp
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  globalobjects.cpp
+  main.cpp
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(18,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1041,19): warning C4129: 'T': unrecognized character escape sequence
-C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1041,19): warning C4129: 'S': unrecognized character escape sequence
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(18,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'Entites.cpp')
+  
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(18,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'main.cpp')
+  
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(224,9): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1077,19): warning C4129: 'T': unrecognized character escape sequence
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1077,19): warning C4129: 'S': unrecognized character escape sequence
   JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

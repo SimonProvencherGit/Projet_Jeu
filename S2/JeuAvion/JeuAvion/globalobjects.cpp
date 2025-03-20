@@ -1,16 +1,13 @@
 #include "globalobjects.h"
 
-// Define global objects
 
-//Test image avion
-//
 SFX sfx;
 Music music;
 SFX sfxWarning;
 QGraphicsScene * GameScene = nullptr;
-QGraphicsPixmapItem* player1;
+QGraphicsView* view = nullptr;
+unique_ptr<QPixmap> ListImages[50];
 QRect * basicbullet;
- // Players thats a square
 
 
 
@@ -37,11 +34,6 @@ void savesettings() {
  
 
 void loadsettings() { 
-    //just testing addition of square that an move
-
-
-    // Add the rectangle to the scene
-    //
     std::ifstream inFile("Settings.txt");
     if (inFile.is_open()) {
         std::string line;

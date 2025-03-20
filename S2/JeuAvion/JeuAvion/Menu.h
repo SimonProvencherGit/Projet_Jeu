@@ -1,18 +1,18 @@
-#ifndef MENU_H
+/*#ifndef MENU_H
 #define MENU_H
 
 #include <vector>
 #include <string>
 #include <iostream>
 #include <conio.h>
-#include "Interface.h"
+//#include "Interface.h"
 #include "globalobjects.h"
 
 using namespace std;
 
 class Menu {
 protected:
-	Interface jeux;
+	//Interface jeux;
 
 public:
 	virtual void afficher(int choix_option) = 0;
@@ -73,3 +73,4 @@ public:
 
 #endif
 
+*/

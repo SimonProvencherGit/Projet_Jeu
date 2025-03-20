@@ -2,9 +2,39 @@
 #include <qdir.h>
 #include <QPropertyAnimation>
 #include <qparallelanimationgroup.h>
+#include <QTimer>
+#include <QRandomGenerator>
+#include <QGraphicsView>
+#include <QThread>
+#include <chrono>
 bool firststart = true;
 
-void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
+QThread EffectThread;
+
+void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
+    QRectF originalScene = scene->sceneRect();
+    QTimer* timer = new QTimer(view); 
+    int elapsed = 0;
+
+    QObject::connect(timer, &QTimer::timeout, [=]() mutable {
+        if (elapsed < duration) {
+            int offset = (rand() % (-magnitude)) + (magnitude);
+            scene->setSceneRect(originalScene.translated(offset, 0)); // Shift the scene left and right
+            elapsed += 20;
+        }
+        else {
+            scene->setSceneRect(originalScene); //Remetre le Scene a l'orginal
+            timer->stop();
+            timer->deleteLater();
+        }
+        });
+
+    timer->start(20);
+}
+
+
+void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
+    auto start = std::chrono::high_resolution_clock::now();
     if (e->enVie == false)
     {
         return;
@@ -16,28 +46,34 @@ void Interface::applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationM
     
     
     QPixmap originalPixmap = pixmapItem->pixmap();
-    QImage image = originalPixmap.toImage();
 
-    //Convertir l'image a mauve
-    for (int y = 0; y < image.height(); ++y) {
-        for (int x = 0; x < image.width(); ++x) {
-            QColor color = image.pixelColor(x, y);
-            color.setRed((color.red() + color.blue()) / 2); 
-            color.setBlue((color.blue() + color.red()) / 2); 
-            color.setGreen(color.green() / 2);              
-            image.setPixelColor(x, y, color);
-        }
-    }
-    e->flashing = true;
-    pixmapItem->setPixmap(QPixmap::fromImage(image));
+   
+    pixmapItem->setPixmap(e->DamageImage->pixmap());
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
+    qDebug() << "Execution time: " << duration << " ms";
    //Retourner l'image a l'originale
     QTimer::singleShot(durationMs, [pixmapItem, originalPixmap, e]() {
+        
         if (e->enVie == true) {
-
-           e->flashing = false;
-           pixmapItem->setPixmap(e->Originalimage->pixmap());
-        }
+             
+           
+           if (pixmapItem == nullptr)
+           {
+               return;
+           }
+          try{
+              QPixmap revertpix = e->Originalimage->pixmap();
+          e->image->setPixmap(revertpix);
+          }
+          catch(...)
+          {
+              qDebug() << "Failed to revert image";
+           // erreur
+          }
+          e->flashing = false;
+       }
         });
 }
 
@@ -131,11 +167,11 @@ void Interface::gererInput()
         {
             if (explosionTimer == 0)
             {
-
                 cdExplosion = 500;      //set le cooldown de l'explosion
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
+                shakeScene(GameScene, view, 1000, 10);
             }
         }
 
@@ -666,7 +702,7 @@ void Interface::gererCollisions()
                 {
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-
+                    damageeffect(joueur->image, 100, joueur);
                     //if(!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
@@ -681,7 +717,7 @@ void Interface::gererCollisions()
                     //if (!joueur->enVie)
                         //nbJoueur--;
                         //gameOver = true;
-
+                    damageeffect(joueur->image, 100, joueur);
                     e->collisionJoueur = true;
                 }
                 else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
@@ -714,7 +750,7 @@ void Interface::gererCollisions()
                                     bufferBullets.emplace_back(make_unique<BasicBullet>(e2->posX + i, e2->posY + 1, false));
 
                             e2->perdVie(1);
-                            applyPurpleEffect(e2->image, 100, e2.get());
+                            damageeffect(e2->image, 100, e2.get());
                             if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
@@ -1089,16 +1125,17 @@ void Interface::executionJeu(int version)
         GameScene->addWidget(labelBackground1);
         GameScene->addWidget(labelBackground2);*/
 
-        QPixmap pngImg("Textures\\Scenery\\water.png");
+        QPixmap pngImg("Textures\\Scenery\\space.png");
         QGraphicsPixmapItem* img = new QGraphicsPixmapItem(pngImg);
         GameScene->addItem(img);
+        img->moveBy(-50, -50);
         img->setScale(0.75);
         img->show();
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
         //QPixmap pixmap("plane.png");
-       QPixmap pixmap("plane.png");
+     /*  QPixmap pixmap("plane.png");
        player1 = new QGraphicsPixmapItem(pixmap);
 
        // Create a QGraphicsDropShadowEffect
@@ -1111,10 +1148,11 @@ void Interface::executionJeu(int version)
        player1->setGraphicsEffect(shadowEffect);
        player1->setScale(0.25);
        GameScene->addItem(player1);
-       player1->show();
+       player1->show();*/
         hideCursor();
         music.stopMusic();
-        music.playMusic("OceanWorld.wav", 0, 117000);
+        music.playMusic("Space.wav", 74016, 56609);
+        //music.playMusic("OceanWorld.wav", 0, 117000);
         if (version > 0)     //si on a choisi autre chose que le mode seul
         {
             listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites

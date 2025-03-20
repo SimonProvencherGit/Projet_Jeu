@@ -44,13 +44,14 @@ private:
     bool spawnAddLife;
     bool spawnPowerUpStart;
     int nbJoueur;
+    //QPixmap images[50];
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
 
 public:
     Interface();
-    void applyPurpleEffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e);
+    void damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e);
     void gererInput();
     void progressionDifficulte();
     void enemySpawn(int nbEnnemi, typeEnnemis enemiVoulu);
