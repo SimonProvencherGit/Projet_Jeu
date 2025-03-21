@@ -9,7 +9,7 @@ using namespace std;
 //definit la taille du jeu
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
-const int CD_BARRELROLL = 75;
+const int CD_BARRELROLL = 150;
 const float PI = 3.14159265359;
 
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP };
@@ -257,8 +257,11 @@ public:
 
 class Laser : public Bullet
 {
+    
 public:
+    vector<QGraphicsPixmapItem*> laserSegments;
     Laser(float x, float y, bool isPlayerBullet);
+	~Laser();
     void update();    //gere le deplacement de la balle
 };
 
