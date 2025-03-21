@@ -121,6 +121,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Music.cpp" />
     <ClCompile Include="SFX.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <QtRcc Include="JeuAvion.qrc" />
     <QtUic Include="JeuAvion.ui" />
     <ClCompile Include="Entites.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Music.h" />
     <ClInclude Include="SFX.h" />
+    <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

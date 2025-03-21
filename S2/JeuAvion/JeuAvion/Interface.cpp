@@ -3,14 +3,14 @@
 #include <QPropertyAnimation>
 #include <qparallelanimationgroup.h>
 #include <QTimer>
-#include <QRandomGenerator>
 #include <QGraphicsView>
 #include <QThread>
 #include <chrono>
 
+
 // lien pour un sprite : https://opengameart.org/content/custom-missiles
 
-
+//
 bool firststart = true;
 
 QThread EffectThread;
@@ -20,7 +20,7 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
     QTimer* timer = new QTimer(view);
     int elapsed = 0;
 
-    QObject::connect(timer, &QTimer::timeout, [=]() mutable {
+    QObject::connect(timer, &QTimer::timeout, [view, duration, magnitude,elapsed,originalScene,scene,timer]() mutable {
         if (elapsed < duration) {
             int offset = (rand() % (-magnitude)) + (magnitude);
             scene->setSceneRect(originalScene.translated(offset, 0)); // Shift the scene left and right
@@ -626,6 +626,14 @@ void Interface::progressionDifficulte()
             {
                 music.stopMusic();
                 sfxWarning.playSFX("warning.wav");
+
+                Warning = new Sprite("warning.png", "warning.json", 10);
+                Warning->start(40);
+                Warning->setpos(540, 960);
+                Warning->pixmapItem.setScale(1);
+                Warning->pixmapItem.setZValue(100);
+                Warning->pixmapItem.show();
+                GameScene->addItem(&Warning->pixmapItem);
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
                 //Sleep(5);
@@ -633,10 +641,14 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {
 
-                if (enemySpawnTimer >= 125)         //
+                if (enemySpawnTimer >= 312)         //
                 {
+                    Warning->stop();
+                    delete Warning;
                     sfxWarning.stopSFX();
                     music.playMusic("Boss1.wav", 0, 100000);
+                    
+                    
                     bossMusicStart = true;
 
                 }
@@ -1271,11 +1283,25 @@ void Interface::executionJeu(int version)
     if (firststart)
     {
         //------------------------ section graphique ---------------------
-        QPixmap pngImg("Textures\\Scenery\\water.png");
-        QGraphicsPixmapItem* img = new QGraphicsPixmapItem(pngImg);
-        GameScene->addItem(img);
-        img->setScale(0.75);
-        img->show();
+        Water = new Sprite("spritesheet.png", "spritesheet.json", 10);
+        Water->start(100);
+        Water->setpos(-10, -10);
+        Water->pixmapItem.setScale(0.70);
+        Water->pixmapItem.show();
+        GameScene->addItem(&Water->pixmapItem);
+        sfxWarning.playSFX("warning.wav");
+
+        Warning = new Sprite("warning.png", "warning.json", 10);
+        Warning->start(32);
+
+        Warning->setpos(450, 400);
+        Warning->pixmapItem.setScale(2.4);
+        Warning->pixmapItem.setZValue(100);
+        Warning->pixmapItem.show();
+        GameScene->addItem(&Warning->pixmapItem);
+        
+
+
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();

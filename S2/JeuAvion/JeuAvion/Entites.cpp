@@ -1,5 +1,6 @@
 #include "Entites.h"
 
+
 Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite)	//constructeur de la classe entite
 {
 	//donne des valeurs par defaut aux variables qui vont etre redefinies dans les classes enfant

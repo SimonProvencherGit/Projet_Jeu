@@ -1,8 +1,61 @@
 ﻿   Qt/MSBuild: 3.3.1.1
+  Reading Qt configuration (C:/Qt/6.8.2/msvc2022_64/bin/qmake)
    Qt: 6.8.2
+  Menu.cpp
+  Music.cpp
+  SFX.cpp
+  Sprite.cpp
+  Entites.cpp
+  globalobjects.cpp
   Interface.cpp
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  main.cpp
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(39,14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(44,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(47,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(58,12): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1371,39): warning C4101: 'e': unreferenced local variable
-  JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'main.cpp')
+  
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'Entites.cpp')
+  
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(230,10): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(747,11): warning C4552: '+': result of expression not used
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(752,11): warning C4552: '-': result of expression not used
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(924,11): warning C4552: '+': result of expression not used
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(929,11): warning C4552: '-': result of expression not used
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(948,20): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(955,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1397,39): warning C4101: 'e': unreferenced local variable
+  qrc_JeuAvion.cpp
+  LINK : C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe not found or not built by the last incremental link; performing full link
+sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundSource.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Sound.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Sound.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundBuffer.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundBuffer.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(Miniaudio.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Miniaudio.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(AudioResource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(AudioResource.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(MiniaudioUtils.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(MiniaudioUtils.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(InputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(InputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(OutputSoundFile.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(OutputSoundFile.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(AudioDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(AudioDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileFactory.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileFactory.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(PlaybackDevice.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(PlaybackDevice.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderMp3.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderMp3.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileReaderWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileReaderWav.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterFlac.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterFlac.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterOgg.obj)' or at ''; linking object as if no debug info
+sfml-audio-s-d.lib(SoundFileWriterWav.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundFileWriterWav.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(Err.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Err.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(FileInputStream.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(MemoryInputStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(MemoryInputStream.obj)' or at ''; linking object as if no debug info
+sfml-system-s-d.lib(Utils.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Utils.obj)' or at ''; linking object as if no debug info
+  JeuAvion.vcxproj -> C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

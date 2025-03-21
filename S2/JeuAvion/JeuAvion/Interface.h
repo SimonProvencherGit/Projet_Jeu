@@ -11,6 +11,7 @@
 #include <string>
 #include "globalobjects.h"
 #include <json.hpp>
+#include <Sprite.h>
 
 using json = nlohmann::json;
 
@@ -19,6 +20,8 @@ void setConsoleSize();
 class Interface
 {
 private:
+    Sprite* Warning;
+    Sprite * Water;
     Boss3* boss3;
     Joueur* joueur;
     Joueur* joueur2;
