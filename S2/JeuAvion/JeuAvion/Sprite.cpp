@@ -56,7 +56,9 @@ void Sprite::nextframe() {
         return;
     }
 
-    QString currentFrame = frameCle[currentframe];
+    QString currentFrame = frameCle[currentframeindex];
+
+    //stocker le data du current frame
     QJsonObject frameData = json.value(currentFrame).toObject();
     QJsonObject frameRect = frameData.value("frame").toObject();
 
@@ -70,7 +72,7 @@ void Sprite::nextframe() {
     pixmapItem.setPixmap(frame); //Mettre a jour le nouveau frame
     qDebug() << "switchingframes";
 
-    currentframe = (currentframe + 1) % frameCle.size();
+    currentframeindex = (currentframeindex + 1) % frameCle.size();
 }
 
 void Sprite::start(int vitesse) {
@@ -81,4 +83,42 @@ Sprite::~Sprite() {
     if (spritetimer) {
         delete spritetimer;
     }
+}
+
+
+void Sprite::setframe(int index) {
+    //List de cle du json.
+    QStringList frameCle = json.keys();
+    if (index < 0)
+    {
+        qDebug() << "ton index est trop petit";
+        return;
+    }
+    if (index > frameCle.size())
+    {
+        qDebug() << "Le nombre de frame est" + frameCle.size() << "Ton index est trop grand" ;
+        return;
+    }
+
+    if (frameCle.isEmpty()) {
+        qDebug() << "Json pas trouver";
+        return;
+    }
+    currentframeindex = index;
+    QString currentFrame = frameCle[currentframeindex];
+
+
+    //stocker le data du current frame
+    QJsonObject frameData = json.value(currentFrame).toObject(); //chercher info for ton numero de frame
+    QJsonObject frameRect = frameData.value("frame").toObject(); //stocker information de ton frame.
+
+    int x = frameRect.value("x").toInt();
+    int y = frameRect.value("y").toInt();
+    int width = frameRect.value("w").toInt();
+    int height = frameRect.value("h").toInt();
+
+    QPixmap frame = spritesheet.copy(x, y, width, height);
+
+    pixmapItem.setPixmap(frame); //Mettre a jour le nouveau frame
+    qDebug() << "switchingframes";
 }

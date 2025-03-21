@@ -18,9 +18,11 @@ public:
     void setsize(float size);
     void start(int vitesse);
     void stop();
+    void setframe(int index);
     ~Sprite();
     QGraphicsPixmapItem pixmapItem;
 private:
+    QStringList frameCle;
     void nextframe();
     int x = 0;
     int y = 0;
@@ -28,7 +30,7 @@ private:
     QJsonObject json;
     QTimer* spritetimer;
     int updatetime = 0;
-    int currentframe = 0;
+    int currentframeindex = 0;
     bool running = false;
 };
 
