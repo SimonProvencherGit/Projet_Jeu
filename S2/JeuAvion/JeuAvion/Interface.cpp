@@ -814,7 +814,7 @@ void Interface::updateEntites()
                 bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
 
             if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
-                bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2 - 14, e->posY + e->hauteur, false));
+                bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2 - 14, e->posY + e->hauteur - 14, false));
 
             if (e->getTypeEnnemi() == AIMBOT && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
                 bufferBulletsUpdate.emplace_back(make_unique<Homing>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
@@ -1005,11 +1005,6 @@ void Interface::gererCollisions()
                     joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
                     damageeffect(joueur->image, 100, joueur);
-                    
-
-                    //if(!joueur->enVie)
-                        //nbJoueur--;
-                        //gameOver = true;
 
                     e->collisionJoueur = true;
                 }
@@ -1017,13 +1012,15 @@ void Interface::gererCollisions()
                 {
                     joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-
-					e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueurw
-                    //if (!joueur->enVie)
-                        //nbJoueur--;
-                        //gameOver = true;
                     damageeffect(joueur->image, 100, joueur);
-                    e->collisionJoueur = true;
+
+                    if (e->typeEntite == BULLET && e->ammoType == LASER)
+                    {}
+                    else
+                    {
+                        e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueur
+                        e->collisionJoueur = true;
+                    }
                 }
                 else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
                 {
@@ -1054,9 +1051,15 @@ void Interface::gererCollisions()
                                 for (int i = 80; i < 110; i += 10)
                                     bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
-                            e2->perdVie(1);
-                            if(e2->typeEntite != BULLET && e2->ammoType != LASER)
+                            
+							if ((e2->typeEntite == BULLET && e2->ammoType == LASER) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+                            {}
+                            else
+                            {
+                                e2->perdVie(1);
                                 damageeffect(e2->image, 100, e2.get());
+                            }
+
 
                             if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi

@@ -39,13 +39,13 @@ bool Entite::enCollision(int px, int py, int larg, int haut)
 {
 	//if (px + larg >= posX - 1 && px <= posX + largeur + 1 && py >= posY && py < (posY + hauteur))		//ancienne facon de verifier les collisions
 
-	if (posX < px + larg &&         // Le bord gauche de l'entité A est à gauche du bord droit de B
-		posX + largeur > px + 5 &&      // Le bord droit de l'entité A est à droite du bord gauche de B
-		posY < py + haut &&         // Le bord supérieur de l'entité A est au-dessus du bord inférieur de B
-		posY + hauteur > py + 15)        // Le bord inférieur de l'entité A est en dessous du bord supérieur de B
-		return 1;
+	if (posX - 4 <= px + larg &&         // Le bord gauche de l'entité A est à gauche du bord droit de B
+		posX + largeur >= px &&      // Le bord droit de l'entité A est à droite du bord gauche de B
+		posY <= py + haut &&         // Le bord supérieur de l'entité A est au-dessus du bord inférieur de B
+		posY + hauteur >= py + 15)        // Le bord inférieur de l'entité A est en dessous du bord supérieur de B
+		return true;
 
-	return 0;
+	return false;
 }
 
 //recoit la position des joueurs par interface.cpp pour que les entites schent toujours ou sont les joueurs
@@ -1003,8 +1003,8 @@ BasicBullet::BasicBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, i
 {
 	symbole = '|';
 	ammoType = NORMAL;
-	hauteur = 1;
-	largeur = 1;
+	hauteur = 20;
+	largeur = 24;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
 
 	//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
@@ -1096,9 +1096,18 @@ Laser::Laser(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBulle
 			hauteur += 50;
 		}
 		segment->setPos(posX, posY + hauteur);
-		GameScene->addItem(segment);
 		laserSegments.push_back(segment);
+		GameScene->addItem(segment);
 	}
+}
+
+Laser::~Laser()
+{
+	for (auto segment : laserSegments) {
+		GameScene->removeItem(segment);
+		delete segment;
+	}
+	laserSegments.clear();
 }
 
 
@@ -1192,7 +1201,7 @@ void Homing::update()
 		enVie = false;
 	moveTimer++;
 
-	image->setPos(posX, posY);
+	image->setPos(posX - 3, posY);
 }
 
 angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPlayerBullet = false) : Entite(x, y, symb, 1, 1)

@@ -4,6 +4,6 @@
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1222,9): warning C4101: 'laser': unreferenced local variable
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1380,39): warning C4101: 'e': unreferenced local variable
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1224,9): warning C4101: 'laser': unreferenced local variable
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1381,39): warning C4101: 'e': unreferenced local variable
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe
