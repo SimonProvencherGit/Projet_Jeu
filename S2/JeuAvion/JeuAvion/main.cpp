@@ -62,7 +62,10 @@ void loadimages(){ //Initialisation de toute les images.
     ListImages[19]->load("Textures\\bullets\\laser.png");
     ListImages[20] = make_unique<QPixmap>();
     ListImages[20]->load("Textures\\bullets\\laser2.png");
-
+    ListImages[21] = make_unique<QPixmap>();
+    ListImages[21]->load("Textures\\Ennemis\\big_mama.png");
+    ListImages[22] = make_unique<QPixmap>();
+    ListImages[22]->load("Textures\\Ennemis\\big_mama-d.png");
 
 }
 
