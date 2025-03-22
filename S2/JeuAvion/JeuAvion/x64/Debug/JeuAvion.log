@@ -1,14 +1,9 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
-  Entites.cpp
+  Interface.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
-  (compiling source file 'Entites.cpp')
+  (compiling source file 'Interface.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(229,10): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(751,11): warning C4552: '+': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(756,11): warning C4552: '-': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(928,11): warning C4552: '+': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(933,11): warning C4552: '-': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(952,20): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(959,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1229,9): warning C4101: 'laser': unreferenced local variable
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1386,39): warning C4101: 'e': unreferenced local variable
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

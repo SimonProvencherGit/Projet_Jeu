@@ -503,7 +503,7 @@ void Aimbot::update()
 Boss1::Boss1(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
-	nbVies = 65;
+	nbVies = 40;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_MAIN;
 	ammoType = HOMING;

@@ -694,7 +694,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore + 1850 && score1 <= memScore + 2800 && boss1Spawned && !boss2Spawned)
     {
-        if (enemySpawnTimer >= 150 || cbVivant() < 8)
+        if (enemySpawnTimer >= 250 || cbVivant() < 8)
         {
             enemySpawn(1, ARTILLEUR);
             enemySpawn(1, SIDEBOMBER);
