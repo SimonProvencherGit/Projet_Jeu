@@ -42,7 +42,7 @@ bool Entite::enCollision(int px, int py, int larg, int haut)
 	if (posX - 4 <= px + larg &&         // Le bord gauche de l'entité A est à gauche du bord droit de B
 		posX + largeur >= px &&      // Le bord droit de l'entité A est à droite du bord gauche de B
 		posY <= py + haut &&         // Le bord supérieur de l'entité A est au-dessus du bord inférieur de B
-		posY + hauteur >= py + 15)        // Le bord inférieur de l'entité A est en dessous du bord supérieur de B
+		posY + hauteur >= py + 5)        // Le bord inférieur de l'entité A est en dessous du bord supérieur de B
 		return true;
 
 	return false;
@@ -88,7 +88,7 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
-	hauteur = 250 / 4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
+	hauteur = 265 / 4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	nbVies = 10;
 	attkDmg = 1;
@@ -410,18 +410,18 @@ Zaper::Zaper(float x, float y) : Ennemi(x, y)
 	symbole = '?';
 	nbVies = 3;
 	typeEnnemi = ZAPER;
-	hauteur = 30;
-	largeur = 50;
+	hauteur = 60;
+	largeur = 60;
 	shootCooldown = 1;
 	ammoType = LASER;
 	//moveTimer = 0;		//poru qu'ils tirent tous en meme temps qd ils appaissent
 
-	image = new QGraphicsPixmapItem(*ListImages[15]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[15]);
-	DamageImage = new QGraphicsPixmapItem(*ListImages[16]);
+	image = new QGraphicsPixmapItem(*ListImages[13]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[13]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[14]);
 	GameScene->addItem(image);
+	image->setScale(2);
 	//image->setRotation(180);
-	image->setScale(0.16);
 	image->show();
 
 
@@ -430,16 +430,16 @@ Zaper::Zaper(float x, float y) : Ennemi(x, y)
 void Zaper::update()
 {
 	if (posY <= HEIGHT / 10 && moveTimer % 8 == 0)
-		posY++;
+		posY+=3;
 
 	if (moveTimer % 25 == 0)
 	{
 		if (posX <= 1 || posX + largeur >= WIDTH - 1)
 			direction = 1 - direction; // Change de Direction
 		if (direction == 0)
-			posX -= 1;
+			posX -= 2;
 		else
-			posX += 1; // Bouger a gauche ou a droite
+			posX += 2; // Bouger a gauche ou a droite
 	}
 
 	if (moveTimer % 125 == 0)   //determine le temps on et off du laser
@@ -617,95 +617,89 @@ SideBomber::SideBomber(float x, float y) : Ennemi(x, y)
 	symbole = 'S';
 	nbVies = 2;
 	typeEnnemi = SIDEBOMBER;
-	hauteur = 1;
-	largeur = 1;	//on change la largeur au fur et a mesur qu'il entre 
+	hauteur = 267 / 6;
+	largeur = 874 / 6;
 	shoots = false;
 
 	if (posX == 1)
 		side = true;
 	else
 		side = false;
+
+	image = new QGraphicsPixmapItem(*ListImages[15]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[15]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[16]);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(0.16);
+	image->show();
+
 }
 
 
 void SideBomber::update()
 {
 
-	if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
-	{
+	//if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
+	//{
 		if (side)
-		{
-			if (posX < WIDTH - 5)
-			{
-
-				if (largeur < 6)		//on augmente la largeur du bomber jusqu'a 6
-					largeur++;
-				else
-					posX++;		//its weird but needed dont touch
-			}
-			else if (posX >= WIDTH - 5)
-			{
-				posX++;
-				largeur--;
-				if (largeur <= 0)
-					enVie = false;
-			}
-
-		}
+			posX+=7;		
 		else
-		{
-			if (posX > 0)
-			{
-				posX--;
-				if (largeur < 6)		//on augmente la largeur du bomber jusqu'a 6
-					largeur++;
-			}
-			if (posX <= 0)
-			{
-				largeur--;
-				if (largeur <= 0)
-					enVie = false;
+			posX-=7;
 
-			}
-		}
+		if (posX < -largeur || posX > WIDTH)
+			enVie = false;
 
-	}
-	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
-		moveTimer = 0;
+	//}
+	//if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
+		//moveTimer = 0;
 
-	moveTimer++;
+	//moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 Boss2::Boss2(float x, float y) : Ennemi(x, y)
 {
 	symbole = '%';
-	nbVies = 200;
+	nbVies = 280;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
-	hauteur = 6;
-	largeur = 10;
-	shootCooldown = 5;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
+	hauteur = 150;
+	largeur = 122;
+	shootCooldown = 10;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = true;
 	angle = 0;
-	rayonMouv = 7;		//va faire un cercle de rayon 7
+	rayonMouv = 70;		//va faire un cercle de rayon 7
+
+
+	image = new QGraphicsPixmapItem(*ListImages[21]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[21]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[22]);
+	GameScene->addItem(image);
+	//image->setScale(2);
+	//image->setRotation(180);
+	image->show();
 }
 
 
 void Boss2::update()
 {
-	if (moveTimer % 1 == 0)
-	{
-		posX = WIDTH / 2 + (rayonMouv * cos((angle * 2 * PI) / 360));
-		posY = HEIGHT / 2 + (rayonMouv / 2 * sin((angle * 2 * PI) / 360));
+	//if (moveTimer % 1 == 0)
+	//{
+		posX = WIDTH / 2 - largeur + (rayonMouv * cos((angle * 2 * PI) / 360));
+		posY = HEIGHT / 3 + (rayonMouv * sin((angle * 2 * PI) / 360));
 
 		angle++;			//vitesse angulaire determine ici
-	}
+	//}
 	if (angle >= 360)
 		angle = 0;
 	if (moveTimer >= 500)
 		moveTimer = 0;
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
@@ -1236,7 +1230,7 @@ void angleBullet::update()
 		else
 		{
 			posX += 10 * cos((direction * 2 * PI) / 360);
-			posY += 10 * sin((direction * 2 * PI) / 360) / 2;
+			posY += 10 * sin((direction * 2 * PI) / 360);
 		}
 	}
 
@@ -1358,7 +1352,8 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 {
 	symbole = 'a';
 	power_up = ADDBULLETS;
-
+	hauteur = 60;
+	largeur = 50;
 	QPixmap pngImg("Textures\\Pup\\addAmo.png");
 	image = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);

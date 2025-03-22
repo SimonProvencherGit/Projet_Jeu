@@ -224,7 +224,7 @@ void Interface::gererInput()
         {
             if (explosionTimer == 0)
             {
-                cdExplosion = 500;      //set le cooldown de l'explosion
+                cdExplosion = 900;      //set le cooldown de l'explosion
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
@@ -291,7 +291,7 @@ void Interface::gererInput()
             if (explosionTimer == 0)
             {
 
-                cdExplosion = 500;      //set le cooldown de l'explosion
+                cdExplosion = 900;      //set le cooldown de l'explosion
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
@@ -343,7 +343,7 @@ void Interface::gererInput()
                 if (explosionTimer == 0)
                 {
 
-                    cdExplosion = 500;      //set le cooldown de l'explosion
+                    cdExplosion = 900;      //set le cooldown de l'explosion
                     enExplosion = true;
                     explosionTimer = cdExplosion;
                     explosionPosY = joueur2->posY - 1;
@@ -416,7 +416,10 @@ void Interface::explosion()
         {
             if (e->enVie && e->posY >= explosionPosY && e->posY <= explosionPosY + 50 && !e->isPlayer && e->typeEntite != BOSS && e->typeEntite != POWERUP)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
-                e->enVie = false;
+				if (e->ammoType == LASER && e->typeEntite == BULLET)    //regle un bug qui laisse les laser sur l'ecran qd tout explose
+                {}
+                else
+                    e->enVie = false;
                 //score += customPoints(e->getTypeEnnemi());
             }
         }
@@ -495,7 +498,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
                 listEntites.emplace_back(make_unique<SideBomber>(1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de 1 se fait changer dans le constructeur dependant du sens de l'ennemi
             break;
         case BOSS2_MAIN:
-            listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 3));
+            listEntites.emplace_back(make_unique<Boss2>(WIDTH /2 ,HEIGHT/4));
             break;
         case ORBITER:
             listEntites.emplace_back(make_unique<Orbiter>(posRand, 0));
@@ -579,6 +582,7 @@ void Interface::progressionDifficulte()
 
             if (spawnPowerUpStart)
             {
+				//enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
@@ -867,15 +871,15 @@ void Interface::updateEntites()
                 else if (e->nbVies % 70 != 0)
                     spawnAddLife = true;
 
-                if (e->moveTimer % 2 == 0)
+                if (e->moveTimer % 4 == 0)
                     randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
                 if (e->nbVies >= 200)
                 {
-                    if (e->moveTimer % 90 == 0)
+                    if (e->moveTimer % 125 == 0)
                     {
-                        cercleTir(25, e->posX + e->largeur / 2 - 10, e->posY + e->hauteur / 2);
-                        cercleTir(25, e->posX + e->largeur / 2 + 10, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2 - 50, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
@@ -886,10 +890,10 @@ void Interface::updateEntites()
                 }
                 else if (e->nbVies < 90)
                 {
-                    if (e->moveTimer % 100 == 0)
+                    if (e->moveTimer % 200 == 0)
                     {
-                        cercleTir(5, e->posX + e->largeur / 2 - 10, e->posY + e->hauteur / 2);
-                        cercleTir(5, e->posX + e->largeur / 2 + 10, e->posY + e->hauteur / 2);
+                        cercleTir(5, e->posX + e->largeur / 2 , e->posY + e->hauteur / 2);
+                        //cercleTir(5, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
                     }
                     balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
@@ -1032,7 +1036,7 @@ void Interface::gererCollisions()
 
                     case ADDBULLETS:
                         joueur->nbBulletTir += 2;
-                        joueur->shootCooldown += 3;
+                        joueur->shootCooldown += 8;
                         break;
                     }
                     e->enVie = false;
@@ -1052,19 +1056,20 @@ void Interface::gererCollisions()
                                     bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
                             
-							if ((e2->typeEntite == BULLET && e2->ammoType == LASER) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+							if ((e2->typeEntite == BULLET && e2->ammoType == LASER || e2->ammoType == ANGLE) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
                             {}
                             else
                             {
                                 e2->perdVie(1);
                                 damageeffect(e2->image, 100, e2.get());
+								e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
                             }
 
 
-                            if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
-                                e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
+                            //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
+                                //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
-                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))
+							if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
                             {
 
                                 score1 += customPoints(e2->getTypeEnnemi());
