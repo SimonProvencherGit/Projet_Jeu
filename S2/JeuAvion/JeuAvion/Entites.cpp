@@ -670,7 +670,6 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	largeur = 122;
 	shootCooldown = 10;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = true;
-	shoots = false;
 	angle = 0;
 	rayonMouv = 70;		//va faire un cercle de rayon 7
 

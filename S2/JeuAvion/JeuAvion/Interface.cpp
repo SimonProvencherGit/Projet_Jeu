@@ -582,7 +582,7 @@ void Interface::progressionDifficulte()
 
             if (spawnPowerUpStart)
             {
-				//enemySpawn(1, BOSS2_MAIN);
+				enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
