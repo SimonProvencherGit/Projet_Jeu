@@ -1300,7 +1300,7 @@ void Interface::executionJeu(int version)
     {
         //------------------------ section graphique ---------------------
         Water = new Sprite("spritesheet.png", "spritesheet.json", 10);
-        Water->start(100);
+        Water->start(350);
         Water->setpos(-10, -10);
         Water->pixmapItem.setScale(0.70);
         Water->pixmapItem.show();
