@@ -20,7 +20,7 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
     QTimer* timer = new QTimer(view);
     int elapsed = 0;
 
-    QObject::connect(timer, &QTimer::timeout, [=]() mutable {
+    QObject::connect(timer, &QTimer::timeout, [view, duration, magnitude, elapsed, originalScene, scene, timer]() mutable {
         if (elapsed < duration) {
             int offset = (rand() % (-magnitude)) + (magnitude);
             scene->setSceneRect(originalScene.translated(offset, 0)); // Shift the scene left and right
@@ -63,7 +63,7 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
         if (e->enVie == true) {
             if (e == nullptr)
             {
-
+				return;
             }
 
             if (pixmapItem == nullptr)
@@ -630,6 +630,17 @@ void Interface::progressionDifficulte()
             {
                 music.stopMusic();
                 sfxWarning.playSFX("warning.wav");
+
+                Warning = new Sprite("warning.png", "warning.json", 10);
+                Warning->start(32);
+                bossSpawnSound = true;
+                enemySpawnTimer = 0;
+                Warning->setpos(450, 400);
+                Warning->pixmapItem.setScale(2.4);
+                Warning->pixmapItem.setZValue(100);
+                Warning->pixmapItem.show();
+                GameScene->addItem(&Warning->pixmapItem);
+
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
                 //Sleep(5);
@@ -637,8 +648,10 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {
 
-                if (enemySpawnTimer >= 125)         //
+                if (enemySpawnTimer >= 357)         //
                 {
+                    Warning->stop();
+                    delete Warning;
                     sfxWarning.stopSFX();
                     music.playMusic("Boss1.wav", 0, 100000);
                     bossMusicStart = true;
@@ -646,7 +659,7 @@ void Interface::progressionDifficulte()
                 }
             }
 
-            if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+            if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
                 enemySpawn(1, BOSS1_MAIN);
                 boss1Spawned = true;
@@ -1286,11 +1299,13 @@ void Interface::executionJeu(int version)
     if (firststart)
     {
         //------------------------ section graphique ---------------------
-        QPixmap pngImg("Textures\\Scenery\\water.png");
-        QGraphicsPixmapItem* img = new QGraphicsPixmapItem(pngImg);
-        GameScene->addItem(img);
-        img->setScale(0.75);
-        img->show();
+        Water = new Sprite("spritesheet.png", "spritesheet.json", 10);
+        Water->start(350);
+        Water->setpos(-10, -10);
+        Water->pixmapItem.setScale(0.70);
+        Water->pixmapItem.show();
+        GameScene->addItem(&Water->pixmapItem);
+        
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
