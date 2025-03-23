@@ -63,7 +63,7 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
         if (e->enVie == true) {
             if (e == nullptr)
             {
-
+				return;
             }
 
             if (pixmapItem == nullptr)
@@ -632,9 +632,11 @@ void Interface::progressionDifficulte()
                 sfxWarning.playSFX("warning.wav");
 
                 Warning = new Sprite("warning.png", "warning.json", 10);
-                Warning->start(40);
-                Warning->setpos(540, 960);
-                Warning->pixmapItem.setScale(1);
+                Warning->start(32);
+                bossSpawnSound = true;
+                enemySpawnTimer = 0;
+                Warning->setpos(450, 400);
+                Warning->pixmapItem.setScale(2.4);
                 Warning->pixmapItem.setZValue(100);
                 Warning->pixmapItem.show();
                 GameScene->addItem(&Warning->pixmapItem);
@@ -646,7 +648,7 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {
 
-                if (enemySpawnTimer >= 315)         //
+                if (enemySpawnTimer >= 357)         //
                 {
                     Warning->stop();
                     delete Warning;
@@ -657,7 +659,7 @@ void Interface::progressionDifficulte()
                 }
             }
 
-            if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+            if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
                 enemySpawn(1, BOSS1_MAIN);
                 boss1Spawned = true;
@@ -1303,16 +1305,7 @@ void Interface::executionJeu(int version)
         Water->pixmapItem.setScale(0.70);
         Water->pixmapItem.show();
         GameScene->addItem(&Water->pixmapItem);
-        sfxWarning.playSFX("warning.wav");
-
-        Warning = new Sprite("warning.png", "warning.json", 10);
-        Warning->start(32);
-
-        Warning->setpos(450, 400);
-        Warning->pixmapItem.setScale(2.4);
-        Warning->pixmapItem.setZValue(100);
-        Warning->pixmapItem.show();
-        GameScene->addItem(&Warning->pixmapItem);
+        
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();

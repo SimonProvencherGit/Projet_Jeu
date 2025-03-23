@@ -96,7 +96,7 @@ void Sprite::setframe(int index) {
     }
     if (index > frameCle.size())
     {
-        qDebug() << "Le nombre de frame est" + frameCle.size() << "Ton index est trop grand" ;
+        qDebug() << "Le nombre de frame est" + frameCle.size() << "Ton index est trop grand";
         return;
     }
 
