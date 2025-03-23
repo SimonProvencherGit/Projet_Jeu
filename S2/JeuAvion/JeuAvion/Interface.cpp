@@ -570,8 +570,8 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, ARTILLEUR);
+            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
@@ -582,10 +582,10 @@ void Interface::progressionDifficulte()
 
             if (spawnPowerUpStart)
             {
-				enemySpawn(1, BOSS2_MAIN);
+				//enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
@@ -676,7 +676,7 @@ void Interface::progressionDifficulte()
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 150 || cbVivant() < 7)
+            if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
@@ -698,7 +698,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore + 1000 && score1 <= memScore + 1850 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
-        if (enemySpawnTimer >= 5)
+        if (enemySpawnTimer >= 6)
         {
             enemySpawn(1, DIVEBOMBER);
             enemySpawnTimer = 0;
@@ -1069,7 +1069,7 @@ void Interface::gererCollisions()
                                     bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
                             
-							if ((e2->typeEntite == BULLET && e2->ammoType == LASER || e2->ammoType == ANGLE) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+							if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite != BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
                             {}
                             else
                             {
