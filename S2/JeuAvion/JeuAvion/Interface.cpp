@@ -676,7 +676,7 @@ void Interface::progressionDifficulte()
 
         if (bossWaitTimer > 100)
         {
-            if (enemySpawnTimer >= 150 || cbVivant() < 7)
+            if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
                 enemySpawn(4, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
@@ -698,7 +698,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore + 1000 && score1 <= memScore + 1850 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
-        if (enemySpawnTimer >= 5)
+        if (enemySpawnTimer >= 6)
         {
             enemySpawn(1, DIVEBOMBER);
             enemySpawnTimer = 0;
@@ -1064,18 +1064,18 @@ void Interface::gererCollisions()
                     {
                         if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
-                            if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
+                             if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
                                 for (int i = 80; i < 110; i += 10)
                                     bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
                             
-							if ((e2->typeEntite == BULLET && e2->ammoType == LASER || e2->ammoType == ANGLE) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+							if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite != BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
                             {}
                             else
                             {
                                 e2->perdVie(1);
                                 damageeffect(e2->image, 100, e2.get());
-								e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
+								e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
                             }
 
 
