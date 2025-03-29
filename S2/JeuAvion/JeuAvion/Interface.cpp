@@ -565,7 +565,7 @@ void Interface::progressionDifficulte()
 
     enemySpawnTimer++;
 
-    if (score1 < 600)
+    if (score1 < 500)
     {
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
@@ -580,18 +580,19 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, SHOTGUNNER);
             
 
-            if (spawnPowerUpStart)
+            /*if (spawnPowerUpStart)
             {
-				enemySpawn(1, BOSS2_MAIN);
+				//enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
-                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
+                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }
+            }*/
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
+            
         }
     }
-    else if (score1 >= 600 && score1 < 1300)
+    else if (score1 >= 500 && score1 < 1300)
     {
         if (enemySpawnTimer >= 50)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -671,20 +672,20 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    else if (score1 >= memScore && score1 <= memScore + 1000 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    else if (score1 >= memScore && score1 <= memScore + 800 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
         {
             if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
-                enemySpawn(4, SIDEBOMBER);
+                enemySpawn(3, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
                 int nbZaper = 0;
 
                 for (auto& e : listEntites)
                 {
-                    if (e->getTypeEnnemi() == TANK)
+                    if (e->getTypeEnnemi() == ZAPER)
                         nbZaper++;
                 }
                 if (nbZaper < 2)
@@ -696,7 +697,7 @@ void Interface::progressionDifficulte()
         else
             bossWaitTimer++;
     }
-    else if (score1 >= memScore + 1000 && score1 <= memScore + 1850 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    else if (score1 >= memScore + 800 && score1 <= memScore + 1700 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
         if (enemySpawnTimer >= 6)
         {
@@ -705,26 +706,65 @@ void Interface::progressionDifficulte()
             bossWaitTimer = 0;
         }
     }
-    else if (score1 >= memScore + 1850 && score1 <= memScore + 2800 && boss1Spawned && !boss2Spawned)
+    else if (score1 >= memScore + 1700 && score1 <= memScore + 2300 && boss1Spawned && !boss2Spawned)
     {
-        if (enemySpawnTimer >= 250 || cbVivant() < 8)
+        if (enemySpawnTimer >= 280 || cbVivant() < 8)
         {
             enemySpawn(1, ARTILLEUR);
             enemySpawn(1, SIDEBOMBER);
             enemySpawn(1, TANK);
             enemySpawn(1, AIMBOT);
-            enemySpawn(1, ZAPER);
             enemySpawn(1, DIVEBOMBER);
             enemySpawn(1, BASIC);
+
+			int nbZaper = 0;
+            for (auto& e : listEntites)
+            {
+                if (e->getTypeEnnemi() == ZAPER)
+                    nbZaper++;
+            }
+            if (nbZaper < 2)
+                enemySpawn(1, ZAPER);
             enemySpawnTimer = 0;
         }
     }
-    else if (score1 >= memScore + 2800 && !boss2Spawned)
+    else if (score1 >= memScore + 2300 && !boss2Spawned)
     {
         if (cbVivant() == 0)
         {
+            if (!bossMusicStart && !bossSpawnSound)
+            {
+                music.stopMusic();
+                sfxWarning.playSFX("warning.wav");
 
-            if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+                Warning = new Sprite("warning.png", "warning.json", 10);
+                Warning->start(32);
+                bossSpawnSound = true;
+                Warning->setpos(450, 400);
+                Warning->pixmapItem.setScale(2.4);
+                Warning->pixmapItem.setZValue(100);
+                Warning->pixmapItem.show();
+                GameScene->addItem(&Warning->pixmapItem);
+
+                bossSpawnSound = true;
+                enemySpawnTimer = 0;
+                //Sleep(5);
+            }
+            else if (!bossMusicStart && bossSpawnSound)
+            {
+
+                if (enemySpawnTimer >= 357)         //
+                {
+                    Warning->stop();
+                    delete Warning;
+                    sfxWarning.stopSFX();
+                    music.playMusic("Boss1.wav", 0, 100000);
+                    bossMusicStart = true;
+
+                }
+            }
+
+            if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
                 enemySpawn(1, BOSS2_MAIN);
                 boss2Spawned = true;
@@ -736,7 +776,7 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    else if (score1 >= memScore && score1 < memScore + 850 && boss2Spawned)
+    else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
     {
         if (enemySpawnTimer >= 100 || cbVivant() < 4)
         {
@@ -751,7 +791,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;
         }
     }
-    else if (score1 >= memScore + 850 && score1 < memScore + 1500 && boss2Spawned)
+    else if (score1 >= memScore + 800 && score1 < memScore + 1400 && boss2Spawned)
     {
         if (enemySpawnTimer >= 100 || cbVivant() < 4)
         {
@@ -766,7 +806,7 @@ void Interface::progressionDifficulte()
         }
 
     }
-    else if (score1 >= memScore + 1600 && score1 < memScore + 2400 && boss2Spawned && !boss3Spawned)
+    else if (score1 >= memScore + 1400 && boss2Spawned && !boss3Spawned)
     {
         if (boss3)
             if (boss3->posX > 0 && boss3->posY > 0)
@@ -1184,6 +1224,8 @@ int Interface::customPoints(typeEnnemis e)
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+        bossMusicStart = false;
+        bossSpawnSound = false;
         return 100;
         break;
     case BOSS1_SIDE:
