@@ -1,6 +1,6 @@
 #include "Sprite.h"
 // https://www.youtube.com/watch?v=lrrptFVlMu4
-Sprite::Sprite(QString image, QString jsonfile, int updatetime){
+Sprite::Sprite(QString image, QString jsonfile){
     spritesheet = QPixmap("Textures\\Sprites\\" + image);
     QFile Fichier("Textures\\Sprites\\" + jsonfile);
     // Verify if the file is opened

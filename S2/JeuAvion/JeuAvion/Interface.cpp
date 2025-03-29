@@ -126,6 +126,16 @@ Interface::Interface()
 
     joueur2 = nullptr;
     boss3 = nullptr;
+
+    rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
+    rolling->setpos(joueur->posX, joueur->posY);
+    rolling->start(70);
+    rolling->setframe(1);
+    
+    rolling->pixmapItem.setScale(0.26);
+    rolling->pixmapItem.setZValue(100);
+    rolling->pixmapItem.show();
+    GameScene->addItem(&rolling->pixmapItem);
 }
 
 
@@ -284,7 +294,17 @@ void Interface::gererInput()
         if (GetAsyncKeyState('E') < 0)
         {
             if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+            {
                 joueur->barrelRoll = true;
+                
+                rolling->start(50);
+                //rolling->setpos(joueur->posX, joueur->posY);
+                //rolling->setpos(450, 400);
+                //rolling->pixmapItem.setScale(0.25);
+                rolling->pixmapItem.setZValue(100);
+                rolling->pixmapItem.show();
+                //GameScene->addItem(&rolling->pixmapItem);
+            }
         }
         if (GetAsyncKeyState('R') < 0)
         {
@@ -298,7 +318,15 @@ void Interface::gererInput()
                 shakeScene(GameScene, view, 1000, 10);
             }
         }
-
+        
+        rolling->setpos(joueur->posX - 20, joueur->posY - 25);
+       
+        if (!joueur->invincible && joueur->barrelRollTimer <= 0)
+        {
+            //
+            // rolling->stop();
+			rolling->setframe(1);
+        }
         //******************************************* controle 2e joueur *******************************************
         if (nbJoueur > 1)
         {
@@ -393,15 +421,15 @@ void Interface::joueurTir(Joueur* quelJoueur)
     switch (quelJoueur->nbBulletTir)
     {
     case 1:
-        listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, 90 + 180, '|', true));
+        listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 25, quelJoueur->posY - 30, 90 + 180, '|', true));
         break;
     case 3:
         for (int i = 80; i < 110; i += 10)
-            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, i + 180, '|', true));
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 25, quelJoueur->posY - 30, i + 180, '|', true));
         break;
     case 5:
         for (int i = 70; i < 120; i += 10)
-            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, i + 180, '|', true));
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 25, quelJoueur->posY - 30, i + 180, '|', true));
         break;
     }
 }
@@ -578,7 +606,7 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-            
+			//enemySpawn(1, TURRET);
 
             /*if (spawnPowerUpStart)
             {
@@ -588,6 +616,7 @@ void Interface::progressionDifficulte()
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }*/
+
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
             
         }
@@ -632,7 +661,7 @@ void Interface::progressionDifficulte()
                 music.stopMusic();
                 sfxWarning.playSFX("warning.wav");
 
-                Warning = new Sprite("warning.png", "warning.json", 10);
+                Warning = new Sprite("warning.png", "warning.json");
                 Warning->start(32);
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
@@ -737,7 +766,7 @@ void Interface::progressionDifficulte()
                 music.stopMusic();
                 sfxWarning.playSFX("warning.wav");
 
-                Warning = new Sprite("warning.png", "warning.json", 10);
+                Warning = new Sprite("warning.png", "warning.json");
                 Warning->start(32);
                 bossSpawnSound = true;
                 Warning->setpos(450, 400);
@@ -850,7 +879,7 @@ void Interface::updateEntites()
         if (e->enVie)
         {
             if (nbJoueur == 1)
-                e->getPosJoueurs(joueur->posX, joueur->posX, joueur->enVie);   //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.
+                e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie);   //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.
 
             else if (nbJoueur == 2)
             {
@@ -1260,8 +1289,12 @@ int Interface::customPoints(typeEnnemis e)
 void Interface::restart()
 {
     for (auto& e : listEntites)
-        e->enVie = false;
-
+    {
+        if (e->ammoType == LASER && e->typeEntite == BULLET)    //regle un bug qui laisse les laser sur l'ecran qd tout explose
+        {}
+		else
+			e->enVie = false; 
+    }
     gameOver = false;
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());
@@ -1276,22 +1309,24 @@ void Interface::restart()
     bossSpawnSound = false;
     spawnAddLife = true;
     spawnPowerUpStart = true;
+    
+    
+	
 }
 
 //enleve les entites mortes de la liste d'entites
 void Interface::enleverEntites()
 {
-	Laser* laser;
 
     for (int i = 0; i < listEntites.size(); i++)
     {
-        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)	
+        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)
         {
-            GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
-            delete listEntites[i]->image;
+                GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
+                delete listEntites[i]->image;
 
-            listEntites.erase(listEntites.begin() + i);
-            i--;
+                listEntites.erase(listEntites.begin() + i);
+                i--;
 
         }
         else if (!listEntites[i]->enVie && listEntites[i]->isPlayer)
@@ -1341,7 +1376,7 @@ void Interface::executionJeu(int version)
     if (firststart)
     {
         //------------------------ section graphique ---------------------
-        Water = new Sprite("spritesheet.png", "spritesheet.json", 10);
+        Water = new Sprite("spritesheet.png", "spritesheet.json");
         Water->start(350);
         Water->setpos(-10, -10);
         Water->pixmapItem.setScale(0.70);

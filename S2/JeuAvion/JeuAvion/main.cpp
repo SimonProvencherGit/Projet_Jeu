@@ -66,6 +66,10 @@ void loadimages(){ //Initialisation de toute les images.
     ListImages[21]->load("Textures\\Ennemis\\big_mama.png");
     ListImages[22] = make_unique<QPixmap>();
     ListImages[22]->load("Textures\\Ennemis\\big_mama-d.png");
+    
+    ListImages[23] = make_unique<QPixmap>();
+    ListImages[23]->load("Textures\\Sprites\\barrel_roll.png");
+
 
 }
 
@@ -102,8 +106,8 @@ int main(int argc, char* argv[]) {
     // Remove the border and background
     view->setFrameStyle(QFrame::NoFrame); 
     view->setBackgroundBrush(Qt::NoBrush); 
-    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
-    view->setViewport(glWidget);// set le view pour opengl
+    //QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+    //view->setViewport(glWidget);// set le view pour opengl
 
     // Ajouter du antialiasing et Smoothing des pixels.
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);

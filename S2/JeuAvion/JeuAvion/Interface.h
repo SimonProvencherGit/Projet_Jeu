@@ -20,6 +20,7 @@ void setConsoleSize();
 class Interface
 {
 private:
+    Sprite* rolling;
     Sprite* Warning;
     Sprite* Water;
     Boss3* boss3;

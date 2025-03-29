@@ -9,11 +9,12 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QStringList>
+#include "globalobjects.h"
 
 
 class Sprite : public QObject, public QGraphicsPixmapItem { // Rendre mon objet un QPixMapItem.
 public:
-    Sprite(QString image, QString jsonfile, int updatetime);
+    Sprite(QString image, QString jsonfile);
     void setpos(int x, int y);
     void setsize(float size);
     void start(int vitesse);
