@@ -120,9 +120,9 @@ int main(int argc, char* argv[]) {
     timer.start(16); // 60 FPS (16 ms per frame)
 
     //Augmenter Framerate
-    //QTimer frametimer;
-   // QObject::connect(&frametimer, &QTimer::timeout, [&]() { updateframes(); });
-    //frametimer.start(30);
+    QTimer frametimer;
+    QObject::connect(&frametimer, &QTimer::timeout, [&]() { updateframes(); });
+    frametimer.start(30);
 
     return app.exec();
 }

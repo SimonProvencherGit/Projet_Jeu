@@ -51,7 +51,7 @@ void backgroundmanager::setocean()
 	{
 		Background1 = new Sprite("ocean.png", "ocean.json");
 		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 10;
+		mapframetimer = 200;
 		return;
 	}
 	else
@@ -60,7 +60,7 @@ void backgroundmanager::setocean()
 		delete Background2;
 		Background1 = new Sprite("ocean.png", "ocean.json");
 		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 10;
+		mapframetimer = 200;
 	}
 	
 
@@ -149,8 +149,8 @@ void backgroundmanager::bougebackground()
 	}
 	Background1->start(mapframetimer);
 	Background2->start(mapframetimer);
-	timerBack1->start(20);
-	timerBack2->start(20);
+	timerBack1->start(35);
+	timerBack2->start(35);
 
 
 }

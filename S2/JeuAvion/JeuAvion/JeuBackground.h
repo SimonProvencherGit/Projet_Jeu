@@ -17,7 +17,7 @@ private:
 	int currentback1y = 0;
 	int initialback2y = -1284;
 	int currentback2y = -1284;
-	int mapframetimer = 150; // le default pour la map ocean.
+	int mapframetimer = 200; // le default pour la map ocean.
 	Sprite * Background1;
 	Sprite * Background2;
 	Sprite* Background3;
