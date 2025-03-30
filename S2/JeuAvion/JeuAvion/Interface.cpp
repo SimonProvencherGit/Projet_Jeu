@@ -1,12 +1,5 @@
 #include "Interface.h"
-#include <qdir.h>
-#include <QPropertyAnimation>
-#include <qparallelanimationgroup.h>
-#include <QTimer>
-#include <QRandomGenerator>
-#include <QGraphicsView>
-#include <QThread>
-#include <chrono>
+
 
 // lien pour un sprite : https://opengameart.org/content/custom-missiles
 
@@ -132,10 +125,10 @@ Interface::Interface()
     rolling->start(70);
     rolling->setframe(1);
     
-    rolling->pixmapItem.setScale(0.26);
-    rolling->pixmapItem.setZValue(100);
-    rolling->pixmapItem.show();
-    GameScene->addItem(&rolling->pixmapItem);
+    rolling->pixmapItem->setScale(0.26);
+    rolling->pixmapItem->setZValue(100);
+    rolling->pixmapItem->show();
+    GameScene->addItem(rolling->pixmapItem);
 
     /*for (int i = 0; i < joueur->nbVies; i++)
     {
@@ -313,8 +306,8 @@ void Interface::gererInput()
                 //rolling->setpos(joueur->posX, joueur->posY);
                 //rolling->setpos(450, 400);
                 //rolling->pixmapItem.setScale(0.25);
-                rolling->pixmapItem.setZValue(100);
-                rolling->pixmapItem.show();
+                rolling->pixmapItem->setZValue(100);
+                rolling->pixmapItem->show();
                 //GameScene->addItem(&rolling->pixmapItem);
             }
         }
@@ -610,8 +603,8 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, ARTILLEUR);
+            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
@@ -678,10 +671,10 @@ void Interface::progressionDifficulte()
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
                 Warning->setpos(450, 400);
-                Warning->pixmapItem.setScale(2.4);
-                Warning->pixmapItem.setZValue(100);
-                Warning->pixmapItem.show();
-                GameScene->addItem(&Warning->pixmapItem);
+                Warning->pixmapItem->setScale(2.4);
+                Warning->pixmapItem->setZValue(100);
+                Warning->pixmapItem->show();
+                GameScene->addItem(Warning->pixmapItem);
 
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
@@ -782,10 +775,10 @@ void Interface::progressionDifficulte()
                 Warning->start(32);
                 bossSpawnSound = true;
                 Warning->setpos(450, 400);
-                Warning->pixmapItem.setScale(2.4);
-                Warning->pixmapItem.setZValue(100);
-                Warning->pixmapItem.show();
-                GameScene->addItem(&Warning->pixmapItem);
+                Warning->pixmapItem->setScale(2.4);
+                Warning->pixmapItem->setZValue(100);
+                Warning->pixmapItem->show();
+                GameScene->addItem(Warning->pixmapItem);
 
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
@@ -1403,13 +1396,15 @@ void Interface::executionJeu(int version)
         updateHealthCounter();
 
         //------------------------ section graphique ---------------------
-        Water = new Sprite("spritesheet.png", "spritesheet.json");
+        /*Water = new Sprite("spritesheet.png", "spritesheet.json");
         Water->start(350);
         Water->setpos(-10, -10);
         Water->pixmapItem.setScale(0.70);
         Water->pixmapItem.show();
-        GameScene->addItem(&Water->pixmapItem);
+        GameScene->addItem(&Water->pixmapItem);*/
         
+        BackManager = new backgroundmanager;
+        BackManager->bougebackground();
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();

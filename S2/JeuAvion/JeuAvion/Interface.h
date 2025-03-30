@@ -12,6 +12,16 @@
 #include "globalobjects.h"
 #include <json.hpp>
 #include <Sprite.h>
+#include <qdir.h>
+#include <QPropertyAnimation>
+#include <qparallelanimationgroup.h>
+#include <QTimer>
+#include <QRandomGenerator>
+#include <QGraphicsView>
+#include <QThread>
+#include <chrono>
+#include "JeuBackground.h"
+#include "Sprite.h"
 
 using json = nlohmann::json;
 
@@ -30,6 +40,7 @@ private:
     vector<unique_ptr<Entite>> listEntites;
     vector<QGraphicsPixmapItem*> listeNbVie;
     QGraphicsPixmapItem* image;
+    backgroundmanager* BackManager;
 
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
     int score1;
@@ -92,4 +103,4 @@ public:
 	void updateHealthCounter();
 };
 
-#endif // INTERFACE_H
+#endif 
