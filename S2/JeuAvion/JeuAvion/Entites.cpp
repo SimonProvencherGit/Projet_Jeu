@@ -88,9 +88,9 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
-	hauteur = 265 / 4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
+	hauteur = 265 / 3.7; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	nbVies = 10;
+	nbVies = 15;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
@@ -116,10 +116,11 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	image->setZValue(1);
 	qDebug() << "Image Z-Value:" << image->zValue();
 	QColor shadowColor(0, 0, 255, 255);
-	image->setPos(0, 0);
-	GameScene->addItem(image);
-	image->show();
-	GameScene->update();
+	//image->setPos(0, 0);
+	//GameScene->addItem(image);
+	//image->show();
+
+	//GameScene->update();
 
 }
 
@@ -161,7 +162,7 @@ void Joueur::update()
 
 	//if (shootTimer > 0)
 		//shootTimer--;
-	image->setPos(posX, posY);// update image du joueur
+	//image->setPos(posX, posY);// update image du joueur
 }
 
 
@@ -430,7 +431,7 @@ Zaper::Zaper(float x, float y) : Ennemi(x, y)
 void Zaper::update()
 {
 	if (posY <= HEIGHT / 10 && moveTimer % 8 == 0)
-		posY+=3;
+		posY += 3;
 
 	if (moveTimer % 25 == 0)
 	{
@@ -481,18 +482,18 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 
 void Aimbot::update()
 {
-	if (posY <= (HEIGHT / 20) + posRand && moveTimer % 8 == 0)
-		posY += 5;
+	if (posY <= (HEIGHT / 20) + posRand)
+		posY += 1;
 
-	if (moveTimer % 50 == 0)
-	{
-		if (posX <= 1 || posX + largeur >= WIDTH - 1)
-			direction = 1 - direction; // Change de Direction
-		if (direction == 0)
-			posX -= 5;
-		else
-			posX += 5; // Bouger a gauche ou a droite
-	}
+	//if (moveTimer % 50 == 0)
+	//{
+	if (posX <= 1 || posX + largeur >= WIDTH - 1)
+		direction = 1 - direction; // Change de Direction
+	if (direction == 0)
+		posX -= 0.5;
+	else
+		posX += 0.5; // Bouger a gauche ou a droite
+	//}
 
 	moveTimer++;
 
@@ -503,7 +504,7 @@ void Aimbot::update()
 Boss1::Boss1(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
-	nbVies = 40;
+	nbVies = 25;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_MAIN;
 	ammoType = HOMING;
@@ -573,7 +574,7 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 
 void Boss1Side::update()
 {
-	if (posY <= HEIGHT/5)
+	if (posY <= HEIGHT / 5)
 		posY += 3;
 	else if (posY >= 13)
 	{
@@ -642,13 +643,13 @@ void SideBomber::update()
 
 	//if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du diveBomber
 	//{
-		if (side)
-			posX+=7;		
-		else
-			posX-=7;
+	if (side)
+		posX += 7;
+	else
+		posX -= 7;
 
-		if (posX < -largeur || posX > WIDTH)
-			enVie = false;
+	if (posX < -largeur || posX > WIDTH)
+		enVie = false;
 
 	//}
 	//if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
@@ -688,10 +689,10 @@ void Boss2::update()
 {
 	//if (moveTimer % 1 == 0)
 	//{
-		posX = WIDTH / 2 - largeur + (rayonMouv * cos((angle * 2 * PI) / 360));
-		posY = HEIGHT / 3 + (rayonMouv * sin((angle * 2 * PI) / 360));
+	posX = WIDTH / 2 - largeur + (rayonMouv * cos((angle * 2 * PI) / 360));
+	posY = HEIGHT / 3 + (rayonMouv * sin((angle * 2 * PI) / 360));
 
-		angle++;			//vitesse angulaire determine ici
+	angle++;			//vitesse angulaire determine ici
 	//}
 	if (angle >= 360)
 		angle = 0;
@@ -1076,7 +1077,7 @@ Laser::Laser(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBulle
 	//if (!isPlayerBullet)
 		//hauteur = HEIGHT - posY + 1;
 
-	while (hauteur < HEIGHT) 
+	while (hauteur < HEIGHT)
 	{
 		QGraphicsPixmapItem* segment;
 		if (hauteur == 1) {
@@ -1113,7 +1114,7 @@ void Laser::update()
 		delete segment;
 	}
 	laserSegments.clear();
-	
+
 	enVie = false;
 }
 
@@ -1121,7 +1122,7 @@ Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBul
 {
 	symbole = 'V';
 	ammoType = HOMING;
-	hauteur = 28 * 3;
+	hauteur = 28;
 	largeur = 7 * 3;
 	nbVies = 2;
 
@@ -1150,11 +1151,11 @@ void Homing::update()
 	//{
 	if (p1EnVie && !p2EnVie)
 	{
-		if (posX > xJoueur + 50 - 5 && posX < xJoueur + 50 + 5) {
+		if (posX + largeur / 2 >= xJoueur + 25 && posX <= xJoueur + 30) {
 		} //si le missile est alligne avec le joueur on fait rien
-		else if (posX < xJoueur + 50)		// +50 pour que le missile arrive au centre du joueur
+		else if (posX + largeur / 2 < xJoueur + 25)
 			posX += 5;
-		else if (posX > xJoueur + 50)
+		else if (posX > xJoueur + 30)
 			posX -= 5;
 	}
 	else if (p1EnVie && p2EnVie)
@@ -1162,9 +1163,9 @@ void Homing::update()
 		//choisi un joueur en vie aleatoirement pour le suivre
 		if (joueurRand == 0)
 		{
-			if (posX < xJoueur)
+			if (posX + largeur / 2 < xJoueur)
 				posX += 5;
-			else if (posX > xJoueur)
+			else if (posX + largeur / 2 > xJoueur)
 				posX -= 5;
 		}
 		else if (joueurRand == 1)
@@ -1195,11 +1196,13 @@ void Homing::update()
 		enVie = false;
 	moveTimer++;
 
-	image->setPos(posX - 3, posY);
+	image->setPos(posX, posY);
 }
 
 angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPlayerBullet = false) : Entite(x, y, symb, 1, 1)
 {
+	posX = x;
+	posY = y;
 	typeEntite = BULLET;
 	ammoType = ANGLE;
 	hauteur = 25;
@@ -1213,6 +1216,7 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 	image = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	image->setScale(0.5);
+	image->setPos(posX, posY);
 	image->setRotation(angle + 90);		//leave the +90, trust me bro
 	image->show();
 }

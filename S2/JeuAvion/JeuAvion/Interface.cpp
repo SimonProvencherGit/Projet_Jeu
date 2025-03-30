@@ -1,13 +1,5 @@
 #include "Interface.h"
-#include <qdir.h>
-#include <QPropertyAnimation>
-#include <qparallelanimationgroup.h>
-#include <QTimer>
-#include <QRandomGenerator>
-#include <QGraphicsView>
-#include <QThread>
-#include <chrono>
-#include "JeuBackground.h"
+
 
 // lien pour un sprite : https://opengameart.org/content/custom-missiles
 
@@ -32,7 +24,7 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
             timer->stop();
             timer->deleteLater();
         }
-    });
+        });
 
     timer->start(20);
 }
@@ -64,7 +56,7 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
         if (e->enVie == true) {
             if (e == nullptr)
             {
-				return;
+                return;
             }
 
             if (pixmapItem == nullptr)
@@ -90,7 +82,7 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
             }
             e->flashing = false;
         }
-    });
+        });
 }
 Interface::Interface()
 {
@@ -127,6 +119,28 @@ Interface::Interface()
 
     joueur2 = nullptr;
     boss3 = nullptr;
+
+    rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
+    rolling->setpos(joueur->posX, joueur->posY);
+    rolling->start(70);
+    rolling->setframe(1);
+
+    rolling->pixmapItem->setScale(0.26);
+    rolling->pixmapItem->setZValue(100);
+    rolling->pixmapItem->show();
+    GameScene->addItem(rolling->pixmapItem);
+
+    /*for (int i = 0; i < joueur->nbVies; i++)
+    {
+        image = new QGraphicsPixmapItem(*ListImages[23]);
+        image->setPos(10 + i * 30, 10);
+        image->setScale(0.09);
+        image->setZValue(50);
+        image->show();
+        GameScene->addItem(image);
+        listeNbVie.push_back(image);
+    }*/
+    //updateHealthCounter();
 }
 
 
@@ -285,7 +299,17 @@ void Interface::gererInput()
         if (GetAsyncKeyState('E') < 0)
         {
             if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+            {
                 joueur->barrelRoll = true;
+
+                rolling->start(50);
+                //rolling->setpos(joueur->posX, joueur->posY);
+                //rolling->setpos(450, 400);
+                //rolling->pixmapItem.setScale(0.25);
+                rolling->pixmapItem->setZValue(100);
+                rolling->pixmapItem->show();
+                //GameScene->addItem(&rolling->pixmapItem);
+            }
         }
         if (GetAsyncKeyState('R') < 0)
         {
@@ -300,6 +324,14 @@ void Interface::gererInput()
             }
         }
 
+        rolling->setpos(joueur->posX - 20, joueur->posY - 25);
+
+        if (!joueur->invincible && joueur->barrelRollTimer <= 0)
+        {
+            //
+            // rolling->stop();
+            rolling->setframe(1);
+        }
         //******************************************* controle 2e joueur *******************************************
         if (nbJoueur > 1)
         {
@@ -394,15 +426,15 @@ void Interface::joueurTir(Joueur* quelJoueur)
     switch (quelJoueur->nbBulletTir)
     {
     case 1:
-        listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, 90 + 180, '|', true));
+        listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 25, quelJoueur->posY - 30, 90 + 180, '|', true));
         break;
     case 3:
         for (int i = 80; i < 110; i += 10)
-            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, i + 180, '|', true));
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 25, quelJoueur->posY - 30, i + 180, '|', true));
         break;
     case 5:
         for (int i = 70; i < 120; i += 10)
-            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 12, quelJoueur->posY - 1, i + 180, '|', true));
+            listEntites.emplace_back(make_unique<angleBullet>(quelJoueur->posX + quelJoueur->largeur / 2 - 25, quelJoueur->posY - 30, i + 180, '|', true));
         break;
     }
 }
@@ -417,8 +449,9 @@ void Interface::explosion()
         {
             if (e->enVie && e->posY >= explosionPosY && e->posY <= explosionPosY + 50 && !e->isPlayer && e->typeEntite != BOSS && e->typeEntite != POWERUP)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
-				if (e->ammoType == LASER && e->typeEntite == BULLET)    //regle un bug qui laisse les laser sur l'ecran qd tout explose
-                {}
+                if (e->ammoType == LASER && e->typeEntite == BULLET)    //regle un bug qui laisse les laser sur l'ecran qd tout explose
+                {
+                }
                 else
                     e->enVie = false;
                 //score += customPoints(e->getTypeEnnemi());
@@ -499,7 +532,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
                 listEntites.emplace_back(make_unique<SideBomber>(1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de 1 se fait changer dans le constructeur dependant du sens de l'ennemi
             break;
         case BOSS2_MAIN:
-            listEntites.emplace_back(make_unique<Boss2>(WIDTH /2 ,HEIGHT/4));
+            listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 4));
             break;
         case ORBITER:
             listEntites.emplace_back(make_unique<Orbiter>(posRand, 0));
@@ -566,7 +599,7 @@ void Interface::progressionDifficulte()
 
     enemySpawnTimer++;
 
-    if (score1 < 600)
+    if (score1 < 500)
     {
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
@@ -579,20 +612,22 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-            
+            //enemySpawn(1, TURRET);
 
-            if (spawnPowerUpStart)
+            /*if (spawnPowerUpStart)
             {
-				//enemySpawn(1, BOSS2_MAIN);
+                enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
-                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
+                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }
+            }*/
+
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
+
         }
     }
-    else if (score1 >= 600 && score1 < 1300)
+    else if (score1 >= 500 && score1 < 1300)
     {
         if (enemySpawnTimer >= 50)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -672,20 +707,20 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    else if (score1 >= memScore && score1 <= memScore + 1000 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    else if (score1 >= memScore && score1 <= memScore + 800 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
         if (bossWaitTimer > 100)
         {
             if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
-                enemySpawn(4, SIDEBOMBER);
+                enemySpawn(3, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
                 int nbZaper = 0;
 
                 for (auto& e : listEntites)
                 {
-                    if (e->getTypeEnnemi() == TANK)
+                    if (e->getTypeEnnemi() == ZAPER)
                         nbZaper++;
                 }
                 if (nbZaper < 2)
@@ -697,7 +732,7 @@ void Interface::progressionDifficulte()
         else
             bossWaitTimer++;
     }
-    else if (score1 >= memScore + 1000 && score1 <= memScore + 1850 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
+    else if (score1 >= memScore + 800 && score1 <= memScore + 1700 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
         if (enemySpawnTimer >= 6)
         {
@@ -706,26 +741,65 @@ void Interface::progressionDifficulte()
             bossWaitTimer = 0;
         }
     }
-    else if (score1 >= memScore + 1850 && score1 <= memScore + 2800 && boss1Spawned && !boss2Spawned)
+    else if (score1 >= memScore + 1700 && score1 <= memScore + 2300 && boss1Spawned && !boss2Spawned)
     {
-        if (enemySpawnTimer >= 250 || cbVivant() < 8)
+        if (enemySpawnTimer >= 280 || cbVivant() < 8)
         {
             enemySpawn(1, ARTILLEUR);
             enemySpawn(1, SIDEBOMBER);
             enemySpawn(1, TANK);
             enemySpawn(1, AIMBOT);
-            enemySpawn(1, ZAPER);
             enemySpawn(1, DIVEBOMBER);
             enemySpawn(1, BASIC);
+
+            int nbZaper = 0;
+            for (auto& e : listEntites)
+            {
+                if (e->getTypeEnnemi() == ZAPER)
+                    nbZaper++;
+            }
+            if (nbZaper < 2)
+                enemySpawn(1, ZAPER);
             enemySpawnTimer = 0;
         }
     }
-    else if (score1 >= memScore + 2800 && !boss2Spawned)
+    else if (score1 >= memScore + 2300 && !boss2Spawned)
     {
         if (cbVivant() == 0)
         {
+            if (!bossMusicStart && !bossSpawnSound)
+            {
+                music.stopMusic();
+                sfxWarning.playSFX("warning.wav");
 
-            if (bossWaitTimer > 200)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+                Warning = new Sprite("warning.png", "warning.json");
+                Warning->start(32);
+                bossSpawnSound = true;
+                Warning->setpos(450, 400);
+                Warning->pixmapItem->setScale(2.4);
+                Warning->pixmapItem->setZValue(100);
+                Warning->pixmapItem->show();
+                GameScene->addItem(Warning->pixmapItem);
+
+                bossSpawnSound = true;
+                enemySpawnTimer = 0;
+                //Sleep(5);
+            }
+            else if (!bossMusicStart && bossSpawnSound)
+            {
+
+                if (enemySpawnTimer >= 357)         //
+                {
+                    Warning->stop();
+                    delete Warning;
+                    sfxWarning.stopSFX();
+                    music.playMusic("Boss1.wav", 0, 100000);
+                    bossMusicStart = true;
+
+                }
+            }
+
+            if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
             {
                 enemySpawn(1, BOSS2_MAIN);
                 boss2Spawned = true;
@@ -737,7 +811,7 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    else if (score1 >= memScore && score1 < memScore + 850 && boss2Spawned)
+    else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
     {
         if (enemySpawnTimer >= 100 || cbVivant() < 4)
         {
@@ -752,7 +826,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;
         }
     }
-    else if (score1 >= memScore + 850 && score1 < memScore + 1500 && boss2Spawned)
+    else if (score1 >= memScore + 800 && score1 < memScore + 1400 && boss2Spawned)
     {
         if (enemySpawnTimer >= 100 || cbVivant() < 4)
         {
@@ -767,7 +841,7 @@ void Interface::progressionDifficulte()
         }
 
     }
-    else if (score1 >= memScore + 1600 && score1 < memScore + 2400 && boss2Spawned && !boss3Spawned)
+    else if (score1 >= memScore + 1400 && boss2Spawned && !boss3Spawned)
     {
         if (boss3)
             if (boss3->posX > 0 && boss3->posY > 0)
@@ -811,7 +885,7 @@ void Interface::updateEntites()
         if (e->enVie)
         {
             if (nbJoueur == 1)
-                e->getPosJoueurs(joueur->posX, joueur->posX, joueur->enVie);   //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.
+                e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie);   //on donne la position du joueur a chaque entite, va etre utliser pour les choses a tete chercheuse etc.
 
             else if (nbJoueur == 2)
             {
@@ -875,8 +949,10 @@ void Interface::updateEntites()
                 }
             }
 
+            //----------- update du 2e boss -------------------
             else if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le 2e boss
             {
+
                 if (e->nbVies % 70 == 0 && spawnAddLife)
                 {
                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -885,31 +961,40 @@ void Interface::updateEntites()
                 else if (e->nbVies % 70 != 0)
                     spawnAddLife = true;
 
-                if (e->moveTimer % 4 == 0)
-                    randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                //if (e->moveTimer % 8 == 0)
+                  //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
                 if (e->nbVies >= 200)
                 {
                     if (e->moveTimer % 125 == 0)
                     {
-                        cercleTir(25, e->posX + e->largeur / 2 - 50, e->posY + e->hauteur / 2);
-                        cercleTir(25, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
+                        //cercleTir(25, e->posX + e->largeur / 2 - 50, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
+                    if (e->moveTimer % 12 == 0)
+                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 else if (e->nbVies < 200 && e->nbVies >= 90)
                 {
                     balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    if (e->moveTimer % 125 == 0)
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    //if (e->moveTimer % 15 == 0)
+                      //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 else if (e->nbVies < 90)
                 {
                     if (e->moveTimer % 200 == 0)
                     {
-                        cercleTir(5, e->posX + e->largeur / 2 , e->posY + e->hauteur / 2);
+                        cercleTir(15, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                         //cercleTir(5, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
                     }
                     balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+
+                    if (e->moveTimer % 10 == 0)
+                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 angleTirBoss += 5;
                 if (angleTirBoss >= 360)
@@ -1024,6 +1109,7 @@ void Interface::gererCollisions()
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
                     damageeffect(joueur->image, 100, joueur);
 
+                    updateHealthCounter();
                     e->collisionJoueur = true;
                 }
                 else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
@@ -1031,9 +1117,11 @@ void Interface::gererCollisions()
                     joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
                     damageeffect(joueur->image, 100, joueur);
+                    updateHealthCounter();
 
                     if (e->typeEntite == BULLET && e->ammoType == LASER)
-                    {}
+                    {
+                    }
                     else
                     {
                         e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueur
@@ -1046,6 +1134,7 @@ void Interface::gererCollisions()
                     {
                     case ADDLIFE:
                         joueur->nbVies++;
+                        updateHealthCounter();
                         break;
 
                     case ADDBULLETS:
@@ -1065,25 +1154,26 @@ void Interface::gererCollisions()
                     {
                         if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
-                             if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
+                            if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
                                 for (int i = 80; i < 110; i += 10)
                                     bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
-                            
-							if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite != BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
-                            {}
+
+                            if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite != BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+                            {
+                            }
                             else
                             {
                                 e2->perdVie(1);
                                 damageeffect(e2->image, 100, e2.get());
-								e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
+                                e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
                             }
 
 
                             //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
-							if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
+                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
                             {
 
                                 score1 += customPoints(e2->getTypeEnnemi());
@@ -1185,6 +1275,8 @@ int Interface::customPoints(typeEnnemis e)
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+        bossMusicStart = false;
+        bossSpawnSound = false;
         return 100;
         break;
     case BOSS1_SIDE:
@@ -1219,8 +1311,13 @@ int Interface::customPoints(typeEnnemis e)
 void Interface::restart()
 {
     for (auto& e : listEntites)
-        e->enVie = false;
-
+    {
+        if (e->ammoType == LASER && e->typeEntite == BULLET)    //regle un bug qui laisse les laser sur l'ecran qd tout explose
+        {
+        }
+        else
+            e->enVie = false;
+    }
     gameOver = false;
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());
@@ -1235,16 +1332,17 @@ void Interface::restart()
     bossSpawnSound = false;
     spawnAddLife = true;
     spawnPowerUpStart = true;
+    updateHealthCounter();
+
 }
 
 //enleve les entites mortes de la liste d'entites
 void Interface::enleverEntites()
 {
-	Laser* laser;
 
     for (int i = 0; i < listEntites.size(); i++)
     {
-        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)	
+        if (!listEntites[i]->enVie && !listEntites[i]->isPlayer)
         {
             GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
             delete listEntites[i]->image;
@@ -1299,26 +1397,26 @@ void Interface::executionJeu(int version)
 
     if (firststart)
     {
+        updateHealthCounter();
+
         //------------------------ section graphique ---------------------
-      /*  Water = new Sprite("spritesheet.png", "spritesheet.json", 10);
+        /*Water = new Sprite("spritesheet.png", "spritesheet.json");
         Water->start(350);
         Water->setpos(-10, -10);
         Water->pixmapItem.setScale(0.70);
         Water->pixmapItem.show();
-        GameScene->addItem(&Water->pixmapItem);
-        */
-        BackManager = new backgroundmanager;
-        BackManager->setspace();
-        BackManager->bougebackground();
+        GameScene->addItem(&Water->pixmapItem);*/
 
+        BackManager = new backgroundmanager;
+        BackManager->bougebackground();
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
         //QPixmap pixmap("plane.png");
         //hideCursor();
         music.stopMusic();
-        //music.playMusic("OceanWorld.wav", 0, 117000);
-        music.playMusic("Space.wav", 74016, 56609);
+        music.playMusic("OceanWorld.wav", 0, 117000);
+
         if (version > 0)     //si on a choisi autre chose que le mode seul
         {
             listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
@@ -1349,6 +1447,7 @@ void Interface::executionJeu(int version)
         updateEntites();
         gererCollisions();
         enleverEntites();
+
         //updateAffichage();
         //Sleep(20);
 
@@ -1366,6 +1465,40 @@ void Interface::executionJeu(int version)
     //showCursor();
 }
 
+void Interface::updateHealthCounter()
+{
+
+    while (listeNbVie.size() > joueur->nbVies)
+    {
+        QGraphicsPixmapItem* lastHealth = listeNbVie.back();
+        GameScene->removeItem(lastHealth);
+        delete lastHealth;
+        listeNbVie.pop_back();
+    }
+    while (listeNbVie.size() < joueur->nbVies)
+    {
+        image = new QGraphicsPixmapItem(*ListImages[23]);
+
+        if (listeNbVie.size() > 9)
+            image->setPos(30 + 30 * (listeNbVie.size() - 10), 40);
+        else
+            image->setPos(10 + 30 * listeNbVie.size(), 10);
+
+        image->setScale(0.09);
+        image->setZValue(50);
+        image->show();
+        GameScene->addItem(image);
+        listeNbVie.push_back(image);
+    }
+    /*
+    image = new QGraphicsPixmapItem(*ListImages[23]);
+        image->setPos(10 + i * 30, 10);
+        image->setScale(0.09);
+        image->setZValue(50);
+        image->show();
+        GameScene->addItem(image);
+        listeNbVie.push_back(image);*/
+}
 
 void Interface::readSerial(HANDLE hSerial)
 {

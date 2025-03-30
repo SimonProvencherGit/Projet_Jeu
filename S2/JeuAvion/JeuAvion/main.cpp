@@ -19,7 +19,7 @@ void updateframes()
 }
 
 
-void loadimages(){ //Initialisation de toute les images.
+void loadimages() { //Initialisation de toute les images.
     ListImages[0] = make_unique<QPixmap>();
     ListImages[0]->load("Textures\\Ennemis\\BasicEnnemi.png");
     ListImages[1] = make_unique<QPixmap>();
@@ -66,6 +66,9 @@ void loadimages(){ //Initialisation de toute les images.
     ListImages[21]->load("Textures\\Ennemis\\big_mama.png");
     ListImages[22] = make_unique<QPixmap>();
     ListImages[22]->load("Textures\\Ennemis\\big_mama-d.png");
+    ListImages[23] = make_unique<QPixmap>();
+    ListImages[23]->load("Textures\\Pup\\life.png");
+
 
 }
 
@@ -100,8 +103,8 @@ int main(int argc, char* argv[]) {
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setContentsMargins(0, 0, 0, 0);
     // Remove the border and background
-    view->setFrameStyle(QFrame::NoFrame); 
-    view->setBackgroundBrush(Qt::NoBrush); 
+    view->setFrameStyle(QFrame::NoFrame);
+    view->setBackgroundBrush(Qt::NoBrush);
     QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
     view->setViewport(glWidget);// set le view pour opengl
 
@@ -109,7 +112,7 @@ int main(int argc, char* argv[]) {
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
-    view->showFullScreen(); 
+    view->showFullScreen();
     view->fitInView(GameScene->sceneRect(), Qt::KeepAspectRatio);
 
     QTimer timer;

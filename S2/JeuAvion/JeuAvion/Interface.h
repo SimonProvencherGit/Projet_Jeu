@@ -11,8 +11,17 @@
 #include <string>
 #include "globalobjects.h"
 #include <json.hpp>
-#include "Sprite.h"
+#include <Sprite.h>
+#include <qdir.h>
+#include <QPropertyAnimation>
+#include <qparallelanimationgroup.h>
+#include <QTimer>
+#include <QRandomGenerator>
+#include <QGraphicsView>
+#include <QThread>
+#include <chrono>
 #include "JeuBackground.h"
+#include "Sprite.h"
 
 using json = nlohmann::json;
 
@@ -21,14 +30,18 @@ void setConsoleSize();
 class Interface
 {
 private:
+    Sprite* rolling;
     Sprite* Warning;
     Sprite* Water;
-    backgroundmanager* BackManager;
     Boss3* boss3;
     Joueur* joueur;
     Joueur* joueur2;
     vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
     vector<unique_ptr<Entite>> listEntites;
+    vector<QGraphicsPixmapItem*> listeNbVie;
+    QGraphicsPixmapItem* image;
+    backgroundmanager* BackManager;
+
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
     int score1;
     int score2;
@@ -87,6 +100,7 @@ public:
     void randomCibleTir(int x, int y);
     void joueurTir(Joueur* quelJoueur);
     void readSerial(HANDLE hSerial);
+    void updateHealthCounter();
 };
 
 #endif
