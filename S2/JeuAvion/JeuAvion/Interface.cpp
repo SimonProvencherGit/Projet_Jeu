@@ -610,8 +610,8 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            enemySpawn(1, ARTILLEUR);
+            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            //enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
