@@ -610,8 +610,8 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, ARTILLEUR);
+            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
@@ -620,14 +620,14 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, SHOTGUNNER);
 			//enemySpawn(1, TURRET);
 
-            if (spawnPowerUpStart)
+            /*if (spawnPowerUpStart)
             {
 				enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }
+            }*/
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
             
@@ -955,6 +955,7 @@ void Interface::updateEntites()
                 }
             }
 
+            //----------- update du 2e boss -------------------
             else if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le 2e boss
             {
 
@@ -978,7 +979,7 @@ void Interface::updateEntites()
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
-                    if (e->moveTimer % 8 == 0)
+                    if (e->moveTimer % 12 == 0)
 						randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 else if (e->nbVies < 200 && e->nbVies >= 90)
@@ -998,7 +999,7 @@ void Interface::updateEntites()
                     }
                     balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
-                    if (e->moveTimer % 8 == 0)
+                    if (e->moveTimer % 10 == 0)
 						randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 angleTirBoss += 5;
