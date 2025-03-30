@@ -136,6 +136,18 @@ Interface::Interface()
     rolling->pixmapItem.setZValue(100);
     rolling->pixmapItem.show();
     GameScene->addItem(&rolling->pixmapItem);
+
+    /*for (int i = 0; i < joueur->nbVies; i++)
+    {
+        image = new QGraphicsPixmapItem(*ListImages[23]);
+        image->setPos(10 + i * 30, 10);
+        image->setScale(0.09);
+        image->setZValue(50);
+		image->show();
+        GameScene->addItem(image);
+		listeNbVie.push_back(image);
+    }*/
+    //updateHealthCounter();
 }
 
 
@@ -598,8 +610,8 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            enemySpawn(1, ARTILLEUR);
+            //enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            //enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
@@ -608,14 +620,14 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, SHOTGUNNER);
 			//enemySpawn(1, TURRET);
 
-            /*if (spawnPowerUpStart)
+            if (spawnPowerUpStart)
             {
-				//enemySpawn(1, BOSS2_MAIN);
+				enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }*/
+            }
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
             
@@ -945,6 +957,7 @@ void Interface::updateEntites()
 
             else if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le 2e boss
             {
+
                 if (e->nbVies % 70 == 0 && spawnAddLife)
                 {
                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -953,31 +966,40 @@ void Interface::updateEntites()
                 else if (e->nbVies % 70 != 0)
                     spawnAddLife = true;
 
-                if (e->moveTimer % 4 == 0)
-                    randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                //if (e->moveTimer % 8 == 0)
+                  //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
                 if (e->nbVies >= 200)
                 {
                     if (e->moveTimer % 125 == 0)
                     {
-                        cercleTir(25, e->posX + e->largeur / 2 - 50, e->posY + e->hauteur / 2);
-                        cercleTir(25, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
+                        //cercleTir(25, e->posX + e->largeur / 2 - 50, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
+                    if (e->moveTimer % 8 == 0)
+						randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 else if (e->nbVies < 200 && e->nbVies >= 90)
                 {
                     balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    if (e->moveTimer % 125 == 0)
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    //if (e->moveTimer % 15 == 0)
+                      //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 else if (e->nbVies < 90)
                 {
                     if (e->moveTimer % 200 == 0)
                     {
-                        cercleTir(5, e->posX + e->largeur / 2 , e->posY + e->hauteur / 2);
+                        cercleTir(15, e->posX + e->largeur / 2 , e->posY + e->hauteur / 2);
                         //cercleTir(5, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
                     }
                     balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+
+                    if (e->moveTimer % 8 == 0)
+						randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 angleTirBoss += 5;
                 if (angleTirBoss >= 360)
@@ -1092,6 +1114,7 @@ void Interface::gererCollisions()
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
                     damageeffect(joueur->image, 100, joueur);
 
+                    updateHealthCounter();
                     e->collisionJoueur = true;
                 }
                 else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
@@ -1099,6 +1122,7 @@ void Interface::gererCollisions()
                     joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
                     joueur->invincible = true;     //le joueur est invincible pour un court moment apres
                     damageeffect(joueur->image, 100, joueur);
+                    updateHealthCounter();
 
                     if (e->typeEntite == BULLET && e->ammoType == LASER)
                     {}
@@ -1114,6 +1138,7 @@ void Interface::gererCollisions()
                     {
                     case ADDLIFE:
                         joueur->nbVies++;
+						updateHealthCounter();
                         break;
 
                     case ADDBULLETS:
@@ -1309,8 +1334,7 @@ void Interface::restart()
     bossSpawnSound = false;
     spawnAddLife = true;
     spawnPowerUpStart = true;
-    
-    
+	updateHealthCounter();
 	
 }
 
@@ -1375,6 +1399,8 @@ void Interface::executionJeu(int version)
 
     if (firststart)
     {
+        updateHealthCounter();
+
         //------------------------ section graphique ---------------------
         Water = new Sprite("spritesheet.png", "spritesheet.json");
         Water->start(350);
@@ -1421,6 +1447,7 @@ void Interface::executionJeu(int version)
         updateEntites();
         gererCollisions();
         enleverEntites();
+		
         //updateAffichage();
         //Sleep(20);
 
@@ -1438,6 +1465,40 @@ void Interface::executionJeu(int version)
     //showCursor();
 }
 
+void Interface::updateHealthCounter()
+{
+
+    while (listeNbVie.size() > joueur->nbVies)
+    {
+        QGraphicsPixmapItem* lastHealth = listeNbVie.back();
+        GameScene->removeItem(lastHealth);
+        delete lastHealth;
+        listeNbVie.pop_back();
+    }
+	while (listeNbVie.size() < joueur->nbVies)
+	{
+		image = new QGraphicsPixmapItem(*ListImages[23]);
+        
+        if(listeNbVie.size() > 9)
+			image->setPos(30 + 30 * (listeNbVie.size() - 10), 40);
+		else
+            image->setPos(10 + 30 * listeNbVie.size(), 10);
+        
+        image->setScale(0.09);
+        image->setZValue(50);
+		image->show();
+		GameScene->addItem(image);
+		listeNbVie.push_back(image);
+	}
+    /*
+    image = new QGraphicsPixmapItem(*ListImages[23]);
+        image->setPos(10 + i * 30, 10);
+        image->setScale(0.09);
+        image->setZValue(50);
+		image->show();
+        GameScene->addItem(image);
+		listeNbVie.push_back(image);*/
+}
 
 void Interface::readSerial(HANDLE hSerial)
 {

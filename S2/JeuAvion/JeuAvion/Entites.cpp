@@ -90,7 +90,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 {
 	hauteur = 265 / 3.7; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	nbVies = 10;
+	nbVies = 15;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
@@ -504,12 +504,12 @@ void Aimbot::update()
 Boss1::Boss1(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
-	nbVies = 40;
+	nbVies = 25;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_MAIN;
 	ammoType = HOMING;
 	hauteur = 101;
-	largeur = 123;
+	largeur = 123; 
 	shootCooldown = 100;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = true;
 

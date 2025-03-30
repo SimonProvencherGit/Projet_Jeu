@@ -28,6 +28,9 @@ private:
     Joueur* joueur2;
     vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
     vector<unique_ptr<Entite>> listEntites;
+    vector<QGraphicsPixmapItem*> listeNbVie;
+    QGraphicsPixmapItem* image;
+
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
     int score1;
     int score2;
@@ -86,6 +89,7 @@ public:
     void randomCibleTir(int x, int y);
     void joueurTir(Joueur* quelJoueur);
     void readSerial(HANDLE hSerial);
+	void updateHealthCounter();
 };
 
 #endif // INTERFACE_H
