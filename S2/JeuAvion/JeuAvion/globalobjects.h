@@ -29,5 +29,7 @@ extern void loadsettings();
 extern SFX sfx;
 extern Music music;
 extern SFX sfxWarning;
+extern SFX enemyexplosion;
+
 
 #endif 

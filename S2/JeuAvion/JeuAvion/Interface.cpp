@@ -6,29 +6,6 @@
 
 bool firststart = true;
 
-QThread EffectThread;
-
-void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
-    QRectF originalScene = scene->sceneRect();
-    QTimer* timer = new QTimer(view);
-    int elapsed = 0;
-
-    QObject::connect(timer, &QTimer::timeout, [view, duration, magnitude, elapsed, originalScene, scene, timer]() mutable {
-        if (elapsed < duration) {
-            int offset = (rand() % (-magnitude)) + (magnitude);
-            scene->setSceneRect(originalScene.translated(offset, 0)); // Shift the scene left and right
-            elapsed += 20;
-        }
-        else {
-            scene->setSceneRect(originalScene); //Remetre le Scene a l'orginal
-            timer->stop();
-            timer->deleteLater();
-        }
-        });
-
-    timer->start(20);
-}
-
 
 void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
@@ -243,7 +220,6 @@ void Interface::gererInput()
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
-                shakeScene(GameScene, view, 10, 10);
             }
         }
 
@@ -320,7 +296,7 @@ void Interface::gererInput()
                 enExplosion = true;
                 explosionTimer = cdExplosion;
                 explosionPosY = joueur->posY - 1;
-                shakeScene(GameScene, view, 1000, 10);
+                manageexplosion.chainexplosion(joueur->posY);
             }
         }
 
@@ -380,7 +356,7 @@ void Interface::gererInput()
                     enExplosion = true;
                     explosionTimer = cdExplosion;
                     explosionPosY = joueur2->posY - 1;
-                    shakeScene(GameScene, view, 1000, 10);
+                    //shakeScene(GameScene, view, 1000, 10);
                 }
             }
         }
@@ -445,10 +421,13 @@ void Interface::explosion()
 
     if (enExplosion)
     {
+
         for (auto& e : listEntites)
         {
             if (e->enVie && e->posY >= explosionPosY && e->posY <= explosionPosY + 50 && !e->isPlayer && e->typeEntite != BOSS && e->typeEntite != POWERUP)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
+                
+
                 if (e->ammoType == LASER && e->typeEntite == BULLET)    //regle un bug qui laisse les laser sur l'ecran qd tout explose
                 {
                 }
@@ -614,10 +593,10 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, SHOTGUNNER);
             //enemySpawn(1, TURRET);
 
-            /*if (spawnPowerUpStart)
+           /* if (spawnPowerUpStart)
             {
-                enemySpawn(1, BOSS2_MAIN);
-                //enemySpawn(1, BOSS1_MAIN);
+                //enemySpawn(1, BOSS2_MAIN);
+                enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
@@ -1173,11 +1152,12 @@ void Interface::gererCollisions()
                             //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
-                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
+                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort 
                             {
 
                                 score1 += customPoints(e2->getTypeEnnemi());
-
+                                
+                                manageexplosion.enemydeathexplosion(e2->posX, e2->posY);             // explosion a la position de l'entite qui meurt
                                 if (e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
                                     cercleExplosion(5, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
 
@@ -1187,7 +1167,13 @@ void Interface::gererCollisions()
                                     scoreLastPup = score1;
                                 }
                                 if (e2->typeEntite == BOSS && e2->getTypeEnnemi() != BOSS3_SIDE)
+                                {
+                                    if (e2->getTypeEnnemi() == BOSS1_MAIN)
+                                    { 
+                                    manageexplosion.bossdeath();
+                                    }
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                                }
                             }
                         }
                     }
@@ -1398,7 +1384,7 @@ void Interface::executionJeu(int version)
     if (firststart)
     {
         updateHealthCounter();
-
+       
         //------------------------ section graphique ---------------------
         /*Water = new Sprite("spritesheet.png", "spritesheet.json");
         Water->start(350);
@@ -1409,7 +1395,6 @@ void Interface::executionJeu(int version)
 
         BackManager = new backgroundmanager;
         BackManager->bougebackground();
-
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
         //QPixmap pixmap("plane.png");

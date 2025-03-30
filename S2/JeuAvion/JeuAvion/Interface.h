@@ -30,6 +30,7 @@ void setConsoleSize();
 class Interface
 {
 private:
+    explosionmanager manageexplosion;
     Sprite* rolling;
     Sprite* Warning;
     Sprite* Water;

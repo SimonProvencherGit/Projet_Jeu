@@ -4,6 +4,7 @@
 SFX sfx;
 Music music;
 SFX sfxWarning;
+SFX enemyexplosion;
 QGraphicsScene * GameScene = nullptr;
 QGraphicsView* view = nullptr;
 unique_ptr<QPixmap> ListImages[50];

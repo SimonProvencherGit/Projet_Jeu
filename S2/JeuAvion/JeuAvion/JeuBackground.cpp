@@ -162,3 +162,232 @@ void backgroundmanager::stopbackground()
 	timerBack1->stop();
 	timerBack2->stop();
 }
+//////////////////////////////////// EXPLOSIONS ////////////////////////////////
+
+void explosionmanager::enemydeathexplosion(int posx, int posy)
+{
+	Sprite* spriteexplosion = new Sprite("explosion.png", "explosion.json");
+	spriteexplosion->setpos(posx, posy);
+	spriteexplosion->pixmapItem->setZValue(100);
+	spriteexplosion->pixmapItem->setScale(1);
+	spriteexplosion->pixmapItem->show();
+	GameScene->addItem(spriteexplosion->pixmapItem);
+	spriteexplosion->start(20);
+	enemyexplosion.playSFX("explosion.wav");
+
+	QTimer::singleShot(300, [=]() {
+		delete spriteexplosion;
+		});
+}
+
+
+void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
+	QRectF originalScene = scene->sceneRect();
+	QTimer* timer = new QTimer(view);
+	int elapsed = 0;
+
+	QObject::connect(timer, &QTimer::timeout, [view, duration, magnitude, elapsed, originalScene, scene, timer]() mutable {
+		if (elapsed < duration) {
+			int offset = (rand() % (-magnitude)) + (magnitude);
+			scene->setSceneRect(originalScene.translated(offset, 0)); // Shift the scene left and right
+			elapsed += 20;
+		}
+		else {
+			scene->setSceneRect(originalScene); //Remetre le Scene a l'orginal
+			timer->stop();
+			timer->deleteLater();
+		}
+		});
+
+	timer->start(20);
+}
+
+
+
+
+
+
+
+
+//Ce code est horrible (I am lazy)
+void explosionmanager::chainexplosion(int playerposy)
+{
+	int currentexplosionpos  = playerposy - 150;
+	Sprite* expo1 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo2 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo3 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo4 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo5 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo6 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo7 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo8 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo9 = new Sprite("explosion.png", "explosion.json");
+	Sprite* expo10 = new Sprite("explosion.png", "explosion.json");
+
+
+	////////////////////////////
+	expo1->setpos(0, 0);
+	expo1->pixmapItem->setScale(2);
+	expo1->pixmapItem->show();
+	GameScene->addItem(expo1->pixmapItem);
+
+	expo2->setpos(200, 0);
+	expo2->pixmapItem->setScale(2);
+	expo2->pixmapItem->show();
+	GameScene->addItem(expo2->pixmapItem);
+
+	expo3->setpos(400, 0);
+	expo3->pixmapItem->setScale(2);
+	expo3->pixmapItem->show();
+	GameScene->addItem(expo3->pixmapItem);
+
+	expo4->setpos(600, 0);
+	expo4->pixmapItem->setScale(2);
+	expo4->pixmapItem->show();
+	GameScene->addItem(expo4->pixmapItem);
+
+	expo5->setpos(800, 0);
+	expo5->pixmapItem->setScale(2);
+	expo5->pixmapItem->show();
+	GameScene->addItem(expo5->pixmapItem);
+
+	expo6->setpos(1000, 0);
+	expo6->pixmapItem->setScale(2);
+	expo6->pixmapItem->show();
+	GameScene->addItem(expo6->pixmapItem);
+
+	expo7->setpos(1200, 0);
+	expo7->pixmapItem->setScale(2);
+	expo7->pixmapItem->show();
+	GameScene->addItem(expo7->pixmapItem);
+
+	expo8->setpos(1400, 0);
+	expo8->pixmapItem->setScale(2);
+	expo8->pixmapItem->show();
+	GameScene->addItem(expo8->pixmapItem);
+
+	expo9->setpos(1600, 0);
+	expo9->pixmapItem->setScale(2);
+	expo9->pixmapItem->show();
+	GameScene->addItem(expo9->pixmapItem);
+
+	expo10->setpos(1800, 0);
+	expo10->pixmapItem->setScale(2);
+	expo10->pixmapItem->show();
+	GameScene->addItem(expo10->pixmapItem);
+
+
+
+	/////////////////////////
+	expo1->pixmapItem->show();
+	expo2->pixmapItem->show();
+	expo3->pixmapItem->show();
+	expo4->pixmapItem->show();
+	expo5->pixmapItem->show();
+	expo6->pixmapItem->show();
+	expo7->pixmapItem->show();
+	expo8->pixmapItem->show();
+	expo9->pixmapItem->show();
+	expo10->pixmapItem->show();
+	////
+
+	expo1->pixmapItem->setZValue(100);
+	expo2->pixmapItem->setZValue(100);
+	expo3->pixmapItem->setZValue(100);
+	expo4->pixmapItem->setZValue(100);
+	expo5->pixmapItem->setZValue(100);
+	expo6->pixmapItem->setZValue(100);
+	expo7->pixmapItem->setZValue(100);
+	expo8->pixmapItem->setZValue(100);
+	expo9->pixmapItem->setZValue(100);
+	expo10->pixmapItem->setZValue(100);
+	////
+
+
+	QTimer* chainetimer = new QTimer;
+	QObject::connect(chainetimer, &QTimer::timeout, [=]() mutable { //https://doc.qt.io/qt-6/qtimer.html
+		if (currentexplosionpos > -200)
+		{
+			expo1->stop();
+			expo2->stop();
+			expo3->stop();
+			expo4->stop();
+			expo5->stop();
+			expo6->stop();
+			expo7->stop();
+			expo8->stop();
+			expo9->stop();
+			expo10->stop();
+			expo1->start(10);
+			expo2->start(10);
+			expo3->start(10);
+			expo4->start(10);
+			expo5->start(10);
+			expo6->start(10);
+			expo7->start(10);
+			expo8->start(10);
+			expo9->start(10);
+			expo10->start(10);
+			enemyexplosion.playSFX("explosion.wav");
+			currentexplosionpos = currentexplosionpos - 50;
+			expo1->setpos(0, currentexplosionpos);
+			expo2->setpos(100, currentexplosionpos);
+			expo3->setpos(400, currentexplosionpos);
+			expo4->setpos(600, currentexplosionpos);
+			expo5->setpos(800, currentexplosionpos);
+			expo6->setpos(1000, currentexplosionpos);
+			expo7->setpos(1200, currentexplosionpos);
+			expo8->setpos(1400, currentexplosionpos);
+			expo9->setpos(1600, currentexplosionpos);
+			expo10->setpos(1800, currentexplosionpos);
+			shakeScene(GameScene, view, 1, 10);
+
+		}
+		if (currentexplosionpos <= -200)
+		{
+			delete expo1;
+			delete expo2;
+			delete expo3;
+			delete expo4;
+			delete expo5;
+			delete expo6;
+			delete expo7;
+			delete expo8;
+			delete expo9;
+			delete expo10;
+			chainetimer->stop();
+		}
+		});
+	chainetimer->start(80);
+} 
+
+
+
+void explosionmanager::bossdeath()
+{
+	//QGraphicsRectItem* whitesquare = GameScene->addRect()
+	QTimer* Timerflash = new QTimer;
+	QObject::connect(Timerflash, &QTimer::timeout, [=]() mutable {
+
+
+
+		});
+	
+	Sprite* spriteexplosion = new Sprite("boss.png", "boss.json");
+	spriteexplosion->setframe(1);
+	spriteexplosion->setpos(0, 0);
+	spriteexplosion->pixmapItem->setZValue(100);
+	spriteexplosion->pixmapItem->setScale(5);
+	spriteexplosion->pixmapItem->show();
+	GameScene->addItem(spriteexplosion->pixmapItem);
+	spriteexplosion->start(40);
+	enemyexplosion.playSFX("explosion.wav");
+
+	QTimer::singleShot(9000, [=]() {
+		delete spriteexplosion;
+		});
+	
+
+
+
+}

@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "globalobjects.h"
 #include <QTimer>
+#include <QGraphicsRectItem>
 class backgroundmanager {
 public:
 	backgroundmanager();
@@ -26,5 +27,17 @@ private:
 
 
 };
+
+class explosionmanager
+{
+public:
+	void enemydeathexplosion(int posx,int posy);
+	void chainexplosion(int playerposy);
+	void bossdeath();
+private:
+
+};
+
+
 
 #endif
