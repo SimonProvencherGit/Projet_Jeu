@@ -11,16 +11,16 @@
 #include <QStringList>
 
 
-class Sprite : public QObject, public QGraphicsPixmapItem { // Rendre mon objet un QPixMapItem.
+class Sprite : public QObject{ // Rendre mon objet un QPixMapItem.
 public:
-    Sprite(QString image, QString jsonfile, int updatetime);
+    Sprite(QString image, QString jsonfile);
     void setpos(int x, int y);
     void setsize(float size);
     void start(int vitesse);
     void stop();
     void setframe(int index);
     ~Sprite();
-    QGraphicsPixmapItem pixmapItem;
+    QGraphicsPixmapItem * pixmapItem;
 private:
     QStringList frameCle;
     void nextframe();

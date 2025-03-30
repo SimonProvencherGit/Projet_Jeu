@@ -11,7 +11,8 @@
 #include <string>
 #include "globalobjects.h"
 #include <json.hpp>
-#include <Sprite.h>
+#include "Sprite.h"
+#include "JeuBackground.h"
 
 using json = nlohmann::json;
 
@@ -22,6 +23,7 @@ class Interface
 private:
     Sprite* Warning;
     Sprite* Water;
+    backgroundmanager* BackManager;
     Boss3* boss3;
     Joueur* joueur;
     Joueur* joueur2;
@@ -87,4 +89,4 @@ public:
     void readSerial(HANDLE hSerial);
 };
 
-#endif // INTERFACE_H
+#endif

@@ -1,9 +1,10 @@
 #include "Sprite.h"
 // https://www.youtube.com/watch?v=lrrptFVlMu4
-Sprite::Sprite(QString image, QString jsonfile, int updatetime){
+Sprite::Sprite(QString image, QString jsonfile){
+    pixmapItem = new QGraphicsPixmapItem();
     spritesheet = QPixmap("Textures\\Sprites\\" + image);
     QFile Fichier("Textures\\Sprites\\" + jsonfile);
-    // Verify if the file is opened
+    // Verification de l'ouverture du fichier
     if (Fichier.open(QIODevice::ReadOnly)) {
         if (spritesheet.isNull()) {
             qDebug() << "Erreur ouverture dimage.";
@@ -20,24 +21,24 @@ Sprite::Sprite(QString image, QString jsonfile, int updatetime){
         qDebug() << "erreur ouverture du json";
     }
     spritetimer = new QTimer(this);
-    QObject::connect(spritetimer, &QTimer::timeout, [=]() {
-        qDebug() << "Timer triggered!";
+    QObject::connect(spritetimer, &QTimer::timeout, [=]() { //https://doc.qt.io/qt-6/qtimer.html
+       // qDebug() << "Timer Start";
         nextframe();
         });
-   // spritetimer->start(100);
+    spritetimer->stop();
 }
 
 void Sprite::setpos(int inputx, int inputy) {
  
         x = inputx;
         y = inputy;
-        pixmapItem.setPos(x, y);
+        pixmapItem->setPos(x, y);
 }
 
 void Sprite::setsize(float size) {
     
         spritesheet = spritesheet.scaled(spritesheet.width() * size, spritesheet.height() * size, Qt::KeepAspectRatio);
-        pixmapItem.setPixmap(spritesheet); // Update pixmapItem to the resized spritesheet
+        pixmapItem->setPixmap(spritesheet);
   
 }
 
@@ -60,16 +61,16 @@ void Sprite::nextframe() {
 
     //stocker le data du current frame
     QJsonObject frameData = json.value(currentFrame).toObject();
-    QJsonObject frameRect = frameData.value("frame").toObject();
+    QJsonObject frameDim = frameData.value("frame").toObject();
 
-    int x = frameRect.value("x").toInt();
-    int y = frameRect.value("y").toInt();
-    int width = frameRect.value("w").toInt();
-    int height = frameRect.value("h").toInt();
+    int x = frameDim.value("x").toInt();
+    int y = frameDim.value("y").toInt();
+    int width = frameDim.value("w").toInt();
+    int height = frameDim.value("h").toInt();
 
     QPixmap frame = spritesheet.copy(x, y, width, height);
 
-    pixmapItem.setPixmap(frame); //Mettre a jour le nouveau frame
+    pixmapItem->setPixmap(frame); //Mettre a jour le nouveau frame
     qDebug() << "switchingframes";
 
     currentframeindex = (currentframeindex + 1) % frameCle.size();
@@ -83,6 +84,7 @@ Sprite::~Sprite() {
     if (spritetimer) {
         delete spritetimer;
     }
+    delete pixmapItem;
 }
 
 
@@ -119,6 +121,6 @@ void Sprite::setframe(int index) {
 
     QPixmap frame = spritesheet.copy(x, y, width, height);
 
-    pixmapItem.setPixmap(frame); //Mettre a jour le nouveau frame
+    pixmapItem->setPixmap(frame); //Mettre a jour le nouveau frame
     qDebug() << "switchingframes";
 }

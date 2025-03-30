@@ -7,6 +7,7 @@
 #include <QGraphicsView>
 #include <QThread>
 #include <chrono>
+#include "JeuBackground.h"
 
 // lien pour un sprite : https://opengameart.org/content/custom-missiles
 
@@ -582,7 +583,7 @@ void Interface::progressionDifficulte()
 
             if (spawnPowerUpStart)
             {
-				enemySpawn(1, BOSS2_MAIN);
+				//enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
@@ -631,15 +632,15 @@ void Interface::progressionDifficulte()
                 music.stopMusic();
                 sfxWarning.playSFX("warning.wav");
 
-                Warning = new Sprite("warning.png", "warning.json", 10);
+                Warning = new Sprite("warning.png", "warning.json");
                 Warning->start(32);
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
                 Warning->setpos(450, 400);
-                Warning->pixmapItem.setScale(2.4);
-                Warning->pixmapItem.setZValue(100);
-                Warning->pixmapItem.show();
-                GameScene->addItem(&Warning->pixmapItem);
+                Warning->pixmapItem->setScale(2.4);
+                Warning->pixmapItem->setZValue(100);
+                Warning->pixmapItem->show();
+                GameScene->addItem(Warning->pixmapItem);
 
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
@@ -1299,21 +1300,25 @@ void Interface::executionJeu(int version)
     if (firststart)
     {
         //------------------------ section graphique ---------------------
-        Water = new Sprite("spritesheet.png", "spritesheet.json", 10);
+      /*  Water = new Sprite("spritesheet.png", "spritesheet.json", 10);
         Water->start(350);
         Water->setpos(-10, -10);
         Water->pixmapItem.setScale(0.70);
         Water->pixmapItem.show();
         GameScene->addItem(&Water->pixmapItem);
-        
+        */
+        BackManager = new backgroundmanager;
+        BackManager->setspace();
+        BackManager->bougebackground();
+
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
         //QPixmap pixmap("plane.png");
         //hideCursor();
         music.stopMusic();
-        music.playMusic("OceanWorld.wav", 0, 117000);
-
+        //music.playMusic("OceanWorld.wav", 0, 117000);
+        music.playMusic("Space.wav", 74016, 56609);
         if (version > 0)     //si on a choisi autre chose que le mode seul
         {
             listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
