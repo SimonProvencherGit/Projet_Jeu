@@ -130,6 +130,27 @@ Interface::Interface()
     rolling->pixmapItem->show();
     GameScene->addItem(rolling->pixmapItem);
 
+	loadBarrelRoll = new Sprite("progresBarrelRoll.png", "progresBarrelRoll.json");
+	loadBarrelRoll->setpos(10, 90);
+	//loadBarrelRoll->start(170);
+	loadBarrelRoll->setframe(9);
+	loadBarrelRoll->pixmapItem->setScale(0.5);
+    loadBarrelRoll->pixmapItem->setZValue(100);
+	loadBarrelRoll->pixmapItem->show();
+	GameScene->addItem(loadBarrelRoll->pixmapItem);
+    updateBarrelRollCounter();
+    
+    loadExplosion = new Sprite("progresBarrelRoll.png", "progresBarrelRoll.json");
+    loadExplosion->setpos(10, 140);
+    //loadBarrelRoll->start(170);
+    loadExplosion->setframe(10);
+    loadExplosion->pixmapItem->setScale(0.5);
+    loadExplosion->pixmapItem->setZValue(100);
+    loadExplosion->pixmapItem->show();
+    GameScene->addItem(loadExplosion->pixmapItem);
+    updateExplosionCounter();
+
+
     /*for (int i = 0; i < joueur->nbVies; i++)
     {
         image = new QGraphicsPixmapItem(*ListImages[23]);
@@ -684,7 +705,7 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {
 
-                if (enemySpawnTimer >= 357)         //
+                if (enemySpawnTimer >= 325)
                 {
                     Warning->stop();
                     delete Warning;
@@ -1398,6 +1419,7 @@ void Interface::executionJeu(int version)
     if (firststart)
     {
         updateHealthCounter();
+		updateBarrelRollCounter();
 
         //------------------------ section graphique ---------------------
         /*Water = new Sprite("spritesheet.png", "spritesheet.json");
@@ -1447,7 +1469,8 @@ void Interface::executionJeu(int version)
         updateEntites();
         gererCollisions();
         enleverEntites();
-
+        updateBarrelRollCounter();
+		updateExplosionCounter();
         //updateAffichage();
         //Sleep(20);
 
@@ -1498,6 +1521,49 @@ void Interface::updateHealthCounter()
         image->show();
         GameScene->addItem(image);
         listeNbVie.push_back(image);*/
+}
+
+void Interface::updateBarrelRollCounter()
+{
+    int numFrame;
+
+    if (joueur->coolDownBarrelRoll == 0)
+        numFrame = 10;
+    else
+    {
+        numFrame = (float(CD_BARRELROLL - joueur->coolDownBarrelRoll) / float(CD_BARRELROLL)) * 10;
+		numFrame = (numFrame * 12) / 10;
+        if (numFrame > 10)
+            numFrame = 10;
+    }
+
+    //loadBarrelRoll->setpos(10, 90);
+    //loadBarrelRoll->start(70);
+    loadBarrelRoll->setframe(numFrame);
+    //loadBarrelRoll->pixmapItem->setScale(0.5);
+    loadBarrelRoll->pixmapItem->show();
+
+}
+
+void Interface::updateExplosionCounter()
+{
+    int numFrame;
+
+    if (explosionTimer == 0)
+        numFrame = 10;
+    else
+    {
+        numFrame = (float(900 - explosionTimer) / float(900)) * 10;
+        //numFrame = (numFrame * 12) / 10;
+        if (numFrame > 10)
+            numFrame = 10;
+    }
+
+    //loadExplosion->setpos(10, 90);
+    //loadExplosion->start(70);
+    loadExplosion->setframe(numFrame);
+    //loadExplosion->pixmapItem->setScale(0.5);
+    loadExplosion->pixmapItem->show();
 }
 
 void Interface::readSerial(HANDLE hSerial)

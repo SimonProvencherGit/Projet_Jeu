@@ -30,6 +30,8 @@ void setConsoleSize();
 class Interface
 {
 private:
+    Sprite* loadExplosion;
+	Sprite* loadBarrelRoll;
     Sprite* rolling;
     Sprite* Warning;
     Sprite* Water;
@@ -101,6 +103,8 @@ public:
     void joueurTir(Joueur* quelJoueur);
     void readSerial(HANDLE hSerial);
     void updateHealthCounter();
+	void updateBarrelRollCounter();
+	void updateExplosionCounter();
 };
 
 #endif
