@@ -658,7 +658,7 @@ void Interface::progressionDifficulte()
 
         }
     }
-    else if (score1 >= 500 && score1 < 1300)
+    else if (score1 >= 500 && score1 < 1400)
     {
         if (enemySpawnTimer >= 50)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -667,7 +667,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    else if (score1 >= 1300 && score1 < 2000)
+    else if (score1 >= 1400 && score1 < 2000)
     {
         if (enemySpawnTimer >= 200 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
