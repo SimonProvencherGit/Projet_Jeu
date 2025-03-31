@@ -130,38 +130,48 @@ Interface::Interface()
     rolling->pixmapItem->show();
     GameScene->addItem(rolling->pixmapItem);
 
-	loadBarrelRoll = new Sprite("progresBarrelRoll.png", "progresBarrelRoll.json");
-	loadBarrelRoll->setpos(10, 90);
+	loadBarrelRoll = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
+	loadBarrelRoll->setpos(1725, 980);
 	//loadBarrelRoll->start(170);
-	loadBarrelRoll->setframe(9);
-	loadBarrelRoll->pixmapItem->setScale(0.5);
+	loadBarrelRoll->setframe(59);
+	loadBarrelRoll->pixmapItem->setScale(0.8);
     loadBarrelRoll->pixmapItem->setZValue(100);
 	loadBarrelRoll->pixmapItem->show();
 	GameScene->addItem(loadBarrelRoll->pixmapItem);
     updateBarrelRollCounter();
     
-    loadExplosion = new Sprite("progresBarrelRoll.png", "progresBarrelRoll.json");
-    loadExplosion->setpos(10, 140);
+    loadExplosion = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
+    loadExplosion->setpos(-5, 980);
     //loadBarrelRoll->start(170);
-    loadExplosion->setframe(10);
-    loadExplosion->pixmapItem->setScale(0.5);
+    loadExplosion->setframe(59);
+    loadExplosion->pixmapItem->setScale(0.8);
     loadExplosion->pixmapItem->setZValue(100);
     loadExplosion->pixmapItem->show();
     GameScene->addItem(loadExplosion->pixmapItem);
     updateExplosionCounter();
+    
+    unites = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(unites);
+    unites->show();
+    unites->setPos(1890, 10);
+	unites->setZValue(100);
+    dizaines = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(dizaines);
+    dizaines->show();
+    dizaines->setPos(1860, 10);
+	dizaines->setZValue(100);
+    centaines = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(centaines);
+    centaines->show();
+    centaines->setPos(1830, 10);
+	centaines->setZValue(100);
+    milliers = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(milliers);
+    milliers->show();
+	milliers->setPos(1800, 10);
+	milliers->setZValue(100);
+    
 
-
-    /*for (int i = 0; i < joueur->nbVies; i++)
-    {
-        image = new QGraphicsPixmapItem(*ListImages[23]);
-        image->setPos(10 + i * 30, 10);
-        image->setScale(0.09);
-        image->setZValue(50);
-        image->show();
-        GameScene->addItem(image);
-        listeNbVie.push_back(image);
-    }*/
-    //updateHealthCounter();
 }
 
 
@@ -1471,6 +1481,7 @@ void Interface::executionJeu(int version)
         enleverEntites();
         updateBarrelRollCounter();
 		updateExplosionCounter();
+		updateScore();
         //updateAffichage();
         //Sleep(20);
 
@@ -1527,20 +1538,18 @@ void Interface::updateBarrelRollCounter()
 {
     int numFrame;
 
+    numFrame = 59;
     if (joueur->coolDownBarrelRoll == 0)
-        numFrame = 10;
+        numFrame = 59;
     else
     {
-        numFrame = (float(CD_BARRELROLL - joueur->coolDownBarrelRoll) / float(CD_BARRELROLL)) * 10;
-		numFrame = (numFrame * 12) / 10;
-        if (numFrame > 10)
-            numFrame = 10;
+        numFrame = (float(CD_BARRELROLL - joueur->coolDownBarrelRoll) / float(CD_BARRELROLL)) * 100;
+		numFrame = (numFrame * 59) / 100;
+        if (numFrame > 59)
+            numFrame = 59;
     }
 
-    //loadBarrelRoll->setpos(10, 90);
-    //loadBarrelRoll->start(70);
     loadBarrelRoll->setframe(numFrame);
-    //loadBarrelRoll->pixmapItem->setScale(0.5);
     loadBarrelRoll->pixmapItem->show();
 
 }
@@ -1550,13 +1559,13 @@ void Interface::updateExplosionCounter()
     int numFrame;
 
     if (explosionTimer == 0)
-        numFrame = 10;
+        numFrame = 59;
     else
     {
         numFrame = (float(900 - explosionTimer) / float(900)) * 10;
-        //numFrame = (numFrame * 12) / 10;
-        if (numFrame > 10)
-            numFrame = 10;
+        numFrame = (numFrame * 59) / 10;
+        if (numFrame > 59)
+            numFrame = 59;
     }
 
     //loadExplosion->setpos(10, 90);
@@ -1564,6 +1573,19 @@ void Interface::updateExplosionCounter()
     loadExplosion->setframe(numFrame);
     //loadExplosion->pixmapItem->setScale(0.5);
     loadExplosion->pixmapItem->show();
+}
+
+void Interface::updateScore()
+{
+    int uni = score1 % 10;
+    int diz = (score1 / 10) % 10;
+    int cent = (score1 / 100) % 10;
+    int mill = (score1 / 1000) % 10;
+
+	unites->setPixmap(*ListImages[24 + uni]);
+	dizaines->setPixmap(*ListImages[24 + diz]);
+	centaines->setPixmap(*ListImages[24 + cent]);
+	milliers->setPixmap(*ListImages[24 + mill]);
 }
 
 void Interface::readSerial(HANDLE hSerial)

@@ -44,6 +44,14 @@ private:
     QGraphicsPixmapItem* image;
     backgroundmanager* BackManager;
 
+    QGraphicsPixmapItem* unites;
+    QGraphicsPixmapItem* dizaines;
+    QGraphicsPixmapItem* centaines;
+    QGraphicsPixmapItem* milliers;
+    
+
+
+
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
     int score1;
     int score2;
@@ -105,6 +113,7 @@ public:
     void updateHealthCounter();
 	void updateBarrelRollCounter();
 	void updateExplosionCounter();
+	void updateScore();
 };
 
 #endif

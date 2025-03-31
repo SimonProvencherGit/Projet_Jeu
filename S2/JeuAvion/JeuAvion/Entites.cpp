@@ -134,7 +134,7 @@ void Joueur::update()
 	if (barrelRoll)					//si le joueur fait un barrel roll
 	{
 		barrelRoll = false;
-		barrelRollTimer = 60;		//temps du barrel roll
+		barrelRollTimer = 70;		//temps du barrel roll
 		//invincible = true;
 		symbole = '&';
 		coolDownBarrelRoll = CD_BARRELROLL;		// cooldown du barrel roll
