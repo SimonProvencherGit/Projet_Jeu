@@ -182,7 +182,11 @@ void explosionmanager::enemydeathexplosion(int posx, int posy)
 
 
 void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
+	
 	QRectF originalScene = scene->sceneRect();
+	originalScene.setX(0);
+	originalScene.setY(0);
+	GameScene->setSceneRect(originalScene);
 	QTimer* timer = new QTimer(view);
 	int elapsed = 0;
 

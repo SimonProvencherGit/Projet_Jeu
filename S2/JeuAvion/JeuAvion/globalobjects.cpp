@@ -16,7 +16,8 @@ QRect * basicbullet;
 void setallSFXVolume(float inputvolume)
 {      
     sfxWarning.setVolume(inputvolume);
-
+    enemyexplosion.setVolume(inputvolume);
+    
     sfx.setVolume(inputvolume);
 
 }//System de sauvegard des settings

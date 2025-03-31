@@ -69,6 +69,28 @@ void loadimages() { //Initialisation de toute les images.
     ListImages[23] = make_unique<QPixmap>();
     ListImages[23]->load("Textures\\Pup\\life.png");
 
+    ListImages[24] = make_unique<QPixmap>();
+    ListImages[24]->load("Textures\\Numbers\\0.png");
+    ListImages[25] = make_unique<QPixmap>();
+    ListImages[25]->load("Textures\\Numbers\\1.png");
+    ListImages[26] = make_unique<QPixmap>();
+    ListImages[26]->load("Textures\\Numbers\\2.png");
+    ListImages[27] = make_unique<QPixmap>();
+    ListImages[27]->load("Textures\\Numbers\\3.png");
+    ListImages[28] = make_unique<QPixmap>();
+    ListImages[28]->load("Textures\\Numbers\\4.png");
+    ListImages[29] = make_unique<QPixmap>();
+    ListImages[29]->load("Textures\\Numbers\\5.png");
+    ListImages[30] = make_unique<QPixmap>();
+    ListImages[30]->load("Textures\\Numbers\\6.png");
+    ListImages[31] = make_unique<QPixmap>();
+    ListImages[31]->load("Textures\\Numbers\\7.png");
+    ListImages[32] = make_unique<QPixmap>();
+    ListImages[32]->load("Textures\\Numbers\\8.png");
+    ListImages[33] = make_unique<QPixmap>();
+    ListImages[33]->load("Textures\\Numbers\\9.png");
+
+
 
 }
 

@@ -88,8 +88,8 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
-	hauteur = 265 / 3.7; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	largeur = 290 / 4; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
+	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
+	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	nbVies = 15;
 	attkDmg = 1;
 	vitesse = 1;
@@ -134,7 +134,7 @@ void Joueur::update()
 	if (barrelRoll)					//si le joueur fait un barrel roll
 	{
 		barrelRoll = false;
-		barrelRollTimer = 60;		//temps du barrel roll
+		barrelRollTimer = 70;		//temps du barrel roll
 		//invincible = true;
 		symbole = '&';
 		coolDownBarrelRoll = CD_BARRELROLL;		// cooldown du barrel roll
@@ -1356,8 +1356,8 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 {
 	symbole = 'a';
 	power_up = ADDBULLETS;
-	hauteur = 60;
-	largeur = 50;
+	hauteur = 70;
+	largeur = 60;
 	QPixmap pngImg("Textures\\Pup\\addAmo.png");
 	image = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);

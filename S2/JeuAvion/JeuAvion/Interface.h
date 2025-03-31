@@ -31,6 +31,8 @@ class Interface
 {
 private:
     explosionmanager manageexplosion;
+    Sprite* loadExplosion;
+    Sprite* loadBarrelRoll;
     Sprite* rolling;
     Sprite* Warning;
     Sprite* Water;
@@ -42,6 +44,14 @@ private:
     vector<QGraphicsPixmapItem*> listeNbVie;
     QGraphicsPixmapItem* image;
     backgroundmanager* BackManager;
+
+    QGraphicsPixmapItem* unites;
+    QGraphicsPixmapItem* dizaines;
+    QGraphicsPixmapItem* centaines;
+    QGraphicsPixmapItem* milliers;
+
+
+
 
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
     int score1;
@@ -102,6 +112,9 @@ public:
     void joueurTir(Joueur* quelJoueur);
     void readSerial(HANDLE hSerial);
     void updateHealthCounter();
+    void updateBarrelRollCounter();
+    void updateExplosionCounter();
+    void updateScore();
 };
 
 #endif

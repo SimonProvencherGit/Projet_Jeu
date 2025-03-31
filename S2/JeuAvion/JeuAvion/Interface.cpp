@@ -6,7 +6,6 @@
 
 bool firststart = true;
 
-
 void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
     if (e->enVie == false)
@@ -107,17 +106,48 @@ Interface::Interface()
     rolling->pixmapItem->show();
     GameScene->addItem(rolling->pixmapItem);
 
-    /*for (int i = 0; i < joueur->nbVies; i++)
-    {
-        image = new QGraphicsPixmapItem(*ListImages[23]);
-        image->setPos(10 + i * 30, 10);
-        image->setScale(0.09);
-        image->setZValue(50);
-        image->show();
-        GameScene->addItem(image);
-        listeNbVie.push_back(image);
-    }*/
-    //updateHealthCounter();
+    loadBarrelRoll = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
+    loadBarrelRoll->setpos(1725, 980);
+    //loadBarrelRoll->start(170);
+    loadBarrelRoll->setframe(59);
+    loadBarrelRoll->pixmapItem->setScale(0.8);
+    loadBarrelRoll->pixmapItem->setZValue(100);
+    loadBarrelRoll->pixmapItem->show();
+    GameScene->addItem(loadBarrelRoll->pixmapItem);
+    updateBarrelRollCounter();
+
+    loadExplosion = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
+    loadExplosion->setpos(-5, 980);
+    //loadBarrelRoll->start(170);
+    loadExplosion->setframe(59);
+    loadExplosion->pixmapItem->setScale(0.8);
+    loadExplosion->pixmapItem->setZValue(100);
+    loadExplosion->pixmapItem->show();
+    GameScene->addItem(loadExplosion->pixmapItem);
+    updateExplosionCounter();
+
+    unites = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(unites);
+    unites->show();
+    unites->setPos(1890, 10);
+    unites->setZValue(100);
+    dizaines = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(dizaines);
+    dizaines->show();
+    dizaines->setPos(1860, 10);
+    dizaines->setZValue(100);
+    centaines = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(centaines);
+    centaines->show();
+    centaines->setPos(1830, 10);
+    centaines->setZValue(100);
+    milliers = new QGraphicsPixmapItem(*ListImages[24]);
+    GameScene->addItem(milliers);
+    milliers->show();
+    milliers->setPos(1800, 10);
+    milliers->setZValue(100);
+
+
 }
 
 
@@ -421,13 +451,10 @@ void Interface::explosion()
 
     if (enExplosion)
     {
-
         for (auto& e : listEntites)
         {
             if (e->enVie && e->posY >= explosionPosY && e->posY <= explosionPosY + 50 && !e->isPlayer && e->typeEntite != BOSS && e->typeEntite != POWERUP)	//on verifie si l'entite est dans une zone d'explosion qui avance vers le haut de l'ecran
             {
-                
-
                 if (e->ammoType == LASER && e->typeEntite == BULLET)    //regle un bug qui laisse les laser sur l'ecran qd tout explose
                 {
                 }
@@ -593,10 +620,10 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, SHOTGUNNER);
             //enemySpawn(1, TURRET);
 
-           /* if (spawnPowerUpStart)
+            /*if (spawnPowerUpStart)
             {
-                //enemySpawn(1, BOSS2_MAIN);
-                enemySpawn(1, BOSS1_MAIN);
+                enemySpawn(1, BOSS2_MAIN);
+                //enemySpawn(1, BOSS1_MAIN);
                 spawnPowerUpStart = false;
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
@@ -606,7 +633,7 @@ void Interface::progressionDifficulte()
 
         }
     }
-    else if (score1 >= 500 && score1 < 1300)
+    else if (score1 >= 500 && score1 < 1400)
     {
         if (enemySpawnTimer >= 50)          //on fait spawn une vague d'ennemis a toutes les 60 frames
         {
@@ -615,7 +642,7 @@ void Interface::progressionDifficulte()
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
     }
-    else if (score1 >= 1300 && score1 < 2000)
+    else if (score1 >= 1400 && score1 < 2000)
     {
         if (enemySpawnTimer >= 200 || cbVivant() < 4)          //on fait spawn une vague d'ennemis a toutes les 50 frames
         {
@@ -663,7 +690,7 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {
 
-                if (enemySpawnTimer >= 357)         //
+                if (enemySpawnTimer >= 325)
                 {
                     Warning->stop();
                     delete Warning;
@@ -1152,12 +1179,13 @@ void Interface::gererCollisions()
                             //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
                                 //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
 
-                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort 
+                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
                             {
 
                                 score1 += customPoints(e2->getTypeEnnemi());
-                                
+
                                 manageexplosion.enemydeathexplosion(e2->posX, e2->posY);             // explosion a la position de l'entite qui meurt
+
                                 if (e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
                                     cercleExplosion(5, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
 
@@ -1169,8 +1197,8 @@ void Interface::gererCollisions()
                                 if (e2->typeEntite == BOSS && e2->getTypeEnnemi() != BOSS3_SIDE)
                                 {
                                     if (e2->getTypeEnnemi() == BOSS1_MAIN)
-                                    { 
-                                    manageexplosion.bossdeath();
+                                    {
+                                        manageexplosion.bossdeath();
                                     }
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                                 }
@@ -1384,7 +1412,8 @@ void Interface::executionJeu(int version)
     if (firststart)
     {
         updateHealthCounter();
-       
+        updateBarrelRollCounter();
+
         //------------------------ section graphique ---------------------
         /*Water = new Sprite("spritesheet.png", "spritesheet.json");
         Water->start(350);
@@ -1395,6 +1424,7 @@ void Interface::executionJeu(int version)
 
         BackManager = new backgroundmanager;
         BackManager->bougebackground();
+
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
         //QPixmap pixmap("plane.png");
@@ -1432,7 +1462,9 @@ void Interface::executionJeu(int version)
         updateEntites();
         gererCollisions();
         enleverEntites();
-
+        updateBarrelRollCounter();
+        updateExplosionCounter();
+        updateScore();
         //updateAffichage();
         //Sleep(20);
 
@@ -1483,6 +1515,71 @@ void Interface::updateHealthCounter()
         image->show();
         GameScene->addItem(image);
         listeNbVie.push_back(image);*/
+}
+
+void Interface::updateBarrelRollCounter()
+{
+    int numFrame;
+
+    numFrame = 59;
+    if (joueur->coolDownBarrelRoll == 0)
+        numFrame = 59;
+    else
+    {
+        numFrame = (float(CD_BARRELROLL - joueur->coolDownBarrelRoll) / float(CD_BARRELROLL)) * 100;
+        numFrame = (numFrame * 59) / 100;
+        if (numFrame > 59)
+            numFrame = 59;
+    }
+
+    loadBarrelRoll->setframe(numFrame);
+    loadBarrelRoll->pixmapItem->show();
+
+}
+
+void Interface::updateExplosionCounter()
+{
+    int numFrame;
+
+    if (explosionTimer == 0)
+        numFrame = 59;
+    else
+    {
+        numFrame = (float(900 - explosionTimer) / float(900)) * 100;
+        numFrame = (numFrame * 59) / 100;
+        if (numFrame > 59)
+            numFrame = 59;
+    }
+
+    //loadExplosion->setpos(10, 90);
+    //loadExplosion->start(70);
+    loadExplosion->setframe(numFrame);
+    //loadExplosion->pixmapItem->setScale(0.5);
+    loadExplosion->pixmapItem->show();
+}
+
+void Interface::updateScore()
+{
+    int uni = score1 % 10;
+    int diz = (score1 / 10) % 10;
+    int cent = (score1 / 100) % 10;
+    int mill = (score1 / 1000) % 10;
+
+    unites->setPixmap(*ListImages[24 + uni]);
+    dizaines->setPixmap(*ListImages[24 + diz]);
+    centaines->setPixmap(*ListImages[24 + cent]);
+    milliers->setPixmap(*ListImages[24 + mill]);
+
+    if (cent == 0)
+        centaines->hide();
+    else
+        centaines->show();
+
+    if (mill == 0)
+        milliers->hide();
+    else
+        milliers->show();
+
 }
 
 void Interface::readSerial(HANDLE hSerial)
