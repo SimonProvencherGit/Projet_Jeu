@@ -1562,8 +1562,8 @@ void Interface::updateExplosionCounter()
         numFrame = 59;
     else
     {
-        numFrame = (float(900 - explosionTimer) / float(900)) * 10;
-        numFrame = (numFrame * 59) / 10;
+        numFrame = (float(900 - explosionTimer) / float(900)) * 100;
+        numFrame = (numFrame * 59) / 100;
         if (numFrame > 59)
             numFrame = 59;
     }
