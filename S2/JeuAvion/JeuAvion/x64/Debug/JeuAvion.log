@@ -4,8 +4,5 @@
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(13,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1627,39): warning C4101: 'e': unreferenced local variable
-vorbisd.lib(psy.obj) : warning LNK4099: PDB '' was not found with 'vorbisd.lib(psy.obj)' or at ''; linking object as if no debug info
-sfml-audio-s-d.lib(Miniaudio.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Miniaudio.obj)' or at ''; linking object as if no debug info
-sfml-audio-s-d.lib(MiniaudioUtils.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(MiniaudioUtils.obj)' or at ''; linking object as if no debug info
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(1638,39): warning C4101: 'e': unreferenced local variable
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

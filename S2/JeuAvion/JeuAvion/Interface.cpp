@@ -1585,7 +1585,18 @@ void Interface::updateScore()
 	unites->setPixmap(*ListImages[24 + uni]);
 	dizaines->setPixmap(*ListImages[24 + diz]);
 	centaines->setPixmap(*ListImages[24 + cent]);
-	milliers->setPixmap(*ListImages[24 + mill]);
+    milliers->setPixmap(*ListImages[24 + mill]);
+
+	if (cent == 0)
+		centaines->hide();
+	else
+		centaines->show();
+
+    if(mill == 0)
+		milliers->hide();
+    else
+		milliers->show();
+    
 }
 
 void Interface::readSerial(HANDLE hSerial)
