@@ -21,11 +21,17 @@ Sprite::Sprite(QString image, QString jsonfile){
         qDebug() << "erreur ouverture du json";
     }
     spritetimer = new QTimer(this);
+    previousspritetimer = new QTimer(this);
     QObject::connect(spritetimer, &QTimer::timeout, [=]() { //https://doc.qt.io/qt-6/qtimer.html
        // qDebug() << "Timer Start";
         nextframe();
         });
+    QObject::connect(previousspritetimer, &QTimer::timeout, [=]() { //https://doc.qt.io/qt-6/qtimer.html
+        // qDebug() << "Timer Start";
+        previousframe();
+        });
     spritetimer->stop();
+    previousspritetimer->stop();
 }
 
 void Sprite::setpos(int inputx, int inputy) {
@@ -45,6 +51,9 @@ void Sprite::setsize(float size) {
 void Sprite::stop() {
     if (spritetimer) {
         spritetimer->stop();
+    }
+    if (previousspritetimer) {
+        previousspritetimer->stop();
     }
 }
 
@@ -76,8 +85,57 @@ void Sprite::nextframe() {
     currentframeindex = (currentframeindex + 1) % frameCle.size();
 }
 
+
+void Sprite::previousframe() {
+    //List de cle du json.
+    QStringList frameCle = json.keys();
+
+    if (frameCle.isEmpty()) {
+        qDebug() << "Json pas trouver";
+        return;
+    }
+
+    QString currentFrame = frameCle[currentframeindex];
+
+    //stocker le data du current frame
+    QJsonObject frameData = json.value(currentFrame).toObject();
+    QJsonObject frameDim = frameData.value("frame").toObject();
+
+    int x = frameDim.value("x").toInt();
+    int y = frameDim.value("y").toInt();
+    int width = frameDim.value("w").toInt();
+    int height = frameDim.value("h").toInt();
+
+    QPixmap frame = spritesheet.copy(x, y, width, height);
+
+    pixmapItem->setPixmap(frame); //Mettre a jour le nouveau frame
+    qDebug() << "switchingframes";
+
+    currentframeindex--;
+    if (currentframeindex < 0)
+    {
+        currentframeindex = frameCle.size() - 1;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 void Sprite::start(int vitesse) {
     spritetimer->start(vitesse);
+}
+
+
+void Sprite::startreverse(int vitesse) {
+    previousspritetimer->start(vitesse);
 }
 
 Sprite::~Sprite() {

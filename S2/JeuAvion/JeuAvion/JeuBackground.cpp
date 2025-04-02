@@ -14,7 +14,7 @@ backgroundmanager::backgroundmanager()
 	Background2->pixmapItem->setScale(0.75);
 	Background2->pixmapItem->show();
 	GameScene->addItem(Background2->pixmapItem);
-	Background2->setframe(1);
+	Background2->setframe(0);
 
 
 	timerBack1 = new QTimer();
@@ -27,7 +27,7 @@ backgroundmanager::backgroundmanager()
 		}
 
 		Background1->pixmapItem->setPos(-175, currentback1y + 1);
-		currentback1y = currentback1y + 1;
+		currentback1y = currentback1y + 3;
 		GameScene->update();
 		});
 
@@ -40,7 +40,7 @@ backgroundmanager::backgroundmanager()
 		}
 
 		Background2->pixmapItem->setPos(-175, currentback2y + 1);
-		currentback2y = currentback2y + 1;
+		currentback2y = currentback2y + 3;
 		GameScene->update();
 		});
 	
@@ -69,18 +69,39 @@ void backgroundmanager::setforest()
 {
 	if (Background1 == nullptr && Background2 == nullptr)
 	{
-		Background1 = new Sprite("ocean.png", "ocean.json");
-		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 10;
+		Background1 = new Sprite("forest.png", "forest.json");
+		Background2 = new Sprite("forest.png", "forest.json");
+		Background1->setpos(-175, 0);
+		Background1->pixmapItem->setScale(0.75);
+		Background1->pixmapItem->show();
+		Background1->setframe(0);
+		GameScene->addItem(Background1->pixmapItem);
+		Background2->setpos(-175, -1284);
+		Background2->pixmapItem->setScale(0.75);
+		Background2->pixmapItem->show();
+		GameScene->addItem(Background2->pixmapItem);
+		Background2->setframe(0);
+		GameScene->update();
+		mapframetimer = 500;
 		return;
 	}
 	else
 	{
 		delete Background1;
 		delete Background2;
-		Background1 = new Sprite("ocean.png", "ocean.json");
-		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 10;
+		Background1 = new Sprite("forest.png", "forest.json");
+		Background2 = new Sprite("forest.png", "forest.json");
+		Background1->setpos(-175, 0);
+		Background1->pixmapItem->setScale(0.75);
+		Background1->pixmapItem->show();
+		GameScene->addItem(Background1->pixmapItem);
+		Background2->setpos(-175, -1284);
+		Background2->pixmapItem->setScale(0.75);
+		Background2->pixmapItem->show();
+		GameScene->addItem(Background2->pixmapItem);
+		Background2->setframe(0);
+		GameScene->update();
+		mapframetimer = 500;
 	}
 }
 void backgroundmanager::setdesert()
@@ -110,14 +131,15 @@ void backgroundmanager::setspace()
 		Background1->setpos(-175, 0);
 		Background1->pixmapItem->setScale(0.75);
 		Background1->pixmapItem->show();
+		Background1->setframe(0);
 		GameScene->addItem(Background1->pixmapItem);
 		Background2->setpos(-175, -1284);
 		Background2->pixmapItem->setScale(0.75);
 		Background2->pixmapItem->show();
 		GameScene->addItem(Background2->pixmapItem);
-		Background2->setframe(1);
+		Background2->setframe(0);
 		GameScene->update();
-		mapframetimer = 100;
+		mapframetimer = 500;
 		return;
 	}
 	else
@@ -134,9 +156,9 @@ void backgroundmanager::setspace()
 		Background2->pixmapItem->setScale(0.75);
 		Background2->pixmapItem->show();
 		GameScene->addItem(Background2->pixmapItem);
-		Background2->setframe(1);
+		Background2->setframe(0);
 		GameScene->update();
-		mapframetimer = 400;
+		mapframetimer = 500;
 	}
 
 }
@@ -149,8 +171,8 @@ void backgroundmanager::bougebackground()
 	}
 	Background1->start(mapframetimer);
 	Background2->start(mapframetimer);
-	timerBack1->start(35);
-	timerBack2->start(35);
+	timerBack1->start(30);
+	timerBack2->start(30);
 
 
 }
@@ -369,29 +391,60 @@ void explosionmanager::chainexplosion(int playerposy)
 
 void explosionmanager::bossdeath()
 {
-	//QGraphicsRectItem* whitesquare = GameScene->addRect()
-	QTimer* Timerflash = new QTimer;
-	QObject::connect(Timerflash, &QTimer::timeout, [=]() mutable {
-
-
-
-		});
-	
 	Sprite* spriteexplosion = new Sprite("boss.png", "boss.json");
-	spriteexplosion->setframe(1);
+	spriteexplosion->setframe(0);
 	spriteexplosion->setpos(0, 0);
 	spriteexplosion->pixmapItem->setZValue(100);
 	spriteexplosion->pixmapItem->setScale(5);
 	spriteexplosion->pixmapItem->show();
 	GameScene->addItem(spriteexplosion->pixmapItem);
-	spriteexplosion->start(40);
-	enemyexplosion.playSFX("explosion.wav");
-
-	QTimer::singleShot(9000, [=]() {
+	spriteexplosion->start(35);
+	sfxbossdeath.playSFX("bossdeath.wav");
+	shakeScene(GameScene, view, 7000, 10);
+	flash();
+	QTimer::singleShot(6000, [=]() {
 		delete spriteexplosion;
 		});
 	
 
 
 
+}
+
+void explosionmanager::flash() {
+	flashtimer = new QTimer;
+	flashsquare = new QGraphicsRectItem(-10, -10, 2560, 1440);
+	flashsquare->setOpacity(0);
+	flashsquare->setZValue(300);
+	flashsquare->setBrush(Qt::white);
+	GameScene->addItem(flashsquare);
+	maxbrightness = false;
+	
+	QObject::connect(flashtimer, &QTimer::timeout, [=]() mutable {
+		if (!maxbrightness)
+		{
+			flashopacity += 0.01;
+		}
+		
+		if (maxbrightness)
+		{
+			flashopacity -= 0.02;
+			//return;
+		}
+		if (flashopacity > 1.0 && !maxbrightness) 
+		{
+			maxbrightness = true;
+			flashopacity = 1.0;
+		}
+		flashsquare->setOpacity(flashopacity);
+		GameScene->update();
+		});
+	flashtimer->start(48);
+	QTimer::singleShot(11000, [=]() {
+		flashtimer->stop();
+		//flashopacity = 0;
+		//maxbrightness = false;
+		delete flashsquare;
+		delete flashtimer;
+		});
 }

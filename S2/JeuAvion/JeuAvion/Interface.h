@@ -22,6 +22,7 @@
 #include <chrono>
 #include "JeuBackground.h"
 #include "Sprite.h"
+#include <QObject>
 
 using json = nlohmann::json;
 
@@ -33,7 +34,6 @@ private:
     explosionmanager manageexplosion;
     Sprite* loadExplosion;
     Sprite* loadBarrelRoll;
-    Sprite* rolling;
     Sprite* Warning;
     Sprite* Water;
     Boss3* boss3;
@@ -54,6 +54,11 @@ private:
 
 
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
+    bool firststart = true;
+    QTimer tiltresetimer; // timer pour remmtre la ou les tilt du joueur a la position initiale
+    void tiltplayerleft(Joueur * player);
+    void tiltplayerright(Joueur * player);
+    void resettilt();
     int score1;
     int score2;
     int scoreTotal;

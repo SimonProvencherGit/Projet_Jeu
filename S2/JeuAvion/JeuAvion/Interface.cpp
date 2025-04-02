@@ -3,9 +3,6 @@
 
 // lien pour un sprite : https://opengameart.org/content/custom-missiles
 
-
-bool firststart = true;
-
 void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
     if (e->enVie == false)
@@ -96,15 +93,10 @@ Interface::Interface()
     joueur2 = nullptr;
     boss3 = nullptr;
 
-    rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
-    rolling->setpos(joueur->posX, joueur->posY);
-    rolling->start(70);
-    rolling->setframe(1);
-
-    rolling->pixmapItem->setScale(0.26);
-    rolling->pixmapItem->setZValue(100);
-    rolling->pixmapItem->show();
-    GameScene->addItem(rolling->pixmapItem);
+    //rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
+    joueur->AnimatedSprite->setpos(joueur->posX, joueur->posY);
+    //joueur->AnimatedSprite->start(70);
+    joueur->AnimatedSprite->setframe(6);
 
     loadBarrelRoll = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
     loadBarrelRoll->setpos(1725, 980);
@@ -116,7 +108,7 @@ Interface::Interface()
     GameScene->addItem(loadBarrelRoll->pixmapItem);
     updateBarrelRollCounter();
 
-    loadExplosion = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
+    loadExplosion = new Sprite("loadingExplosion.png", "loadingExplosion.json");
     loadExplosion->setpos(-5, 980);
     //loadBarrelRoll->start(170);
     loadExplosion->setframe(59);
@@ -261,20 +253,60 @@ void Interface::gererInput()
                 joueur->barrelRoll = true;
         }
 
+        //Fix rapide pour les coins l'animation quand l'avion est au coins
+        if (joueur != nullptr)
+        {
+            if (joueur->posX == 0 || joueur->posX == 1851)
+            {
+                joueur->AnimatedSprite->setframe(6);
+            }
+        }
+         if(joueur2 != nullptr)
+         {
+            if (joueur2->posX == 0 || joueur2->posX == 1851)
+             {
+             joueur2->AnimatedSprite->setframe(6);
+             }
+         }
 
         if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
         {
             if (joueur->posX > 0)
-                joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
+            {
+                if (!joueur->doingbarrelroll)
+                {
+                    tiltplayerright(joueur); // tilt le joueur a gauche
+                }
+                joueur->posX -= 10;//on deplace le joueur de 2 vers la gauche
+                tiltresetimer.stop();
+            }
             if (joueur->posX < 0)
                 joueur->posX = 0;
         }
+        else if (GetAsyncKeyState('D') == 0 && !joueur->doingbarrelroll)
+        {
+            tiltresetimer.start(10);
+
+        }
+
         if (GetAsyncKeyState('D') < 0)
         {
             if (joueur->posX < WIDTH - joueur->largeur)
+            {
+                if (!joueur->doingbarrelroll)
+                {
+                    tiltplayerleft(joueur); // tilt le joueur a gauche
+                }
                 joueur->posX += 10;
+                tiltresetimer.stop();
+            }
             if (joueur->posX > WIDTH - joueur->largeur)
                 joueur->posX = WIDTH - joueur->largeur;
+        }
+        else if (GetAsyncKeyState('A') == 0 && !joueur->doingbarrelroll)
+        {
+            tiltresetimer.start(10);
+
         }
 
         if (GetAsyncKeyState('W') < 0)
@@ -307,14 +339,35 @@ void Interface::gererInput()
             if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
             {
                 joueur->barrelRoll = true;
-
-                rolling->start(50);
-                //rolling->setpos(joueur->posX, joueur->posY);
-                //rolling->setpos(450, 400);
-                //rolling->pixmapItem.setScale(0.25);
-                rolling->pixmapItem->setZValue(100);
-                rolling->pixmapItem->show();
-                //GameScene->addItem(&rolling->pixmapItem);
+                joueur->doingbarrelroll = true;
+                tiltresetimer.stop();
+                //add function for barrelroll
+                joueur->tiltcounter = 0;
+                //joueur->AnimatedSprite->setframe(6);
+                if(GetAsyncKeyState('D') < 0 && GetAsyncKeyState('A') == 0)
+                {
+                    joueur->AnimatedSprite->startreverse(50);
+                }
+                if (GetAsyncKeyState('A') < 0 && GetAsyncKeyState('D') == 0)
+                {
+                    joueur->AnimatedSprite->start(50);
+                }
+                if (GetAsyncKeyState('A') == 0 && GetAsyncKeyState('D') == 0)
+                {
+                    joueur->AnimatedSprite->start(50);
+                }
+                
+                QTimer::singleShot(800, [=]() {
+                    joueur->AnimatedSprite->stop();
+                    joueur->AnimatedSprite->setframe(6);
+                   joueur->doingbarrelroll = false;
+                    });
+                    //rolling->setpos(joueur->posX, joueur->posY);
+                    //rolling->setpos(450, 400);
+                    //rolling->pixmapItem.setScale(0.25);
+                   // rolling->pixmapItem->setZValue(100);
+                    //rolling->pixmapItem->show();
+                    //GameScene->addItem(&rolling->pixmapItem);
             }
         }
         if (GetAsyncKeyState('R') < 0)
@@ -330,14 +383,19 @@ void Interface::gererInput()
             }
         }
 
-        rolling->setpos(joueur->posX - 20, joueur->posY - 25);
+        
 
-        if (!joueur->invincible && joueur->barrelRollTimer <= 0)
+
+
+
+
+        //Useless avec QTimer
+      /*  if (!joueur->invincible && joueur->barrelRollTimer <= 0)
         {
-            //
-            // rolling->stop();
-            rolling->setframe(1);
-        }
+            
+            //joueur->AnimatedSprite->stop();
+            //joueur->AnimatedSprite->setframe(1);
+        }*/
         //******************************************* controle 2e joueur *******************************************
         if (nbJoueur > 1)
         {
@@ -742,6 +800,7 @@ void Interface::progressionDifficulte()
     {
         if (enemySpawnTimer >= 6)
         {
+            
             enemySpawn(1, DIVEBOMBER);
             enemySpawnTimer = 0;
             bossWaitTimer = 0;
@@ -1288,6 +1347,9 @@ int Interface::customPoints(typeEnnemis e)
         break;
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);
+        BackManager->stopbackground();
+        BackManager->setforest();
+        BackManager->bougebackground();
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
         bossMusicStart = false;
         bossSpawnSound = false;
@@ -1336,6 +1398,9 @@ void Interface::restart()
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());
     score1 = 0;
+    //delete joueur;
+   // firststart = true;
+    enleverEntites();
     explosionTimer = 0;
     enExplosion = false;
     cdExplosion = 0;
@@ -1360,7 +1425,7 @@ void Interface::enleverEntites()
         {
             GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
             delete listEntites[i]->image;
-
+            delete listEntites[i]->AnimatedSprite;
             listEntites.erase(listEntites.begin() + i);
             i--;
 
@@ -1369,7 +1434,7 @@ void Interface::enleverEntites()
         {
             GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
             delete listEntites[i]->image;
-
+            delete listEntites[i]->AnimatedSprite;
             listEntites.erase(listEntites.begin() + i);
             i--;
         }
@@ -1411,9 +1476,12 @@ void Interface::executionJeu(int version)
 
     if (firststart)
     {
+        //manageexplosion.bossdeath();
         updateHealthCounter();
         updateBarrelRollCounter();
-
+        QObject::connect(&tiltresetimer, &QTimer::timeout, [=]() {
+            resettilt();
+            });
         //------------------------ section graphique ---------------------
         /*Water = new Sprite("spritesheet.png", "spritesheet.json");
         Water->start(350);
@@ -1423,15 +1491,17 @@ void Interface::executionJeu(int version)
         GameScene->addItem(&Water->pixmapItem);*/
 
         BackManager = new backgroundmanager;
+        //BackManager->setforest();
         BackManager->bougebackground();
+        
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
         //QPixmap pixmap("plane.png");
         //hideCursor();
         music.stopMusic();
-        music.playMusic("OceanWorld.wav", 0, 117000);
-
+        music.playMusic("Ocean.wav", 0, 117000);
+        //music.playMusic("Forest.wav", 21639, 115195);
         if (version > 0)     //si on a choisi autre chose que le mode seul
         {
             listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
@@ -1641,4 +1711,54 @@ void setConsoleSize()
     // Set la taille de la console
     SMALL_RECT windowSize = { 0, 0, WIDTH + 3, HEIGHT + 3 };
     SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+}
+
+void Interface::tiltplayerleft(Joueur * player)
+{
+    if (player->tiltcounter <= 5)
+    {
+        player->AnimatedSprite->setframe(5);
+    }
+    if (player->tiltcounter > 5)
+    {
+        //player->AnimatedSprite->start(50);
+        player->AnimatedSprite->setframe(player->tiltcounter);
+        player->tiltcounter--;
+    }
+}
+
+void Interface::tiltplayerright(Joueur * player)
+{
+    if (player->tiltcounter >= 7)
+    {
+        player->AnimatedSprite->setframe(7);
+    }
+    if (player->tiltcounter < 7)
+    {
+        //player->AnimatedSprite->start(50);
+        player->AnimatedSprite->setframe(player->tiltcounter);
+        player->tiltcounter++;
+    }
+}
+
+void Interface::resettilt()
+{
+    if (joueur->tiltcounter = 6)
+    {
+        joueur->tiltcounter = 6;
+        joueur->AnimatedSprite->setframe(joueur->tiltcounter);
+    }
+    if (joueur->tiltcounter > 6)
+    {
+        joueur->tiltcounter = joueur->tiltcounter - 1;
+        joueur->AnimatedSprite->setframe(joueur->tiltcounter);
+    }
+    if (joueur->tiltcounter < 6)
+    {
+        joueur->tiltcounter = joueur->tiltcounter + 1;
+        joueur->AnimatedSprite->setframe(joueur->tiltcounter);
+    }
+
+
+
 }

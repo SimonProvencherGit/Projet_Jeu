@@ -1,6 +1,6 @@
 #include "globalobjects.h"
 
-
+SFX sfxbossdeath;
 SFX sfx;
 Music music;
 SFX sfxWarning;
@@ -17,7 +17,7 @@ void setallSFXVolume(float inputvolume)
 {      
     sfxWarning.setVolume(inputvolume);
     enemyexplosion.setVolume(inputvolume);
-    
+    sfxbossdeath.setVolume(inputvolume);
     sfx.setVolume(inputvolume);
 
 }//System de sauvegard des settings

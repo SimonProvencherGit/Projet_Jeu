@@ -88,6 +88,14 @@ void Entite::perdVie(int nbVie)
 
 Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs par defaut pour le joueur
 {
+	AnimatedSprite = new Sprite("barrel_roll.png", "barrel_roll.json");
+	AnimatedSprite->pixmapItem->setScale(0.25);
+	AnimatedSprite->setpos(x,y);
+	AnimatedSprite->setframe(1);
+	AnimatedSprite->pixmapItem->setZValue(100);
+	AnimatedSprite->pixmapItem->show();
+	GameScene->addItem(AnimatedSprite->pixmapItem);
+	;
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	nbVies = 15;
@@ -122,6 +130,10 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 
 	//GameScene->update();
 
+}
+Joueur::~Joueur()
+{
+	delete AnimatedSprite;
 }
 
 
@@ -162,7 +174,7 @@ void Joueur::update()
 
 	//if (shootTimer > 0)
 		//shootTimer--;
-	//image->setPos(posX, posY);// update image du joueur
+	AnimatedSprite->pixmapItem->setPos(posX-20, posY);// update image du joueur
 }
 
 

@@ -34,8 +34,12 @@ public:
 	void enemydeathexplosion(int posx,int posy);
 	void chainexplosion(int playerposy);
 	void bossdeath();
+	void flash();
 private:
-
+	bool maxbrightness = false;
+	QTimer * flashtimer;
+	qreal flashopacity = 0;
+	QGraphicsRectItem* flashsquare;
 };
 
 

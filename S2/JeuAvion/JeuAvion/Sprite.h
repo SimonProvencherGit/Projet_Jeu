@@ -17,18 +17,21 @@ public:
     void setpos(int x, int y);
     void setsize(float size);
     void start(int vitesse);
+    void startreverse(int vitesse);
     void stop();
     void setframe(int index);
     ~Sprite();
     QGraphicsPixmapItem * pixmapItem;
 private:
     QStringList frameCle;
+    void previousframe();
     void nextframe();
     int x = 0;
     int y = 0;
     QPixmap spritesheet;
     QJsonObject json;
     QTimer* spritetimer;
+    QTimer* previousspritetimer;
     int updatetime = 0;
     int currentframeindex = 0;
     bool running = false;

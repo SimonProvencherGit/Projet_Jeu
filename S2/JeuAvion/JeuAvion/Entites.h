@@ -4,6 +4,7 @@
 #include <windows.h>    //pour le curseur de la console et sleep()
 //#include "Interface.h"
 #include "globalobjects.h"
+#include "Sprite.h"
 using namespace std;
 
 //definit la taille du jeu
@@ -22,6 +23,7 @@ class Entite
 {
 
 public:
+    int tiltcounter = 0;
     bool flashing = false;
     float posX, posY;
     int xJoueur, yJoueur;
@@ -46,7 +48,7 @@ public:
     bool isPlayer;
     int barrelRollTimer = 0;
     // int nbJoueurs;  
-
+    Sprite* AnimatedSprite;
     QGraphicsPixmapItem* image;
     QGraphicsPixmapItem* DamageImage;
     QGraphicsPixmapItem* Originalimage;
@@ -65,10 +67,16 @@ public:
 class Joueur : public Entite
 {
 private:
+   
     int attkDmg;
     int vitesse;
+    Sprite* Proppeller1; // pour ajouter les animation du propelle lorsquil est normal
+    Sprite* Proppeller2;  // pour ajouter les animation du propelle lorsquil est tilt a gauche
+    Sprite* Proppeller3;  // pour ajouter les animation du propelle lorsquil est tilt a droite
 
 public:
+    ~Joueur();
+    bool doingbarrelroll = false;
     bool barrelRoll;
     int barrelRollTimer;
     int coolDownBarrelRoll;
