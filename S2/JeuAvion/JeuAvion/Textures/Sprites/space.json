@@ -1,0 +1,135 @@
+{
+	"frames": {
+		"frame_0_delay-0.4s.gif": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 3040,
+				"h": 1712
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 3040,
+				"h": 1712
+			},
+			"sourceSize": {
+				"w": 3040,
+				"h": 1712
+			}
+		},
+		"frame_1_delay-0.4s.gif": {
+			"frame": {
+				"x": 1,
+				"y": 1715,
+				"w": 3040,
+				"h": 1712
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 3040,
+				"h": 1712
+			},
+			"sourceSize": {
+				"w": 3040,
+				"h": 1712
+			}
+		},
+		"frame_2_delay-0.4s.gif": {
+			"frame": {
+				"x": 1,
+				"y": 3429,
+				"w": 3040,
+				"h": 1712
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 3040,
+				"h": 1712
+			},
+			"sourceSize": {
+				"w": 3040,
+				"h": 1712
+			}
+		},
+		"frame_3_delay-0.4s.gif": {
+			"frame": {
+				"x": 3043,
+				"y": 1,
+				"w": 3040,
+				"h": 1712
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 3040,
+				"h": 1712
+			},
+			"sourceSize": {
+				"w": 3040,
+				"h": 1712
+			}
+		},
+		"frame_4_delay-0.4s.gif": {
+			"frame": {
+				"x": 3043,
+				"y": 1715,
+				"w": 3040,
+				"h": 1712
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 3040,
+				"h": 1712
+			},
+			"sourceSize": {
+				"w": 3040,
+				"h": 1712
+			}
+		},
+		"frame_5_delay-0.4s.gif": {
+			"frame": {
+				"x": 3043,
+				"y": 3429,
+				"w": 3040,
+				"h": 1712
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 3040,
+				"h": 1712
+			},
+			"sourceSize": {
+				"w": 3040,
+				"h": 1712
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 6084,
+			"h": 5142
+		},
+		"scale": "1"
+	}
+}
