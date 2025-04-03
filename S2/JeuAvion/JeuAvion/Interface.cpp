@@ -111,9 +111,10 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
             });
     }
 }
+
 Interface::Interface()
 {
-    //initialisation des vairalbes
+    //initialisation des 
     score1 = 0;
     score2 = 0;
     scoreTotal = 0;
@@ -146,8 +147,19 @@ Interface::Interface()
 
     joueur2 = nullptr;
     boss3 = nullptr;
+	//rolling2 = nullptr;
 
-    //rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
+    /*rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
+    rolling->setpos(joueur->posX, joueur->posY);
+    rolling->start(70);
+    rolling->setframe(1);
+
+    rolling->pixmapItem->setScale(0.26);
+    rolling->pixmapItem->setZValue(100);
+    rolling->pixmapItem->show();
+    GameScene->addItem(rolling->pixmapItem);
+    */
+
     joueur->AnimatedSprite->setpos(joueur->posX, joueur->posY);
     //joueur->AnimatedSprite->start(70);
     joueur->AnimatedSprite->setframe(6);
@@ -156,6 +168,7 @@ Interface::Interface()
     loadBarrelRoll->setpos(1725, 980);
     //loadBarrelRoll->start(170);
     loadBarrelRoll->setframe(59);
+    loadBarrelRoll->pixmapItem->setZValue(500);
     loadBarrelRoll->pixmapItem->setScale(0.8);
     loadBarrelRoll->pixmapItem->setZValue(100);
     loadBarrelRoll->pixmapItem->show();
@@ -164,10 +177,10 @@ Interface::Interface()
 
     loadExplosion = new Sprite("loadingExplosion.png", "loadingExplosion.json");
     loadExplosion->setpos(-5, 980);
-    //loadBarrelRoll->start(170);
+    //loadExplosion->start(170);
     loadExplosion->setframe(59);
     loadExplosion->pixmapItem->setScale(0.8);
-    loadExplosion->pixmapItem->setZValue(100);
+    loadExplosion->pixmapItem->setZValue(500);
     loadExplosion->pixmapItem->show();
     GameScene->addItem(loadExplosion->pixmapItem);
     updateExplosionCounter();
@@ -193,6 +206,7 @@ Interface::Interface()
     milliers->setPos(1800, 10);
     milliers->setZValue(100);
 
+   
 
 }
 
@@ -203,110 +217,6 @@ void Interface::gererInput()
     //----------------------------------------------   test manette   ----------------------------------------------
     if (pause == false)
     {
-
-        switch (dataManette[0])     //premiere valeur du data de la manette est un chiffre de 1 a 9 du joystick
-        {
-        case 1:
-            if (joueur->posX > 2)
-                joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
-            else if (joueur->posX > 1)
-                joueur->posX--;
-            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
-                joueur->posY--;
-            break;
-
-        case 2:
-            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
-                joueur->posY--;
-            break;
-
-        case 3:
-            if (joueur->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
-                joueur->posY--;
-            if (joueur->posX < WIDTH - 2)
-                joueur->posX += 2;
-            else if (joueur->posX < WIDTH - 1)
-                joueur->posX++;
-            break;
-
-        case 4:
-            if (joueur->posX > 2)
-                joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
-            else if (joueur->posX > 1)
-                joueur->posX--;
-            break;
-        case 5:
-            //le joystick est au centre donc on ne fait rien
-            break;
-
-        case 6:
-            if (joueur->posX < WIDTH - 2)
-                joueur->posX += 2;
-            else if (joueur->posX < WIDTH - 1)
-                joueur->posX++;
-            break;
-
-        case 7:
-            if (joueur->posY < HEIGHT)
-                joueur->posY++;
-            if (joueur->posX > 2)
-                joueur->posX -= 2;      //on deplace le joueur de 2 vers la gauche
-            else if (joueur->posX > 1)
-                joueur->posX--;
-            break;
-
-        case 8:
-            if (joueur->posY < HEIGHT)
-                joueur->posY++;
-            break;
-
-        case 9:
-            if (joueur->posY < HEIGHT)
-                joueur->posY++;
-            if (joueur->posX < WIDTH - 2)
-                joueur->posX += 2;
-            else if (joueur->posX < WIDTH - 1)
-                joueur->posX++;
-            break;
-
-
-        }
-        //pour les boutons de la manette a l'emplacement 2->haut 3->bas 4->gauche 5->droite 
-        if (dataManette[3] == 1)
-        {
-            if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
-            {
-                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                joueurTir(joueur);
-                joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
-            }
-        }
-
-        if (dataManette[2] == 1)
-        {
-            gameOver = true;
-            dataManette[5] = 0;
-        }
-
-        if (dataManette[1] == 1)
-        {
-            if (explosionTimer == 0)
-            {
-                cdExplosion = 900;      //set le cooldown de l'explosion
-                enExplosion = true;
-                explosionTimer = cdExplosion;
-                explosionPosY = joueur->posY - 1;
-            }
-        }
-
-        //dataManette[4] est declare en bas de la fonction hors du if(!pause)
-
-        if (dataManette[5] == 1)
-        {
-            if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
-                joueur->barrelRoll = true;
-        }
-
         //Fix rapide pour les coins l'animation quand l'avion est au coins
         if (joueur != nullptr)
         {
@@ -315,180 +225,236 @@ void Interface::gererInput()
                 joueur->AnimatedSprite->setframe(6);
             }
         }
-         if(joueur2 != nullptr)
-         {
+        if (joueur2 != nullptr)
+        {
             if (joueur2->posX == 0 || joueur2->posX == 1851)
-             {
-             joueur2->AnimatedSprite->setframe(6);
-             }
-         }
-
-        if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
-        {
-            if (joueur->posX > 0)
             {
-                if (!joueur->doingbarrelroll)
-                {
-                    tiltplayerright(joueur); // tilt le joueur a gauche
-                }
-                joueur->posX -= 10;//on deplace le joueur de 2 vers la gauche
-                tiltresetimer.stop();
-            }
-            if (joueur->posX < 0)
-                joueur->posX = 0;
-        }
-        else if (GetAsyncKeyState('D') == 0 && !joueur->doingbarrelroll)
-        {
-            tiltresetimer.start(10);
-
-        }
-
-        if (GetAsyncKeyState('D') < 0)
-        {
-            if (joueur->posX < WIDTH - joueur->largeur)
-            {
-                if (!joueur->doingbarrelroll)
-                {
-                    tiltplayerleft(joueur); // tilt le joueur a gauche
-                }
-                joueur->posX += 10;
-                tiltresetimer.stop();
-            }
-            if (joueur->posX > WIDTH - joueur->largeur)
-                joueur->posX = WIDTH - joueur->largeur;
-        }
-        else if (GetAsyncKeyState('A') == 0 && !joueur->doingbarrelroll)
-        {
-            tiltresetimer.start(10);
-
-        }
-
-        if (GetAsyncKeyState('W') < 0)
-        {
-            if (joueur->posY > 0)      //le joueur a acces au 9/10 de l'ecran
-                joueur->posY -= 10;
-            if (joueur->posY < 0)
-                joueur->posY = 0;
-        }
-
-        if (GetAsyncKeyState('S') < 0)
-        {
-            if (joueur->posY < HEIGHT - joueur->hauteur)
-                joueur->posY += 10;
-            if (joueur->posY > HEIGHT - joueur->hauteur)
-                joueur->posY = HEIGHT - joueur->hauteur;
-        }
-        if (GetAsyncKeyState(VK_SPACE) < 0)
-        {
-            if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
-            {
-                //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                joueurTir(joueur);
-                joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
-
+                joueur2->AnimatedSprite->setframe(6);
             }
         }
-        if (GetAsyncKeyState('E') < 0)
+        if (joueur != nullptr)
         {
-            if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+            switch (dataManette[0])     //premiere valeur du data de la manette est un chiffre de 1 a 9 du joystick
             {
-                joueur->barrelRoll = true;
-                joueur->doingbarrelroll = true;
-                tiltresetimer.stop();
-                //add function for barrelroll
-                joueur->tiltcounter = 0;
-                //joueur->AnimatedSprite->setframe(6);
-                if(GetAsyncKeyState('D') < 0 && GetAsyncKeyState('A') == 0)
-                {
-                    joueur->AnimatedSprite->startreverse(50);
-                }
-                if (GetAsyncKeyState('A') < 0 && GetAsyncKeyState('D') == 0)
-                {
-                    joueur->AnimatedSprite->start(50);
-                }
-                if (GetAsyncKeyState('A') == 0 && GetAsyncKeyState('D') == 0)
-                {
-                    joueur->AnimatedSprite->start(50);
-                }
-                
-                QTimer::singleShot(800, [=]() {
-                    joueur->AnimatedSprite->stop();
-                    joueur->AnimatedSprite->setframe(6);
-                   joueur->doingbarrelroll = false;
-                    });
-                    //rolling->setpos(joueur->posX, joueur->posY);
-                    //rolling->setpos(450, 400);
-                    //rolling->pixmapItem.setScale(0.25);
-                   // rolling->pixmapItem->setZValue(100);
-                    //rolling->pixmapItem->show();
-                    //GameScene->addItem(&rolling->pixmapItem);
+            case 1:
+                if (joueur->posX > 2)
+                    joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur->posX > 1)
+                    joueur->posX -= 10;
+                if (joueur->posY > 0)
+                    joueur->posY -= 10;
+                if (joueur->posY < 0)
+                    joueur->posY = 0;
+                break;
+
+            case 2:
+                if (joueur->posY > 0)
+                    joueur->posY -= 10;
+                break;
+
+            case 3:
+                if (joueur->posY > 0)
+                    joueur->posY -= 10;
+                if (joueur->posX < WIDTH - joueur->largeur + 25)
+                    joueur->posX += 10;
+                if (joueur->posX > WIDTH - joueur->largeur + 25)
+                    joueur->posX = WIDTH - joueur->largeur + 25;
+                //else if (joueur->posX < WIDTH - 1)
+                    //joueur->posX+=10;
+                break;
+
+            case 4:
+                if (joueur->posX > 2)
+                    joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur->posX > 1)
+                    joueur->posX -= 10;
+                break;
+            case 5:
+                //le joystick est au centre donc on ne fait rien
+                break;
+
+            case 6:
+                if (joueur->posX < WIDTH - joueur->largeur + 25)
+                    joueur->posX += 10;
+                if (joueur->posX > WIDTH - joueur->largeur + 25)
+                    joueur->posX = WIDTH - joueur->largeur + 25;
+                break;
+
+            case 7:
+                if (joueur->posY < HEIGHT - 45)
+                    joueur->posY += 10;
+                if (joueur->posX > 2)
+                    joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
+                else if (joueur->posX > 1)
+                    joueur->posX -= 10;
+                break;
+
+            case 8:
+                if (joueur->posY < HEIGHT - 45)
+                    joueur->posY += 10;
+                break;
+
+            case 9:
+                if (joueur->posY < HEIGHT - 45)
+                    joueur->posY += 10;
+
+                if (joueur->posX < WIDTH - joueur->largeur + 25)
+                    joueur->posX += 10;
+                if (joueur->posX > WIDTH - joueur->largeur + 25)
+                    joueur->posX = WIDTH - joueur->largeur + 25;
+                break;
+
+
             }
-        }
-        if (GetAsyncKeyState('R') < 0)
-        {
-            if (explosionTimer == 0)
+            //pour les boutons de la manette a l'emplacement 2->haut 3->bas 4->gauche 5->droite 
+            if (dataManette[3] == 1)
             {
-
-                cdExplosion = 900;      //set le cooldown de l'explosion
-                enExplosion = true;
-                explosionTimer = cdExplosion;
-                explosionPosY = joueur->posY - 1;
-                manageexplosion.chainexplosion(joueur->posY);
+                if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
+                {
+                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                    joueurTir(joueur);
+                    joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+                }
             }
-        }
 
-        
+            if (dataManette[2] == 1)
+            {
+                gameOver = true;
+                dataManette[5] = 0;
+            }
 
+            if (dataManette[1] == 1)
+            {
+                if (explosionTimer == 0)
+                {
+                    cdExplosion = 900;      //set le cooldown de l'explosion
+                    enExplosion = true;
+                    explosionTimer = cdExplosion;
+                    explosionPosY = joueur->posY - 1;
+                    manageexplosion.chainexplosion(joueur->posY);
+                }
+            }
+            if (dataManette[7] == 1)            //muons ici 
+            {
+                //code pour les muons ici
+            }
 
+            //dataManette[4] est declare en bas de la fonction hors du if(!pause)
 
+            if (dataManette[5] == 1)
+            {
+                if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+                    joueur->barrelRoll = true;
+            }
 
-
-        //Useless avec QTimer
-      /*  if (!joueur->invincible && joueur->barrelRollTimer <= 0)
-        {
-            
-            //joueur->AnimatedSprite->stop();
-            //joueur->AnimatedSprite->setframe(1);
-        }*/
-        //******************************************* controle 2e joueur *******************************************
-        if (nbJoueur > 1)
-        {
             if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
             {
-                if (joueur2->posX > 2)
-                    joueur2->posX -= 2;      //on deplace le joueur de 2 vers la gauche
-                else if (joueur2->posX > 1)
-                    joueur2->posX--;
+                if (joueur->posX > 0)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerright(joueur); // tilt le joueur a gauche
+                    }
+                    joueur->posX -= 10;//on deplace le joueur de 2 vers la gauche
+                    tiltresetimerjoueur1.stop();
+                }
+                if (joueur->posX < 0)
+                    joueur->posX = 0;
             }
-            if (GetAsyncKeyState('D') < 0) {
-                if (joueur2->posX < WIDTH - 2)
-                    joueur2->posX += 2;
-                else if (joueur2->posX < WIDTH - 1)
-                    joueur2->posX++;
+            else if (GetAsyncKeyState('D') == 0 && !joueur->doingbarrelroll)
+            {
+                tiltresetimerjoueur1.start(10);
+
+            }
+
+            if (GetAsyncKeyState('D') < 0)
+            {
+                if (joueur->posX < WIDTH - joueur->largeur)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerleft(joueur); // tilt le joueur a gauche
+                    }
+                    joueur->posX += 10;
+                    tiltresetimerjoueur1.stop();
+                }
+                if (joueur->posX > WIDTH - joueur->largeur)
+                    joueur->posX = WIDTH - joueur->largeur;
+            }
+            else if (GetAsyncKeyState('A') == 0 && !joueur->doingbarrelroll)
+            {
+                tiltresetimerjoueur1.start(10);
+
             }
 
             if (GetAsyncKeyState('W') < 0)
-                if (joueur2->posY > HEIGHT / 10)      //le joueur a acces au 9/10 de l'ecran
-                    joueur2->posY--;
+            {
+                if (joueur->posY > 0)      //le joueur a acces au 9/10 de l'ecran
+                    joueur->posY -= 10;
+                if (joueur->posY < 0)
+                    joueur->posY = 0;
+            }
 
             if (GetAsyncKeyState('S') < 0)
-                if (joueur2->posY < HEIGHT)
-                    joueur2->posY++;
+            {
+                if (joueur->posY < HEIGHT - joueur->hauteur + 25)
+                    joueur->posY += 10;
+                if (joueur->posY > HEIGHT - joueur->hauteur + 25)
+                    joueur->posY = HEIGHT - joueur->hauteur + 25;
+            }
             if (GetAsyncKeyState(VK_SPACE) < 0)
             {
-                if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+                if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
                 {
                     //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                    joueurTir(joueur2);
-                    joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+                    joueurTir(joueur);
+                    joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
 
                 }
             }
             if (GetAsyncKeyState('E') < 0)
             {
-                if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
-                    joueur2->barrelRoll = true;
+                if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+                {
+                    joueur->barrelRoll = true;
+                    joueur->doingbarrelroll = true;
+                    tiltresetimerjoueur1.stop();
+                    //add function for barrelroll
+                    joueur->tiltcounter = 0;
+                    //joueur->AnimatedSprite->setframe(6);
+                    if (GetAsyncKeyState('D') < 0 && GetAsyncKeyState('A') == 0)
+                    {
+                        joueur->AnimatedSprite->startreverse(50);
+                    }
+                    if (GetAsyncKeyState('A') < 0 && GetAsyncKeyState('D') == 0)
+                    {
+                        joueur->AnimatedSprite->start(50);
+                    }
+                    if (GetAsyncKeyState('A') == 0 && GetAsyncKeyState('D') == 0)
+                    {
+                        joueur->AnimatedSprite->start(50);
+                    }
+
+                    QTimer::singleShot(800, [=]() {
+                        joueur->AnimatedSprite->stop();
+                        joueur->AnimatedSprite->setframe(6);
+                        joueur->doingbarrelroll = false;
+                        });
+                }
             }
+            if (GetAsyncKeyState('Q') < 0)
+            {
+                if (explosionTimer == 0)
+                {
+
+                    cdExplosion = 900;      //set le cooldown de l'explosion
+                    enExplosion = true;
+                    explosionTimer = cdExplosion;
+                    explosionPosY = joueur->posY - 1;
+                    manageexplosion.chainexplosion(joueur->posY);
+                }
+            }
+
             if (GetAsyncKeyState('R') < 0)
             {
                 if (explosionTimer == 0)
@@ -497,50 +463,173 @@ void Interface::gererInput()
                     cdExplosion = 900;      //set le cooldown de l'explosion
                     enExplosion = true;
                     explosionTimer = cdExplosion;
-                    explosionPosY = joueur2->posY - 1;
-                    //shakeScene(GameScene, view, 1000, 10);
+                    explosionPosY = joueur->posY - 1;
+                    manageexplosion.chainexplosion(joueur->posY);
                 }
+            }
+        }
+            //******************************************* controle 2e joueur *******************************************
+            if (nbJoueur > 1 && joueur2 != nullptr)
+            {
+                if (GetAsyncKeyState('J') < 0)   //on verifie si la fleche gauche ou D est pressee
+                {
+                    if (joueur2->posX > 0)
+                    {
+                        if (!joueur2->doingbarrelroll)
+                        {
+                            tiltplayerright(joueur2); // tilt le joueur a gauche
+                        }
+                        joueur2->posX -= 10;//on deplace le joueur de 2 vers la gauche
+                        tiltresetimerjoueur2.stop();
+                    }
+                    if (joueur2->posX < 0)
+                        joueur2->posX = 0;
+                }
+                else if (GetAsyncKeyState('L') == 0 && !joueur2->doingbarrelroll)
+                {
+                    tiltresetimerjoueur2.start(10);
+
+                }
+                if (GetAsyncKeyState('L') < 0)
+                {
+                    if (joueur2->posX < WIDTH - joueur2->largeur)
+                    {
+                        if (!joueur2->doingbarrelroll)
+                        {
+                            tiltplayerleft(joueur2); // tilt le joueur a gauche
+                        }
+                        joueur2->posX += 10;
+                        tiltresetimerjoueur2.stop();
+                    }
+                    if (joueur2->posX > WIDTH - joueur2->largeur)
+                        joueur2->posX = WIDTH - joueur2->largeur;
+                }
+                else if (GetAsyncKeyState('J') == 0 && !joueur2->doingbarrelroll)
+                {
+                    tiltresetimerjoueur2.start(10);
+
+                }
+
+                if (GetAsyncKeyState('I') < 0)
+                {
+                    if (joueur2->posY > 0)      //le joueur a acces au 9/10 de l'ecran
+                        joueur2->posY -= 10;
+                    if (joueur2->posY < 0)
+                        joueur2->posY = 0;
+                }
+                if (GetAsyncKeyState('K') < 0)
+                {
+                    if (joueur2->posY < HEIGHT - joueur2->hauteur + 25)
+                        joueur2->posY += 10;
+                    if (joueur2->posY > HEIGHT - joueur2->hauteur + 25)
+                        joueur2->posY = HEIGHT - joueur2->hauteur + 25;
+                }
+
+                if (GetAsyncKeyState(VK_RSHIFT) < 0)
+                {
+                    if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+                    {
+                        //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                        joueurTir(joueur2);
+                        joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+
+                    }
+                }
+                if (GetAsyncKeyState('O') < 0)
+                {
+                    if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
+                    {
+                        joueur2->barrelRoll = true;
+                        joueur2->doingbarrelroll = true;
+                        tiltresetimerjoueur2.stop();
+                        //add function for barrelroll
+                        joueur2->tiltcounter = 0;
+                        //joueur->AnimatedSprite->setframe(6);
+                        if (GetAsyncKeyState('L') < 0 && GetAsyncKeyState('J') == 0)
+                        {
+                            joueur2->AnimatedSprite->startreverse(50);
+                        }
+                        if (GetAsyncKeyState('J') < 0 && GetAsyncKeyState('L') == 0)
+                        {
+                            joueur2->AnimatedSprite->start(50);
+                        }
+                        if (GetAsyncKeyState('J') == 0 && GetAsyncKeyState('L') == 0)
+                        {
+                            joueur2->AnimatedSprite->start(50);
+                        }
+
+                        QTimer::singleShot(800, [=]() {
+                            joueur2->AnimatedSprite->stop();
+                            joueur2->AnimatedSprite->setframe(6);
+                            joueur2->doingbarrelroll = false;
+                            });
+                    }
+            
+            }
+                if (GetAsyncKeyState('U') < 0)
+                {
+                    if (explosionTimer == 0)
+                    {
+
+                        cdExplosion = 900;      //set le cooldown de l'explosion
+                        enExplosion = true;
+                        explosionTimer = cdExplosion;
+                        explosionPosY = joueur2->posY - 1;
+                        //shakeScene(GameScene, view, 1000, 10);
+                        manageexplosion.chainexplosion(joueur2->posY);
+                    }
+                }
+
+
+                //rolling2->setpos(joueur2->posX - 20, joueur2->posY - 25);
+
+                /*if (!joueur2->invincible && joueur2->barrelRollTimer <= 0)
+                {
+                    //
+                    // rolling->stop();
+                    rolling2->setframe(1);
+                }*/
+
+                if (joueur2->posX == 0 || joueur2->posX == 1851)
+                {
+                    joueur2->AnimatedSprite->setframe(6);
+                }
+
+            }
+
+            if (explosionTimer > 0)
+            {
+                explosionTimer--;
+                explosion();
             }
         }
 
 
-        if (explosionTimer > 0)
+        if (dataManette[4] == 1)
         {
-            explosionTimer--;
-            explosion();
+            if (pause)
+                pause = false;
+            else if (!pause)
+                pause = true;
+            Sleep(200);
         }
+
+        if (GetAsyncKeyState(VK_ESCAPE) < 0)
+            gameOver = true;
+
+        if (GetAsyncKeyState('P') < 0)
+        {
+            if (pause)
+                pause = false;
+            else if (!pause)
+                pause = true;
+            Sleep(200);
+        }
+
     }
 
-
-    if (dataManette[4] == 1)
-    {
-        if (pause)
-            pause = false;
-        else if (!pause)
-            pause = true;
-        Sleep(200);
-    }
-
-    if (GetAsyncKeyState('Q') < 0)
-        gameOver = true;
-
-    if (GetAsyncKeyState('P') < 0)
-    {
-        if (pause)
-            pause = false;
-        else if (!pause)
-            pause = true;
-        Sleep(200);
-    }
-
-}
 void Interface::joueurTir(Joueur* quelJoueur)
 {
-    /* QMovie* basicbullet = new QMovie("Textures\\bullets\\basicbullet.gif");
-     basicbullet->start();
-     QLabel* labelbasicbullet = new QLabel;
-     labelbasicbullet->setMovie(basicbullet);
-     labelbasicbullet->move(1, 2);*/
     switch (quelJoueur->nbBulletTir)
     {
     case 1:
@@ -670,7 +759,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
             break;
         case BOSS3_SIDE:
             //if (nbSideBoss3 % 2 == 0)
-            listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 2 - 20, 0));
+            listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 4, 0));
             //else
                 //listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 2 + 15, 0));  
             //nbSideBoss3++;
@@ -719,7 +808,8 @@ void Interface::progressionDifficulte()
 
     if (score1 < 500)
     {
-
+        
+        
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
@@ -731,18 +821,22 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
             //enemySpawn(1, TURRET);
+			//enemySpawn(1, ORBITER);
+            // enemySpawn(1, EXPLODER);
 
             /*if (spawnPowerUpStart)
             {
-                enemySpawn(1, BOSS2_MAIN);
+                //enemySpawn(1, EXPLODER);
+                //enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
+				//enemySpawn(1, BOSS3_MAIN);
                 spawnPowerUpStart = false;
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
-                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
+                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }*/
+            
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
-
         }
     }
     else if (score1 >= 500 && score1 < 1400)
@@ -854,7 +948,6 @@ void Interface::progressionDifficulte()
     {
         if (enemySpawnTimer >= 6)
         {
-            
             enemySpawn(1, DIVEBOMBER);
             enemySpawnTimer = 0;
             bossWaitTimer = 0;
@@ -907,7 +1000,7 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {
 
-                if (enemySpawnTimer >= 357)         //
+                if (enemySpawnTimer >= 325)         //
                 {
                     Warning->stop();
                     delete Warning;
@@ -932,7 +1025,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
     {
-        if (enemySpawnTimer >= 100 || cbVivant() < 4)
+        if (enemySpawnTimer >= 175 || cbVivant() < 4)
         {
             enemySpawn(1, TURRET);
             enemySpawn(1, AIMBOT);
@@ -947,7 +1040,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore + 800 && score1 < memScore + 1400 && boss2Spawned)
     {
-        if (enemySpawnTimer >= 100 || cbVivant() < 4)
+        if (enemySpawnTimer >= 200 || cbVivant() < 4)
         {
             enemySpawn(1, ORBITER);
             enemySpawnTimer = 0;
@@ -958,36 +1051,97 @@ void Interface::progressionDifficulte()
                 nbPass = 0;
             }
         }
-
+		bossSpawnSound = false;
+		bossMusicStart = false;
     }
     else if (score1 >= memScore + 1400 && boss2Spawned && !boss3Spawned)
     {
-        if (boss3)
-            if (boss3->posX > 0 && boss3->posY > 0)
-                for (auto& e : listEntites)
-                    e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
-
-        if (spawnPowerUpStart)
+        if (cbVivant() == 0)
         {
-            spawnPowerUpStart = false;
-            //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
-            enemySpawn(1, BOSS3_MAIN);
-        }
-        if (boss3 != nullptr)
-        {
-            if (enemySpawnTimer >= 32 && !allSideBossSpawned)
+            if (!bossMusicStart && !bossSpawnSound)
             {
-                nbPass++;
-                if (nbPass <= 5)
-                    enemySpawn(1, BOSS3_SIDE);
-                else
-                    allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
+                music.stopMusic();
+                sfxWarning.playSFX("warning.wav");
 
+                Warning = new Sprite("warning.png", "warning.json");
+                Warning->start(32);
+                bossSpawnSound = true;
+                Warning->setpos(450, 400);
+                Warning->pixmapItem->setScale(2.4);
+                Warning->pixmapItem->setZValue(100);
+                Warning->pixmapItem->show();
+                GameScene->addItem(Warning->pixmapItem);
+
+                bossSpawnSound = true;
                 enemySpawnTimer = 0;
+                //Sleep(5);
             }
+            else if (!bossMusicStart && bossSpawnSound)
+            {
+
+                if (enemySpawnTimer >= 325)         //
+                {
+                    Warning->stop();
+                    delete Warning;
+                    sfxWarning.stopSFX();
+                    music.playMusic("Boss1.wav", 0, 100000);
+                    bossMusicStart = true;
+
+                }
+            }
+
+            if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+            {
+                if (boss3)
+                    if (boss3->posX > 0 && boss3->posY > 0)
+                        for (auto& e : listEntites)
+                            e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
+
+                if (spawnPowerUpStart)
+                {
+                    spawnPowerUpStart = false;
+                    //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+                    //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
+                    enemySpawn(1, BOSS3_MAIN);
+                }
+                if (boss3 != nullptr)
+                {
+                    if (enemySpawnTimer >= 50 && !allSideBossSpawned)
+                    {
+                        nbPass++;
+                        if (nbPass <= 5)
+                            enemySpawn(1, BOSS3_SIDE);
+                        else
+                        {
+                            allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
+                            boss3Spawned = true;
+                            memScore = score1 + 800;
+                        }
+                        enemySpawnTimer = 0;
+                    }
+               }
+                bossWaitTimer = 0;
+            }
+            else
+                bossWaitTimer++;
+
+            
         }
     }
+	else if (score1 >= memScore && boss3Spawned)
+	{
+		if (enemySpawnTimer >= 175 || cbVivant() < 4)
+		{
+			enemySpawn(1, TURRET);
+			enemySpawn(1, AIMBOT);
+			enemySpawn(1, ORBITER);
+			enemySpawn(1, DIVEBOMBER);
+			enemySpawn(1, SIDEBOMBER);
+		
+			enemySpawnTimer = 0;
+		}
+	}
+
 
 }
 
@@ -1008,11 +1162,11 @@ void Interface::updateEntites()
 
             else if (nbJoueur == 2)
             {
-                if ((joueur->posX < 0 || joueur->posY < 0) && joueur2->posX >= 0 && joueur2->posY >= 0)       //si le joueur 1 est mort et le joueur 2 est en vie
+                if (joueur == nullptr && joueur2!=nullptr)       //si le joueur 1 est mort et le joueur 2 est en vie
                     e->getPosJoueurs(-1, -1, false, joueur2->posX, joueur2->posY, joueur2->enVie);
-                else if ((joueur2->posX < 0 || joueur2->posY < 0) && joueur->posX >= 0 && joueur->posY >= 0)       //si le joueur 2 est mort et le joueur 1 est en vie
+                else if (joueur2==nullptr && joueur!=nullptr)       //si le joueur 2 est mort et le joueur 1 est en vie
                     e->getPosJoueurs(joueur->posX, joueur->posY, joueur->enVie, -1, -1, false);
-                else if (joueur->posX >= 0 && joueur->posY >= 0 && joueur2->posX >= 0 && joueur2->posY >= 0)       //si les 2 joueurs sont en vie
+                else if (joueur!=nullptr && joueur2!=nullptr)       //si les 2 joueurs sont en vie
                     e->getPosJoueurs(joueur->posX, joueur->posX, joueur->enVie, joueur2->posX, joueur2->posY, joueur2->enVie);
             }
 
@@ -1037,7 +1191,8 @@ void Interface::updateEntites()
             }
             else if (e->getTypeEnnemi() == EXPLODER && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
             {
-                cercleExplosion(5, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                //cercleExplosion(5, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 e->enVie = false;
             }
             else if (e->getTypeEnnemi() == TURRET && e->moveTimer % e->shootCooldown == 0 && e->shoots)
@@ -1083,7 +1238,7 @@ void Interface::updateEntites()
                 //if (e->moveTimer % 8 == 0)
                   //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
-                if (e->nbVies >= 200)
+                if (e->nbVies >= 170)
                 {
                     if (e->moveTimer % 125 == 0)
                     {
@@ -1095,7 +1250,7 @@ void Interface::updateEntites()
                     if (e->moveTimer % 12 == 0)
                         randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
-                else if (e->nbVies < 200 && e->nbVies >= 90)
+                else if (e->nbVies < 170 && e->nbVies >= 80)
                 {
                     balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                     if (e->moveTimer % 125 == 0)
@@ -1103,16 +1258,16 @@ void Interface::updateEntites()
                     //if (e->moveTimer % 15 == 0)
                       //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
-                else if (e->nbVies < 90)
+                else if (e->nbVies < 80)
                 {
                     if (e->moveTimer % 200 == 0)
                     {
-                        cercleTir(15, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                         //cercleTir(5, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
                     }
                     balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
-                    if (e->moveTimer % 10 == 0)
+                    if (e->moveTimer % 12 == 0)
                         randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
                 angleTirBoss += 5;
@@ -1126,7 +1281,7 @@ void Interface::updateEntites()
                     boss3WaitTimer++;
                 else
                 {
-                    if (e->moveTimer % 8 == 0)
+                    if (e->moveTimer % 18 == 0)
                     {
                         if (e->nbVies < 200 && e->nbVies >= 90)
                         {
@@ -1138,7 +1293,7 @@ void Interface::updateEntites()
 
                             balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                         }
-                        angleTirBoss += 5;
+                        angleTirBoss += 3;
                         if (angleTirBoss >= 360)
                             angleTirBoss = 0;
                     }
@@ -1220,137 +1375,144 @@ void Interface::gererCollisions()
     {
         if (e->enVie)
         {
-            if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+            if (joueur != nullptr)
             {
-                if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
+                if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
                 {
-                    joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
-                    joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-                    damageeffect(joueur->image, 100, joueur);
-
-                    updateHealthCounter();
-                    e->collisionJoueur = true;
-                }
-                else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
-                {
-                    joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
-                    joueur->invincible = true;     //le joueur est invincible pour un court moment apres
-                    damageeffect(joueur->image, 100, joueur);
-                    updateHealthCounter();
-
-                    if (e->typeEntite == BULLET && e->ammoType == LASER)
+                    if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                     {
-                    }
-                    else
-                    {
-                        e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueur
+                        joueur->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
+                        joueur->invincible = true;     //le joueur est invincible pour un court moment apres
+                        damageeffect(joueur->image, 100, joueur);
+
+                        updateHealthCounter();
                         e->collisionJoueur = true;
                     }
-                }
-                else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
-                {
-                    switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+                    else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
                     {
-                    case ADDLIFE:
-                        joueur->nbVies++;
+                        joueur->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
+                        joueur->invincible = true;     //le joueur est invincible pour un court moment apres
+                        damageeffect(joueur->image, 100, joueur);
                         updateHealthCounter();
-                        break;
 
-                    case ADDBULLETS:
-                        joueur->nbBulletTir += 2;
-                        joueur->shootCooldown += 8;
-                        break;
+                        if (e->typeEntite == BULLET && e->ammoType == LASER)
+                        {
+                        }
+                        else
+                        {
+                            e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueur
+                            e->collisionJoueur = true;
+                        }
                     }
-                    e->enVie = false;
+                    else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
+                    {
+                        switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+                        {
+                        case ADDLIFE:
+                            joueur->nbVies++;
+                            updateHealthCounter();
+                            break;
+
+                        case ADDBULLETS:
+                            joueur->nbBulletTir += 2;
+                            joueur->shootCooldown += 8;
+                            break;
+                        }
+                        e->enVie = false;
+                    }
                 }
             }
-            //partie ou on gere les collision avec les bullets alliees
-            else if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
-            {
-                for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
+                //partie ou on gere les collision avec les bullets alliees
+                if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
                 {
-                    if (e2->enVie)
+                    for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
                     {
-                        if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+                        if (e2->enVie)
                         {
-                            if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
-                                for (int i = 80; i < 110; i += 10)
-                                    bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
-
-
-                            if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite != BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+                            if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                             {
-                            }
-                            else
-                            {
-                                e2->perdVie(1);
-                                damageeffect(e2->image, 100, e2.get());
-                                e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
-                            }
+                                if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
+                                    for (int i = 80; i < 110; i += 10)
+                                        bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
 
-                            //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
-                                //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
-
-                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
-                            {
-
-                                score1 += customPoints(e2->getTypeEnnemi());
-
-                                manageexplosion.enemydeathexplosion(e2->posX, e2->posY);             // explosion a la position de l'entite qui meurt
-
-                                if (e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
-                                    cercleExplosion(5, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
-
-                                if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
+                                //if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite == BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+                                if ((e2->typeEntite == BULLET && e2->ammoType == LASER) || e2->invincible || (e2->typeEntite == BULLET && e2->ammoType == ANGLE) || (e2->typeEntite == BULLET && e2->ammoType == TEMP))	   //g enlever le bout du milieu, a voir si ca cause des bug
                                 {
-                                    powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-                                    scoreLastPup = score1;
                                 }
-                                if (e2->typeEntite == BOSS && e2->getTypeEnnemi() != BOSS3_SIDE)
+                                else
                                 {
-                                    if (e2->getTypeEnnemi() == BOSS1_MAIN)
+                                    e2->perdVie(1);
+                                    damageeffect(e2->image, 100, e2.get());
+                                    e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
+                                }
+
+
+                                //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
+                                    //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
+
+                                if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
+                                {
+
+                                    score1 += customPoints(e2->getTypeEnnemi());
+
+                                    manageexplosion.enemydeathexplosion(e2->posX, e2->posY);             // explosion a la position de l'entite qui meurt
+
+                                    if (e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
                                     {
-                                        manageexplosion.bossdeath();
+                                        cercleTir(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
+                                        //cercleExplosion(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
                                     }
-                                    powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                                    if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
+                                    {
+                                        powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
+                                        scoreLastPup = score1;
+                                    }
+                                    if (e2->typeEntite == BOSS && e2->getTypeEnnemi() != BOSS3_SIDE)
+                                    {
+                                        if (e2->getTypeEnnemi() == BOSS1_MAIN)
+                                        {
+                                            manageexplosion.bossdeath();
+                                        }
+                                        powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else
-                e->collisionJoueur = false;
-        }
+                else
+                    e->collisionJoueur = false;
 
-        if (nbJoueur > 1)       //s'il y a 2 joueur 
-        {
-            if (e->enVie)
+            
+            if (nbJoueur > 1 && joueur2!= nullptr)
             {
-                if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur2->invincibleTimer <= 0 && joueur2->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+                if (e->enCollision(joueur2->posX, joueur2->posY, joueur2->largeur, joueur2->hauteur) && joueur2->invincibleTimer <= 0 && joueur2->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
                 {
                     if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                     {
                         joueur2->perdVie(2);	 //le joueur perd 2 vies si il entre en collision avec un ennemi
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
+                        damageeffect(joueur2->image, 100, joueur2);
 
-                        //if (!joueur2->enVie)
-                            //nbJoueur--;
-                            //gameOver = true;
-
+                        updateHealthCounter();
                         e->collisionJoueur = true;
                     }
                     else if (e->typeEntite == BULLET && e->collisionJoueur == false && !e->bulletAllie)     //si le joueur entre en collision avec une bullet ennemi sans etre en barrel roll il perd une vie
                     {
                         joueur2->perdVie(1);    //le joueur perd 1 vie si il entre en collision avec une bullet ennemi et s'il est pas invincible
                         joueur2->invincible = true;     //le joueur est invincible pour un court moment apres
+                        damageeffect(joueur2->image, 100, joueur2);
+                        updateHealthCounter();
 
-                        //if (!joueur2->enVie)        //----------------------------------------------------------------------------------------  a changer, si un des 2 joueurs meurt en ce moment la game finit
-                            //nbJoueur--;
-                            //gameOver = true;
-
-                        e->collisionJoueur = true;
+                        if (e->typeEntite == BULLET && e->ammoType == LASER)
+                        {
+                        }
+                        else
+                        {
+                            e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueur
+                            e->collisionJoueur = true;
+                        }
                     }
                     else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
                     {
@@ -1358,19 +1520,19 @@ void Interface::gererCollisions()
                         {
                         case ADDLIFE:
                             joueur2->nbVies++;
+                            updateHealthCounter();
                             break;
 
                         case ADDBULLETS:
                             joueur2->nbBulletTir += 2;
-                            joueur2->shootCooldown += 3;
+                            joueur2->shootCooldown += 8;
                             break;
                         }
                         e->enVie = false;
                     }
                 }
-                else
-                    e->collisionJoueur = false;
             }
+            
         }
     }
     for (auto& bullet : bufferBullets)
@@ -1420,13 +1582,13 @@ int Interface::customPoints(typeEnnemis e)
         return 300;
         break;
     case ORBITER:
-        return 20;
+        return 35;
         break;
     case EXPLODER:
         return 10;
         break;
     case TURRET:
-        return 25;
+        return 35;
         break;
     case BOSS3_MAIN:
         return 300;
@@ -1448,13 +1610,12 @@ void Interface::restart()
         else
             e->enVie = false;
     }
+	enleverEntites();
     gameOver = false;
     listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());
+    joueur->posX = (WIDTH / 2) - 50;
     score1 = 0;
-    //delete joueur;
-   // firststart = true;
-    enleverEntites();
     explosionTimer = 0;
     enExplosion = false;
     cdExplosion = 0;
@@ -1465,7 +1626,16 @@ void Interface::restart()
     bossSpawnSound = false;
     spawnAddLife = true;
     spawnPowerUpStart = true;
+
     updateHealthCounter();
+
+    if (nbJoueur > 1)
+    {
+        listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
+        joueur2 = static_cast<Joueur*>(listEntites.back().get());
+        joueur2->posX = (WIDTH / 2) + 50;
+
+    }
 
 }
 
@@ -1479,16 +1649,35 @@ void Interface::enleverEntites()
         {
             GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
             delete listEntites[i]->image;
-            delete listEntites[i]->AnimatedSprite;
+
             listEntites.erase(listEntites.begin() + i);
             i--;
 
         }
         else if (!listEntites[i]->enVie && listEntites[i]->isPlayer)
         {
-            GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
-            delete listEntites[i]->image;
-            delete listEntites[i]->AnimatedSprite;
+            if (joueur != nullptr)
+            {
+                if (!joueur->enVie)
+                {
+                    delete listEntites[i]->AnimatedSprite;
+                    //GameScene->removeItem(rolling->pixmapItem);
+                    joueur = nullptr;
+                }
+            }
+            if (joueur2 != nullptr)
+            {
+                if (!joueur2->enVie)
+                {
+                        delete listEntites[i]->AnimatedSprite;
+                        //GameScene->removeItem(rolling2->pixmapItem);
+                        joueur2 = nullptr;
+                    
+                }
+            }
+            //GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
+            //delete listEntites[i]->image;
+            
             listEntites.erase(listEntites.begin() + i);
             i--;
         }
@@ -1500,54 +1689,50 @@ void Interface::enleverEntites()
 void Interface::executionJeu(int version)
 {
     //------------------section port serie---------------------
-      // Ouvrir le port série
-    HANDLE hSerial = CreateFile(L"COM3", GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);  // selectionne le port serie
-    if (hSerial == INVALID_HANDLE_VALUE) {
-        cerr << "Erreur d'ouverture du port série." << endl;
-    }
-
-    // Configurer les paramètres du port série
-    DCB dcbSerialParams = { 0 };
-    dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
-    if (!GetCommState(hSerial, &dcbSerialParams)) {
-        cerr << "Impossible de lire l'état du port série." << endl;
-        CloseHandle(hSerial);
-    }
-    dcbSerialParams.BaudRate = CBR_9600;  // set baud rate
-    dcbSerialParams.ByteSize = 8;
-    dcbSerialParams.StopBits = ONESTOPBIT;
-    dcbSerialParams.Parity = NOPARITY;
-    SetCommState(hSerial, &dcbSerialParams);
-
-    COMMTIMEOUTS timeouts = { 0 };
-    timeouts.ReadIntervalTimeout = MAXDWORD;  // Returns immediately if no data is available
-    timeouts.ReadTotalTimeoutConstant = 0;    // No additional wait time
-    timeouts.ReadTotalTimeoutMultiplier = 0;  // No per-byte delay
-    SetCommTimeouts(hSerial, &timeouts);
-
+    //HANDLE hSerial = CreateFile(L"COM3", GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);  // selectionne le port serie
     COMSTAT status;     //pour verifier si des donnees sont dispo dans le port serie avant de call la lecture du port serie
     DWORD errors;
 
     if (firststart)
     {
-        //manageexplosion.bossdeath();
+        QObject::connect(&tiltresetimerjoueur1, &QTimer::timeout, [=]() {
+            resettilt(joueur);
+        });
+
+
+        hSerial = CreateFile(L"COM3", GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);  // selectionne le port serie
+
+        if (hSerial == INVALID_HANDLE_VALUE) {
+            cerr << "Erreur d'ouverture du port série." << endl;
+        }
+
+        // Configurer les paramètres du port série
+        DCB dcbSerialParams = { 0 };
+        dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+        if (!GetCommState(hSerial, &dcbSerialParams)) {
+            cerr << "Impossible de lire l'état du port série." << endl;
+            CloseHandle(hSerial);
+        }
+        dcbSerialParams.BaudRate = CBR_9600;  // set baud rate
+        dcbSerialParams.ByteSize = 8;
+        dcbSerialParams.StopBits = ONESTOPBIT;
+        dcbSerialParams.Parity = NOPARITY;
+        SetCommState(hSerial, &dcbSerialParams);
+
+        COMMTIMEOUTS timeouts = { 0 };
+        timeouts.ReadIntervalTimeout = MAXDWORD;  // Returns immediately if no data is available
+        timeouts.ReadTotalTimeoutConstant = 0;    // No additional wait time
+        timeouts.ReadTotalTimeoutMultiplier = 0;  // No per-byte delay
+        SetCommTimeouts(hSerial, &timeouts);
+        
+        PurgeComm(hSerial, PURGE_RXCLEAR);
+        
+
         updateHealthCounter();
         updateBarrelRollCounter();
-        QObject::connect(&tiltresetimer, &QTimer::timeout, [=]() {
-            resettilt();
-            });
-        //------------------------ section graphique ---------------------
-        /*Water = new Sprite("spritesheet.png", "spritesheet.json");
-        Water->start(350);
-        Water->setpos(-10, -10);
-        Water->pixmapItem.setScale(0.70);
-        Water->pixmapItem.show();
-        GameScene->addItem(&Water->pixmapItem);*/
 
         BackManager = new backgroundmanager;
-        //BackManager->setforest();
         BackManager->bougebackground();
-        
 
         //proxy->setpos(0, 0);
         qDebug() << "Current working directory: " << QDir::currentPath();
@@ -1555,14 +1740,60 @@ void Interface::executionJeu(int version)
         //hideCursor();
         music.stopMusic();
         music.playMusic("Ocean.wav", 0, 117000);
-        //music.playMusic("Forest.wav", 21639, 115195);
-        if (version > 0)     //si on a choisi autre chose que le mode seul
+
+        if (version > 0)     //si on a choisi autre chose que le mode seul on initialise le 2e joueur
         {
-            listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 5, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
+
+            QObject::connect(&tiltresetimerjoueur2, &QTimer::timeout, [=]() {
+                resettilt(joueur2);
+                });
+            listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
             joueur2 = static_cast<Joueur*>(listEntites.back().get());
-            joueur2->enVie = true;
-            joueur->posX = (WIDTH / 2) - 5;
+            joueur2->image->setPixmap(*ListImages[38]);
+            joueur2->Originalimage->setPixmap(*ListImages[38]);
+            joueur2->DamageImage->setPixmap(*ListImages[39]);
+            //joueur2->enVie = true;
+            joueur->posX = (WIDTH / 2) - 50;
+
             nbJoueur = 2;
+
+
+            loadBarrelRoll2 = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
+            loadBarrelRoll2->setpos(1775, 940);
+            loadBarrelRoll2->start(170);
+            loadBarrelRoll2->setframe(59);
+            loadBarrelRoll2->pixmapItem->setZValue(500);
+            loadBarrelRoll2->pixmapItem->setScale(0.6);
+            loadBarrelRoll2->pixmapItem->setZValue(100);
+            loadBarrelRoll2->pixmapItem->show();
+            GameScene->addItem(loadBarrelRoll2->pixmapItem);
+            updateBarrelRollCounter();
+
+            loadExplosion2 = new Sprite("loadingExplosion.png", "loadingExplosion.json");
+            //loadExplosion2->setpos(1725, 1020);
+            loadExplosion2->setpos(1775, 1020);
+            loadExplosion2->start(170);
+            loadExplosion2->setframe(59);
+            loadExplosion2->pixmapItem->setZValue(500);
+            loadExplosion2->pixmapItem->setScale(0.6);
+            loadExplosion2->pixmapItem->show();
+            GameScene->addItem(loadExplosion2->pixmapItem);
+            updateExplosionCounter();
+
+			updateHealthCounter();
+            loadBarrelRoll->pixmapItem->setScale(0.6);
+            loadBarrelRoll->setpos(-5, 940);
+            loadBarrelRoll->pixmapItem->setZValue(500);
+
+            loadExplosion->pixmapItem->setScale(0.6);
+            loadExplosion->setpos(-5, 1020);
+            loadExplosion->pixmapItem->setZValue(500);
+
+            milliers->setPos(WIDTH / 2 - 60, 10);
+			centaines->setPos(WIDTH / 2 - 30, 10);
+            dizaines->setPos(WIDTH / 2 + 0, 10);
+            unites->setPos(WIDTH / 2 + 30, 10);
+            
         }
         firststart = false;
     }
@@ -1577,7 +1808,10 @@ void Interface::executionJeu(int version)
         {
             ClearCommError(hSerial, &errors, &status);
             if (status.cbInQue > 0)   // Lire seulement si des données sont dispo
+            {
                 readSerial(hSerial);
+                //PurgeComm(hSerial, PURGE_RXCLEAR);
+            }
 
             gererInput();   //sert a revenir au jeu si on a fait pause
             Sleep(10);
@@ -1592,15 +1826,15 @@ void Interface::executionJeu(int version)
         //updateAffichage();
         //Sleep(20);
 
-        if (nbJoueur == 1 && joueur->nbVies < 0)
+        if (nbJoueur == 1 && joueur == nullptr)
             gameOver = true;
-        else if (nbJoueur == 2 && joueur->nbVies < 0 && joueur2->nbVies < 0)
+        else if (nbJoueur == 2 && joueur == nullptr && joueur2 == nullptr)
             gameOver = true;
     }
     if (gameOver)
     {
         restart();
-        CloseHandle(hSerial);  // Fermer le port série
+        // CloseHandle(hSerial);  // Fermer le port série
     }
     //Sleep(1000);
     //showCursor();
@@ -1608,56 +1842,97 @@ void Interface::executionJeu(int version)
 
 void Interface::updateHealthCounter()
 {
-
-    while (listeNbVie.size() > joueur->nbVies)
+    if (joueur != nullptr)
     {
-        QGraphicsPixmapItem* lastHealth = listeNbVie.back();
-        GameScene->removeItem(lastHealth);
-        delete lastHealth;
-        listeNbVie.pop_back();
-    }
-    while (listeNbVie.size() < joueur->nbVies)
-    {
-        image = new QGraphicsPixmapItem(*ListImages[23]);
+        while (listeNbVie.size() > joueur->nbVies)
+        {
+            QGraphicsPixmapItem* lastHealth = listeNbVie.back();
+            GameScene->removeItem(lastHealth);
+            delete lastHealth;
+            listeNbVie.pop_back();
+        }
+        while (listeNbVie.size() < joueur->nbVies)
+        {
+            image = new QGraphicsPixmapItem(*ListImages[23]);
 
-        if (listeNbVie.size() > 9)
-            image->setPos(30 + 30 * (listeNbVie.size() - 10), 40);
-        else
-            image->setPos(10 + 30 * listeNbVie.size(), 10);
+            if (listeNbVie.size() >= 19 && listeNbVie.size() < 29)
+                image->setPos(50 + 30 * (listeNbVie.size() - 19), 70);
+            else if (listeNbVie.size() > 9 && listeNbVie.size() < 19)
+                image->setPos(30 + 30 * (listeNbVie.size() - 10), 40);
+            else
+                image->setPos(10 + 30 * listeNbVie.size(), 10);
 
-        image->setScale(0.09);
-        image->setZValue(50);
-        image->show();
-        GameScene->addItem(image);
-        listeNbVie.push_back(image);
+            image->setScale(0.09);
+            image->setZValue(50);
+            image->show();
+            GameScene->addItem(image);
+            listeNbVie.push_back(image);
+        }
     }
-    /*
-    image = new QGraphicsPixmapItem(*ListImages[23]);
-        image->setPos(10 + i * 30, 10);
-        image->setScale(0.09);
-        image->setZValue(50);
-        image->show();
-        GameScene->addItem(image);
-        listeNbVie.push_back(image);*/
+    if (nbJoueur > 1 && joueur2!=nullptr)
+	{
+		while (listeNbVie2.size() > joueur2->nbVies)
+		{
+			QGraphicsPixmapItem* lastHealth = listeNbVie2.back();
+			GameScene->removeItem(lastHealth);
+			delete lastHealth;
+			listeNbVie2.pop_back();
+		}
+		while (listeNbVie2.size() < joueur2->nbVies)
+		{
+            image = new QGraphicsPixmapItem(*ListImages[23]);
+
+            if (listeNbVie2.size() >= 19 && listeNbVie2.size() < 29)
+                image->setPos(1640 + 30 * (listeNbVie2.size() - 19), 70);
+            else if (listeNbVie2.size() > 9 && listeNbVie2.size() < 19)
+                image->setPos(1620 + 30 * (listeNbVie2.size() - 10), 40);
+            else
+                image->setPos(1600 + 30 * listeNbVie2.size(), 10);
+			image->setScale(0.09);
+			image->setZValue(50);
+			image->show();
+			GameScene->addItem(image);
+			listeNbVie2.push_back(image);
+		}
+	}
+
 }
 
 void Interface::updateBarrelRollCounter()
 {
     int numFrame;
 
-    numFrame = 59;
-    if (joueur->coolDownBarrelRoll == 0)
-        numFrame = 59;
-    else
+    if (joueur != nullptr)
     {
-        numFrame = (float(CD_BARRELROLL - joueur->coolDownBarrelRoll) / float(CD_BARRELROLL)) * 100;
-        numFrame = (numFrame * 59) / 100;
-        if (numFrame > 59)
+        numFrame = 59;
+        if (joueur->coolDownBarrelRoll == 0)
             numFrame = 59;
-    }
+        else
+        {
+            numFrame = (float(CD_BARRELROLL - joueur->coolDownBarrelRoll) / float(CD_BARRELROLL)) * 100;
+            numFrame = (numFrame * 59) / 100;
+            if (numFrame > 59)
+                numFrame = 59;
+        }
 
-    loadBarrelRoll->setframe(numFrame);
-    loadBarrelRoll->pixmapItem->show();
+        loadBarrelRoll->setframe(numFrame);
+        loadBarrelRoll->pixmapItem->show();
+    }
+    if (nbJoueur > 1 && joueur2 != nullptr)
+    {
+        numFrame = 59;
+        if (joueur2->coolDownBarrelRoll == 0)
+            numFrame = 59;
+        else
+        {
+            numFrame = (float(CD_BARRELROLL - joueur2->coolDownBarrelRoll) / float(CD_BARRELROLL)) * 100;
+            numFrame = (numFrame * 59) / 100;
+            if (numFrame > 59)
+                numFrame = 59;
+        }
+        loadBarrelRoll2->setframe(numFrame);
+        loadBarrelRoll2->pixmapItem->show();
+    }
 
 }
 
@@ -1665,21 +1940,36 @@ void Interface::updateExplosionCounter()
 {
     int numFrame;
 
-    if (explosionTimer == 0)
-        numFrame = 59;
-    else
+    if (joueur != nullptr)
     {
-        numFrame = (float(900 - explosionTimer) / float(900)) * 100;
-        numFrame = (numFrame * 59) / 100;
-        if (numFrame > 59)
+        if (explosionTimer == 0)
             numFrame = 59;
-    }
+        else
+        {
+            numFrame = (float(900 - explosionTimer) / float(900)) * 100;
+            numFrame = (numFrame * 59) / 100;
+            if (numFrame > 59)
+                numFrame = 59;
+        }
 
-    //loadExplosion->setpos(10, 90);
-    //loadExplosion->start(70);
-    loadExplosion->setframe(numFrame);
-    //loadExplosion->pixmapItem->setScale(0.5);
-    loadExplosion->pixmapItem->show();
+        loadExplosion->setframe(numFrame);
+        loadExplosion->pixmapItem->show();
+    }
+	if (nbJoueur > 1 && joueur2!= nullptr)
+	{
+		numFrame = 59;
+		if (explosionTimer == 0)
+			numFrame = 59;
+		else
+		{
+			numFrame = (float(900 - explosionTimer) / float(900)) * 100;
+			numFrame = (numFrame * 59) / 100;
+			if (numFrame > 59)
+				numFrame = 59;
+		}
+		loadExplosion2->setframe(numFrame);
+		loadExplosion2->pixmapItem->show();
+	}
 }
 
 void Interface::updateScore()
@@ -1694,10 +1984,10 @@ void Interface::updateScore()
     centaines->setPixmap(*ListImages[24 + cent]);
     milliers->setPixmap(*ListImages[24 + mill]);
 
-    if (cent == 0)
+    /*if (cent == 0)
         centaines->hide();
     else
-        centaines->show();
+        centaines->show();*/
 
     if (mill == 0)
         milliers->hide();
@@ -1708,7 +1998,8 @@ void Interface::updateScore()
 
 void Interface::readSerial(HANDLE hSerial)
 {
-    char buffer[56];  // Taille du buffer attendue
+    //char buffer[56];  // Taille du buffer attendue
+    char buffer[65];
     DWORD bytesRead;
     static string response;  // Garde les données incomplètes d'une lecture à l'autre
 
@@ -1741,11 +2032,13 @@ void Interface::readSerial(HANDLE hSerial)
                 dataManette[3] = jsonData["but2"];      //en bas
                 dataManette[4] = jsonData["but3"];      //gauche
                 dataManette[5] = jsonData["but4"];      //droite
+				dataManette[6] = jsonData["muon"];      //barrel roll
             }
             catch (json::parse_error& e) {
                 //cerr << "Erreur JSON : " << e.what() << endl;
             }
         }
+        //PurgeComm(hSerial, PURGE_RXCLEAR);
     }
     //}
 
@@ -1767,7 +2060,8 @@ void setConsoleSize()
     SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
 }
 
-void Interface::tiltplayerleft(Joueur * player)
+
+void Interface::tiltplayerleft(Joueur* player)
 {
     if (player->tiltcounter <= 5)
     {
@@ -1781,7 +2075,7 @@ void Interface::tiltplayerleft(Joueur * player)
     }
 }
 
-void Interface::tiltplayerright(Joueur * player)
+void Interface::tiltplayerright(Joueur* player)
 {
     if (player->tiltcounter >= 7)
     {
@@ -1795,22 +2089,27 @@ void Interface::tiltplayerright(Joueur * player)
     }
 }
 
-void Interface::resettilt()
+void Interface::resettilt(Joueur * Player)
 {
-    if (joueur->tiltcounter = 6)
+
+    if(Player == nullptr|| Player->enVie != true|| Player->AnimatedSprite == nullptr)
     {
-        joueur->tiltcounter = 6;
-        joueur->AnimatedSprite->setframe(joueur->tiltcounter);
+        return;
     }
-    if (joueur->tiltcounter > 6)
+    if (Player->tiltcounter = 6)
     {
-        joueur->tiltcounter = joueur->tiltcounter - 1;
-        joueur->AnimatedSprite->setframe(joueur->tiltcounter);
+        Player->tiltcounter = 6;
+        Player->AnimatedSprite->setframe(Player->tiltcounter);
     }
-    if (joueur->tiltcounter < 6)
+    if (Player->tiltcounter > 6)
     {
-        joueur->tiltcounter = joueur->tiltcounter + 1;
-        joueur->AnimatedSprite->setframe(joueur->tiltcounter);
+        Player->tiltcounter = joueur->tiltcounter - 1;
+        Player->AnimatedSprite->setframe(Player->tiltcounter);
+    }
+    if (Player->tiltcounter < 6)
+    {
+        Player->tiltcounter = joueur->tiltcounter + 1;
+        Player->AnimatedSprite->setframe(Player->tiltcounter);
     }
 
 

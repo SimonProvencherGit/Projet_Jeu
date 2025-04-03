@@ -1,6 +1,34 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
+  Entites.cpp
+  Interface.cpp
   JeuBackground.cpp
+  Menu.cpp
+  Music.cpp
+  SFX.cpp
+  Sprite.cpp
+  globalobjects.cpp
+  main.cpp
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(39,14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(44,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(47,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(58,12): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(15,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'Interface.cpp')
+  
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(15,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'Entites.cpp')
+  
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(15,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'main.cpp')
+  
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(247,10): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(995,11): warning C4552: '+': result of expression not used
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1000,11): warning C4552: '-': result of expression not used
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1019,20): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1026,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(2037,39): warning C4101: 'e': unreferenced local variable
+  qrc_JeuAvion.cpp
 sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundSource.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info

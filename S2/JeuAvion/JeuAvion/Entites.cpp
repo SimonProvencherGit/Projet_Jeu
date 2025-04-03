@@ -90,12 +90,12 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 {
 	AnimatedSprite = new Sprite("barrel_roll.png", "barrel_roll.json");
 	AnimatedSprite->pixmapItem->setScale(0.25);
-	AnimatedSprite->setpos(x,y);
+	AnimatedSprite->setpos(x, y);
 	AnimatedSprite->setframe(1);
 	AnimatedSprite->pixmapItem->setZValue(100);
 	AnimatedSprite->pixmapItem->show();
 	GameScene->addItem(AnimatedSprite->pixmapItem);
-	;
+	
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	nbVies = 15;
@@ -113,16 +113,19 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	barrelRollTimer = 0;
 
 
-	image = new QGraphicsPixmapItem(*ListImages[34]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[34]);
-	DamageImage = new QGraphicsPixmapItem(*ListImages[35]);
+	//qDebug() << "QPixmap is null:" << pngImg.isNull();
+	image = new QGraphicsPixmapItem(*ListImages[38]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[38]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[39]);
 
 	image->setScale(0.25);
 	Originalimage->setScale(0.25);
 	DamageImage->setScale(0.25);
-	//shadow->setOffset(50, 10);       // Set the offset of the shadow (x, y)
-	//image->setZValue(1);
-	qDebug() << "Image Z-Value:" << image->zValue();
+	QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect();
+	shadow->setOffset(15, 15);       // Set the offset of the shadow (x, y)
+	image->setZValue(10);
+	AnimatedSprite->pixmapItem->setGraphicsEffect(shadow);
+	//qDebug() << "Image Z-Value:" << image->zValue();
 	QColor shadowColor(0, 0, 255, 255);
 	//image->setPos(0, 0);
 	//GameScene->addItem(image);
@@ -131,11 +134,11 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	//GameScene->update();
 
 }
+
 Joueur::~Joueur()
 {
 	delete AnimatedSprite;
 }
-
 
 void Joueur::update()
 {
@@ -172,9 +175,11 @@ void Joueur::update()
 	if (invincibleTimer > 0)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		invincibleTimer--;
 
+	AnimatedSprite->pixmapItem->setPos(posX - 20, posY);// update image du joueur
+
 	//if (shootTimer > 0)
 		//shootTimer--;
-	AnimatedSprite->pixmapItem->setPos(posX-20, posY);// update image du joueur
+	//image->setPos(posX, posY);// update image du joueur
 }
 
 
@@ -675,7 +680,7 @@ void SideBomber::update()
 Boss2::Boss2(float x, float y) : Ennemi(x, y)
 {
 	symbole = '%';
-	nbVies = 280;
+	nbVies = 250;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
@@ -720,18 +725,27 @@ Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 	symbole = 'J';
 	nbVies = 3;
 	typeEnnemi = ORBITER;
-	hauteur = 3;
-	largeur = 3;
+	hauteur = 1080/15;
+	largeur = 1080/15;
 	shoots = true;
-	shootCooldown = 70;   // a toute les x frames l'entite va tirer
+	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
+	shootCooldown = 170;   // a toute les x frames l'entite va tirer
 	ammoType = ANGLE;
-	rayonMouv = 25;		//va faire un cercle de rayon 6 autour du joueur
+	rayonMouv = 150;		//va faire un cercle de rayon 6 autour du joueur
 	angle = 270;
 	distance = 0;
 	orbiting = false;
 	sensRotation = true;
 	ancrageX = 0;
 	ancrageY = 0;
+
+	image = new QGraphicsPixmapItem(*ListImages[34]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[34]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[35]);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(0.06);
+	image->show();
 }
 
 
@@ -740,10 +754,10 @@ void Orbiter::update()
 
 	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
 
-	if (posY < (yJoueur - rayonMouv / 4) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	if (posY < (yJoueur - rayonMouv) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 	{
-		if (moveTimer % 2 == 0)
-			posY++;
+		//if (moveTimer % 2 == 0)
+		posY+=5;
 
 	}
 	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
@@ -761,26 +775,26 @@ void Orbiter::update()
 			if (posX < xJoueur)
 			{
 				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle + 2;
+				angle += 0.7;
 			}
 			else
 			{
 				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle - 2;
+				angle -= 0.7;
 			}
 		}
 		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
-		if (moveTimer % 1 == 0)
-		{
+		//if (moveTimer % 1 == 0)
+		//{
 			posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
-			posY = ancrageY + (rayonMouv / 2 * sin(((angle + 180) * 2 * PI) / 360));
+			posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
 
 			if (sensRotation)		//true = sens horaire false = sens anti-horaire
-				angle += 2;			//vitesse angulaire determine
+				angle += 0.7;			//vitesse angulaire determine
 			else
-				angle -= 2;			//vitesse angulaire determine
+				angle -= 0.7;			//vitesse angulaire determine
 
-		}
+		//}
 		if (angle >= 360)
 			angle = 0;
 	}
@@ -795,18 +809,27 @@ void Orbiter::update()
 		posY = HEIGHT - 2;
 
 	moveTimer++;
+	image->setPos(posX, posY);
 }
 
 Exploder::Exploder(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'E';
-	nbVies = 8;
+	nbVies = 6;
 	typeEnnemi = EXPLODER;
-	hauteur = 3;
-	largeur = 5;
+	hauteur = 1080/15;
+	largeur = 1080/15;
 	shoots = false;
 	ammoType = TEMP;
 	shootCooldown = 1;
+
+	image = new QGraphicsPixmapItem(*ListImages[34]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[34]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[35]);
+	GameScene->addItem(image);
+	//image->setRotation(180);
+	image->setScale(0.06);
+	image->show();
 }
 
 void Exploder::update()
@@ -814,16 +837,20 @@ void Exploder::update()
 	//descend jusqu'a la moitie de l'ecran et explode
 	if (posY < HEIGHT / 2)
 	{
-		if (moveTimer % 5 == 0)
-			posY++;
+		//if (moveTimer % 5 == 0)
+		posY+=2;
 	}
 	else
 	{
 		shoots = true;
 	}
+
 	moveTimer++;
+	
 	if (moveTimer >= 500)
 		moveTimer = 0;
+
+	image->setPos(posX, posY);
 }
 
 Turret::Turret(float x, float y) : Ennemi(x, y)
@@ -831,12 +858,19 @@ Turret::Turret(float x, float y) : Ennemi(x, y)
 	symbole = 'T';
 	nbVies = 8;
 	typeEnnemi = TURRET;
-	hauteur = 3;
-	largeur = 3;
+	hauteur = 150*0.6;
+	largeur = 122*0.6;
 	shoots = true;
-	shootCooldown = 50;   // a toute les x frames l'entite va tirer
+	shootCooldown = 150;   // a toute les x frames l'entite va tirer
 	ammoType = ANGLE;
 
+	image = new QGraphicsPixmapItem(*ListImages[21]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[21]); 
+	DamageImage = new QGraphicsPixmapItem(*ListImages[22]);
+	GameScene->addItem(image);
+	image->setScale(0.6);
+	//image->setRotation(180);
+	image->show();
 }
 
 
@@ -845,10 +879,12 @@ void Turret::update()
 	//descend jusqu'au 1/5 de l'ecran et commence a tirer
 	if (posY < HEIGHT / 5)
 	{
-		if (moveTimer % 4 == 0)
-			posY++;
+		//if (moveTimer % 4 == 0)
+		posY+=3;
 	}
 	moveTimer++;
+
+	image->setPos(posX, posY);
 }
 
 Boss3::Boss3(float x, float y) : Ennemi(x, y)
@@ -857,11 +893,19 @@ Boss3::Boss3(float x, float y) : Ennemi(x, y)
 	nbVies = 200;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_MAIN;
-	hauteur = 4;
-	largeur = 8;
+	hauteur = 150;
+	largeur = 122;
 	shoots = true;
 	shootCooldown = 100;   // a toute les x frames l'entite va tirer
 	ammoType = MORTAR;
+
+	image = new QGraphicsPixmapItem(*ListImages[21]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[21]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[22]);
+	GameScene->addItem(image);
+	//image->setScale(2);
+	//image->setRotation(180);
+	image->show();
 }
 
 void Boss3::update()
@@ -871,41 +915,43 @@ void Boss3::update()
 	//le boss descend et commence a faire des zigzags
 	if (posY < HEIGHT / 3.5)
 	{
-		if (moveTimer % 10 == 0)
-			posY++;
+		//if (moveTimer % 10 == 0)
+		posY+=1;
 	}
 	else if (posY >= HEIGHT / 3.5)
 	{
-		if (waitTimer < 100)
+		if (waitTimer < 200)
 			waitTimer++;
 		else
 		{
-			if (moveTimer % 10 == 0)
-			{
+			//if (moveTimer % 10 == 0)
+			//{  
 				if (posX <= WIDTH / 3.5 || posX + largeur >= WIDTH - WIDTH / 3)
 					direction = 1 - direction; // Change de Direction
 				if (direction == 0)
-					posX -= 1;
+					posX -= 2;
 				else
-					posX += 1; // Bouger a gauche ou a droite
-			}
+					posX += 2; // Bouger a gauche ou a droite
+			//}
 		}
 	}
 	moveTimer++;
 	if (moveTimer >= 500)
 		moveTimer = 0;
+
+	image->setPos(posX, posY);
 }
 
 Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'W';
-	nbVies = 60;
+	nbVies = 50;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_SIDE;
-	hauteur = 2;
-	largeur = 4;
+	hauteur = 60;
+	largeur = 60;
 	shoots = true;
-	shootCooldown = 8;
+	shootCooldown = 15;
 	ammoType = ANGLE;
 	rayonMouv = 15;
 	angle = 0;
@@ -913,6 +959,14 @@ Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 	orbiting = false;
 	sensRotation = true;		//true = sens horaire false = sens anti-horaire
 	changTailleRayon = true;	//true = le rayon diminue false = le rayon augmente
+
+	image = new QGraphicsPixmapItem(*ListImages[13]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[13]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[14]);
+	GameScene->addItem(image);
+	image->setScale(2);
+	//image->setRotation(180);
+	image->show();
 }
 
 void Boss3Side::update()
@@ -921,7 +975,7 @@ void Boss3Side::update()
 
 	else if (posY < yBoss3 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 	{
-		if (moveTimer % 2 == 0)
+		//if (moveTimer % 2 == 0)
 			posY++;
 	}
 	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
@@ -929,7 +983,7 @@ void Boss3Side::update()
 		if (orbiting == false)
 		{
 
-			distance = sqrt(pow(xBoss3 - (posX + largeur / 2), 2) + pow(yBoss3 - (posY + hauteur / 2), 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+			distance = sqrt(pow((xBoss3+60) - (posX + largeur / 2), 2) + pow((yBoss3+70) - (posY + hauteur / 2), 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
 			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
 			orbiting = true;
 			angle = atan2(yBoss3 - posY, xBoss3 - posX) * 180 / 3.14159265;
@@ -947,34 +1001,34 @@ void Boss3Side::update()
 			}
 		}
 
-		if (moveTimer % 1 == 0)
-		{
+		//if (moveTimer % 1 == 0)
+		//{
 			posX = xBoss3 + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//xboss3 + 4, le +4 est pour que l'ancrage soit au centre du boss3 et pas en haut a gauche
-			posY = yBoss3 + (rayonMouv / 2 * sin(((angle + 180) * 2 * PI) / 360));
+			posY = yBoss3 + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
 
 			if (sensRotation)		//true = sens horaire false = sens anti-horaire
-				angle += 2;			//vitesse angulaire determine
+				angle += 1.5;			//vitesse angulaire determine
 			else
-				angle -= 2;			//vitesse angulaire determine
+				angle -= 1.5;			//vitesse angulaire determine
 
-			if (moveTimer % 4 == 0)
-			{
+			//if (moveTimer % 4 == 0)
+			//{
 				if (changTailleRayon)
 				{
-					if (rayonMouv > 11)
-						rayonMouv -= 2.7;
+					if (rayonMouv > 160)
+						rayonMouv -= 1.7;
 					else
 						changTailleRayon = false;
 				}
 				else if (!changTailleRayon)
 				{
 					if (rayonMouv < distance)
-						rayonMouv += 2.7;
+						rayonMouv += 1.7;
 					else
 						changTailleRayon = true;
 				}
-			}
-		}
+			//}
+		//}
 		if (angle >= 360)
 			angle = 0;
 	}
@@ -991,6 +1045,8 @@ void Boss3Side::update()
 	moveTimer++;
 	if (moveTimer >= 500)
 		moveTimer = 0;
+
+	image->setPos(posX, posY);
 }
 
 
@@ -1224,7 +1280,7 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 	bulletAllie = isPlayerBullet;
 	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
 
-	QPixmap pngImg("Textures\\bullets\\basicbullet.png");			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
+	QPixmap pngImg(*ListImages[6]);			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
 	image = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	image->setScale(0.5);
@@ -1236,8 +1292,8 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 
 void angleBullet::update()
 {
-	if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
-	{
+	//if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
+	//{
 		if (bulletAllie)
 		{
 			posX += 10 * cos((direction * 2 * PI) / 360) * 1.2;
@@ -1248,7 +1304,7 @@ void angleBullet::update()
 			posX += 10 * cos((direction * 2 * PI) / 360);
 			posY += 10 * sin((direction * 2 * PI) / 360);
 		}
-	}
+	//}
 
 	if (posY >= HEIGHT + 1 || posY <= 0 || posX >= WIDTH || posX <= 0)
 		enVie = false;
@@ -1267,25 +1323,24 @@ TempBullet::TempBullet(float x, float y, int angle, bool isPlayerBullet) : angle
 	ammoType = TEMP;
 	direction = angle;
 	distBullet = 0;
+
+	QPixmap pngImg(*ListImages[6]);			//on pourrait faire une variable globale pour le Qpixmap pour pas avoir a refaire un different objet du meme png a chaque fois
+	image = new QGraphicsPixmapItem(pngImg);
+	GameScene->addItem(image);
+	image->setScale(0.5);
+	image->setPos(posX, posY);
+	image->setRotation(angle + 90);		//leave the +90, trust me bro
+	image->show();
 }
 
 void TempBullet::update()
 {
-	if (distBullet < 45)
+	if (distBullet < 100)		//on peut ajuster la distance que le bullet va parcourir
 	{
-		if (moveTimer % 1 == 0)        //on peut aussi ajuster la vitesse des bullets ennemis
-		{
-			if (bulletAllie)
-			{
-				posX += cos((direction * 2 * PI) / 360) * 1.2;
-				posY += sin((direction * 2 * PI) / 360) * 1.2;
-			}
-			else
-			{
-				posX += cos((direction * 2 * PI) / 360);
-				posY += sin((direction * 2 * PI) / 360) / 2;
-			}
-		}
+
+		posX += 10 * cos((direction * 2 * PI) / 360);
+		posY += 10 * sin((direction * 2 * PI) / 360);
+
 
 		if (posY >= HEIGHT + 1 || posY <= 0 || posX >= WIDTH || posX <= 0)
 			enVie = false;
@@ -1293,12 +1348,16 @@ void TempBullet::update()
 		distBullet++;
 	}
 	else
+	{
 		enVie = false;
+		//delete image;
+	}
+	//moveTimer++;
 
-	moveTimer++;
+	//if (moveTimer >= 100)
+		//moveTimer = 0;
 
-	if (moveTimer >= 100)
-		moveTimer = 0;
+	image->setPos(posX, posY);
 }
 
 Mortar::Mortar(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
@@ -1356,7 +1415,7 @@ AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 	symbole = '+';
 	power_up = ADDLIFE;
 
-	QPixmap pngImg("Textures\\Pup\\addLife.png");
+	QPixmap pngImg(*ListImages[36]);
 	image = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	//image->setRotation(180);
@@ -1370,7 +1429,7 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	power_up = ADDBULLETS;
 	hauteur = 70;
 	largeur = 60;
-	QPixmap pngImg("Textures\\Pup\\addAmo.png");
+	QPixmap pngImg(*ListImages[37]);
 	image = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
 	//image->setRotation(180);

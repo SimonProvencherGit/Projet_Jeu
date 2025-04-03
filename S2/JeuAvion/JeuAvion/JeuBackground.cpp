@@ -228,17 +228,10 @@ void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int ma
 	timer->start(20);
 }
 
-
-
-
-
-
-
-
 //Ce code est horrible (I am lazy)
 void explosionmanager::chainexplosion(int playerposy)
 {
-	int currentexplosionpos  = playerposy - 150;
+	int currentexplosionpos = playerposy - 150;
 	Sprite* expo1 = new Sprite("explosion.png", "explosion.json");
 	Sprite* expo2 = new Sprite("explosion.png", "explosion.json");
 	Sprite* expo3 = new Sprite("explosion.png", "explosion.json");
@@ -385,8 +378,7 @@ void explosionmanager::chainexplosion(int playerposy)
 		}
 		});
 	chainetimer->start(80);
-} 
-
+}
 
 
 void explosionmanager::bossdeath()
@@ -405,11 +397,8 @@ void explosionmanager::bossdeath()
 	QTimer::singleShot(6000, [=]() {
 		delete spriteexplosion;
 		});
-	
-
-
-
 }
+
 
 void explosionmanager::flash() {
 	flashtimer = new QTimer;
@@ -419,26 +408,26 @@ void explosionmanager::flash() {
 	flashsquare->setBrush(Qt::white);
 	GameScene->addItem(flashsquare);
 	maxbrightness = false;
-	
+
 	QObject::connect(flashtimer, &QTimer::timeout, [=]() mutable {
 		if (!maxbrightness)
 		{
 			flashopacity += 0.01;
 		}
-		
+
 		if (maxbrightness)
 		{
 			flashopacity -= 0.02;
 			//return;
 		}
-		if (flashopacity > 1.0 && !maxbrightness) 
+		if (flashopacity > 1.0 && !maxbrightness)
 		{
 			maxbrightness = true;
 			flashopacity = 1.0;
 		}
 		flashsquare->setOpacity(flashopacity);
 		GameScene->update();
-		});
+	});
 	flashtimer->start(48);
 	QTimer::singleShot(11000, [=]() {
 		flashtimer->stop();
@@ -446,5 +435,5 @@ void explosionmanager::flash() {
 		//maxbrightness = false;
 		delete flashsquare;
 		delete flashtimer;
-		});
+	});
 }

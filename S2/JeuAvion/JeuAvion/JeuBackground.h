@@ -37,7 +37,7 @@ public:
 	void flash();
 private:
 	bool maxbrightness = false;
-	QTimer * flashtimer;
+	QTimer* flashtimer;
 	qreal flashopacity = 0;
 	QGraphicsRectItem* flashsquare;
 };

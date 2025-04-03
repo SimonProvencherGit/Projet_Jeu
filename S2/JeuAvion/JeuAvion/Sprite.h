@@ -11,7 +11,7 @@
 #include <QStringList>
 
 
-class Sprite : public QObject{ // Rendre mon objet un QPixMapItem.
+class Sprite : public QObject { // Rendre mon objet un QPixMapItem.
 public:
     Sprite(QString image, QString jsonfile);
     void setpos(int x, int y);
@@ -21,7 +21,7 @@ public:
     void stop();
     void setframe(int index);
     ~Sprite();
-    QGraphicsPixmapItem * pixmapItem;
+    QGraphicsPixmapItem* pixmapItem;
     QPixmap spritesheet;
 private:
     QStringList frameCle;

@@ -89,13 +89,19 @@ void loadimages() { //Initialisation de toute les images.
     ListImages[32]->load("Textures\\Numbers\\8.png");
     ListImages[33] = make_unique<QPixmap>();
     ListImages[33]->load("Textures\\Numbers\\9.png");
-    ListImages[34] = make_unique<QPixmap>();
-    ListImages[34]->load("Textures\\Sprites\\barrel_roll.png");
-    ListImages[35] = make_unique<QPixmap>();
-    ListImages[35]->load("Textures\\Sprites\\barrel_roll-d.png");
 
-
-
+	ListImages[34] = make_unique<QPixmap>();    
+	ListImages[34]->load("Textures\\Ennemis\\orbiter.png");
+	ListImages[35] = make_unique<QPixmap>();
+	ListImages[35]->load("Textures\\Ennemis\\orbiter-d.png");
+	ListImages[36] = make_unique<QPixmap>();
+	ListImages[36]->load("Textures\\Pup\\addLife.png");
+	ListImages[37] = make_unique<QPixmap>();
+	ListImages[37]->load("Textures\\Pup\\addAmo.png");
+    ListImages[38] = make_unique<QPixmap>();
+    ListImages[38]->load("Textures\\Sprites\\barrel_roll.png");
+    ListImages[39] = make_unique<QPixmap>();
+    ListImages[39]->load("Textures\\Sprites\\barrel_roll-d.png");
 }
 
 
@@ -109,7 +115,7 @@ void firststart() {
     }
     else {
         if (jeux) {
-            jeux->executionJeu(0); // Call executionJeu if the object exists
+            jeux->executionJeu(1); // Call executionJeu if the object exists
         }
     }
 }
@@ -131,8 +137,8 @@ int main(int argc, char* argv[]) {
     // Remove the border and background
     view->setFrameStyle(QFrame::NoFrame);
     view->setBackgroundBrush(Qt::NoBrush);
-    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
-    view->setViewport(glWidget);// set le view pour opengl
+    //QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+    //view->setViewport(glWidget);// set le view pour opengl
 
     // Ajouter du antialiasing et Smoothing des pixels.
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);

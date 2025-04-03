@@ -5,6 +5,7 @@
 //#include "Interface.h"
 #include "globalobjects.h"
 #include "Sprite.h"
+
 using namespace std;
 
 //definit la taille du jeu
@@ -49,6 +50,7 @@ public:
     int barrelRollTimer = 0;
     // int nbJoueurs;  
     Sprite* AnimatedSprite;
+
     QGraphicsPixmapItem* image;
     QGraphicsPixmapItem* DamageImage;
     QGraphicsPixmapItem* Originalimage;
@@ -67,7 +69,6 @@ public:
 class Joueur : public Entite
 {
 private:
-   
     int attkDmg;
     int vitesse;
     Sprite* Proppeller1; // pour ajouter les animation du propelle lorsquil est normal

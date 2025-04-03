@@ -33,7 +33,11 @@ class Interface
 private:
     explosionmanager manageexplosion;
     Sprite* loadExplosion;
+    Sprite* loadExplosion2;
     Sprite* loadBarrelRoll;
+    Sprite* loadBarrelRoll2;
+    //Sprite* rolling;
+	//Sprite* rolling2;
     Sprite* Warning;
     Sprite* Water;
     Boss3* boss3;
@@ -42,6 +46,7 @@ private:
     vector<unique_ptr<Entite>> bufferBulletsUpdate;  //on fait un buffer pour les bullets pour ne pas les ajouter dans la liste des entites pendant qu'on itere a travers elle
     vector<unique_ptr<Entite>> listEntites;
     vector<QGraphicsPixmapItem*> listeNbVie;
+	vector<QGraphicsPixmapItem*> listeNbVie2;
     QGraphicsPixmapItem* image;
     backgroundmanager* BackManager;
 
@@ -50,15 +55,17 @@ private:
     QGraphicsPixmapItem* centaines;
     QGraphicsPixmapItem* milliers;
 
-
+    HANDLE hSerial;
 
 
     //enum tirsAngles{CERCLE,BALAYAGE, RANDOM, RANDOM_CIBLE};
     bool firststart = true;
-    QTimer tiltresetimer; // timer pour remmtre la ou les tilt du joueur a la position initiale
-    void tiltplayerleft(Joueur * player);
-    void tiltplayerright(Joueur * player);
-    void resettilt();
+    QTimer tiltresetimerjoueur1; // timer pour remmtre la ou les tilt du joueur a la position initiale
+    QTimer tiltresetimerjoueur2;
+    void tiltplayerleft(Joueur* player);
+    void tiltplayerright(Joueur* player);
+    void resettilt(Joueur * Player);
+
     int score1;
     int score2;
     int scoreTotal;
@@ -86,8 +93,8 @@ private:
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
-    int dataManette[6] = { 0 };     //donnes recues de la manette
-    int oldDataManette[6] = { 0 };  //donnes precedentes de la manette
+    int dataManette[7] = { 0 };     //donnes recues de la manette
+    int oldDataManette[7] = { 0 };  //donnes precedentes de la manette
 
 public:
     Interface();

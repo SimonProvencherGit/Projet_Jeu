@@ -17,6 +17,7 @@ void setallSFXVolume(float inputvolume)
 {      
     sfxWarning.setVolume(inputvolume);
     enemyexplosion.setVolume(inputvolume);
+    
     sfxbossdeath.setVolume(inputvolume);
     sfx.setVolume(inputvolume);
 
