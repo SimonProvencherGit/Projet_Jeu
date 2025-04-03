@@ -1,6 +1,6 @@
 #include "Sprite.h"
 // https://www.youtube.com/watch?v=lrrptFVlMu4
-Sprite::Sprite(QString image, QString jsonfile){
+Sprite::Sprite(QString image, QString jsonfile) {
     pixmapItem = new QGraphicsPixmapItem();
     spritesheet = QPixmap("Textures\\Sprites\\" + image);
     QFile Fichier("Textures\\Sprites\\" + jsonfile);
@@ -23,7 +23,7 @@ Sprite::Sprite(QString image, QString jsonfile){
     spritetimer = new QTimer(this);
     previousspritetimer = new QTimer(this);
     QObject::connect(spritetimer, &QTimer::timeout, [=]() { //https://doc.qt.io/qt-6/qtimer.html
-       // qDebug() << "Timer Start";
+        // qDebug() << "Timer Start";
         nextframe();
         });
     QObject::connect(previousspritetimer, &QTimer::timeout, [=]() { //https://doc.qt.io/qt-6/qtimer.html
@@ -35,17 +35,17 @@ Sprite::Sprite(QString image, QString jsonfile){
 }
 
 void Sprite::setpos(int inputx, int inputy) {
- 
-        x = inputx;
-        y = inputy;
-        pixmapItem->setPos(x, y);
+
+    x = inputx;
+    y = inputy;
+    pixmapItem->setPos(x, y);
 }
 
 void Sprite::setsize(float size) {
-    
-        spritesheet = spritesheet.scaled(spritesheet.width() * size, spritesheet.height() * size, Qt::KeepAspectRatio);
-        pixmapItem->setPixmap(spritesheet);
-  
+
+    spritesheet = spritesheet.scaled(spritesheet.width() * size, spritesheet.height() * size, Qt::KeepAspectRatio);
+    pixmapItem->setPixmap(spritesheet);
+
 }
 
 void Sprite::stop() {

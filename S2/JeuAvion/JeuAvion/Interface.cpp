@@ -5,57 +5,111 @@
 
 void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
-    if (e->enVie == false)
+    // si c'est joueur
+    if (e->typeEntite == JOUEUR)
     {
-        return;
-    }
-    if (e->flashing == true)
-    {
-        return;
-    }
-
-
-    QPixmap originalPixmap = pixmapItem->pixmap();
-
-
-    pixmapItem->setPixmap(e->DamageImage->pixmap());
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
-    qDebug() << "Execution time: " << duration << " ms";
-    //Retourner l'image a l'originale
-    QTimer::singleShot(durationMs, [pixmapItem, originalPixmap, e]() {
-
-        if (e->enVie == true) {
-            if (e == nullptr)
-            {
-                return;
-            }
-
-            if (pixmapItem == nullptr)
-            {
-                return;
-            }
-            if (e->Originalimage == nullptr)
-            {
-                return;
-            }
-            if (e->image == nullptr)
-            {
-                return;
-            }
-            try {
-                QPixmap revertpix = e->Originalimage->pixmap();
-                e->image->setPixmap(revertpix);
-            }
-            catch (...)
-            {
-                qDebug() << "Failed to revert image";
-                // erreur
-            }
-            e->flashing = false;
+        if (e->enVie == false)
+        {
+            return;
         }
-        });
+        if (e->flashing == true)
+        {
+            return;
+        }
+
+
+
+        e->AnimatedSprite->spritesheet = e->DamageImage->pixmap();
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        qDebug() << "Execution time: " << duration << " ms";
+        //Retourner l'image a l'originale
+        QTimer::singleShot(500, [=]() mutable {
+
+            if (e->enVie == true) {
+                if (e == nullptr)
+                {
+                    return;
+                }
+
+                if (pixmapItem == nullptr)
+                {
+                    return;
+                }
+                if (e->Originalimage == nullptr)
+                {
+                    return;
+                }
+                if (e->image == nullptr)
+                {
+                    return;
+                }
+                try {
+                    e->AnimatedSprite->spritesheet = e->Originalimage->pixmap();
+                }
+                catch (...)
+                {
+                    qDebug() << "Failed to revert image";
+                }
+                e->flashing = false;
+            }
+            });
+
+    }
+    // si ce n'est pas un joueur
+    else if (e->typeEntite != JOUEUR) {
+        if (e->enVie == false)
+        {
+            return;
+        }
+        if (e->flashing == true)
+        {
+            return;
+        }
+
+
+        QPixmap originalPixmap = pixmapItem->pixmap();
+
+
+        pixmapItem->setPixmap(e->DamageImage->pixmap());
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+        qDebug() << "Execution time: " << duration << " ms";
+        //Retourner l'image a l'originale
+        QTimer::singleShot(durationMs, [pixmapItem, originalPixmap, e]() {
+
+            if (e->enVie == true) {
+                if (e == nullptr)
+                {
+                    return;
+                }
+
+                if (pixmapItem == nullptr)
+                {
+                    return;
+                }
+                if (e->Originalimage == nullptr)
+                {
+                    return;
+                }
+                if (e->image == nullptr)
+                {
+                    return;
+                }
+                try {
+                    QPixmap revertpix = e->Originalimage->pixmap();
+                    e->image->setPixmap(revertpix);
+                }
+                catch (...)
+                {
+                    qDebug() << "Failed to revert image";
+                }
+                e->flashing = false;
+            }
+            });
+    }
 }
 Interface::Interface()
 {

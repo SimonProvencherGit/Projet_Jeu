@@ -357,7 +357,7 @@ void explosionmanager::chainexplosion(int playerposy)
 			enemyexplosion.playSFX("explosion.wav");
 			currentexplosionpos = currentexplosionpos - 50;
 			expo1->setpos(0, currentexplosionpos);
-			expo2->setpos(100, currentexplosionpos);
+			expo2->setpos(200, currentexplosionpos);
 			expo3->setpos(400, currentexplosionpos);
 			expo4->setpos(600, currentexplosionpos);
 			expo5->setpos(800, currentexplosionpos);

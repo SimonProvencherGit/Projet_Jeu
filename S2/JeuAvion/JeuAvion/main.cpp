@@ -89,6 +89,10 @@ void loadimages() { //Initialisation de toute les images.
     ListImages[32]->load("Textures\\Numbers\\8.png");
     ListImages[33] = make_unique<QPixmap>();
     ListImages[33]->load("Textures\\Numbers\\9.png");
+    ListImages[34] = make_unique<QPixmap>();
+    ListImages[34]->load("Textures\\Sprites\\barrel_roll.png");
+    ListImages[35] = make_unique<QPixmap>();
+    ListImages[35]->load("Textures\\Sprites\\barrel_roll-d.png");
 
 
 

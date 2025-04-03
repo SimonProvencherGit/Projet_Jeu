@@ -112,16 +112,16 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	isPlayer = true;
 	barrelRollTimer = 0;
 
-	QPixmap pngImg("plane.png");
-	QPixmap dmgPngImg("plane-d.png");
-	qDebug() << "QPixmap is null:" << pngImg.isNull();
-	image = new QGraphicsPixmapItem(pngImg);
-	Originalimage = new QGraphicsPixmapItem(pngImg);
-	DamageImage = new QGraphicsPixmapItem(dmgPngImg);
+
+	image = new QGraphicsPixmapItem(*ListImages[34]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[34]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[35]);
 
 	image->setScale(0.25);
+	Originalimage->setScale(0.25);
+	DamageImage->setScale(0.25);
 	//shadow->setOffset(50, 10);       // Set the offset of the shadow (x, y)
-	image->setZValue(1);
+	//image->setZValue(1);
 	qDebug() << "Image Z-Value:" << image->zValue();
 	QColor shadowColor(0, 0, 255, 255);
 	//image->setPos(0, 0);
