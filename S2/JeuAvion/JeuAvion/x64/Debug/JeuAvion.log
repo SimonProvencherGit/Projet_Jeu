@@ -1,6 +1,21 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
   JeuBackground.cpp
+  Menu.cpp
+  Music.cpp
+  SFX.cpp
+  Sprite.cpp
+  globalobjects.cpp
+  main.cpp
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(39,14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(44,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(47,21): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Music.cpp(58,12): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(14,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'main.cpp')
+  
+  qrc_JeuAvion.cpp
+  LINK : C:\Users\amran\CLionProjects\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe not found or not built by the last incremental link; performing full link
 sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundSource.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(SoundStream.obj)' or at ''; linking object as if no debug info
 sfml-audio-s-d.lib(Music.obj) : warning LNK4099: PDB '' was not found with 'sfml-audio-s-d.lib(Music.obj)' or at ''; linking object as if no debug info
