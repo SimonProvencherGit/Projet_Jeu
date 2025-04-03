@@ -22,14 +22,13 @@ public:
     void setframe(int index);
     ~Sprite();
     QGraphicsPixmapItem * pixmapItem;
-    QPixmap spritesheet;
 private:
     QStringList frameCle;
     void previousframe();
     void nextframe();
     int x = 0;
     int y = 0;
- 
+    QPixmap spritesheet;
     QJsonObject json;
     QTimer* spritetimer;
     QTimer* previousspritetimer;
