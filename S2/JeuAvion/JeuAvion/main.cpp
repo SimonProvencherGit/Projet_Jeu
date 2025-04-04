@@ -102,6 +102,38 @@ void loadimages() { //Initialisation de toute les images.
     ListImages[38]->load("Textures\\Sprites\\barrel_roll.png");
     ListImages[39] = make_unique<QPixmap>();
     ListImages[39]->load("Textures\\Sprites\\barrel_roll-d.png");
+
+    ListImages[40] = make_unique<QPixmap>();
+    ListImages[40]->load("Textures\\bullets\\canon.png");
+	ListImages[41] = make_unique<QPixmap>();
+	ListImages[41]->load("Textures\\Ennemis\\sideBomber.png");
+	ListImages[42] = make_unique<QPixmap>();
+	ListImages[42]->load("Textures\\Ennemis\\sideBomber-d.png");
+	ListImages[43] = make_unique<QPixmap>();
+	ListImages[43]->load("Textures\\Ennemis\\boss2.png");
+	ListImages[44] = make_unique<QPixmap>();
+	ListImages[44]->load("Textures\\Ennemis\\boss2-d.png");
+	ListImages[46] = make_unique<QPixmap>();
+	ListImages[46]->load("Textures\\Ennemis\\boss3_main.png");
+	ListImages[47] = make_unique<QPixmap>();
+	ListImages[47]->load("Textures\\Ennemis\\boss3_main-d.png");
+	ListImages[48] = make_unique<QPixmap>();
+	ListImages[48]->load("Textures\\Ennemis\\boss3_side.png");
+	ListImages[49] = make_unique<QPixmap>();
+    ListImages[49]->load("Textures\\Ennemis\\boss3_side-d.png");
+	ListImages[50] = make_unique<QPixmap>();
+	ListImages[50]->load("Textures\\Ennemis\\exploder.png");
+	ListImages[51] = make_unique<QPixmap>();
+	ListImages[51]->load("Textures\\Ennemis\\exploder-d.png");
+	ListImages[52] = make_unique<QPixmap>();
+	ListImages[52]->load("Textures\\Ennemis\\turret.png");
+	ListImages[53] = make_unique<QPixmap>();
+	ListImages[53]->load("Textures\\Ennemis\\turret-d.png");
+	ListImages[54] = make_unique<QPixmap>();
+	ListImages[54]->load("Textures\\Ennemis\\exploder.png");
+	ListImages[55] = make_unique<QPixmap>();
+	ListImages[55]->load("Textures\\Ennemis\\exploder-d.png");
+
 }
 
 
@@ -115,7 +147,7 @@ void firststart() {
     }
     else {
         if (jeux) {
-            jeux->executionJeu(1); // Call executionJeu if the object exists
+            jeux->executionJeu(0); // Call executionJeu if the object exists
         }
     }
 }

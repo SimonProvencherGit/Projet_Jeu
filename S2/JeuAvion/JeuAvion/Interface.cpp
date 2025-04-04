@@ -187,21 +187,25 @@ Interface::Interface()
 
     unites = new QGraphicsPixmapItem(*ListImages[24]);
     GameScene->addItem(unites);
+	unites->setScale(0.55);
     unites->show();
     unites->setPos(1890, 10);
     unites->setZValue(100);
     dizaines = new QGraphicsPixmapItem(*ListImages[24]);
     GameScene->addItem(dizaines);
+	dizaines->setScale(0.55);
     dizaines->show();
     dizaines->setPos(1860, 10);
     dizaines->setZValue(100);
     centaines = new QGraphicsPixmapItem(*ListImages[24]);
     GameScene->addItem(centaines);
+	centaines->setScale(0.55);
     centaines->show();
     centaines->setPos(1830, 10);
     centaines->setZValue(100);
     milliers = new QGraphicsPixmapItem(*ListImages[24]);
     GameScene->addItem(milliers);
+	milliers->setScale(0.55);
     milliers->show();
     milliers->setPos(1800, 10);
     milliers->setZValue(100);
@@ -822,7 +826,7 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, SHOTGUNNER);
             //enemySpawn(1, TURRET);
 			//enemySpawn(1, ORBITER);
-            // enemySpawn(1, EXPLODER);
+            //enemySpawn(1, EXPLODER);
 
             /*if (spawnPowerUpStart)
             {
@@ -830,6 +834,7 @@ void Interface::progressionDifficulte()
                 //enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
 				//enemySpawn(1, BOSS3_MAIN);
+				//enemySpawn(1, BOSS3_SIDE);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
@@ -1176,7 +1181,7 @@ void Interface::updateEntites()
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
             if (e->typeEntite == ENNEMI && e->ammoType == FRAGMENTING && e->moveTimer % e->shootCooldown == 0 && e->shoots)     //si c'est un ennemi qui tire des fragmenting bullets
-                bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2 -10, e->posY + e->hauteur + 1, false));
 
             if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
                 bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2 - 14, e->posY + e->hauteur - 14, false));
@@ -1243,18 +1248,18 @@ void Interface::updateEntites()
                     if (e->moveTimer % 125 == 0)
                     {
                         //cercleTir(25, e->posX + e->largeur / 2 - 50, e->posY + e->hauteur / 2);
-                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     }
-                    balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
                     if (e->moveTimer % 12 == 0)
-                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 else if (e->nbVies < 170 && e->nbVies >= 80)
                 {
-                    balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     if (e->moveTimer % 125 == 0)
-                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     //if (e->moveTimer % 15 == 0)
                       //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
@@ -1262,13 +1267,13 @@ void Interface::updateEntites()
                 {
                     if (e->moveTimer % 200 == 0)
                     {
-                        cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                         //cercleTir(5, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
                     }
-                    balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
                     if (e->moveTimer % 12 == 0)
-                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 angleTirBoss += 5;
                 if (angleTirBoss >= 360)
@@ -1285,13 +1290,13 @@ void Interface::updateEntites()
                     {
                         if (e->nbVies < 200 && e->nbVies >= 90)
                         {
-                            balayageTir(1, 5, e->posX + e->largeur / 2 + 4, e->posY + e->hauteur / 2);
-                            balayageTir(1, 5, e->posX + e->largeur / 2 - 4, e->posY + e->hauteur / 2, 180);
+                            balayageTir(1, 5, e->posX + e->largeur / 2 + 4, e->posY + e->hauteur / 2 - 35);
+                            balayageTir(1, 5, e->posX + e->largeur / 2 - 4, e->posY + e->hauteur / 2 - 35, 180);
                         }
                         else if (e->nbVies < 90)
                         {
 
-                            balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                            balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 35);
                         }
                         angleTirBoss += 3;
                         if (angleTirBoss >= 360)
@@ -1433,7 +1438,7 @@ void Interface::gererCollisions()
                             {
                                 if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
                                     for (int i = 80; i < 110; i += 10)
-                                        bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
+                                        bufferBullets.emplace_back(make_unique<angleBulletFrag>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
 
                                 //if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite == BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
@@ -1759,7 +1764,7 @@ void Interface::executionJeu(int version)
 
 
             loadBarrelRoll2 = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
-            loadBarrelRoll2->setpos(1775, 940);
+            loadBarrelRoll2->setpos(1775, 910);
             loadBarrelRoll2->start(170);
             loadBarrelRoll2->setframe(59);
             loadBarrelRoll2->pixmapItem->setZValue(500);
@@ -1771,7 +1776,7 @@ void Interface::executionJeu(int version)
 
             loadExplosion2 = new Sprite("loadingExplosion.png", "loadingExplosion.json");
             //loadExplosion2->setpos(1725, 1020);
-            loadExplosion2->setpos(1775, 1020);
+            loadExplosion2->setpos(1775, 990);
             loadExplosion2->start(170);
             loadExplosion2->setframe(59);
             loadExplosion2->pixmapItem->setZValue(500);
@@ -1782,17 +1787,21 @@ void Interface::executionJeu(int version)
 
 			updateHealthCounter();
             loadBarrelRoll->pixmapItem->setScale(0.6);
-            loadBarrelRoll->setpos(-5, 940);
+            loadBarrelRoll->setpos(-5, 910);
             loadBarrelRoll->pixmapItem->setZValue(500);
 
             loadExplosion->pixmapItem->setScale(0.6);
-            loadExplosion->setpos(-5, 1020);
+            loadExplosion->setpos(-5, 990);
             loadExplosion->pixmapItem->setZValue(500);
 
             milliers->setPos(WIDTH / 2 - 60, 10);
 			centaines->setPos(WIDTH / 2 - 30, 10);
             dizaines->setPos(WIDTH / 2 + 0, 10);
             unites->setPos(WIDTH / 2 + 30, 10);
+
+            joueur->nbVies = 10;
+			joueur2->nbVies = 10;
+			updateHealthCounter();
             
         }
         firststart = false;

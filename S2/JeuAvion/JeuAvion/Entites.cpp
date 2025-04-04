@@ -388,8 +388,8 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 	symbole = 'H';
 	nbVies = 3;
 	typeEnnemi = ARTILLEUR;
-	hauteur = 149 / 2.5;
-	largeur = 148 / 2.5;
+	hauteur = 160;
+	largeur = 77;
 	shootCooldown = 80;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	posRand = rand() % 6;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
 	ammoType = FRAGMENTING;
@@ -398,7 +398,7 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 	Originalimage = new QGraphicsPixmapItem(*ListImages[2]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[3]);
 	GameScene->addItem(image);
-	image->setScale(0.40);
+	image->setScale(0.16);
 	//image->setRotation(180);
 	image->show();
 }
@@ -406,16 +406,16 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 void Artilleur::update()
 {
 	if (posY <= (HEIGHT / 10) + posRand * 10 && moveTimer % 8 == 0)
-		posY += 2;
+		posY += 2.5;
 
 	//if (moveTimer % 50 == 0)
 	//{
 	if (posX <= 1 || posX + largeur >= WIDTH - 1)
 		direction = 1 - direction; // Change de Direction
 	if (direction == 0)
-		posX -= 1;
+		posX -= 0.5;
 	else
-		posX += 1; // Bouger a gauche ou a droite
+		posX += 0.5; // Bouger a gauche ou a droite
 	//}
 
 	moveTimer++;
@@ -482,8 +482,8 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 	symbole = 'X';
 	nbVies = 3;
 	typeEnnemi = AIMBOT;
-	hauteur = 228 / 4;
-	largeur = 204 / 4;
+	hauteur = 228*0.4;
+	largeur = 204*0.4;
 	shootCooldown = 200;   // a toute les x frames l'entite va tirer
 	posRand = rand() % 6;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
 	ammoType = HOMING;
@@ -493,7 +493,9 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 	DamageImage = new QGraphicsPixmapItem(*ListImages[8]);
 	GameScene->addItem(image);
 	//image->setRotation(180);
-	image->setScale(0.25);
+	image->setScale(0.4);
+	Originalimage->setScale(0.4);
+	DamageImage->setScale(0.4);
 	image->show();
 }
 
@@ -635,23 +637,28 @@ SideBomber::SideBomber(float x, float y) : Ennemi(x, y)
 	symbole = 'S';
 	nbVies = 2;
 	typeEnnemi = SIDEBOMBER;
-	hauteur = 267 / 6;
-	largeur = 874 / 6;
+	hauteur = 53*1.5;
+	largeur = 32*1.5;
 	shoots = false;
 
-	if (posX == 1)
-		side = true;
-	else
-		side = false;
-
-	image = new QGraphicsPixmapItem(*ListImages[15]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[15]);
-	DamageImage = new QGraphicsPixmapItem(*ListImages[16]);
+	
+	image = new QGraphicsPixmapItem(*ListImages[41]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[41]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[42]);
 	GameScene->addItem(image);
 	//image->setRotation(180);
-	image->setScale(0.16);
+	image->setScale(1.5);
 	image->show();
 
+	if (posX == 1)
+	{
+		image->setRotation(180);
+		side = true;
+	}
+	else
+	{
+		side = false;
+	}
 }
 
 
@@ -684,18 +691,21 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
-	hauteur = 150;
-	largeur = 122;
+	hauteur = 165;
+	largeur = 390;
 	shootCooldown = 10;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = true;
 	angle = 0;
 	rayonMouv = 70;		//va faire un cercle de rayon 7
 
-	image = new QGraphicsPixmapItem(*ListImages[21]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[21]);
-	DamageImage = new QGraphicsPixmapItem(*ListImages[22]);
+	image = new QGraphicsPixmapItem(*ListImages[43]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[43]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[44]);
 	GameScene->addItem(image);
-	//image->setScale(2);
+	image->setScale(0.8);
+	Originalimage->setScale(0.8);
+	DamageImage->setScale(0.8);
+
 	//image->setRotation(180);
 	image->show();
 
@@ -725,8 +735,8 @@ Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 	symbole = 'J';
 	nbVies = 3;
 	typeEnnemi = ORBITER;
-	hauteur = 1080/15;
-	largeur = 1080/15;
+	hauteur = 125*0.8;
+	largeur = 148*0.8;
 	shoots = true;
 	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
 	shootCooldown = 170;   // a toute les x frames l'entite va tirer
@@ -744,7 +754,9 @@ Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 	DamageImage = new QGraphicsPixmapItem(*ListImages[35]);
 	GameScene->addItem(image);
 	//image->setRotation(180);
-	image->setScale(0.06);
+	image->setScale(0.8);
+	Originalimage->setScale(0.8);
+	DamageImage->setScale(0.8);
 	image->show();
 }
 
@@ -754,7 +766,7 @@ void Orbiter::update()
 
 	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
 
-	if (posY < (yJoueur - rayonMouv) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	if (posY < (yJoueur - rayonMouv/2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 	{
 		//if (moveTimer % 2 == 0)
 		posY+=5;
@@ -775,12 +787,12 @@ void Orbiter::update()
 			if (posX < xJoueur)
 			{
 				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle += 0.7;
+				angle += 0.75;
 			}
 			else
 			{
 				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle -= 0.7;
+				angle -= 0.75;
 			}
 		}
 		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
@@ -790,9 +802,9 @@ void Orbiter::update()
 			posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
 
 			if (sensRotation)		//true = sens horaire false = sens anti-horaire
-				angle += 0.7;			//vitesse angulaire determine
+				angle += 0.75;			//vitesse angulaire determine
 			else
-				angle -= 0.7;			//vitesse angulaire determine
+				angle -= 0.75;			//vitesse angulaire determine
 
 		//}
 		if (angle >= 360)
@@ -817,18 +829,20 @@ Exploder::Exploder(float x, float y) : Ennemi(x, y)
 	symbole = 'E';
 	nbVies = 6;
 	typeEnnemi = EXPLODER;
-	hauteur = 1080/15;
-	largeur = 1080/15;
+	hauteur = 400*0.2;
+	largeur = 400*0.2;
 	shoots = false;
 	ammoType = TEMP;
 	shootCooldown = 1;
 
-	image = new QGraphicsPixmapItem(*ListImages[34]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[34]);
-	DamageImage = new QGraphicsPixmapItem(*ListImages[35]);
+	image = new QGraphicsPixmapItem(*ListImages[54]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[54]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[55]);
 	GameScene->addItem(image);
 	//image->setRotation(180);
-	image->setScale(0.06);
+	image->setScale(0.2);
+	Originalimage->setScale(0.20);
+	DamageImage->setScale(0.20);
 	image->show();
 }
 
@@ -893,15 +907,15 @@ Boss3::Boss3(float x, float y) : Ennemi(x, y)
 	nbVies = 200;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_MAIN;
-	hauteur = 150;
-	largeur = 122;
+	hauteur = 204;
+	largeur = 283;
 	shoots = true;
 	shootCooldown = 100;   // a toute les x frames l'entite va tirer
 	ammoType = MORTAR;
 
-	image = new QGraphicsPixmapItem(*ListImages[21]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[21]);
-	DamageImage = new QGraphicsPixmapItem(*ListImages[22]);
+	image = new QGraphicsPixmapItem(*ListImages[46]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[46]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[47]);
 	GameScene->addItem(image);
 	//image->setScale(2);
 	//image->setRotation(180);
@@ -948,8 +962,8 @@ Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 	nbVies = 50;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_SIDE;
-	hauteur = 60;
-	largeur = 60;
+	hauteur = 88*0.68;
+	largeur = 94*0.68;
 	shoots = true;
 	shootCooldown = 15;
 	ammoType = ANGLE;
@@ -960,11 +974,11 @@ Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 	sensRotation = true;		//true = sens horaire false = sens anti-horaire
 	changTailleRayon = true;	//true = le rayon diminue false = le rayon augmente
 
-	image = new QGraphicsPixmapItem(*ListImages[13]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[13]);
-	DamageImage = new QGraphicsPixmapItem(*ListImages[14]);
+	image = new QGraphicsPixmapItem(*ListImages[48]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[48]);
+	DamageImage = new QGraphicsPixmapItem(*ListImages[49]);
 	GameScene->addItem(image);
-	image->setScale(2);
+	image->setScale(0.68);
 	//image->setRotation(180);
 	image->show();
 }
@@ -1077,6 +1091,7 @@ BasicBullet::BasicBullet(float x, float y, bool isPlayerBullet) : Bullet(x, y, i
 	GameScene->addItem(image);
 	image->setScale(0.5);
 	image->setRotation(180);
+	image->setPos(posX, posY);
 	image->show();
 	//label->setAttribute(Qt::WA_TranslucentBackground);
 
@@ -1117,10 +1132,11 @@ FragmentingBullet::FragmentingBullet(float x, float y, bool isPlayerBullet) : Bu
 	largeur = 24;
 	nbVies = 1;
 
-	image = new QGraphicsPixmapItem(*ListImages[6]);
+	image = new QGraphicsPixmapItem(*ListImages[40]);
 	GameScene->addItem(image);
-	image->setScale(0.5);
-	image->setRotation(180);
+	image->setScale(0.055);
+	//image->setRotation(180);
+	image->setPos(posX, posY);
 	image->show();
 }
 
@@ -1208,6 +1224,7 @@ Homing::Homing(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBul
 	DamageImage = new QGraphicsPixmapItem(*ListImages[18]);
 	GameScene->addItem(image);
 	image->setScale(3);
+	image->setPos(posX, posY);
 	image->setRotation(180);
 	image->show();
 }
@@ -1359,6 +1376,52 @@ void TempBullet::update()
 
 	image->setPos(posX, posY);
 }
+angleBulletFrag::angleBulletFrag(float x, float y, int angle, char symbole, bool isPlayerBullet) : Entite(x, y, symbole, 1, 1)
+{
+	posX = x;
+	posY = y;
+	typeEntite = BULLET;
+	ammoType = ANGLE;
+	hauteur = 25;
+	largeur = 25;
+	nbVies = 0;
+	direction = angle;		//0 a 360 pour les directions possibles
+	bulletAllie = isPlayerBullet;
+	sfx.playSFX("basicbullet.wav"); // Jouer son du basic bullet
+
+	image = new QGraphicsPixmapItem(*ListImages[40]);
+	GameScene->addItem(image);
+	image->setScale(0.055);
+	//image->setRotation(180);
+	image->setPos(posX, posY);
+	image->show();
+
+}
+
+void angleBulletFrag::update()
+{
+	if (bulletAllie)
+	{
+		posX += 10 * cos((direction * 2 * PI) / 360) * 1.2;
+		posY += 10 * sin((direction * 2 * PI) / 360) * 1.2;
+	}
+	else
+	{
+		posX += 10 * cos((direction * 2 * PI) / 360);
+		posY += 10 * sin((direction * 2 * PI) / 360);
+	}
+	//}
+
+	if (posY >= HEIGHT + 1 || posY <= 0 || posX >= WIDTH || posX <= 0)
+		enVie = false;
+
+	moveTimer++;
+
+	if (moveTimer >= 100)
+		moveTimer = 0;
+
+	image->setPos(posX, posY);
+}
 
 Mortar::Mortar(float x, float y, bool isPlayerBullet) : Bullet(x, y, isPlayerBullet)
 {
@@ -1436,3 +1499,4 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	image->setScale(0.6);
 	image->show();
 }
+
