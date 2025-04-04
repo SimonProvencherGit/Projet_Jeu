@@ -122,6 +122,10 @@ void firststart() {
 ;
 
 int main(int argc, char* argv[]) {
+
+   
+
+
     //QPixmap ListImage[50];
     loadsettings();
     QApplication app(argc, argv);

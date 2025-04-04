@@ -161,6 +161,7 @@ Interface::Interface()
     */
 
     joueur->AnimatedSprite->setpos(joueur->posX, joueur->posY);
+    joueur->Proppeller1->setpos(joueur->posX, joueur->posY);
     //joueur->AnimatedSprite->start(70);
     joueur->AnimatedSprite->setframe(6);
 
@@ -416,6 +417,7 @@ void Interface::gererInput()
             {
                 if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
                 {
+            
                     joueur->barrelRoll = true;
                     joueur->doingbarrelroll = true;
                     tiltresetimerjoueur1.stop();
@@ -434,6 +436,11 @@ void Interface::gererInput()
                     {
                         joueur->AnimatedSprite->start(50);
                     }
+                    joueur->Proppeller1->pixmapItem->hide();// turn off propeller
+
+                    QTimer::singleShot(800, [=]() {
+                        joueur->Proppeller1->pixmapItem->show();
+                        });
 
                     QTimer::singleShot(800, [=]() {
                         joueur->AnimatedSprite->stop();
@@ -557,6 +564,11 @@ void Interface::gererInput()
                         {
                             joueur2->AnimatedSprite->start(50);
                         }
+                        joueur2->Proppeller1->pixmapItem->hide();// turn off propeller
+
+                        QTimer::singleShot(800, [=]() {
+                            joueur2->Proppeller1->pixmapItem->show();
+                            });
 
                         QTimer::singleShot(800, [=]() {
                             joueur2->AnimatedSprite->stop();
@@ -803,6 +815,7 @@ void Interface::progressionDifficulte()
     static int nbPass = 0;
     static bool spawnPup = false;
     static bool allSideBossSpawned = false;
+    static bool ONESHOT = false;
 
     enemySpawnTimer++;
 
@@ -818,23 +831,23 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             //enemySpawn(1, DIVEBOMBER);
-            //enemySpawn(1, TANK);
+           // enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
             //enemySpawn(1, TURRET);
 			//enemySpawn(1, ORBITER);
             // enemySpawn(1, EXPLODER);
 
-            /*if (spawnPowerUpStart)
+           /* if (spawnPowerUpStart)
             {
                 //enemySpawn(1, EXPLODER);
                 //enemySpawn(1, BOSS2_MAIN);
-                //enemySpawn(1, BOSS1_MAIN);
+                enemySpawn(1, BOSS1_MAIN);
 				//enemySpawn(1, BOSS3_MAIN);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }*/
-            
+            }
+            */
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -922,10 +935,19 @@ void Interface::progressionDifficulte()
     else if (score1 >= memScore && score1 <= memScore + 800 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
 
-        if (bossWaitTimer > 100)
+        if (bossWaitTimer > 370)
         {
             if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
+                if(!ONESHOT)
+                { 
+                music.playMusic("Forest.wav", 21639, 115195);
+                BackManager->stopbackground();
+                BackManager->setforest();
+                BackManager->bougebackground();
+                ONESHOT = true;
+                }
+                
                 enemySpawn(3, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
                 int nbZaper = 0;
@@ -1472,6 +1494,7 @@ void Interface::gererCollisions()
                                     {
                                         if (e2->getTypeEnnemi() == BOSS1_MAIN)
                                         {
+                                            music.stopMusic();
                                             manageexplosion.bossdeath();
                                         }
                                         powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -1562,10 +1585,6 @@ int Interface::customPoints(typeEnnemis e)
         return 30;
         break;
     case BOSS1_MAIN:
-        music.playMusic("Forest.wav", 21639, 115195);
-        BackManager->stopbackground();
-        BackManager->setforest();
-        BackManager->bougebackground();
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
         bossMusicStart = false;
         bossSpawnSound = false;
@@ -1661,6 +1680,7 @@ void Interface::enleverEntites()
                 if (!joueur->enVie)
                 {
                     delete listEntites[i]->AnimatedSprite;
+                    delete joueur->Proppeller1;
                     //GameScene->removeItem(rolling->pixmapItem);
                     joueur = nullptr;
                 }
@@ -1671,6 +1691,7 @@ void Interface::enleverEntites()
                 {
                         delete listEntites[i]->AnimatedSprite;
                         //GameScene->removeItem(rolling2->pixmapItem);
+                        delete joueur2->Proppeller1;
                         joueur2 = nullptr;
                     
                 }
@@ -1732,6 +1753,7 @@ void Interface::executionJeu(int version)
         updateBarrelRollCounter();
 
         BackManager = new backgroundmanager;
+       // BackManager->setspace();
         BackManager->bougebackground();
 
         //proxy->setpos(0, 0);
@@ -1739,7 +1761,7 @@ void Interface::executionJeu(int version)
         //QPixmap pixmap("plane.png");
         //hideCursor();
         music.stopMusic();
-        music.playMusic("Ocean.wav", 0, 117000);
+        music.playMusic("Ocean.wav", 570, 86594);
 
         if (version > 0)     //si on a choisi autre chose que le mode seul on initialise le 2e joueur
         {

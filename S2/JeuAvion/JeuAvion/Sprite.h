@@ -23,7 +23,9 @@ public:
     ~Sprite();
     QGraphicsPixmapItem* pixmapItem;
     QPixmap spritesheet;
+    
 private:
+    
     QStringList frameCle;
     void previousframe();
     void nextframe();

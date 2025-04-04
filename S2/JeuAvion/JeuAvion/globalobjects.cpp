@@ -1,5 +1,6 @@
 #include "globalobjects.h"
 
+bool inspace = false;
 SFX sfxbossdeath;
 SFX sfx;
 Music music;

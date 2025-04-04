@@ -124,6 +124,7 @@ void backgroundmanager::setdesert()
 }
 void backgroundmanager::setspace()
 {
+	int eastereggchancevalue = QRandomGenerator::global()->bounded(1, 4);
 	if (Background1 == nullptr && Background2 == nullptr)
 	{
 		Background1 = new Sprite("space.png", "space.json");
@@ -140,6 +141,10 @@ void backgroundmanager::setspace()
 		Background2->setframe(0);
 		GameScene->update();
 		mapframetimer = 500;
+		if(eastereggchancevalue == 3)
+		{ 
+		eastereggchance();
+		}
 		return;
 	}
 	else
@@ -158,6 +163,10 @@ void backgroundmanager::setspace()
 		GameScene->addItem(Background2->pixmapItem);
 		Background2->setframe(0);
 		GameScene->update();
+		if (eastereggchancevalue == 3)
+		{
+			eastereggchance();
+		}
 		mapframetimer = 500;
 	}
 
@@ -184,6 +193,65 @@ void backgroundmanager::stopbackground()
 	timerBack1->stop();
 	timerBack2->stop();
 }
+
+
+void backgroundmanager::eastereggchance()
+{
+	easteregg1 = new QGraphicsPixmapItem(*easteregg1image);
+	easteregg1->show();
+	easteregg1->setZValue(0);
+	GameScene->addItem(easteregg1);
+	easteregg1timer = new QTimer;
+	easteregg1->setPos(0, -12840);
+	easteregg1->setScale(0.5);
+
+	easteregg2 = new QGraphicsPixmapItem(*easteregg2image);
+	easteregg2->show();
+	easteregg2->setZValue(0);
+	GameScene->addItem(easteregg2);
+	easteregg2timer = new QTimer;
+	easteregg2->setPos(0, -12840);
+	easteregg2->setScale(0.5);
+	
+	QObject::connect(easteregg1timer, &QTimer::timeout, [=]() {
+		if (currenteasteregg1y >= 1284) {
+			currenteasteregg1y = -1284;
+			easteregg1->setPos(500, currenteasteregg1y);
+			GameScene->update();
+		}
+
+		easteregg1->setPos(500, currenteasteregg1y + 1);
+		currenteasteregg1y = currenteasteregg1y + 1;
+		GameScene->update();
+		});
+
+	QObject::connect(easteregg2timer, &QTimer::timeout, [=]() {
+		if (currenteasteregg2y >= 1284) {
+			currenteasteregg2y = -1284;
+			easteregg2->setPos(0, currenteasteregg2y);
+			GameScene->update();
+		}
+
+		easteregg2->setPos(0, currenteasteregg2y + 1);
+		currenteasteregg2y = currenteasteregg2y + 1;
+		GameScene->update();
+		});
+	easteregg1timer->start(30);
+	easteregg2timer->start(30);
+	QTimer::singleShot(75000, [=]() mutable {
+		easteregg1timer->stop();
+		easteregg2timer->stop();
+		delete easteregg1;
+		delete easteregg2;
+		delete easteregg1timer;
+		delete easteregg2timer;
+		});
+
+
+
+}
+
+
 //////////////////////////////////// EXPLOSIONS ////////////////////////////////
 
 void explosionmanager::enemydeathexplosion(int posx, int posy)

@@ -40,6 +40,7 @@ public:
     bool bulletAllie;
     int moveTimer;
     bool collisionJoueur;
+    QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect;
     typeEntites typeEntite;
     typeBullets ammoType;
     typePowerUp power_up;
@@ -71,11 +72,10 @@ class Joueur : public Entite
 private:
     int attkDmg;
     int vitesse;
-    Sprite* Proppeller1; // pour ajouter les animation du propelle lorsquil est normal
-    Sprite* Proppeller2;  // pour ajouter les animation du propelle lorsquil est tilt a gauche
-    Sprite* Proppeller3;  // pour ajouter les animation du propelle lorsquil est tilt a droite
+
 
 public:
+    Sprite* Proppeller1;   // pour ajouter les animation du propelle lorsquil est normal
     ~Joueur();
     bool doingbarrelroll = false;
     bool barrelRoll;

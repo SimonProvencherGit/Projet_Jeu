@@ -22,7 +22,7 @@
 extern QGraphicsView* view;
 extern QGraphicsScene* GameScene;
 extern unique_ptr<QPixmap> ListImages[50]; // list global d'images de pixmap. A faire load au debut du jeux
-
+extern bool inspace;
 extern void setallSFXVolume(float inputvolume);
 extern void savesettings();
 extern void loadsettings();
