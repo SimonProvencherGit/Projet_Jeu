@@ -126,13 +126,18 @@ void loadimages() { //Initialisation de toute les images.
     ListImages[51] = make_unique<QPixmap>();
     ListImages[51]->load("Textures\\Ennemis\\exploder-d.png");
     ListImages[52] = make_unique<QPixmap>();
-    ListImages[52]->load("Textures\\Ennemis\\turret.png");
+    ListImages[52]->load("Textures\\Sprites\\turret.png");
     ListImages[53] = make_unique<QPixmap>();
-    ListImages[53]->load("Textures\\Ennemis\\turret-d.png");
+    ListImages[53]->load("Textures\\Sprites\\turret-d.png");
     ListImages[54] = make_unique<QPixmap>();
     ListImages[54]->load("Textures\\Ennemis\\exploder.png");
     ListImages[55] = make_unique<QPixmap>();
     ListImages[55]->load("Textures\\Ennemis\\exploder-d.png");
+	ListImages[56] = make_unique<QPixmap>();
+	ListImages[56]->load("Textures\\Ennemis\\tankR.png");
+	ListImages[57] = make_unique<QPixmap>();
+	ListImages[57]->load("Textures\\Ennemis\\tankR-d.png");
+
 }
 
 
@@ -146,7 +151,7 @@ void firststart() {
     }
     else {
         if (jeux) {
-            jeux->executionJeu(1); // Call executionJeu if the object exists
+            jeux->executionJeu(0); // Call executionJeu if the object exists
         }
     }
 }
