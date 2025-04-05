@@ -307,14 +307,22 @@ void DiveBomber::update()
 		//choisi un joueur en vie aleatoirement pour le suivre
 		if (joueurRand == 0)
 		{
-			if (posX < xJoueur)
+			if (posX > xJoueur - 10 && posX < xJoueur + 10)
+			{
+				//posx ne change pas car il est deja aligne avec le joueur
+			}
+			else if (posX < xJoueur)
 				posX += 5;
 			else if (posX > xJoueur)
 				posX -= 5;
 		}
 		else if (joueurRand == 1)
 		{
-			if (posX < xJoueur2)
+			if (posX > xJoueur2 - 10 && posX < xJoueur2 + 10)
+			{
+				//posx ne change pas car il est deja aligne avec le joueur
+			}
+			else if (posX < xJoueur2)
 				posX += 5;
 			else if (posX > xJoueur2)
 				posX -= 5;
@@ -761,46 +769,55 @@ Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 	Originalimage->setScale(0.8);
 	DamageImage->setScale(0.8);
 	image->show();
+
+	if (p1EnVie == true && p2EnVie == true)
+		joueurRand = rand() % 2;	//choisi un joueur en vie aleatoirement pour le suivre
+	else if (!p1EnVie && p2EnVie)
+		joueurRand = 1;
+	else if (p1EnVie && !p2EnVie)
+		joueurRand = 0;
+	else
+		joueurRand = 0;
 }
 
 
 void Orbiter::update()
 {
-
 	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
-
-	if (posY < (yJoueur - rayonMouv/2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	if (p1EnVie && !p2EnVie)
 	{
-		//if (moveTimer % 2 == 0)
-		posY+=5;
-
-	}
-	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
-	{
-		if (orbiting == false)
+		if (posY < (yJoueur - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 		{
-			ancrageX = xJoueur;
-			ancrageY = yJoueur;
-			distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
-			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
-			orbiting = true;
-			angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+			//if (moveTimer % 2 == 0)
+			posY += 5;
 
-
-			if (posX < xJoueur)
-			{
-				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle += 0.75;
-			}
-			else
-			{
-				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle -= 0.75;
-			}
 		}
-		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
-		//if (moveTimer % 1 == 0)
-		//{
+		else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+		{
+			if (orbiting == false)
+			{
+				ancrageX = xJoueur;
+				ancrageY = yJoueur;
+				distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+				rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+				orbiting = true;
+				angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+
+
+				if (posX < xJoueur)
+				{
+					sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle += 0.75;
+				}
+				else
+				{
+					sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle -= 0.75;
+				}
+			}
+			//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+			//if (moveTimer % 1 == 0)
+			//{
 			posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
 			posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
 
@@ -809,9 +826,154 @@ void Orbiter::update()
 			else
 				angle -= 0.75;			//vitesse angulaire determine
 
-		//}
-		if (angle >= 360)
-			angle = 0;
+			//}
+			if (angle >= 360)
+				angle = 0;
+		}
+	}
+	else if (!p1EnVie && p2EnVie)
+	{
+		if (posY < (yJoueur2 - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+		{
+			//if (moveTimer % 2 == 0)
+			posY += 5;
+
+		}
+		else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+		{
+			if (orbiting == false)
+			{
+				ancrageX = xJoueur2;
+				ancrageY = yJoueur2;
+				distance = sqrt(pow(xJoueur2 - posX, 2) + pow(yJoueur2 - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+				rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+				orbiting = true;
+				angle = atan2(yJoueur2 - posY, xJoueur2 - posX) * 180 / 3.14159265;
+
+
+				if (posX < xJoueur2)
+				{
+					sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle += 0.75;
+				}
+				else
+				{
+					sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle -= 0.75;
+				}
+			}
+			//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+			//if (moveTimer % 1 == 0)
+			//{
+			posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+			posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
+
+			if (sensRotation)		//true = sens horaire false = sens anti-horaire
+				angle += 0.75;			//vitesse angulaire determine
+			else
+				angle -= 0.75;			//vitesse angulaire determine
+
+			//}
+			if (angle >= 360)
+				angle = 0;
+		}
+	}
+	else if (p1EnVie && p2EnVie)
+	{
+		if (joueurRand == 0)
+		{
+			if (posY < (yJoueur - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+			{
+				//if (moveTimer % 2 == 0)
+				posY += 5;
+
+			}
+			else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+			{
+				if (orbiting == false)
+				{
+					ancrageX = xJoueur;
+					ancrageY = yJoueur;
+					distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+					rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+					orbiting = true;
+					angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+
+
+					if (posX < xJoueur)
+					{
+						sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle += 0.75;
+					}
+					else
+					{
+						sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle -= 0.75;
+					}
+				}
+				//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+				//if (moveTimer % 1 == 0)
+				//{
+				posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+				posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
+
+				if (sensRotation)		//true = sens horaire false = sens anti-horaire
+					angle += 0.75;			//vitesse angulaire determine
+				else
+					angle -= 0.75;			//vitesse angulaire determine
+
+				//}
+				if (angle >= 360)
+					angle = 0;
+			}
+		}
+		else if (joueurRand == 1)
+		{
+			if (posY < (yJoueur2 - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+			{
+				//if (moveTimer % 2 == 0)
+				posY += 5;
+
+			}
+			else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+			{
+				if (orbiting == false)
+				{
+					ancrageX = xJoueur2;
+					ancrageY = yJoueur2;
+					distance = sqrt(pow(xJoueur2 - posX, 2) + pow(yJoueur2 - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+					rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+					orbiting = true;
+					angle = atan2(yJoueur2 - posY, xJoueur2 - posX) * 180 / 3.14159265;
+
+
+					if (posX < xJoueur2)
+					{
+						sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle += 0.75;
+					}
+					else
+					{
+						sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle -= 0.75;
+					}
+				}
+				//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+				//if (moveTimer % 1 == 0)
+				//{
+				posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+				posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
+
+				if (sensRotation)		//true = sens horaire false = sens anti-horaire
+					angle += 0.75;			//vitesse angulaire determine
+				else
+					angle -= 0.75;			//vitesse angulaire determine
+
+				//}
+				if (angle >= 360)
+					angle = 0;
+			}
+		}
 	}
 
 	if (posX < 1)

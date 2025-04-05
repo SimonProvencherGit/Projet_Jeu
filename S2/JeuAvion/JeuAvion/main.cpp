@@ -147,7 +147,7 @@ void firststart() {
     }
     else {
         if (jeux) {
-            jeux->executionJeu(0); // Call executionJeu if the object exists
+            jeux->executionJeu(1); // Call executionJeu if the object exists
         }
     }
 }

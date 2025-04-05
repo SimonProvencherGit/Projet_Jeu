@@ -2,6 +2,7 @@
    Qt: 6.8.2
   Entites.cpp
   Interface.cpp
+  main.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(15,18): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'Interface.cpp')
   
@@ -9,9 +10,12 @@ C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.
   (compiling source file 'Entites.cpp')
   
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(247,10): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1027,11): warning C4552: '+': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1032,11): warning C4552: '-': result of expression not used
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1051,20): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1058,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1189,11): warning C4552: '+': result of expression not used
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1194,11): warning C4552: '-': result of expression not used
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1213,20): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.cpp(1220,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(15,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'main.cpp')
+  
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(2069,39): warning C4101: 'e': unreferenced local variable
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

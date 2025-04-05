@@ -193,6 +193,7 @@ private:
     bool sensRotation;
     int ancrageX = 0;
     int ancrageY = 0;
+    int joueurRand;
 public:
     Orbiter(float x, float y);
     void update();    //gere le deplacement de l'ennemi
@@ -214,6 +215,7 @@ public:
 class Turret : public Ennemi
 {
 public:
+    int joueurRand;
     Turret(float x, float y);
 	~Turret();
     void update();    //gere le deplacement de l'ennemi
