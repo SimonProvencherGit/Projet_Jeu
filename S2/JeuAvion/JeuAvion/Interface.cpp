@@ -3,6 +3,10 @@
 
 // lien pour un sprite : https://opengameart.org/content/custom-missiles
 
+
+
+
+
 void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
     // si c'est joueur
@@ -188,11 +192,13 @@ Interface::Interface()
 
     unites = new QGraphicsPixmapItem(*ListImages[24]);
     GameScene->addItem(unites);
+    unites->setScale(0.55);
     unites->show();
     unites->setPos(1890, 10);
     unites->setZValue(100);
     dizaines = new QGraphicsPixmapItem(*ListImages[24]);
     GameScene->addItem(dizaines);
+    dizaines->setScale(0.55);
     dizaines->show();
     dizaines->setPos(1860, 10);
     dizaines->setZValue(100);
@@ -201,8 +207,10 @@ Interface::Interface()
     centaines->show();
     centaines->setPos(1830, 10);
     centaines->setZValue(100);
+    centaines->setScale(0.55);
     milliers = new QGraphicsPixmapItem(*ListImages[24]);
     GameScene->addItem(milliers);
+    milliers->setScale(0.55);
     milliers->show();
     milliers->setPos(1800, 10);
     milliers->setZValue(100);
@@ -221,16 +229,22 @@ void Interface::gererInput()
         //Fix rapide pour les coins l'animation quand l'avion est au coins
         if (joueur != nullptr)
         {
+            if(joueur->doingbarrelroll == false)
+            {
             if (joueur->posX == 0 || joueur->posX == 1851)
             {
                 joueur->AnimatedSprite->setframe(6);
             }
+            }
         }
         if (joueur2 != nullptr)
         {
+            if (joueur->doingbarrelroll == false)
+            { 
             if (joueur2->posX == 0 || joueur2->posX == 1851)
             {
                 joueur2->AnimatedSprite->setframe(6);
+            }
             }
         }
         if (joueur != nullptr)
@@ -771,7 +785,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
             break;
         case BOSS3_SIDE:
             //if (nbSideBoss3 % 2 == 0)
-            listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 4, 0));
+            listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 3, 0));
             //else
                 //listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 2 + 15, 0));  
             //nbSideBoss3++;
@@ -821,8 +835,8 @@ void Interface::progressionDifficulte()
 
     if (score1 < 500)
     {
-        
-        
+
+
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
@@ -834,7 +848,7 @@ void Interface::progressionDifficulte()
            // enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
             //enemySpawn(1, TURRET);
-			//enemySpawn(1, ORBITER);
+            //enemySpawn(1, ORBITER);
             // enemySpawn(1, EXPLODER);
 
            /* if (spawnPowerUpStart)
@@ -842,7 +856,7 @@ void Interface::progressionDifficulte()
                 //enemySpawn(1, EXPLODER);
                 //enemySpawn(1, BOSS2_MAIN);
                 enemySpawn(1, BOSS1_MAIN);
-				//enemySpawn(1, BOSS3_MAIN);
+                //enemySpawn(1, BOSS3_MAIN);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
@@ -939,15 +953,15 @@ void Interface::progressionDifficulte()
         {
             if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
-                if(!ONESHOT)
-                { 
-                music.playMusic("Forest.wav", 21639, 115195);
-                BackManager->stopbackground();
-                BackManager->setforest();
-                BackManager->bougebackground();
-                ONESHOT = true;
+                if (!ONESHOT)
+                {
+                    music.playMusic("Forest.wav", 21639, 115195);
+                    BackManager->stopbackground();
+                    BackManager->setforest();
+                    BackManager->bougebackground();
+                    ONESHOT = true;
                 }
-                
+
                 enemySpawn(3, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
                 int nbZaper = 0;
@@ -1022,12 +1036,13 @@ void Interface::progressionDifficulte()
             else if (!bossMusicStart && bossSpawnSound)
             {
 
+
                 if (enemySpawnTimer >= 325)         //
                 {
                     Warning->stop();
                     delete Warning;
                     sfxWarning.stopSFX();
-                    music.playMusic("Boss1.wav", 0, 100000);
+                    music.playMusic("Boss2.wav", 12850, 73633);
                     bossMusicStart = true;
 
                 }
@@ -1073,8 +1088,8 @@ void Interface::progressionDifficulte()
                 nbPass = 0;
             }
         }
-		bossSpawnSound = false;
-		bossMusicStart = false;
+        bossSpawnSound = false;
+        bossMusicStart = false;
     }
     else if (score1 >= memScore + 1400 && boss2Spawned && !boss3Spawned)
     {
@@ -1106,67 +1121,81 @@ void Interface::progressionDifficulte()
                     Warning->stop();
                     delete Warning;
                     sfxWarning.stopSFX();
-                    music.playMusic("Boss1.wav", 0, 100000);
+                    music.playMusic("Boss3.wav", 592, 69148);
                     bossMusicStart = true;
+                    enemySpawnTimer = 0;
 
                 }
             }
 
-            if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+        }
+
+
+        if (bossMusicStart)
+        {
+            if (spawnPowerUpStart)
             {
-                if (boss3)
-                    if (boss3->posX > 0 && boss3->posY > 0)
-                        for (auto& e : listEntites)
-                            e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
-
-                if (spawnPowerUpStart)
-                {
-                    spawnPowerUpStart = false;
-                    //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-                    //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
-                    enemySpawn(1, BOSS3_MAIN);
-                }
-                if (boss3 != nullptr)
-                {
-                    if (enemySpawnTimer >= 50 && !allSideBossSpawned)
-                    {
-                        nbPass++;
-                        if (nbPass <= 5)
-                            enemySpawn(1, BOSS3_SIDE);
-                        else
-                        {
-                            allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
-                            boss3Spawned = true;
-                            memScore = score1 + 800;
-                        }
-                        enemySpawnTimer = 0;
-                    }
-               }
-                bossWaitTimer = 0;
+                spawnPowerUpStart = false;
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
+                enemySpawn(1, BOSS3_MAIN);
+                nbPass = 0;
             }
-            else
-                bossWaitTimer++;
+            if (boss3 != nullptr)
+            {
+                if (enemySpawnTimer >= 42 && !allSideBossSpawned)
+                {
+                    if (spawnPowerUpStart)
+                    {
+                        spawnPowerUpStart = false;
+                        //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+                        //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
+                        enemySpawn(1, BOSS3_MAIN);
+                    }
 
-            
+                    if (boss3 != nullptr)
+                    {
+                        if (enemySpawnTimer >= 42 && !allSideBossSpawned)
+                        {
+                            if (boss3->posX > 0 && boss3->posY > 0)
+                                for (auto& e : listEntites)
+                                    e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);
+                            if (nbPass < 5)
+                                enemySpawn(1, BOSS3_SIDE);
+                            else
+                            {
+                                allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
+                                boss3Spawned = true;
+                                memScore = score1 + 800;
+                            }
+                            enemySpawnTimer = 0;
+                            nbPass++;
+                        }
+                    }
+                    bossWaitTimer = 0;
+                }
+
+            }
+
+
+            else if (score1 >= memScore && boss3Spawned)
+            {
+                if (enemySpawnTimer >= 175 || cbVivant() < 4)
+                {
+                    enemySpawn(1, TURRET);
+                    enemySpawn(1, AIMBOT);
+                    enemySpawn(1, ORBITER);
+                    enemySpawn(1, DIVEBOMBER);
+                    enemySpawn(1, SIDEBOMBER);
+
+                    enemySpawnTimer = 0;
+                }
+            }
+
+
         }
     }
-	else if (score1 >= memScore && boss3Spawned)
-	{
-		if (enemySpawnTimer >= 175 || cbVivant() < 4)
-		{
-			enemySpawn(1, TURRET);
-			enemySpawn(1, AIMBOT);
-			enemySpawn(1, ORBITER);
-			enemySpawn(1, DIVEBOMBER);
-			enemySpawn(1, SIDEBOMBER);
-		
-			enemySpawnTimer = 0;
-		}
-	}
-
-
 }
-
 
 //met a jour les entites a chaque frame
 void Interface::updateEntites()
@@ -1174,6 +1203,7 @@ void Interface::updateEntites()
     double angle;       //pour les ennemis qui ont besoin de l'angle entre eux et le joueur
     static int sideBoss3WaitTimer = 0;
     static int boss3WaitTimer = 0;
+    int frame;
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -1198,7 +1228,7 @@ void Interface::updateEntites()
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
 
             if (e->typeEntite == ENNEMI && e->ammoType == FRAGMENTING && e->moveTimer % e->shootCooldown == 0 && e->shoots)     //si c'est un ennemi qui tire des fragmenting bullets
-                bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));
+                bufferBulletsUpdate.emplace_back(make_unique<FragmentingBullet>(e->posX + e->largeur / 2 - 10, e->posY + e->hauteur + 1, false));
 
             if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->ammoType == LASER && e->moveTimer % e->shootCooldown == 0 && e->shoots)	//si c'est un ennemi qui tire des lasers
                 bufferBulletsUpdate.emplace_back(make_unique<Laser>(e->posX + e->largeur / 2 - 14, e->posY + e->hauteur - 14, false));
@@ -1219,10 +1249,26 @@ void Interface::updateEntites()
             }
             else if (e->getTypeEnnemi() == TURRET && e->moveTimer % e->shootCooldown == 0 && e->shoots)
             {
-                angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                if (angle < 0)
+                    frame = angle * -1;
+                else
+                    frame = 360 - angle;
 
                 for (int i = -10; i <= 10; i += 10)
-                    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY - 1, angle + i, 'o', false));
+                    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 1, angle + i, 'o', false));
+            }
+            if (e->getTypeEnnemi() == TURRET)
+            {
+                angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+                angle = angle * -1 + 180;     //on inverse l'angle pour que le sprite regarde vers le joueur
+
+                if (angle < 0)
+                    frame = (angle * -1) / 22.5 - 1; //DONT TOUCH -1  or else everything implodes
+                else
+                    frame = (360 - angle - 10) / 22.5;     //retourne l'angle en degres entre l'entite et le joueur
+
+                e->AnimatedSprite->setframe(frame);
             }
 
             if (e->getTypeEnnemi() == BOSS1_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss1 tire des 3 missiles
@@ -1265,18 +1311,18 @@ void Interface::updateEntites()
                     if (e->moveTimer % 125 == 0)
                     {
                         //cercleTir(25, e->posX + e->largeur / 2 - 50, e->posY + e->hauteur / 2);
-                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     }
-                    balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
                     if (e->moveTimer % 12 == 0)
-                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 else if (e->nbVies < 170 && e->nbVies >= 80)
                 {
-                    balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     if (e->moveTimer % 125 == 0)
-                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     //if (e->moveTimer % 15 == 0)
                       //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
@@ -1284,13 +1330,13 @@ void Interface::updateEntites()
                 {
                     if (e->moveTimer % 200 == 0)
                     {
-                        cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                         //cercleTir(5, e->posX + e->largeur / 2 + 50, e->posY + e->hauteur / 2);
                     }
-                    balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
                     if (e->moveTimer % 12 == 0)
-                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 angleTirBoss += 5;
                 if (angleTirBoss >= 360)
@@ -1299,6 +1345,9 @@ void Interface::updateEntites()
             //----------- update du 3e boss -------------------
             else if (e->getTypeEnnemi() == BOSS3_MAIN)
             {
+                if (boss3->posX > 0 && boss3->posY > 0)
+                    for (auto& e : listEntites)
+                        e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
                 if (boss3WaitTimer < 175)
                     boss3WaitTimer++;
                 else
@@ -1307,13 +1356,13 @@ void Interface::updateEntites()
                     {
                         if (e->nbVies < 200 && e->nbVies >= 90)
                         {
-                            balayageTir(1, 5, e->posX + e->largeur / 2 + 4, e->posY + e->hauteur / 2);
-                            balayageTir(1, 5, e->posX + e->largeur / 2 - 4, e->posY + e->hauteur / 2, 180);
+                            balayageTir(1, 5, e->posX + e->largeur / 2 + 4, e->posY + e->hauteur / 2 - 35);
+                            balayageTir(1, 5, e->posX + e->largeur / 2 - 4, e->posY + e->hauteur / 2 - 35, 180);
                         }
                         else if (e->nbVies < 90)
                         {
 
-                            balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                            balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 35);
                         }
                         angleTirBoss += 3;
                         if (angleTirBoss >= 360)
@@ -1399,7 +1448,23 @@ void Interface::gererCollisions()
         {
             if (joueur != nullptr)
             {
-                if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+                if (e->typeEntite == POWERUP && e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur))
+                {
+                    switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+                    {
+                    case ADDLIFE:
+                        joueur->nbVies++;
+                        updateHealthCounter();
+                        break;
+
+                    case ADDBULLETS:
+                        joueur->nbBulletTir += 2;
+                        joueur->shootCooldown += 8;
+                        break;
+                    }
+                    e->enVie = false;
+                }
+                else if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
                 {
                     if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                     {
@@ -1426,22 +1491,6 @@ void Interface::gererCollisions()
                             e->collisionJoueur = true;
                         }
                     }
-                    else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
-                    {
-                        switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
-                        {
-                        case ADDLIFE:
-                            joueur->nbVies++;
-                            updateHealthCounter();
-                            break;
-
-                        case ADDBULLETS:
-                            joueur->nbBulletTir += 2;
-                            joueur->shootCooldown += 8;
-                            break;
-                        }
-                        e->enVie = false;
-                    }
                 }
             }
                 //partie ou on gere les collision avec les bullets alliees
@@ -1455,7 +1504,7 @@ void Interface::gererCollisions()
                             {
                                 if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
                                     for (int i = 80; i < 110; i += 10)
-                                        bufferBullets.emplace_back(make_unique<angleBullet>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
+                                        bufferBullets.emplace_back(make_unique<angleBulletFrag>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
 
 
                                 //if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite == BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
@@ -1483,6 +1532,8 @@ void Interface::gererCollisions()
                                     if (e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
                                     {
                                         cercleTir(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
+                                        manageexplosion.shakeScene(GameScene, view, 40, 10); // shake ecran quand explose
+                                        
                                         //cercleExplosion(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
                                     }
                                     if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
@@ -1668,6 +1719,7 @@ void Interface::enleverEntites()
         {
             GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
             delete listEntites[i]->image;
+            delete listEntites[i]->AnimatedSprite;
 
             listEntites.erase(listEntites.begin() + i);
             i--;
@@ -1781,7 +1833,7 @@ void Interface::executionJeu(int version)
 
 
             loadBarrelRoll2 = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
-            loadBarrelRoll2->setpos(1775, 940);
+            loadBarrelRoll2->setpos(1775, 910);
             loadBarrelRoll2->start(170);
             loadBarrelRoll2->setframe(59);
             loadBarrelRoll2->pixmapItem->setZValue(500);
@@ -1793,7 +1845,7 @@ void Interface::executionJeu(int version)
 
             loadExplosion2 = new Sprite("loadingExplosion.png", "loadingExplosion.json");
             //loadExplosion2->setpos(1725, 1020);
-            loadExplosion2->setpos(1775, 1020);
+            loadExplosion2->setpos(1775, 990);
             loadExplosion2->start(170);
             loadExplosion2->setframe(59);
             loadExplosion2->pixmapItem->setZValue(500);
@@ -1804,7 +1856,7 @@ void Interface::executionJeu(int version)
 
 			updateHealthCounter();
             loadBarrelRoll->pixmapItem->setScale(0.6);
-            loadBarrelRoll->setpos(-5, 940);
+            loadBarrelRoll->setpos(-5, 910);
             loadBarrelRoll->pixmapItem->setZValue(500);
 
             loadExplosion->pixmapItem->setScale(0.6);
@@ -1815,6 +1867,10 @@ void Interface::executionJeu(int version)
 			centaines->setPos(WIDTH / 2 - 30, 10);
             dizaines->setPos(WIDTH / 2 + 0, 10);
             unites->setPos(WIDTH / 2 + 30, 10);
+
+            joueur->nbVies = 10;
+            joueur2->nbVies = 10;
+            updateHealthCounter();
             
         }
         firststart = false;

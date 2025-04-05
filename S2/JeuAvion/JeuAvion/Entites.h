@@ -16,7 +16,7 @@ const float PI = 3.14159265359;
 
 enum typeEntites { JOUEUR, ENNEMI, OBSTACLE, BULLET, BOSS, POWERUP };
 enum typeEnnemis { BASIC, TANK, ARTILLEUR, DIVEBOMBER, ZAPER, AIMBOT, BOSS1_MAIN, BOSS1_SIDE, SIDEBOMBER, BOSS2_MAIN, ORBITER, SHOTGUNHOMING, EXPLODER, TURRET, BOSS3_MAIN, BOSS3_SIDE };
-enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE, MORTAR, TEMP };
+enum typeBullets { NORMAL, LASER, MULTIPLE, HOMING, BOMB, FRAGMENTING, ANGLE, MORTAR, TEMP, ANGLEFRAG };
 enum typePowerUp { DAMAGEDOUBLED, ADDLIFE, ADDBULLETS };
 
 
@@ -215,6 +215,7 @@ class Turret : public Ennemi
 {
 public:
     Turret(float x, float y);
+    ~Turret();
     void update();    //gere le deplacement de l'ennemi
 };
 
@@ -308,6 +309,16 @@ public:
     Mortar(float x, float y, bool isPlayerBullet);
     void update();    //gere le deplacement de la balle
 };
+
+class angleBulletFrag : public Entite
+{
+private:
+    int direction;
+public:
+    angleBulletFrag(float x, float y, int angle, char symbole, bool isPlayerBullet);      //direction va de 1 a 8 pour les directions possibles
+    void update();    //gere le deplacement de la balle
+};
+
 
 //-----------------------------------------------------------  classes Obstacle -----------------------------------------------------------
 

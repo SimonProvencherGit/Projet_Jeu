@@ -48,6 +48,7 @@ public:
 	void chainexplosion(int playerposy);
 	void bossdeath();
 	void flash();
+	void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude);
 private:
 	
 

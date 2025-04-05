@@ -8,7 +8,7 @@ SFX sfxWarning;
 SFX enemyexplosion;
 QGraphicsScene * GameScene = nullptr;
 QGraphicsView* view = nullptr;
-unique_ptr<QPixmap> ListImages[50];
+unique_ptr<QPixmap> ListImages[70];
 QRect * basicbullet;
 
 

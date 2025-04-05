@@ -271,7 +271,7 @@ void explosionmanager::enemydeathexplosion(int posx, int posy)
 }
 
 
-void shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
+void explosionmanager::shakeScene(QGraphicsScene* scene, QGraphicsView* view, int duration, int magnitude) {
 	
 	QRectF originalScene = scene->sceneRect();
 	originalScene.setX(0);
