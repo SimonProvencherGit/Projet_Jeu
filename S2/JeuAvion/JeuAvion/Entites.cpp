@@ -107,7 +107,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	nbVies = 15;
+	nbVies = 20;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
