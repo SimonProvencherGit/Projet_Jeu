@@ -146,16 +146,13 @@ void firststart() {
     }
     else {
         if (jeux) {
-            jeux->executionJeu(0); // Call executionJeu if the object exists
+            jeux->executionJeu(1); // Call executionJeu if the object exists
         }
     }
 }
 ;
 
 int main(int argc, char* argv[]) {
-
-   
-
 
     //QPixmap ListImage[50];
     loadsettings();
@@ -172,8 +169,8 @@ int main(int argc, char* argv[]) {
     // Remove the border and background
     view->setFrameStyle(QFrame::NoFrame);
     view->setBackgroundBrush(Qt::NoBrush);
-    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
-    view->setViewport(glWidget);// set le view pour opengl
+    //QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+    //view->setViewport(glWidget);// set le view pour opengl
 
     // Ajouter du antialiasing et Smoothing des pixels.
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);

@@ -31,6 +31,7 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	barrelRollTimer = 0;
 	power_up = ADDLIFE;		//par defaut les powerups donnent des vies
 	image = nullptr;
+	joueurRand = -1;
 }
 
 
@@ -106,7 +107,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	nbVies = 50;
+	nbVies = 15;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
@@ -308,7 +309,7 @@ void DiveBomber::update()
 	//{
 	if (p1EnVie && !p2EnVie)		//si juste p1 est viant
 	{
-		if (posX > xJoueur - 10 && posX < xJoueur + 10)
+		if (posX+largeur/2 > xJoueur - 10 && posX < xJoueur + 10)
 		{
 			//posx ne change pas car il est deja aligne avec le joueur
 		}
@@ -322,24 +323,42 @@ void DiveBomber::update()
 		//choisi un joueur en vie aleatoirement pour le suivre
 		if (joueurRand == 0)
 		{
-			if (posX < xJoueur)
+			//if (posX + largeur / 2 < xJoueur)
+			//{
+			if (posX + largeur / 2 > xJoueur - 10 && posX < xJoueur + 10)
+			{
+				//posx ne change pas car il est deja aligne avec le joueur
+			}
+			else if (posX < xJoueur)
 				posX += 5;
 			else if (posX > xJoueur)
 				posX -= 5;
+			//}
 		}
 		else if (joueurRand == 1)
 		{
-			if (posX < xJoueur2)
+			//if (posX + largeur / 2 < xJoueur2)
+			//{
+			if (posX + largeur / 2 > xJoueur2 - 10 && posX < xJoueur2 + 10)
+			{
+				//posx ne change pas car il est deja aligne avec le joueur
+			}
+			else if (posX + largeur / 2 < xJoueur2)
 				posX += 5;
-			else if (posX > xJoueur2)
+			else if (posX + largeur / 2 > xJoueur2)
 				posX -= 5;
+			//}
 		}
 	}
 	else if (!p1EnVie && p2EnVie)
 	{
-		if (posX < xJoueur2)
+		if (posX + largeur / 2 > xJoueur2 - 10 && posX < xJoueur2 + 10)
+		{
+			//posx ne change pas car il est deja aligne avec le joueur
+		}
+		else if (posX + largeur / 2 < xJoueur2)
 			posX += 5;
-		else if (posX > xJoueur2)
+		else if (posX + largeur / 2 > xJoueur2)
 			posX -= 5;
 	}
 	//}
@@ -355,7 +374,6 @@ void DiveBomber::update()
 
 	image->setPos(posX, posY);
 }
-
 Tank::Tank(float x, float y) : Ennemi(x, y)
 {
 	symbole = '@';
@@ -809,6 +827,15 @@ Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 	Originalimage->setScale(0.8);
 	DamageImage->setScale(0.8);
 	image->show();
+
+	if (p1EnVie && p2EnVie)
+		joueurRand = rand() % 2;	//choisi un joueur en vie aleatoirement pour le suivre
+	else if (!p1EnVie && p2EnVie)
+		joueurRand = 1;
+	else if (p1EnVie && !p2EnVie)
+		joueurRand = 0;
+	else
+		joueurRand = 0;
 }
 
 
@@ -816,39 +843,40 @@ void Orbiter::update()
 {
 
 	// l'entite va descendre et commencer a faire des cercles autour du joueur en le tirant avec son shotgun
-
-	if (posY < (yJoueur - rayonMouv / 2) && orbiting == false)	//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+	if (p1EnVie && !p2EnVie)
 	{
-		//if (moveTimer % 2 == 0)
-		posY+=5;
-
-	}
-	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
-	{
-		if (orbiting == false)
+		if (posY < (yJoueur - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 		{
-			ancrageX = xJoueur;
-			ancrageY = yJoueur;
-			distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
-			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
-			orbiting = true;
-			angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+			//if (moveTimer % 2 == 0)
+			posY += 5;
 
-
-			if (posX < xJoueur)
-			{
-				sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle += 0.75;
-			}
-			else
-			{
-				sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-				angle -= 0.75;
-			}
 		}
-		//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
-		//if (moveTimer % 1 == 0)
-		//{
+		else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+		{
+			if (orbiting == false)
+			{
+				ancrageX = xJoueur;
+				ancrageY = yJoueur;
+				distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+				rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+				orbiting = true;
+				angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+
+
+				if (posX < xJoueur)
+				{
+					sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle += 0.75;
+				}
+				else
+				{
+					sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle -= 0.75;
+				}
+			}
+			//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+			//if (moveTimer % 1 == 0)
+			//{
 			posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
 			posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
 
@@ -857,9 +885,154 @@ void Orbiter::update()
 			else
 				angle -= 0.75;			//vitesse angulaire determine
 
-		//}
-		if (angle >= 360)
-			angle = 0;
+			//}
+			if (angle >= 360)
+				angle = 0;
+		}
+	}
+	else if (!p1EnVie && p2EnVie)
+	{
+		if (posY < (yJoueur2 - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+		{
+			//if (moveTimer % 2 == 0)
+			posY += 5;
+
+		}
+		else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+		{
+			if (orbiting == false)
+			{
+				ancrageX = xJoueur2;
+				ancrageY = yJoueur2;
+				distance = sqrt(pow(xJoueur2 - posX, 2) + pow(yJoueur2 - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+				rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+				orbiting = true;
+				angle = atan2(yJoueur2 - posY, xJoueur2 - posX) * 180 / 3.14159265;
+
+
+				if (posX < xJoueur2)
+				{
+					sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle += 0.75;
+				}
+				else
+				{
+					sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+					angle -= 0.75;
+				}
+			}
+			//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+			//if (moveTimer % 1 == 0)
+			//{
+			posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+			posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
+
+			if (sensRotation)		//true = sens horaire false = sens anti-horaire
+				angle += 0.75;			//vitesse angulaire determine
+			else
+				angle -= 0.75;			//vitesse angulaire determine
+
+			//}
+			if (angle >= 360)
+				angle = 0;
+		}
+	}
+	else if (p1EnVie && p2EnVie)
+	{
+		if (joueurRand == 0)
+		{
+			if (posY < (yJoueur - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+			{
+				//if (moveTimer % 2 == 0)
+				posY += 5;
+
+			}
+			else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+			{
+				if (orbiting == false)
+				{
+					ancrageX = xJoueur;
+					ancrageY = yJoueur;
+					distance = sqrt(pow(xJoueur - posX, 2) + pow(yJoueur - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+					rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+					orbiting = true;
+					angle = atan2(yJoueur - posY, xJoueur - posX) * 180 / 3.14159265;
+
+
+					if (posX < xJoueur)
+					{
+						sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle += 0.75;
+					}
+					else
+					{
+						sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle -= 0.75;
+					}
+				}
+				//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+				//if (moveTimer % 1 == 0)
+				//{
+				posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+				posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
+
+				if (sensRotation)		//true = sens horaire false = sens anti-horaire
+					angle += 0.75;			//vitesse angulaire determine
+				else
+					angle -= 0.75;			//vitesse angulaire determine
+
+				//}
+				if (angle >= 360)
+					angle = 0;
+			}
+		}
+		else if (joueurRand == 1)
+		{
+			if (posY < (yJoueur2 - rayonMouv / 2) && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
+			{
+				//if (moveTimer % 2 == 0)
+				posY += 5;
+
+			}
+			else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
+			{
+				if (orbiting == false)
+				{
+					ancrageX = xJoueur2;
+					ancrageY = yJoueur2;
+					distance = sqrt(pow(xJoueur2 - posX, 2) + pow(yJoueur2 - posY, 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
+					rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
+					orbiting = true;
+					angle = atan2(yJoueur2 - posY, xJoueur2 - posX) * 180 / 3.14159265;
+
+
+					if (posX < xJoueur2)
+					{
+						sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle += 0.75;
+					}
+					else
+					{
+						sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
+						angle -= 0.75;
+					}
+				}
+				//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
+				//if (moveTimer % 1 == 0)
+				//{
+				posX = ancrageX + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//meme maniere qu'on a fait pour faire bouger le boss2 en cercle
+				posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
+
+				if (sensRotation)		//true = sens horaire false = sens anti-horaire
+					angle += 0.75;			//vitesse angulaire determine
+				else
+					angle -= 0.75;			//vitesse angulaire determine
+
+				//}
+				if (angle >= 360)
+					angle = 0;
+			}
+		}
 	}
 
 	if (posX < 1)
@@ -952,6 +1125,16 @@ Turret::Turret(float x, float y) : Ennemi(x, y)
 
 	//image->setRotation(180);
 	image->show();
+
+	if (p1EnVie && p2EnVie)
+		joueurRand = rand() % 2;	//choisi un joueur en vie aleatoirement pour le suivre
+	else if (!p1EnVie && p2EnVie)
+		joueurRand = 1;
+	else if (p1EnVie && !p2EnVie)
+		joueurRand = 0;
+	else
+		joueurRand = 0;
+
 }
 Turret::~Turret()
 {
@@ -960,6 +1143,16 @@ Turret::~Turret()
 
 void Turret::update()
 {
+	if (joueurRand == 0)
+	{
+		if (!p1EnVie && p2EnVie)
+			joueurRand = 1;
+	}
+	else if (joueurRand == 1)
+	{
+		if (p1EnVie && !p2EnVie)
+			joueurRand = 0;
+	}
 	//descend jusqu'au 1/5 de l'ecran et commence a tirer
 	if (posY < HEIGHT / 5)
 	{
@@ -1314,8 +1507,8 @@ void Homing::update()
 	//{
 	if (p1EnVie && !p2EnVie)
 	{
-		if (posX + largeur / 2 >= xJoueur + 25 && posX <= xJoueur + 30) {
-		} //si le missile est alligne avec le joueur on fait rien
+		if (posX + largeur / 2 >= xJoueur + 25 && posX <= xJoueur + 30) 
+		{} //si le missile est alligne avec le joueur on fait rien
 		else if (posX + largeur / 2 < xJoueur + 25)
 			posX += 5;
 		else if (posX > xJoueur + 30)
@@ -1326,25 +1519,34 @@ void Homing::update()
 		//choisi un joueur en vie aleatoirement pour le suivre
 		if (joueurRand == 0)
 		{
-			if (posX + largeur / 2 < xJoueur)
+			if (posX + largeur / 2 >= xJoueur + 25 && posX <= xJoueur + 30)
+			{
+			} //si le missile est alligne avec le joueur on fait rien
+			else if (posX + largeur / 2 < xJoueur + 25)
 				posX += 5;
-			else if (posX + largeur / 2 > xJoueur)
+			else if (posX > xJoueur + 30)
 				posX -= 5;
 		}
 		else if (joueurRand == 1)
 		{
-			if (posX < xJoueur2)
+			if (posX + largeur / 2 >= xJoueur2 + 25 && posX <= xJoueur2 + 30)
+			{
+			} //si le missile est alligne avec le joueur on fait rien
+			else if (posX + largeur / 2 < xJoueur2 + 25)
 				posX += 5;
-			else if (posX > xJoueur2)
+			else if (posX > xJoueur2 + 30)
 				posX -= 5;
 		}
 	}
 	else if (!p1EnVie && p2EnVie)
 	{
-		if (posX < xJoueur2)
-			posX += 10;
-		else if (posX > xJoueur2)
-			posX -= 10;
+		if (posX + largeur / 2 >= xJoueur2 + 25 && posX <= xJoueur2 + 30)
+		{
+		} //si le missile est alligne avec le joueur on fait rien
+		else if (posX + largeur / 2 < xJoueur2 + 25)
+			posX += 5;
+		else if (posX > xJoueur2 + 30)
+			posX -= 5;
 	}
 	//}
 	//if (moveTimer % 1 == 0)         //on peut ajuster la vitesse du missile
