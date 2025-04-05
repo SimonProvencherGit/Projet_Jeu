@@ -239,12 +239,10 @@ void Interface::gererInput()
         }
         if (joueur2 != nullptr)
         {
-            if (joueur->doingbarrelroll == false)
+            if (joueur2->doingbarrelroll == false)
             { 
-            if (joueur2->posX == 0 || joueur2->posX == 1851)
-            {
-                joueur2->AnimatedSprite->setframe(6);
-            }
+                if (joueur2->posX == 0 || joueur2->posX == 1851)
+                    joueur2->AnimatedSprite->setframe(6);
             }
         }
         if (joueur != nullptr)
@@ -1238,7 +1236,25 @@ void Interface::updateEntites()
 
             else if (e->getTypeEnnemi() == ORBITER && e->moveTimer % e->shootCooldown == 0 && e->shoots)
             {
-                angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                int joueurRand;
+                
+                if (joueur != nullptr && joueur2 != nullptr)
+                {
+                    joueurRand = rand() % 2;	//choisi un joueur en vie aleatoirement pour le suivre
+
+                    if(joueurRand == 0)
+						angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+					else
+						angle = atan2((joueur2->posY + joueur2->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur2->posX + joueur2->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                }
+                else if (joueur != nullptr && joueur2 == nullptr)
+                    angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+
+                else if (joueur == nullptr && joueur2 != nullptr)
+                    angle = atan2((joueur2->posY + joueur2->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur2->posX + joueur2->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                else
+                    angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+
                 bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY - 1, angle, 'o', false));
             }
             else if (e->getTypeEnnemi() == EXPLODER && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est un ennemi qui tire des missiles tete chercheuse
@@ -1248,8 +1264,14 @@ void Interface::updateEntites()
                 e->enVie = false;
             }
             else if (e->getTypeEnnemi() == TURRET && e->moveTimer % e->shootCooldown == 0 && e->shoots)
-            {
-                angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+            {     
+                if (e->joueurRand == 0)
+                    angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+                else if (e->joueurRand == 1)
+                    angle = atan2((joueur2->posY + joueur2->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur2->posX + joueur2->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+                else
+                    angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+                //angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
                 if (angle < 0)
                     frame = angle * -1;
                 else
@@ -1260,7 +1282,13 @@ void Interface::updateEntites()
             }
             if (e->getTypeEnnemi() == TURRET)
             {
-                angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+				if (e->joueurRand == 0)
+                    angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+                else if (e->joueurRand == 1)
+					angle = atan2((joueur2->posY + joueur2->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur2->posX + joueur2->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+				else
+					angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                
                 angle = angle * -1 + 180;     //on inverse l'angle pour que le sprite regarde vers le joueur
 
                 if (angle < 0)
@@ -1704,7 +1732,7 @@ void Interface::restart()
         listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
         joueur2 = static_cast<Joueur*>(listEntites.back().get());
         joueur2->posX = (WIDTH / 2) + 50;
-
+        updateHealthCounter();
     }
 
 }
@@ -1868,8 +1896,8 @@ void Interface::executionJeu(int version)
             dizaines->setPos(WIDTH / 2 + 0, 10);
             unites->setPos(WIDTH / 2 + 30, 10);
 
-            joueur->nbVies = 10;
-            joueur2->nbVies = 10;
+            joueur->nbVies = 12;
+            joueur2->nbVies = 12;
             updateHealthCounter();
             
         }
