@@ -386,6 +386,7 @@ Tank::Tank(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[15]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[15]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[16]);
+
 	if (!inspace) {
 		shadow->setOffset(15, 15);
 		image->setGraphicsEffect(shadow);
@@ -403,12 +404,35 @@ void Tank::update()
 	if (posX <= 0 || posX + largeur >= WIDTH)
 	{
 		direction = 1 - direction; // Change de Direction
-		//image->setRotation(180);
+		if (direction == 0)
+		{
+			delete image;		//delete l'ancienne image
+			delete Originalimage;
+			delete DamageImage;
+			//GameScene->removeItem(image);
+			image = new QGraphicsPixmapItem(*ListImages[56]);
+			Originalimage = new QGraphicsPixmapItem(*ListImages[56]);
+			DamageImage = new QGraphicsPixmapItem(*ListImages[57]);
+			image->setScale(0.16);
+			GameScene->addItem(image);
+		}
+		else if (direction == 1)
+		{
+			delete image;		//delete l'ancienne image
+			delete Originalimage;
+			delete DamageImage;
+			//GameScene->removeItem(image);
+			image = new QGraphicsPixmapItem(*ListImages[15]);
+			Originalimage = new QGraphicsPixmapItem(*ListImages[15]);
+			DamageImage = new QGraphicsPixmapItem(*ListImages[16]);
+			image->setScale(0.16);
+			GameScene->addItem(image);
+		}
 	}
 	if (direction == 0)
-		posX -= 1;
+		posX -= 2;
 	else
-		posX += 1; // Bouger a gauche ou a droite
+		posX += 2; // Bouger a gauche ou a droite
 	//}
 	if (moveTimer >= 100)       //puique move timer augmente a l'infini, on le reset a 0 avant qu'il ne monte trop haut pour eviter des erreurs
 		moveTimer = 0;
@@ -1115,9 +1139,9 @@ Turret::Turret(float x, float y) : Ennemi(x, y)
 
 
 
-	image = new QGraphicsPixmapItem(*ListImages[21]);
-	Originalimage = new QGraphicsPixmapItem(*ListImages[21]); 
-	DamageImage = new QGraphicsPixmapItem(*ListImages[22]);
+	image = new QGraphicsPixmapItem(*ListImages[52]);
+	Originalimage = new QGraphicsPixmapItem(*ListImages[52]); 
+	DamageImage = new QGraphicsPixmapItem(*ListImages[53]);
 	if (!inspace) {
 		shadow->setOffset(15, 15);
 		image->setGraphicsEffect(shadow);

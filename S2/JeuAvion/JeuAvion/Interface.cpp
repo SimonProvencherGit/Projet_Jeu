@@ -10,7 +10,7 @@
 void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
     // si c'est joueur
-    if (e->typeEntite == JOUEUR)
+    if (e->typeEntite == JOUEUR || e->getTypeEnnemi() == TURRET)
     {
         if (e->enVie == false)
         {
@@ -27,7 +27,7 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
-        qDebug() << "Execution time: " << duration << " ms";
+        //qDebug() << "Execution time: " << duration << " ms";
         //Retourner l'image a l'originale
         QTimer::singleShot(500, [=]() mutable {
 
@@ -347,9 +347,12 @@ void Interface::gererInput()
                     manageexplosion.chainexplosion(joueur->posY);
                 }
             }
-            if (dataManette[7] == 1)            //muons ici 
+            if (dataManette[6] == 1)            //muons ici 
             {
-                //code pour les muons ici
+				if (explosionTimer > 100)             //chaque muons charge 1/9 du cooldown de l'explosion
+                    explosionTimer -= 100;
+                else
+                    explosionTimer = 0;
             }
 
             //dataManette[4] est declare en bas de la fonction hors du if(!pause)
@@ -487,146 +490,146 @@ void Interface::gererInput()
                 }
             }
         }
-            //******************************************* controle 2e joueur *******************************************
-            if (nbJoueur > 1 && joueur2 != nullptr)
+        //******************************************* controle 2e joueur *******************************************
+        if (nbJoueur > 1 && joueur2 != nullptr)
+        {
+            if (GetAsyncKeyState('J') < 0)   //on verifie si la fleche gauche ou D est pressee
             {
-                if (GetAsyncKeyState('J') < 0)   //on verifie si la fleche gauche ou D est pressee
+                if (joueur2->posX > 0)
                 {
-                    if (joueur2->posX > 0)
+                    if (!joueur2->doingbarrelroll)
                     {
-                        if (!joueur2->doingbarrelroll)
-                        {
-                            tiltplayerright(joueur2); // tilt le joueur a gauche
-                        }
-                        joueur2->posX -= 10;//on deplace le joueur de 2 vers la gauche
-                        tiltresetimerjoueur2.stop();
+                        tiltplayerright(joueur2); // tilt le joueur a gauche
                     }
-                    if (joueur2->posX < 0)
-                        joueur2->posX = 0;
+                    joueur2->posX -= 10;//on deplace le joueur de 2 vers la gauche
+                    tiltresetimerjoueur2.stop();
                 }
-                else if (GetAsyncKeyState('L') == 0 && !joueur2->doingbarrelroll)
-                {
-                    tiltresetimerjoueur2.start(10);
+                if (joueur2->posX < 0)
+                    joueur2->posX = 0;
+            }
+            else if (GetAsyncKeyState('L') == 0 && !joueur2->doingbarrelroll)
+            {
+                tiltresetimerjoueur2.start(10);
 
-                }
-                if (GetAsyncKeyState('L') < 0)
+            }
+            if (GetAsyncKeyState('L') < 0)
+            {
+                if (joueur2->posX < WIDTH - joueur2->largeur)
                 {
-                    if (joueur2->posX < WIDTH - joueur2->largeur)
+                    if (!joueur2->doingbarrelroll)
                     {
-                        if (!joueur2->doingbarrelroll)
-                        {
-                            tiltplayerleft(joueur2); // tilt le joueur a gauche
-                        }
-                        joueur2->posX += 10;
-                        tiltresetimerjoueur2.stop();
+                        tiltplayerleft(joueur2); // tilt le joueur a gauche
                     }
-                    if (joueur2->posX > WIDTH - joueur2->largeur)
-                        joueur2->posX = WIDTH - joueur2->largeur;
+                    joueur2->posX += 10;
+                    tiltresetimerjoueur2.stop();
                 }
-                else if (GetAsyncKeyState('J') == 0 && !joueur2->doingbarrelroll)
+                if (joueur2->posX > WIDTH - joueur2->largeur)
+                    joueur2->posX = WIDTH - joueur2->largeur;
+            }
+            else if (GetAsyncKeyState('J') == 0 && !joueur2->doingbarrelroll)
+            {
+                tiltresetimerjoueur2.start(10);
+
+            }
+
+            if (GetAsyncKeyState('I') < 0)
+            {
+                if (joueur2->posY > 0)      //le joueur a acces au 9/10 de l'ecran
+                    joueur2->posY -= 10;
+                if (joueur2->posY < 0)
+                    joueur2->posY = 0;
+            }
+            if (GetAsyncKeyState('K') < 0)
+            {
+                if (joueur2->posY < HEIGHT - joueur2->hauteur + 25)
+                    joueur2->posY += 10;
+                if (joueur2->posY > HEIGHT - joueur2->hauteur + 25)
+                    joueur2->posY = HEIGHT - joueur2->hauteur + 25;
+            }
+
+            if (GetAsyncKeyState(VK_RSHIFT) < 0)
+            {
+                if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
                 {
-                    tiltresetimerjoueur2.start(10);
+                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                    joueurTir(joueur2);
+                    joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
 
                 }
-
-                if (GetAsyncKeyState('I') < 0)
+            }
+            if (GetAsyncKeyState('O') < 0)
+            {
+                if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
                 {
-                    if (joueur2->posY > 0)      //le joueur a acces au 9/10 de l'ecran
-                        joueur2->posY -= 10;
-                    if (joueur2->posY < 0)
-                        joueur2->posY = 0;
-                }
-                if (GetAsyncKeyState('K') < 0)
-                {
-                    if (joueur2->posY < HEIGHT - joueur2->hauteur + 25)
-                        joueur2->posY += 10;
-                    if (joueur2->posY > HEIGHT - joueur2->hauteur + 25)
-                        joueur2->posY = HEIGHT - joueur2->hauteur + 25;
-                }
-
-                if (GetAsyncKeyState(VK_RSHIFT) < 0)
-                {
-                    if (joueur2->shootTimer == 0 && joueur2->barrelRollTimer <= 0)    //on tire si on peut
+                    joueur2->barrelRoll = true;
+                    joueur2->doingbarrelroll = true;
+                    tiltresetimerjoueur2.stop();
+                    //add function for barrelroll
+                    joueur2->tiltcounter = 0;
+                    //joueur->AnimatedSprite->setframe(6);
+                    if (GetAsyncKeyState('L') < 0 && GetAsyncKeyState('J') == 0)
                     {
-                        //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                        joueurTir(joueur2);
-                        joueur2->shootTimer = joueur2->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
-
+                        joueur2->AnimatedSprite->startreverse(50);
                     }
-                }
-                if (GetAsyncKeyState('O') < 0)
-                {
-                    if (joueur2->barrelRoll == false && joueur2->coolDownBarrelRoll <= 0)
+                    if (GetAsyncKeyState('J') < 0 && GetAsyncKeyState('L') == 0)
                     {
-                        joueur2->barrelRoll = true;
-                        joueur2->doingbarrelroll = true;
-                        tiltresetimerjoueur2.stop();
-                        //add function for barrelroll
-                        joueur2->tiltcounter = 0;
-                        //joueur->AnimatedSprite->setframe(6);
-                        if (GetAsyncKeyState('L') < 0 && GetAsyncKeyState('J') == 0)
-                        {
-                            joueur2->AnimatedSprite->startreverse(50);
-                        }
-                        if (GetAsyncKeyState('J') < 0 && GetAsyncKeyState('L') == 0)
-                        {
-                            joueur2->AnimatedSprite->start(50);
-                        }
-                        if (GetAsyncKeyState('J') == 0 && GetAsyncKeyState('L') == 0)
-                        {
-                            joueur2->AnimatedSprite->start(50);
-                        }
-                        joueur2->Proppeller1->pixmapItem->hide();// turn off propeller
-
-                        QTimer::singleShot(800, [=]() {
-                            joueur2->Proppeller1->pixmapItem->show();
-                            });
-
-                        QTimer::singleShot(800, [=]() {
-                            joueur2->AnimatedSprite->stop();
-                            joueur2->AnimatedSprite->setframe(6);
-                            joueur2->doingbarrelroll = false;
-                            });
+                        joueur2->AnimatedSprite->start(50);
                     }
+                    if (GetAsyncKeyState('J') == 0 && GetAsyncKeyState('L') == 0)
+                    {
+                        joueur2->AnimatedSprite->start(50);
+                    }
+                    joueur2->Proppeller1->pixmapItem->hide();// turn off propeller
+
+                    QTimer::singleShot(800, [=]() {
+                        joueur2->Proppeller1->pixmapItem->show();
+                        });
+
+                    QTimer::singleShot(800, [=]() {
+                        joueur2->AnimatedSprite->stop();
+                        joueur2->AnimatedSprite->setframe(6);
+                        joueur2->doingbarrelroll = false;
+                        });
+                }
             
-            }
-                if (GetAsyncKeyState('U') < 0)
-                {
-                    if (explosionTimer == 0)
-                    {
-
-                        cdExplosion = 900;      //set le cooldown de l'explosion
-                        enExplosion = true;
-                        explosionTimer = cdExplosion;
-                        explosionPosY = joueur2->posY - 1;
-                        //shakeScene(GameScene, view, 1000, 10);
-                        manageexplosion.chainexplosion(joueur2->posY);
-                    }
-                }
-
-
-                //rolling2->setpos(joueur2->posX - 20, joueur2->posY - 25);
-
-                /*if (!joueur2->invincible && joueur2->barrelRollTimer <= 0)
-                {
-                    //
-                    // rolling->stop();
-                    rolling2->setframe(1);
-                }*/
-
-                if (joueur2->posX == 0 || joueur2->posX == 1851)
-                {
-                    joueur2->AnimatedSprite->setframe(6);
-                }
-
-            }
-
-            if (explosionTimer > 0)
-            {
-                explosionTimer--;
-                explosion();
-            }
         }
+            if (GetAsyncKeyState('U') < 0)
+            {
+                if (explosionTimer == 0)
+                {
+
+                    cdExplosion = 900;      //set le cooldown de l'explosion
+                    enExplosion = true;
+                    explosionTimer = cdExplosion;
+                    explosionPosY = joueur2->posY - 1;
+                    //shakeScene(GameScene, view, 1000, 10);
+                    manageexplosion.chainexplosion(joueur2->posY);
+                }
+            }
+
+
+            //rolling2->setpos(joueur2->posX - 20, joueur2->posY - 25);
+
+            /*if (!joueur2->invincible && joueur2->barrelRollTimer <= 0)
+            {
+                //
+                // rolling->stop();
+                rolling2->setframe(1);
+            }*/
+
+            if (joueur2->posX == 0 || joueur2->posX == 1851)
+            {
+                joueur2->AnimatedSprite->setframe(6);
+            }
+
+        }
+
+        if (explosionTimer > 0)
+        {
+            explosionTimer--;       //if muons, met cette ligne en commentaire
+            explosion();
+        }
+    }
 
 
         if (dataManette[4] == 1)
@@ -838,16 +841,16 @@ void Interface::progressionDifficulte()
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            enemySpawn(1, ARTILLEUR);
+            //enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             //enemySpawn(1, DIVEBOMBER);
-           // enemySpawn(1, TANK);
+            //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-            //enemySpawn(1, TURRET);
+            enemySpawn(1, TURRET);
             //enemySpawn(1, ORBITER);
-            // enemySpawn(1, EXPLODER);
+            //enemySpawn(1, EXPLODER);
 
            /* if (spawnPowerUpStart)
             {
@@ -1646,7 +1649,7 @@ int Interface::customPoints(typeEnnemis e)
     switch (e)
     {
     case BASIC:
-        return 10;
+        return 15;
         break;
     case TANK:
         return 20;
@@ -2217,7 +2220,4 @@ void Interface::resettilt(Joueur * Player)
         Player->tiltcounter = joueur->tiltcounter + 1;
         Player->AnimatedSprite->setframe(Player->tiltcounter);
     }
-
-
-
 }
