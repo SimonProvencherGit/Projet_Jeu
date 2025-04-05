@@ -21,8 +21,6 @@ void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, En
             return;
         }
 
-
-
         e->AnimatedSprite->spritesheet = e->DamageImage->pixmap();
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -841,14 +839,14 @@ void Interface::progressionDifficulte()
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
-            //enemySpawn(1, ARTILLEUR);
+            enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
             //enemySpawn(1, DIVEBOMBER);
             //enemySpawn(1, TANK);
             //enemySpawn(1, SHOTGUNNER);
-            enemySpawn(1, TURRET);
+            //enemySpawn(1, TURRET);
             //enemySpawn(1, ORBITER);
             //enemySpawn(1, EXPLODER);
 
@@ -1063,7 +1061,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
     {
-        if (enemySpawnTimer >= 175 || cbVivant() < 4)
+        if (enemySpawnTimer >= 185 || cbVivant() < 4)
         {
             enemySpawn(1, TURRET);
             enemySpawn(1, AIMBOT);
@@ -1346,13 +1344,13 @@ void Interface::updateEntites()
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
-                    if (e->moveTimer % 12 == 0)
+                    if (e->moveTimer % 10 == 0)
                         randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 else if (e->nbVies < 170 && e->nbVies >= 80)
                 {
                     balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
-                    if (e->moveTimer % 125 == 0)
+                    if (e->moveTimer % 100 == 0)
                         cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     //if (e->moveTimer % 15 == 0)
                       //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -1649,22 +1647,22 @@ int Interface::customPoints(typeEnnemis e)
     switch (e)
     {
     case BASIC:
-        return 15;
-        break;
-    case TANK:
         return 20;
         break;
-    case ARTILLEUR:
+    case TANK:
         return 25;
+        break;
+    case ARTILLEUR:
+        return 30;
         break;
     case DIVEBOMBER:
         return 20;
         break;
     case ZAPER:
-        return 30;
+        return 35;
         break;
     case AIMBOT:
-        return 30;
+        return 35;
         break;
     case BOSS1_MAIN:
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
@@ -1683,13 +1681,13 @@ int Interface::customPoints(typeEnnemis e)
         return 300;
         break;
     case ORBITER:
-        return 35;
+        return 40;
         break;
     case EXPLODER:
-        return 10;
+        return 15;
         break;
     case TURRET:
-        return 35;
+        return 40;
         break;
     case BOSS3_MAIN:
         return 300;
@@ -1899,8 +1897,8 @@ void Interface::executionJeu(int version)
             dizaines->setPos(WIDTH / 2 + 0, 10);
             unites->setPos(WIDTH / 2 + 30, 10);
 
-            joueur->nbVies = 12;
-            joueur2->nbVies = 12;
+            joueur->nbVies = 15;
+            joueur2->nbVies = 15;
             updateHealthCounter();
             
         }
