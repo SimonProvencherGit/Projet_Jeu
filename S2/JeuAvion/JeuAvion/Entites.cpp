@@ -523,7 +523,8 @@ void Aimbot::update()
 Boss1::Boss1(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
-	nbVies = 25;
+	//nbVies = 25;
+	nbVies = 10;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_MAIN;
 	ammoType = HOMING;
@@ -566,7 +567,8 @@ void Boss1::update()
 Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
-	nbVies = 45;
+	//nbVies = 45;
+	nbVies = 1;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_SIDE;
 	hauteur = 30 * 2;
@@ -687,7 +689,8 @@ void SideBomber::update()
 Boss2::Boss2(float x, float y) : Ennemi(x, y)
 {
 	symbole = '%';
-	nbVies = 250;
+	//nbVies = 250;
+	nbVies = 10;	
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
@@ -919,7 +922,7 @@ void Turret::update()
 Boss3::Boss3(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'M';
-	nbVies = 200;
+	nbVies = 125;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_MAIN;
 	hauteur = 204;
@@ -974,13 +977,13 @@ void Boss3::update()
 Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'W';
-	nbVies = 50;
+	nbVies = 30;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_SIDE;
 	hauteur = 88*0.68;
 	largeur = 94*0.68;
 	shoots = true;
-	shootCooldown = 15;
+	shootCooldown = 22;
 	ammoType = ANGLE;
 	rayonMouv = 15;
 	angle = 0;
@@ -1005,7 +1008,7 @@ void Boss3Side::update()
 	else if (posY < yBoss3 && orbiting == false)		//tant que le shotgunner n'est pas dans le rayon de mouvement il descend
 	{
 		//if (moveTimer % 2 == 0)
-			posY++;
+			posY+=8;
 	}
 	else			//quand il est dans le rayon de mouvement il commence a faire des cercles autour du joueur
 	{
@@ -1015,7 +1018,7 @@ void Boss3Side::update()
 			distance = sqrt(pow((xBoss3+60) - (posX + largeur / 2), 2) + pow((yBoss3+70) - (posY + hauteur / 2), 2));				//calcul de la distance entre le joueur et l'entite avec pythagore
 			rayonMouv = distance;		//on set le rayon de mouvement a la distance entre le joueur et l'entite
 			orbiting = true;
-			angle = atan2(yBoss3 - posY, xBoss3 - posX) * 180 / 3.14159265;
+			angle = atan2(yBoss3 - (posY+hauteur/2), xBoss3 - (posX+largeur/2)) * 180 / 3.14159265;
 
 
 			if (posX < xBoss3)
@@ -1032,7 +1035,7 @@ void Boss3Side::update()
 
 		//if (moveTimer % 1 == 0)
 		//{
-			posX = xBoss3 + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			//xboss3 + 4, le +4 est pour que l'ancrage soit au centre du boss3 et pas en haut a gauche
+			posX = xBoss3 + (rayonMouv * cos(((angle + 180) * 2 * PI) / 360));			
 			posY = yBoss3 + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
 
 			if (sensRotation)		//true = sens horaire false = sens anti-horaire
@@ -1044,7 +1047,7 @@ void Boss3Side::update()
 			//{
 				if (changTailleRayon)
 				{
-					if (rayonMouv > 160)
+					if (rayonMouv > 166)
 						rayonMouv -= 1.7;
 					else
 						changTailleRayon = false;

@@ -763,7 +763,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
             break;
         case BOSS3_SIDE:
             //if (nbSideBoss3 % 2 == 0)
-            listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 4, 0));
+            listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 3, 0));
             //else
                 //listEntites.emplace_back(make_unique<Boss3Side>(WIDTH / 2 + 15, 0));  
             //nbSideBoss3++;
@@ -1092,47 +1092,47 @@ void Interface::progressionDifficulte()
                     sfxWarning.stopSFX();
                     music.playMusic("Boss1.wav", 0, 100000);
                     bossMusicStart = true;
-
+                    enemySpawnTimer = 0;
                 }
             }
-
-            if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+        }
+        
+            //if (bossWaitTimer > 527)	 //on attend un certain temps apres la mort du dernier ennemi avant de spawn le boss
+        if (bossMusicStart)
+        {
+            if (spawnPowerUpStart)
             {
-                if (boss3)
+                spawnPowerUpStart = false;
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
+                enemySpawn(1, BOSS3_MAIN);
+				nbPass = 0;
+            }
+            if (boss3 != nullptr)
+            {
+                if (enemySpawnTimer >= 42 && !allSideBossSpawned)
+                { 
                     if (boss3->posX > 0 && boss3->posY > 0)
                         for (auto& e : listEntites)
                             e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
 
-                if (spawnPowerUpStart)
-                {
-                    spawnPowerUpStart = false;
-                    //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-                    //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
-                    enemySpawn(1, BOSS3_MAIN);
-                }
-                if (boss3 != nullptr)
-                {
-                    if (enemySpawnTimer >= 50 && !allSideBossSpawned)
+                    
+                    if (nbPass < 5)
+                        enemySpawn(1, BOSS3_SIDE);
+                    else
                     {
-                        nbPass++;
-                        if (nbPass <= 5)
-                            enemySpawn(1, BOSS3_SIDE);
-                        else
-                        {
-                            allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
-                            boss3Spawned = true;
-                            memScore = score1 + 800;
-                        }
-                        enemySpawnTimer = 0;
+                        allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
+                        boss3Spawned = true;
+                        memScore = score1 + 800;
                     }
-               }
-                bossWaitTimer = 0;
-            }
-            else
-                bossWaitTimer++;
+                    enemySpawnTimer = 0;
 
-            
+					nbPass++;
+                }
+            }
+            bossWaitTimer = 0;
         }
+
     }
 	else if (score1 >= memScore && boss3Spawned)
 	{
@@ -1300,6 +1300,10 @@ void Interface::updateEntites()
             //----------- update du 3e boss -------------------
             else if (e->getTypeEnnemi() == BOSS3_MAIN)
             {
+                if (boss3->posX > 0 && boss3->posY > 0)
+                    for (auto& e : listEntites)
+                        e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
+
                 if (boss3WaitTimer < 175)
                     boss3WaitTimer++;
                 else
@@ -1400,7 +1404,23 @@ void Interface::gererCollisions()
         {
             if (joueur != nullptr)
             {
-                if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+                if (e->typeEntite == POWERUP && e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur))
+                {
+                    switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
+                    {
+                    case ADDLIFE:
+                        joueur->nbVies++;
+                        updateHealthCounter();
+                        break;
+
+                    case ADDBULLETS:
+                        joueur->nbBulletTir += 2;
+                        joueur->shootCooldown += 8;
+                        break;
+                    }
+                    e->enVie = false;
+                }
+                else if (e->enCollision(joueur->posX, joueur->posY, joueur->largeur, joueur->hauteur) && joueur->invincibleTimer <= 0 && joueur->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
                 {
                     if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                     {
@@ -1426,22 +1446,6 @@ void Interface::gererCollisions()
                             e->enVie = false;   //la bullet meurt si elle entre en collision avec le joueur
                             e->collisionJoueur = true;
                         }
-                    }
-                    else if (e->typeEntite == POWERUP)	//si le joueur entre en collision avec un powerup
-                    {
-                        switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
-                        {
-                        case ADDLIFE:
-                            joueur->nbVies++;
-                            updateHealthCounter();
-                            break;
-
-                        case ADDBULLETS:
-                            joueur->nbBulletTir += 2;
-                            joueur->shootCooldown += 8;
-                            break;
-                        }
-                        e->enVie = false;
                     }
                 }
             }
@@ -1567,22 +1571,22 @@ int Interface::customPoints(typeEnnemis e)
     switch (e)
     {
     case BASIC:
-        return 10;
+        return 100;
         break;
     case TANK:
-        return 20;
+        return 200;
         break;
     case ARTILLEUR:
-        return 25;
+        return 250;
         break;
     case DIVEBOMBER:
-        return 20;
+        return 200;
         break;
     case ZAPER:
-        return 30;
+        return 300;
         break;
     case AIMBOT:
-        return 30;
+        return 300;
         break;
     case BOSS1_MAIN:
         music.playMusic("Forest.wav", 21639, 115195);
@@ -1598,20 +1602,20 @@ int Interface::customPoints(typeEnnemis e)
         return 50;
         break;
     case SIDEBOMBER:
-        return 15;
+        return 150;
         break;
     case BOSS2_MAIN:
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
         return 300;
         break;
     case ORBITER:
-        return 35;
+        return 350;
         break;
     case EXPLODER:
-        return 10;
+        return 100;
         break;
     case TURRET:
-        return 35;
+        return 350;
         break;
     case BOSS3_MAIN:
         return 300;
