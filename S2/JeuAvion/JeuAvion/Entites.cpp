@@ -482,8 +482,8 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 	symbole = 'X';
 	nbVies = 3;
 	typeEnnemi = AIMBOT;
-	hauteur = 228*0.4;
-	largeur = 204*0.4;
+	hauteur = 228*0.33;
+	largeur = 204*0.33;
 	shootCooldown = 200;   // a toute les x frames l'entite va tirer
 	posRand = rand() % 6;   //donne une valeur qu'on va ajouter a son y pour pas qu'ils soient tous alignes
 	ammoType = HOMING;
@@ -493,9 +493,9 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 	DamageImage = new QGraphicsPixmapItem(*ListImages[8]);
 	GameScene->addItem(image);
 	//image->setRotation(180);
-	image->setScale(0.4);
-	Originalimage->setScale(0.4);
-	DamageImage->setScale(0.4);
+	image->setScale(0.33);
+	Originalimage->setScale(0.33);
+	DamageImage->setScale(0.33);
 	image->show();
 }
 
@@ -872,19 +872,33 @@ Turret::Turret(float x, float y) : Ennemi(x, y)
 	symbole = 'T';
 	nbVies = 8;
 	typeEnnemi = TURRET;
-	hauteur = 150*0.6;
-	largeur = 122*0.6;
+	hauteur = 210*0.385 - 15;
+	largeur = 210*0.385;
 	shoots = true;
 	shootCooldown = 150;   // a toute les x frames l'entite va tirer
 	ammoType = ANGLE;
 
+	AnimatedSprite = new Sprite("turret.png", "turret.json");
+	AnimatedSprite->pixmapItem->setScale(0.385);
+	AnimatedSprite->setpos(x, y);
+	AnimatedSprite->setframe(11);
+	AnimatedSprite->pixmapItem->setZValue(5);
+	AnimatedSprite->pixmapItem->show();
+	GameScene->addItem(AnimatedSprite->pixmapItem);
+	AnimatedSprite->pixmapItem->setPos(posX - 20, posY);// update image du joueur
+
 	image = new QGraphicsPixmapItem(*ListImages[21]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[21]); 
 	DamageImage = new QGraphicsPixmapItem(*ListImages[22]);
-	GameScene->addItem(image);
-	image->setScale(0.6);
+	//GameScene->addItem(image);
+	//image->setScale(0.385);
 	//image->setRotation(180);
-	image->show();
+	//image->show();
+}
+
+Turret::~Turret()
+{
+	delete AnimatedSprite;
 }
 
 
@@ -898,7 +912,8 @@ void Turret::update()
 	}
 	moveTimer++;
 
-	image->setPos(posX, posY);
+	//image->setPos(posX, posY);
+	AnimatedSprite->pixmapItem->setPos(posX - 20, posY);// update image du joueur
 }
 
 Boss3::Boss3(float x, float y) : Ennemi(x, y)
@@ -1456,8 +1471,8 @@ PowerUp::PowerUp(float x, float y, typePowerUp type) : Entite(x, y, '$', 2, 2)
 	typeEntite = POWERUP;
 	power_up = type;
 	symbole = '$';
-	hauteur = 50;
-	largeur = 50;
+	hauteur = 60;
+	largeur = 55;
 
 
 }

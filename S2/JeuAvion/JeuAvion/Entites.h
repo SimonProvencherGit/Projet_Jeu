@@ -215,6 +215,7 @@ class Turret : public Ennemi
 {
 public:
     Turret(float x, float y);
+	~Turret();
     void update();    //gere le deplacement de l'ennemi
 };
 

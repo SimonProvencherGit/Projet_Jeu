@@ -830,6 +830,7 @@ void Interface::progressionDifficulte()
 
             /*if (spawnPowerUpStart)
             {
+				enemySpawn(1, TURRET);  
                 //enemySpawn(1, EXPLODER);
                 //enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
@@ -837,7 +838,7 @@ void Interface::progressionDifficulte()
 				//enemySpawn(1, BOSS3_SIDE);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
-                powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+                //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
             }*/
             
 
@@ -1157,6 +1158,7 @@ void Interface::updateEntites()
     double angle;       //pour les ennemis qui ont besoin de l'angle entre eux et le joueur
     static int sideBoss3WaitTimer = 0;
     static int boss3WaitTimer = 0;
+    int frame;
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -1202,10 +1204,26 @@ void Interface::updateEntites()
             }
             else if (e->getTypeEnnemi() == TURRET && e->moveTimer % e->shootCooldown == 0 && e->shoots)
             {
-                angle = atan2(joueur->posY - e->posY, joueur->posX - e->posX) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                angle = atan2((joueur->posY + joueur->hauteur/2) - (e->posY+e->hauteur/2), (joueur->posX + joueur->largeur/2) - (e->posX + e->largeur/2)) * 180 / PI;     //retourne l'angle en degres entre l'entite et le joueur
+                if (angle < 0)
+                    frame = angle * -1;
+                else
+                    frame = 360 - angle;
+                
+                for(int i = -10; i <= 10; i += 10)
+                    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur/2 - 1 , angle + i, 'o', false));
+            }
+            if (e->getTypeEnnemi() == TURRET)
+            {
+                angle = atan2((joueur->posY + joueur->hauteur / 2) - (e->posY + e->hauteur / 2), (joueur->posX + joueur->largeur / 2) - (e->posX + e->largeur / 2)) * 180 / PI;
+				angle = angle*-1 + 180;     //on inverse l'angle pour que le sprite regarde vers le joueur
 
-                for (int i = -10; i <= 10; i += 10)
-                    bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY - 1, angle + i, 'o', false));
+                if (angle < 0)
+                    frame = (angle * -1) / 22.5 -1; //DONT TOUCH -1  or else everything implodes
+                else
+                    frame = (360 - angle - 10)/22.5;
+
+                e->AnimatedSprite->setframe(frame);
             }
 
             if (e->getTypeEnnemi() == BOSS1_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le boss1 tire des 3 missiles
@@ -1654,6 +1672,7 @@ void Interface::enleverEntites()
         {
             GameScene->removeItem(listEntites[i]->image);       //on enleve l'image de l'entite de la scene
             delete listEntites[i]->image;
+			delete listEntites[i]->AnimatedSprite;
 
             listEntites.erase(listEntites.begin() + i);
             i--;
