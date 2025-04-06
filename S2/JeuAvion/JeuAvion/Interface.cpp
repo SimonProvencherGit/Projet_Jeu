@@ -1344,13 +1344,13 @@ void Interface::updateEntites()
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
-                    if (e->moveTimer % 10 == 0)
+                    if (e->moveTimer % 12 == 0)
                         randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 else if (e->nbVies < 170 && e->nbVies >= 80)
                 {
                     balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
-                    if (e->moveTimer % 100 == 0)
+                    if (e->moveTimer % 120 == 0)
                         cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     //if (e->moveTimer % 15 == 0)
                       //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
