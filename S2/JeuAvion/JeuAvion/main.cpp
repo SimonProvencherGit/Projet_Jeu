@@ -138,6 +138,30 @@ void loadimages() { //Initialisation de toute les images.
 	ListImages[57] = make_unique<QPixmap>();
 	ListImages[57]->load("Textures\\Ennemis\\tankR-d.png");
 
+	ListImages[58] = make_unique<QPixmap>();
+	ListImages[58]->load("Textures\\Numbers\\0-R.png");
+	ListImages[59] = make_unique<QPixmap>();
+	ListImages[59]->load("Textures\\Numbers\\1-R.png");
+	ListImages[60] = make_unique<QPixmap>();
+	ListImages[60]->load("Textures\\Numbers\\2-R.png");
+	ListImages[61] = make_unique<QPixmap>();
+	ListImages[61]->load("Textures\\Numbers\\3-R.png");
+	ListImages[62] = make_unique<QPixmap>();
+	ListImages[62]->load("Textures\\Numbers\\4-R.png");
+	ListImages[63] = make_unique<QPixmap>();
+	ListImages[63]->load("Textures\\Numbers\\5-R.png");
+	ListImages[64] = make_unique<QPixmap>();
+	ListImages[64]->load("Textures\\Numbers\\6-R.png");
+	ListImages[65] = make_unique<QPixmap>();
+	ListImages[65]->load("Textures\\Numbers\\7-R.png");
+	ListImages[66] = make_unique<QPixmap>();
+	ListImages[66]->load("Textures\\Numbers\\8-R.png");
+	ListImages[67] = make_unique<QPixmap>();
+	ListImages[67]->load("Textures\\Numbers\\9-R.png");
+	ListImages[68] = make_unique<QPixmap>();
+	ListImages[68]->load("Textures\\Numbers\\x.png");
+	
+
 }
 
 
@@ -173,8 +197,8 @@ int main(int argc, char* argv[]) {
     // Remove the border and background
     view->setFrameStyle(QFrame::NoFrame);
     view->setBackgroundBrush(Qt::NoBrush);
-    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
-    view->setViewport(glWidget);// set le view pour opengl
+    //QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+    //view->setViewport(glWidget);// set le view pour opengl
 
     // Ajouter du antialiasing et Smoothing des pixels.
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);

@@ -107,7 +107,8 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	nbVies = 20;
+	//nbVies = 20;
+	nbVies = 20;	//nombre de vies du joueur
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
@@ -741,16 +742,17 @@ void SideBomber::update()
 Boss2::Boss2(float x, float y) : Ennemi(x, y)
 {
 	symbole = '%';
-	nbVies = 250;
+	nbVies = 280;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
 	hauteur = 165;
 	largeur = 390;
 	shootCooldown = 10;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
-	shoots = true;
+	shoots = false;
 	angle = 0;
 	rayonMouv = 70;		//va faire un cercle de rayon 7
+	finiDescendre = false;
 
 	image = new QGraphicsPixmapItem(*ListImages[43]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[43]);
@@ -771,8 +773,21 @@ void Boss2::update()
 {
 	//if (moveTimer % 1 == 0)
 	//{
-	posX = WIDTH / 2 - largeur + (rayonMouv * cos((angle * 2 * PI) / 360));
-	posY = HEIGHT / 3 + (rayonMouv * sin((angle * 2 * PI) / 360));
+	if (posY >= HEIGHT / 3.5 && !finiDescendre)
+	{
+		posY -= 2.5;
+		memPosX = posX - rayonMouv;
+		memPosY = posY - rayonMouv;
+		invincible = true;
+	}
+	else
+	{
+		shoots = true;	
+		finiDescendre = true;
+		invincible = false;
+		posX = memPosX + (rayonMouv * cos((angle * 2 * PI) / 360));
+		posY = memPosY + (rayonMouv * sin((angle * 2 * PI) / 360));
+	}
 
 	angle++;			//vitesse angulaire determine ici
 	//}
@@ -1145,7 +1160,7 @@ void Turret::update()
 Boss3::Boss3(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'M';
-	nbVies = 200;
+	nbVies = 175;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_MAIN;
 	hauteur = 204;
@@ -1201,7 +1216,7 @@ void Boss3::update()
 Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'W';
-	nbVies = 50;
+	nbVies = 40;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_SIDE;
 	hauteur = 88 * 0.68;
