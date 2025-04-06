@@ -130,10 +130,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	image->setScale(0.25);
 	Originalimage->setScale(0.25);
 	DamageImage->setScale(0.25);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		AnimatedSprite->pixmapItem->setGraphicsEffect(shadow);
-	}
+	
 
 	//qDebug() << "Image Z-Value:" << image->zValue();
 	//image->setPos(0, 0);
@@ -231,10 +228,7 @@ BasicEnnemi::BasicEnnemi(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[0]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[0]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[1]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	image->setScale(0.33);
 	//image->setRotation(180);
@@ -291,10 +285,7 @@ DiveBomber::DiveBomber(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[4]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[4]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[5]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->show();
@@ -387,10 +378,6 @@ Tank::Tank(float x, float y) : Ennemi(x, y)
 	Originalimage = new QGraphicsPixmapItem(*ListImages[15]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[16]);
 
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
 	//image->setRotation(180);
 	GameScene->addItem(image);
 	image->setScale(0.16);
@@ -458,10 +445,7 @@ Artilleur::Artilleur(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[2]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[2]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[3]);
-	if(!inspace){
-	shadow->setOffset(15, 15);
-	image->setGraphicsEffect(shadow);
-	}
+
 	GameScene->addItem(image);
 	image->setScale(0.16);
 	//image->setRotation(180);
@@ -502,10 +486,7 @@ Zaper::Zaper(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[13]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[13]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[14]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	image->setScale(2);
 	//image->setRotation(180);
@@ -560,10 +541,7 @@ Aimbot::Aimbot(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[7]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[7]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[8]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->setScale(0.33);
@@ -608,10 +586,7 @@ Boss1::Boss1(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[11]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[11]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[12]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->show();
@@ -661,10 +636,7 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[13]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[13]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[14]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	image->setScale(2);
 	//image->setRotation(180);
@@ -726,10 +698,7 @@ SideBomber::SideBomber(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[41]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[41]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[42]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->setScale(1.5);
@@ -786,10 +755,7 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[43]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[43]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[44]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	image->setScale(0.8);
 	Originalimage->setScale(0.8);
 	DamageImage->setScale(0.8);
@@ -841,10 +807,7 @@ Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[34]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[34]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[35]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->setScale(0.8);
@@ -1086,10 +1049,7 @@ Exploder::Exploder(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[54]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[54]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[55]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	image->setScale(0.2);
 	Originalimage->setScale(0.20);
 	DamageImage->setScale(0.20);
@@ -1137,16 +1097,10 @@ Turret::Turret(float x, float y) : Ennemi(x, y)
 	GameScene->addItem(AnimatedSprite->pixmapItem);
 	AnimatedSprite->pixmapItem->setPos(posX - 20, posY);
 
-
-
 	image = new QGraphicsPixmapItem(*ListImages[52]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[52]); 
 	DamageImage = new QGraphicsPixmapItem(*ListImages[53]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
-
+	
 	//image->setRotation(180);
 	image->show();
 
@@ -1203,10 +1157,7 @@ Boss3::Boss3(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[46]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[46]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[47]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	//image->setScale(2);
 	//image->setRotation(180);
@@ -1268,10 +1219,7 @@ Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 	image = new QGraphicsPixmapItem(*ListImages[48]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[48]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[49]);
-	if (!inspace) {
-		shadow->setOffset(15, 15);
-		image->setGraphicsEffect(shadow);
-	}
+	
 	GameScene->addItem(image);
 	image->setScale(0.68);
 	//image->setRotation(180);
