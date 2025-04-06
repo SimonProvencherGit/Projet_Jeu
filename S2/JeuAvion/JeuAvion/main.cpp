@@ -110,9 +110,9 @@ void loadimages() { //Initialisation de toute les images.
     ListImages[42] = make_unique<QPixmap>();
     ListImages[42]->load("Textures\\Ennemis\\sideBomber-d.png");
     ListImages[43] = make_unique<QPixmap>();
-    ListImages[43]->load("Textures\\Ennemis\\boss2.png");
+    ListImages[43]->load("Textures\\Sprites\\boss2.png");
     ListImages[44] = make_unique<QPixmap>();
-    ListImages[44]->load("Textures\\Ennemis\\boss2-d.png");
+    ListImages[44]->load("Textures\\Sprites\\boss2-d.png");
     ListImages[46] = make_unique<QPixmap>();
     ListImages[46]->load("Textures\\Ennemis\\boss3_main.png");
     ListImages[47] = make_unique<QPixmap>();
@@ -160,6 +160,13 @@ void loadimages() { //Initialisation de toute les images.
 	ListImages[67]->load("Textures\\Numbers\\9-R.png");
 	ListImages[68] = make_unique<QPixmap>();
 	ListImages[68]->load("Textures\\Numbers\\x.png");
+
+	ListImages[69] = make_unique<QPixmap>();
+	ListImages[69]->load("Textures\\Sprites\\barrel_roll2.png");
+	ListImages[70] = make_unique<QPixmap>();
+	ListImages[70]->load("Textures\\Sprites\\barrel_roll2-d.png");
+
+
 	
 
 }
@@ -175,7 +182,7 @@ void firststart() {
     }
     else {
         if (jeux) {
-            jeux->executionJeu(0); // Call executionJeu if the object exists
+            jeux->executionJeu(1); // Call executionJeu if the object exists
         }
     }
 }
@@ -197,8 +204,8 @@ int main(int argc, char* argv[]) {
     // Remove the border and background
     view->setFrameStyle(QFrame::NoFrame);
     view->setBackgroundBrush(Qt::NoBrush);
-    //QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
-    //view->setViewport(glWidget);// set le view pour opengl
+    QOpenGLWidget* glWidget = new QOpenGLWidget();// fait que le jeux est une application opengl
+    view->setViewport(glWidget);// set le view pour opengl
 
     // Ajouter du antialiasing et Smoothing des pixels.
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);

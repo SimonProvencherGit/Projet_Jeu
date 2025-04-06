@@ -20,6 +20,8 @@ public:
     void startreverse(int vitesse);
     void stop();
     void setframe(int index);
+    void ChangeJson(QString jsonfile);
+
     ~Sprite();
     QGraphicsPixmapItem* pixmapItem;
     QPixmap spritesheet;

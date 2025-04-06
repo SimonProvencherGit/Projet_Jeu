@@ -16,10 +16,10 @@ Entite::Entite(float x, float y, char symb, int largeurEntite, int hauteurEntite
 	nbVies = 1;
 	bulletAllie = false;
 	typeEntite = ENNEMI;
-	xJoueur = 0;
-	yJoueur = 0;
-	xJoueur2 = 0;
-	yJoueur2 = 0;
+	xJoueur = -1;
+	yJoueur = -1;
+	xJoueur2 = -1;
+	yJoueur2 = -1;
 	p1EnVie = true;
 	p2EnVie = true;
 	//nbJoueurs = 1;
@@ -96,9 +96,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	Proppeller1->pixmapItem->show();
 	Proppeller1->start(30);
 	AnimatedSprite->setpos(x, y);
-	AnimatedSprite->setpos(x, y);
 	AnimatedSprite->pixmapItem->setScale(0.25);
-	AnimatedSprite->setpos(x, y);
 	AnimatedSprite->setframe(1);
 	AnimatedSprite->pixmapItem->setZValue(100);
 	AnimatedSprite->pixmapItem->show();
@@ -107,8 +105,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	//nbVies = 20;
-	nbVies = 20;	//nombre de vies du joueur
+	nbVies = 20;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
@@ -584,6 +581,9 @@ Boss1::Boss1(float x, float y) : Ennemi(x, y)
 	shootCooldown = 100;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = true;
 
+	if (xJoueur2 != -1)
+		nbVies *= 1.5;
+
 	image = new QGraphicsPixmapItem(*ListImages[11]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[11]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[12]);
@@ -628,6 +628,9 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 	shootCooldown = 1;
 	ammoType = LASER;
 	firstEntry = true;
+
+	if (xJoueur2 != -1)
+		nbVies *= 1.5;
 
 	if ((rand() % 3) == 0)		//pour que les side boss side tirent a des moments differents cahque foais qu'il spawn
 		shootTiming = true;
@@ -742,11 +745,12 @@ void SideBomber::update()
 Boss2::Boss2(float x, float y) : Ennemi(x, y)
 {
 	symbole = '%';
+	
 	nbVies = 280;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
-	hauteur = 165;
+	hauteur = 155;
 	largeur = 390;
 	shootCooldown = 10;   // x frames avant de tirer donc plus gros chiffre = tir plus lent
 	shoots = false;
@@ -754,17 +758,28 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	rayonMouv = 70;		//va faire un cercle de rayon 7
 	finiDescendre = false;
 
+	AnimatedSprite = new Sprite("boss2.png", "boss2.json");
+	AnimatedSprite->setpos(x, y);
+	AnimatedSprite->pixmapItem->setScale(0.8);
+	AnimatedSprite->setframe(1);
+	AnimatedSprite->pixmapItem->setZValue(10);
+	AnimatedSprite->pixmapItem->show();
+	AnimatedSprite->start(20);
+	GameScene->addItem(AnimatedSprite->pixmapItem);
+
 	image = new QGraphicsPixmapItem(*ListImages[43]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[43]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[44]);
 	
-	image->setScale(0.8);
-	Originalimage->setScale(0.8);
-	DamageImage->setScale(0.8);
-	GameScene->addItem(image);
+	if (xJoueur2 != -1)
+		nbVies *= 1.5;
+	//image->setScale(0.8);
+	//Originalimage->setScale(0.8);
+	//DamageImage->setScale(0.8);
+	//GameScene->addItem(image);
 	//image->setScale(2);
 	//image->setRotation(180);
-	image->show();
+	//image->show();
 
 }
 
@@ -797,19 +812,20 @@ void Boss2::update()
 		moveTimer = 0;
 	moveTimer++;
 
-	image->setPos(posX, posY);
+	//image->setPos(posX, posY);
+	AnimatedSprite->pixmapItem->setPos(posX, posY);
 }
 
 Orbiter::Orbiter(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'J';
-	nbVies = 3;
+	nbVies = 5;
 	typeEnnemi = ORBITER;
 	hauteur = 125 * 0.8;
 	largeur = 148 * 0.8;
 	shoots = true;
 	moveTimer = rand() % shootCooldown;   //on set le timer de mouvement a un nombre aleatoire entre 0 et le cooldown de tir pour que les ennemis tirent a des moments differents
-	shootCooldown = 170;   // a toute les x frames l'entite va tirer
+	shootCooldown = 135;   // a toute les x frames l'entite va tirer
 	ammoType = ANGLE;
 	rayonMouv = 150;		//va faire un cercle de rayon 6 autour du joueur
 	angle = 270;
@@ -868,12 +884,12 @@ void Orbiter::update()
 				if (posX < xJoueur)
 				{
 					sensRotation = false;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-					angle += 0.75;
+					angle += 0.85;
 				}
 				else
 				{
 					sensRotation = true;	//le sens de la rotion du shotgunner (false = sens anti-horaire et true = sens horaire)
-					angle -= 0.75;
+					angle -= 0.85;
 				}
 			}
 			//je dois determiner l'angle du shotgonnuer lorsqu'il entre dans le range du joueur
@@ -883,9 +899,9 @@ void Orbiter::update()
 			posY = ancrageY + (rayonMouv * sin(((angle + 180) * 2 * PI) / 360));
 
 			if (sensRotation)		//true = sens horaire false = sens anti-horaire
-				angle += 0.75;			//vitesse angulaire determine
+				angle += 0.85;			//vitesse angulaire determine
 			else
-				angle -= 0.75;			//vitesse angulaire determine
+				angle -= 0.85;			//vitesse angulaire determine
 
 			//}
 			if (angle >= 360)
@@ -1160,7 +1176,7 @@ void Turret::update()
 Boss3::Boss3(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'M';
-	nbVies = 175;
+	nbVies = 165;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_MAIN;
 	hauteur = 204;
@@ -1168,6 +1184,9 @@ Boss3::Boss3(float x, float y) : Ennemi(x, y)
 	shoots = true;
 	shootCooldown = 100;   // a toute les x frames l'entite va tirer
 	ammoType = MORTAR;
+
+	if (xJoueur2 != -1)
+		nbVies *= 1.5;
 
 	image = new QGraphicsPixmapItem(*ListImages[46]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[46]);
@@ -1216,7 +1235,7 @@ void Boss3::update()
 Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'W';
-	nbVies = 40;
+	nbVies = 35;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_SIDE;
 	hauteur = 88 * 0.68;
@@ -1230,6 +1249,8 @@ Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 	orbiting = false;
 	sensRotation = true;		//true = sens horaire false = sens anti-horaire
 	changTailleRayon = true;	//true = le rayon diminue false = le rayon augmente
+
+	
 
 	image = new QGraphicsPixmapItem(*ListImages[48]);
 	Originalimage = new QGraphicsPixmapItem(*ListImages[48]);
@@ -1570,6 +1591,7 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 	image->setScale(0.5);
 	image->setPos(posX, posY);
 	image->setRotation(angle + 90);		//leave the +90, trust me bro
+	image->setZValue(15);
 	image->show();
 }
 
