@@ -118,16 +118,27 @@ void Sprite::previousframe() {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
+void Sprite::ChangeJson(QString jsonfile)
+{
+    json.empty();
+    QFile Fichier("Textures\\Sprites\\" + jsonfile);
+        // Verification de l'ouverture du fichier
+        if (Fichier.open(QIODevice::ReadOnly)) {
+            if (spritesheet.isNull()) {
+                qDebug() << "Erreur ouverture dimage.";
+            }
+            QByteArray Bytes = Fichier.readAll();
+            QJsonDocument tempdoc = QJsonDocument::fromJson(Bytes);
+            json = tempdoc.object().value("frames").toObject();
+            if (json.isEmpty()) {
+                qDebug() << "json invalid";
+            }
+            Fichier.close();
+        }
+        else {
+            qDebug() << "erreur ouverture du json";
+        }
+}
 
 void Sprite::start(int vitesse) {
     spritetimer->start(vitesse);

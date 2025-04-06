@@ -4,8 +4,8 @@
 backgroundmanager::backgroundmanager()
 {
 	//En creation default au background ocean
-	Background1 = new Sprite("spritesheet.png", "spritesheet.json");
-	Background2 = new Sprite("spritesheet.png", "spritesheet.json");
+	Background1 = new Sprite("ocean.png", "ocean.json");
+	Background2 = new Sprite("ocean.png", "ocean.json");
 	Background1->setpos(-175, 0);
 	Background1->pixmapItem->setScale(0.75);
 	Background1->pixmapItem->show();
@@ -47,11 +47,22 @@ backgroundmanager::backgroundmanager()
 }
 void backgroundmanager::setocean()
 {
-	if (Background1 == nullptr && Background2 == nullptr) 
+	if (Background1 == nullptr && Background2 == nullptr)
 	{
 		Background1 = new Sprite("ocean.png", "ocean.json");
 		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 200;
+		Background1->setpos(-175, 0);
+		Background1->pixmapItem->setScale(0.75);
+		Background1->pixmapItem->show();
+		Background1->setframe(0);
+		GameScene->addItem(Background1->pixmapItem);
+		Background2->setpos(-175, -1284);
+		Background2->pixmapItem->setScale(0.75);
+		Background2->pixmapItem->show();
+		GameScene->addItem(Background2->pixmapItem);
+		Background2->setframe(0);
+		GameScene->update();
+		mapframetimer = 280;
 		return;
 	}
 	else
@@ -60,7 +71,17 @@ void backgroundmanager::setocean()
 		delete Background2;
 		Background1 = new Sprite("ocean.png", "ocean.json");
 		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 200;
+		Background1->setpos(-175, 0);
+		Background1->pixmapItem->setScale(0.75);
+		Background1->pixmapItem->show();
+		GameScene->addItem(Background1->pixmapItem);
+		Background2->setpos(-175, -1284);
+		Background2->pixmapItem->setScale(0.75);
+		Background2->pixmapItem->show();
+		GameScene->addItem(Background2->pixmapItem);
+		Background2->setframe(0);
+		GameScene->update();
+		mapframetimer = 280;
 	}
 	
 
@@ -108,18 +129,39 @@ void backgroundmanager::setdesert()
 {
 	if (Background1 == nullptr && Background2 == nullptr)
 	{
-		Background1 = new Sprite("ocean.png", "ocean.json");
-		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 10;
+		Background1 = new Sprite("desert.png", "forest.json");		// le json de forrest est le meme que desert
+		Background2 = new Sprite("desert.png", "forest.json");
+		Background1->setpos(-175, 0);
+		Background1->pixmapItem->setScale(0.75);
+		Background1->pixmapItem->show();
+		Background1->setframe(0);
+		GameScene->addItem(Background1->pixmapItem);
+		Background2->setpos(-175, -1284);
+		Background2->pixmapItem->setScale(0.75);
+		Background2->pixmapItem->show();
+		GameScene->addItem(Background2->pixmapItem);
+		Background2->setframe(0);
+		GameScene->update();
+		mapframetimer = 500;
 		return;
 	}
 	else
 	{
 		delete Background1;
 		delete Background2;
-		Background1 = new Sprite("ocean.png", "ocean.json");
-		Background2 = new Sprite("ocean.png", "ocean.json");
-		mapframetimer = 10;
+		Background1 = new Sprite("desert.png", "forest.json");
+		Background2 = new Sprite("desert.png", "forest.json");
+		Background1->setpos(-175, 0);
+		Background1->pixmapItem->setScale(0.75);
+		Background1->pixmapItem->show();
+		GameScene->addItem(Background1->pixmapItem);
+		Background2->setpos(-175, -1284);
+		Background2->pixmapItem->setScale(0.75);
+		Background2->pixmapItem->show();
+		GameScene->addItem(Background2->pixmapItem);
+		Background2->setframe(0);
+		GameScene->update();
+		mapframetimer = 500;
 	}
 }
 void backgroundmanager::setspace()

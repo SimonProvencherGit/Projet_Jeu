@@ -10,7 +10,7 @@
 void Interface::damageeffect(QGraphicsPixmapItem* pixmapItem, int durationMs, Entite* e) {
     auto start = std::chrono::high_resolution_clock::now();
     // si c'est joueur
-    if (e->typeEntite == JOUEUR || e->getTypeEnnemi() == TURRET)
+    if (e->typeEntite == JOUEUR || e->getTypeEnnemi() == TURRET || e->getTypeEnnemi() == BOSS2_MAIN)
     {
         if (e->enVie == false)
         {
@@ -174,7 +174,6 @@ Interface::Interface()
     loadBarrelRoll->setpos(1725, 980);
     //loadBarrelRoll->start(170);
     loadBarrelRoll->setframe(59);
-    loadBarrelRoll->pixmapItem->setZValue(500);
     loadBarrelRoll->pixmapItem->setScale(0.8);
     loadBarrelRoll->pixmapItem->setZValue(100);
     loadBarrelRoll->pixmapItem->show();
@@ -186,7 +185,7 @@ Interface::Interface()
     //loadExplosion->start(170);
     loadExplosion->setframe(59);
     loadExplosion->pixmapItem->setScale(0.8);
-    loadExplosion->pixmapItem->setZValue(500);
+    loadExplosion->pixmapItem->setZValue(100);
     loadExplosion->pixmapItem->show();
     GameScene->addItem(loadExplosion->pixmapItem);
     updateExplosionCounter();
@@ -267,8 +266,6 @@ Interface::Interface()
 
 }
 
-
-//gere les inputs du joueur
 void Interface::gererInput()
 {
     //----------------------------------------------   test manette   ----------------------------------------------
@@ -277,20 +274,21 @@ void Interface::gererInput()
         //Fix rapide pour les coins l'animation quand l'avion est au coins
         if (joueur != nullptr)
         {
-            if(joueur->doingbarrelroll == false)
+            if (joueur->doingbarrelroll == false)
             {
-            if (joueur->posX == 0 || joueur->posX == 1851)
-            {
-                joueur->AnimatedSprite->setframe(6);
-            }
+                if (joueur->posX == 0 || joueur->posX == 1851)
+                {
+
+                    joueur->AnimatedSprite->setframe(5);
+                }
             }
         }
         if (joueur2 != nullptr)
         {
             if (joueur2->doingbarrelroll == false)
-            { 
+            {
                 if (joueur2->posX == 0 || joueur2->posX == 1851)
-                    joueur2->AnimatedSprite->setframe(6);
+                    joueur2->AnimatedSprite->setframe(5);
             }
         }
         if (joueur != nullptr)
@@ -397,7 +395,7 @@ void Interface::gererInput()
             }
             if (dataManette[6] == 1)            //muons ici 
             {
-				if (explosionTimer > 100)             //chaque muons charge 1/9 du cooldown de l'explosion
+                if (explosionTimer > 100)             //chaque muons charge 1/9 du cooldown de l'explosion
                     explosionTimer -= 100;
                 else
                     explosionTimer = 0;
@@ -480,7 +478,7 @@ void Interface::gererInput()
             {
                 if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
                 {
-            
+
                     joueur->barrelRoll = true;
                     joueur->doingbarrelroll = true;
                     tiltresetimerjoueur1.stop();
@@ -503,13 +501,13 @@ void Interface::gererInput()
 
                     QTimer::singleShot(800, [=]() {
                         joueur->Proppeller1->pixmapItem->show();
-                        });
+                    });
 
                     QTimer::singleShot(800, [=]() {
                         joueur->AnimatedSprite->stop();
-                        joueur->AnimatedSprite->setframe(6);
+                        joueur->AnimatedSprite->setframe(5);
                         joueur->doingbarrelroll = false;
-                        });
+                    });
                 }
             }
             if (GetAsyncKeyState('Q') < 0)
@@ -560,6 +558,7 @@ void Interface::gererInput()
                 tiltresetimerjoueur2.start(10);
 
             }
+
             if (GetAsyncKeyState('L') < 0)
             {
                 if (joueur2->posX < WIDTH - joueur2->largeur)
@@ -627,20 +626,19 @@ void Interface::gererInput()
                     {
                         joueur2->AnimatedSprite->start(50);
                     }
-                    joueur2->Proppeller1->pixmapItem->hide();// turn off propeller
 
-                    QTimer::singleShot(800, [=]() {
-                        joueur2->Proppeller1->pixmapItem->show();
-                        });
+                    // QTimer::singleShot(800, [=]() {
+                      //   joueur2->Proppeller1->pixmapItem->show();
+                      //   });
 
                     QTimer::singleShot(800, [=]() {
                         joueur2->AnimatedSprite->stop();
-                        joueur2->AnimatedSprite->setframe(6);
+                        joueur2->AnimatedSprite->setframe(5);
                         joueur2->doingbarrelroll = false;
-                        });
+                    });
                 }
-            
-        }
+
+            }
             if (GetAsyncKeyState('U') < 0)
             {
                 if (explosionTimer == 0)
@@ -667,7 +665,7 @@ void Interface::gererInput()
 
             if (joueur2->posX == 0 || joueur2->posX == 1851)
             {
-                joueur2->AnimatedSprite->setframe(6);
+                joueur2->AnimatedSprite->setframe(5);
             }
 
         }
@@ -680,28 +678,28 @@ void Interface::gererInput()
     }
 
 
-        if (dataManette[4] == 1)
-        {
-            if (pause)
-                pause = false;
-            else if (!pause)
-                pause = true;
-            Sleep(200);
-        }
-
-        if (GetAsyncKeyState(VK_ESCAPE) < 0)
-            gameOver = true;
-
-        if (GetAsyncKeyState('P') < 0)
-        {
-            if (pause)
-                pause = false;
-            else if (!pause)
-                pause = true;
-            Sleep(200);
-        }
-
+    if (dataManette[4] == 1)
+    {
+        if (pause)
+            pause = false;
+        else if (!pause)
+            pause = true;
+        Sleep(200);
     }
+
+    if (GetAsyncKeyState(VK_ESCAPE) < 0)
+        gameOver = true;
+
+    if (GetAsyncKeyState('P') < 0)
+    {
+        if (pause)
+            pause = false;
+        else if (!pause)
+            pause = true;
+        Sleep(200);
+    }
+
+}
 
 void Interface::joueurTir(Joueur* quelJoueur)
 {
@@ -879,6 +877,7 @@ void Interface::progressionDifficulte()
     static bool spawnPup = false;
     static bool allSideBossSpawned = false;
     static bool ONESHOT = false;
+	static bool twoShot = false;
 
     enemySpawnTimer++;
 
@@ -888,7 +887,7 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            enemySpawn(1, BASIC);   //on fait spawn 3 ennemis a chaque vague
+            enemySpawn(1, BASIC);   
             enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
@@ -997,20 +996,26 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && score1 <= memScore + 800 && boss1Spawned && !boss2Spawned)   //on fait spawn des ennemis apres que le boss soit mort 
     {
-
+        if (bossWaitTimer > 350)
+        {
+            if (!ONESHOT)
+            {
+                //music.playMusic("Forest.wav", 21639, 115195);
+                BackManager->stopbackground();
+                BackManager->setforest();
+                BackManager->bougebackground();
+                ONESHOT = true;
+            }
+        }
         if (bossWaitTimer > 370)
         {
+            if (!twoShot)
+            {
+                music.playMusic("Forest.wav", 21639, 115195);
+                twoShot = true;
+            }
             if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
-                if (!ONESHOT)
-                {
-                    music.playMusic("Forest.wav", 21639, 115195);
-                    BackManager->stopbackground();
-                    BackManager->setforest();
-                    BackManager->bougebackground();
-                    ONESHOT = true;
-                }
-
                 enemySpawn(3, SIDEBOMBER);
                 enemySpawn(1, AIMBOT);
                 int nbZaper = 0;
@@ -1084,8 +1089,6 @@ void Interface::progressionDifficulte()
             }
             else if (!bossMusicStart && bossSpawnSound)
             {
-
-
                 if (enemySpawnTimer >= 325)         //
                 {
                     Warning->stop();
@@ -1093,7 +1096,8 @@ void Interface::progressionDifficulte()
                     sfxWarning.stopSFX();
                     music.playMusic("Boss2.wav", 12850, 73633);
                     bossMusicStart = true;
-
+					ONESHOT = false;
+					twoShot = false;
                 }
             }
 
@@ -1111,20 +1115,41 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
     {
-        if (enemySpawnTimer >= 185 || cbVivant() < 4)
+        if (bossWaitTimer > 505)
         {
-            enemySpawn(1, TURRET);
-            enemySpawn(1, AIMBOT);
-            nbPass++;
-            if (nbPass % 2 == 0)
+            if (!ONESHOT)
             {
-                enemySpawn(1, EXPLODER);
-                nbPass = 0;
+                //music.playMusic("Forest.wav", 21639, 115195);
+                BackManager->stopbackground();
+                BackManager->setdesert();
+                BackManager->bougebackground();
+                ONESHOT = true;
             }
-            enemySpawnTimer = 0;
         }
+        if (bossWaitTimer > 520)
+        {
+            if (!twoShot)
+            {
+                music.playMusic("Desert.wav", 21639, 115195);
+                twoShot = true;
+            }
+            if (enemySpawnTimer >= 185 || cbVivant() < 4)
+            {
+                enemySpawn(1, TURRET);
+                enemySpawn(1, AIMBOT);
+                nbPass++;
+                if (nbPass % 2 == 0)
+                {
+                    enemySpawn(1, EXPLODER);
+                    nbPass = 0;
+                }
+                enemySpawnTimer = 0;
+            }
+        }
+        else
+            bossWaitTimer++;
     }
-    else if (score1 >= memScore + 800 && score1 < memScore + 1400 && boss2Spawned)
+    else if (score1 >= memScore + 800 && score1 < memScore + 1500 && boss2Spawned)
     {
         if (enemySpawnTimer >= 200 || cbVivant() < 4)
         {
@@ -1198,6 +1223,8 @@ void Interface::progressionDifficulte()
                         //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
                         //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
                         enemySpawn(1, BOSS3_MAIN);
+						ONESHOT = false;
+						twoShot = false;
                     }
 
                     if (boss3 != nullptr)
@@ -1226,13 +1253,22 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && boss3Spawned)
     {
+        if (!ONESHOT)
+        {
+            music.playMusic("Space.wav", 21639, 115195);
+            BackManager->stopbackground();
+            BackManager->setspace();
+            BackManager->bougebackground();
+            ONESHOT = true;
+        }
         if (enemySpawnTimer >= 185 || cbVivant() < 4)
         {
             enemySpawn(1, TURRET);
             enemySpawn(1, AIMBOT);
             enemySpawn(1, ORBITER);
-            enemySpawn(1, DIVEBOMBER);
-            enemySpawn(1, SIDEBOMBER);
+            enemySpawn(2, DIVEBOMBER);
+            enemySpawn(2, SIDEBOMBER);
+            enemySpawn(1, ARTILLEUR);
 
             enemySpawnTimer = 0;
         }
@@ -1246,6 +1282,8 @@ void Interface::updateEntites()
     static int sideBoss3WaitTimer = 0;
     static int boss3WaitTimer = 0;
     int frame;
+    static int memPosXBoss3 = 0;
+	static int memPosYBoss3 = 0;
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -1265,6 +1303,9 @@ void Interface::updateEntites()
             }
 
             e->update();    //on met a jour chaque entite
+
+            if (joueur2 != nullptr)
+                joueur2->Proppeller1->setpos(joueur2->posX + 11, joueur2->posY + 70);
 
             if (e->typeEntite == ENNEMI && e->ammoType == NORMAL && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //on verifie si c'est un ennemi et si sont compteur pour tirer est a 0
                 bufferBulletsUpdate.emplace_back(make_unique<BasicBullet>(e->posX + e->largeur / 2 + 12, e->posY + e->hauteur + 1, false));     //on cree un bullet a la position de l'ennemi qu'on met un buffer temporaire pour eviter de les ajouter a la liste d'entites pendant qu'on itere a travers d'elle  
@@ -1441,6 +1482,8 @@ void Interface::updateEntites()
                             angleTirBoss = 0;
                     }
                 }
+				memPosXBoss3 = boss3->posX + boss3->largeur / 2 ;
+                memPosYBoss3 = boss3->posY + boss3->hauteur / 2;
             }
             else if (e->getTypeEnnemi() == BOSS3_SIDE)
             {
@@ -1452,7 +1495,7 @@ void Interface::updateEntites()
                     {
                         //randomTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                         //balayageTir(1, 10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
-                        angle = atan2(e->posY - boss3->posY, e->posX - boss3->posX) * 180 / PI;
+                        angle = atan2(e->posY - memPosYBoss3, e->posX - memPosXBoss3) * 180 / PI;
                         bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(e->posX + e->largeur / 2, e->posY + e->hauteur, angle, 'o', false));
 
                         //cercleTir(10, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -1588,6 +1631,7 @@ void Interface::gererCollisions()
                                 e2->perdVie(1);
                                 damageeffect(e2->image, 100, e2.get());
                                 e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
+                                
                             }
 
 
@@ -1619,7 +1663,12 @@ void Interface::gererCollisions()
                                     {
                                         music.stopMusic();
                                         manageexplosion.bossdeath();
-                                    }
+									}
+									else if (e2->getTypeEnnemi() == BOSS2_MAIN)
+									{
+										music.stopMusic();
+										manageexplosion.bossdeath();
+									}
                                     powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                                 }
                             }
@@ -1708,7 +1757,7 @@ int Interface::customPoints(typeEnnemis e)
         return 40;
         break;
     case BOSS1_MAIN:
-        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 4);
         bossMusicStart = false;
         bossSpawnSound = false;
         return 100;
@@ -1720,14 +1769,14 @@ int Interface::customPoints(typeEnnemis e)
         return 20;
         break;
     case BOSS2_MAIN:
-        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
+        powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 4);
         return 300;
         break;
     case ORBITER:
         return 40;
         break;
     case EXPLODER:
-        return 15;
+        return 10;
         break;
     case TURRET:
         return 40;
@@ -1769,12 +1818,32 @@ void Interface::restart()
     spawnAddLife = true;
     spawnPowerUpStart = true;
 
+    BackManager->stopbackground();
+    BackManager->setocean();
+    BackManager->bougebackground();
+
     updateHealthCounter();
 
     if (nbJoueur > 1)
     {
+        //listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
+        //joueur2 = static_cast<Joueur*>(listEntites.back().get());
+        
         listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
         joueur2 = static_cast<Joueur*>(listEntites.back().get());
+        QObject::connect(&tiltresetimerjoueur2, &QTimer::timeout, [=]() {
+            resettilt(joueur2);
+        });
+        joueur2->image->setPixmap(*ListImages[69]);
+        joueur2->Originalimage->setPixmap(*ListImages[69]);
+        joueur2->DamageImage->setPixmap(*ListImages[70]);
+        joueur2->AnimatedSprite->setframe(5);
+        joueur2->AnimatedSprite->ChangeJson("barrel_roll2.json");
+        joueur2->AnimatedSprite->spritesheet = *ListImages[69];
+        joueur2->AnimatedSprite->pixmapItem->setScale(0.32);
+        joueur2->Proppeller1->pixmapItem->hide();
+        GameScene->update();
+        
         joueur2->posX = (WIDTH / 2) + 50;
         updateHealthCounter();
     }
@@ -1811,12 +1880,14 @@ void Interface::enleverEntites()
             }
             if (joueur2 != nullptr)
             {
-                if (!joueur2->enVie)
+                if (!joueur2->enVie && listEntites[i]->AnimatedSprite == joueur2->AnimatedSprite)
                 {
+
                         delete listEntites[i]->AnimatedSprite;
                         //GameScene->removeItem(rolling2->pixmapItem);
                         delete joueur2->Proppeller1;
                         joueur2 = nullptr;
+                    
                     
                 }
             }
@@ -1890,25 +1961,36 @@ void Interface::executionJeu(int version)
         if (version > 0)     //si on a choisi autre chose que le mode seul on initialise le 2e joueur
         {
 
-            QObject::connect(&tiltresetimerjoueur2, &QTimer::timeout, [=]() {
-                resettilt(joueur2);
-                });
             listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
             joueur2 = static_cast<Joueur*>(listEntites.back().get());
-            joueur2->image->setPixmap(*ListImages[38]);
-            joueur2->Originalimage->setPixmap(*ListImages[38]);
-            joueur2->DamageImage->setPixmap(*ListImages[39]);
+            QObject::connect(&tiltresetimerjoueur2, &QTimer::timeout, [=]() {
+                resettilt(joueur2);
+            });
+            joueur2->image->setPixmap(*ListImages[69]);
+            joueur2->Originalimage->setPixmap(*ListImages[69]);
+            joueur2->DamageImage->setPixmap(*ListImages[70]);
+            joueur2->AnimatedSprite->setframe(5);
+            joueur2->AnimatedSprite->ChangeJson("barrel_roll2.json");
+            joueur2->Proppeller1->ChangeJson("flame.json");
+            joueur2->Proppeller1->spritesheet.load("Textures\\Sprites\\flame.png");
+            joueur2->Proppeller1->pixmapItem->setScale(0.1);
+            joueur2->Proppeller1->pixmapItem->setZValue(5);
+
+            joueur2->AnimatedSprite->spritesheet = *ListImages[69];
+            joueur2->AnimatedSprite->pixmapItem->setScale(0.32);
+            //joueur2->Proppeller1->pixmapItem->hide();
+            GameScene->update();
             //joueur2->enVie = true;
             joueur->posX = (WIDTH / 2) - 50;
 
             nbJoueur = 2;
 
 
+
             loadBarrelRoll2 = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
             loadBarrelRoll2->setpos(1775, 910);
             loadBarrelRoll2->start(170);
             loadBarrelRoll2->setframe(59);
-            loadBarrelRoll2->pixmapItem->setZValue(500);
             loadBarrelRoll2->pixmapItem->setScale(0.6);
             loadBarrelRoll2->pixmapItem->setZValue(100);
             loadBarrelRoll2->pixmapItem->show();
@@ -1920,7 +2002,7 @@ void Interface::executionJeu(int version)
             loadExplosion2->setpos(1775, 990);
             loadExplosion2->start(170);
             loadExplosion2->setframe(59);
-            loadExplosion2->pixmapItem->setZValue(500);
+            loadExplosion2->pixmapItem->setZValue(100);
             loadExplosion2->pixmapItem->setScale(0.6);
             loadExplosion2->pixmapItem->show();
             GameScene->addItem(loadExplosion2->pixmapItem);
@@ -2217,18 +2299,18 @@ void setConsoleSize()
     SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
 }
 
-
 void Interface::tiltplayerleft(Joueur* player)
 {
-    if (player->tiltcounter <= 5)
+    if (player->tiltcounter <= 3)
     {
-        player->AnimatedSprite->setframe(5);
+        player->tiltcounter = 3;
+        player->AnimatedSprite->setframe(3);
     }
-    if (player->tiltcounter > 5)
+    if (player->tiltcounter > 3)
     {
         //player->AnimatedSprite->start(50);
         player->AnimatedSprite->setframe(player->tiltcounter);
-        player->tiltcounter--;
+        player->tiltcounter = player->tiltcounter - 1;
     }
 }
 
@@ -2237,35 +2319,36 @@ void Interface::tiltplayerright(Joueur* player)
     if (player->tiltcounter >= 7)
     {
         player->AnimatedSprite->setframe(7);
+        player->tiltcounter = 7;
     }
     if (player->tiltcounter < 7)
     {
         //player->AnimatedSprite->start(50);
         player->AnimatedSprite->setframe(player->tiltcounter);
-        player->tiltcounter++;
+        player->tiltcounter = player->tiltcounter + 1;
     }
 }
 
-void Interface::resettilt(Joueur * Player)
+void Interface::resettilt(Joueur* Player)
 {
 
-    if(Player == nullptr|| Player->enVie != true|| Player->AnimatedSprite == nullptr)
+    if (Player == nullptr || Player->enVie != true || Player->AnimatedSprite == nullptr)
     {
         return;
     }
-    if (Player->tiltcounter = 6)
+    if (Player->tiltcounter = 5)
     {
-        Player->tiltcounter = 6;
+        Player->tiltcounter = 5;
+        Player->AnimatedSprite->setframe(5);
+    }
+    if (Player->tiltcounter > 5)
+    {
+        Player->tiltcounter = Player->tiltcounter - 1;
         Player->AnimatedSprite->setframe(Player->tiltcounter);
     }
-    if (Player->tiltcounter > 6)
+    if (Player->tiltcounter < 5)
     {
-        Player->tiltcounter = joueur->tiltcounter - 1;
-        Player->AnimatedSprite->setframe(Player->tiltcounter);
-    }
-    if (Player->tiltcounter < 6)
-    {
-        Player->tiltcounter = joueur->tiltcounter + 1;
+        Player->tiltcounter = Player->tiltcounter + 1;
         Player->AnimatedSprite->setframe(Player->tiltcounter);
     }
 }
