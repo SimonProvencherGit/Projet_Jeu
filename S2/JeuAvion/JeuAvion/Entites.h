@@ -180,6 +180,9 @@ class Boss2 : public Ennemi
 private:
     int rayonMouv;
     int angle;
+	bool finiDescendre;
+    int memPosX;
+	int memPosY;
 public:
     Boss2(float x, float y);
     void update();    //gere le deplacement de l'ennemi

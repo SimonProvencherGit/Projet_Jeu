@@ -149,6 +149,9 @@ Interface::Interface()
 
     joueur2 = nullptr;
     boss3 = nullptr;
+	unitVie2 = nullptr;
+	dixVie2 = nullptr;
+
 	//rolling2 = nullptr;
 
     /*rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
@@ -213,7 +216,54 @@ Interface::Interface()
     milliers->setPos(1800, 10);
     milliers->setZValue(100);
 
-   
+    coeur = new QGraphicsPixmapItem(*ListImages[23]);
+	coeur->setPos(10, 10);
+    coeur->setScale(0.12);
+    coeur->setZValue(50);
+    coeur->show();
+    GameScene->addItem(coeur);
+
+	QGraphicsPixmapItem* x = new QGraphicsPixmapItem(*ListImages[68]);
+	x->setPos(70, 28);
+	x->setScale(0.35);
+	x->setZValue(50);
+	x->show();
+	GameScene->addItem(x); 
+
+	dixVie = new QGraphicsPixmapItem(*ListImages[58]);
+	dixVie->setPos(105, 20);
+	dixVie->setScale(0.45);
+	dixVie->setZValue(50);
+	dixVie->show();
+	GameScene->addItem(dixVie);
+	unitVie = new QGraphicsPixmapItem(*ListImages[58]);
+	unitVie->setPos(130, 20);
+	unitVie->setScale(0.45);
+	unitVie->setZValue(50);
+	unitVie->show();
+	GameScene->addItem(unitVie);
+
+    coeur2 = new QGraphicsPixmapItem(*ListImages[23]);
+    coeur2->setPos(1765, 10);
+    coeur2->setScale(0.12);
+    coeur2->setZValue(50);
+    coeur2->hide();
+    GameScene->addItem(coeur2);
+
+    
+
+    dixVie2 = new QGraphicsPixmapItem(*ListImages[58]);
+    dixVie2->setPos(1860, 20);
+    dixVie2->setScale(0.45);
+    dixVie2->setZValue(50);
+    dixVie2->hide();
+    GameScene->addItem(dixVie2);
+    unitVie2 = new QGraphicsPixmapItem(*ListImages[58]);
+    unitVie2->setPos(1885, 20);
+    unitVie2->setScale(0.45);
+    unitVie2->setZValue(50);
+    unitVie2->hide();
+    GameScene->addItem(unitVie2);
 
 }
 
@@ -764,7 +814,7 @@ void Interface::enemySpawn(int nbEnnemi, typeEnnemis ennemiVoulu)
                 listEntites.emplace_back(make_unique<SideBomber>(1, (rand() % (HEIGHT - 2)) + 1));          //on fait spawn un ennemi a une position aleatoire en y, la position en x de 1 se fait changer dans le constructeur dependant du sens de l'ennemi
             break;
         case BOSS2_MAIN:
-            listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2, HEIGHT / 4));
+            listEntites.emplace_back(make_unique<Boss2>(WIDTH / 2-195, HEIGHT));
             break;
         case ORBITER:
             listEntites.emplace_back(make_unique<Orbiter>(posRand, 0));
@@ -850,17 +900,17 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, ORBITER);
             //enemySpawn(1, EXPLODER);
 
-           /* if (spawnPowerUpStart)
+           /*if (spawnPowerUpStart)
             {
                 //enemySpawn(1, EXPLODER);
-                //enemySpawn(1, BOSS2_MAIN);
-                enemySpawn(1, BOSS1_MAIN);
+                enemySpawn(1, BOSS2_MAIN);
+                //enemySpawn(1, BOSS1_MAIN);
                 //enemySpawn(1, BOSS3_MAIN);
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }
-            */
+            }*/
+            
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
         }
@@ -1128,8 +1178,6 @@ void Interface::progressionDifficulte()
             }
 
         }
-
-
         if (bossMusicStart)
         {
             if (spawnPowerUpStart)
@@ -1165,7 +1213,7 @@ void Interface::progressionDifficulte()
                             {
                                 allSideBossSpawned = true;              //ne pas oublier de le remettre a false dans la prochaine section de la progression pour qu'il respawn si on restart la game
                                 boss3Spawned = true;
-                                memScore = score1 + 800;
+                                memScore = score1 + 550;
                             }
                             enemySpawnTimer = 0;
                             nbPass++;
@@ -1173,25 +1221,20 @@ void Interface::progressionDifficulte()
                     }
                     bossWaitTimer = 0;
                 }
-
             }
+        }
+    }
+    else if (score1 >= memScore && boss3Spawned)
+    {
+        if (enemySpawnTimer >= 185 || cbVivant() < 4)
+        {
+            enemySpawn(1, TURRET);
+            enemySpawn(1, AIMBOT);
+            enemySpawn(1, ORBITER);
+            enemySpawn(1, DIVEBOMBER);
+            enemySpawn(1, SIDEBOMBER);
 
-
-            else if (score1 >= memScore && boss3Spawned)
-            {
-                if (enemySpawnTimer >= 175 || cbVivant() < 4)
-                {
-                    enemySpawn(1, TURRET);
-                    enemySpawn(1, AIMBOT);
-                    enemySpawn(1, ORBITER);
-                    enemySpawn(1, DIVEBOMBER);
-                    enemySpawn(1, SIDEBOMBER);
-
-                    enemySpawnTimer = 0;
-                }
-            }
-
-
+            enemySpawnTimer = 0;
         }
     }
 }
@@ -1344,13 +1387,13 @@ void Interface::updateEntites()
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
-                    if (e->moveTimer % 10 == 0)
+                    if (e->moveTimer % 12 == 0)
                         randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 else if (e->nbVies < 170 && e->nbVies >= 80)
                 {
-                    balayageTir(4, 26, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
-                    if (e->moveTimer % 100 == 0)
+                    balayageTir(4, 28, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
+                    if (e->moveTimer % 120 == 0)
                         cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     //if (e->moveTimer % 15 == 0)
                       //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
@@ -1522,70 +1565,70 @@ void Interface::gererCollisions()
                     }
                 }
             }
-                //partie ou on gere les collision avec les bullets alliees
-                if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
+            //partie ou on gere les collision avec les bullets alliees
+            if (e->typeEntite == BULLET && e->bulletAllie)  //on verifie si c'est un bullet allie tire par le joueur
+            {
+                for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
                 {
-                    for (auto& e2 : listEntites)	//on parcourt la liste d'entites pour voir si la bullet entre en collision avec un ennemi
+                    if (e2->enVie)
                     {
-                        if (e2->enVie)
+                        if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
                         {
-                            if (e2->enVie && e2->enCollision(e->posX, e->posY, e->largeur, e->hauteur) && e2->symbole != e->symbole && e2->typeEntite != POWERUP && !e2->isPlayer)       // si qqlch entre en collision avec la bullet allie et le e->symbole est pour pas que la bullet entre en collision avec elle meme 
+                            if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
+                                for (int i = 80; i < 110; i += 10)
+                                    bufferBullets.emplace_back(make_unique<angleBulletFrag>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
+
+
+                            //if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite == BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
+                            if ((e2->typeEntite == BULLET && e2->ammoType == LASER) || e2->invincible || (e2->typeEntite == BULLET && e2->ammoType == ANGLE) || (e2->typeEntite == BULLET && e2->ammoType == TEMP))	   //g enlever le bout du milieu, a voir si ca cause des bug
                             {
-                                if (e2->ammoType == FRAGMENTING && e2->typeEntite == BULLET && !e2->bulletAllie)      //si c'est un fragmenting bullet d'unennemi
-                                    for (int i = 80; i < 110; i += 10)
-                                        bufferBullets.emplace_back(make_unique<angleBulletFrag>(e2->posX + e2->largeur / 2 - 12, e2->posY - 1, i, '|', false));
+                            }
+                            else
+                            {
+                                e2->perdVie(1);
+                                damageeffect(e2->image, 100, e2.get());
+                                e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
+                            }
 
 
-                                //if ((e2->typeEntite == BULLET && e2->ammoType == LASER || (e2->ammoType == ANGLE && e2->typeEntite == BOSS)) || e2->invincible)	   //si c'est pas un laser ou si l'ennemi est invincible on fait rien
-                                if ((e2->typeEntite == BULLET && e2->ammoType == LASER) || e2->invincible || (e2->typeEntite == BULLET && e2->ammoType == ANGLE) || (e2->typeEntite == BULLET && e2->ammoType == TEMP))	   //g enlever le bout du milieu, a voir si ca cause des bug
+                            //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
+                                //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
+
+                            if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
+                            {
+
+                                score1 += customPoints(e2->getTypeEnnemi());
+
+                                manageexplosion.enemydeathexplosion(e2->posX, e2->posY);             // explosion a la position de l'entite qui meurt
+
+                                if (e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
                                 {
-                                }
-                                else
-                                {
-                                    e2->perdVie(1);
-                                    damageeffect(e2->image, 100, e2.get());
-                                    e->enVie = false;           //la bullet meurt si elle entre en collision avec un ennemi
-                                }
-
-
-                                //if (e2->nbVies != 0)       //si l'ennemi n'a pas de vie comme
-                                    //e->enVie = false;   //la bullet meurt si elle entre en collision avec un ennemi
-
-                                if (!e2->enVie && (e2->typeEntite == ENNEMI || e2->typeEntite == BOSS))	 //si l'ennemi est mort
-                                {
-
-                                    score1 += customPoints(e2->getTypeEnnemi());
-
-                                    manageexplosion.enemydeathexplosion(e2->posX, e2->posY);             // explosion a la position de l'entite qui meurt
-
-                                    if (e2->getTypeEnnemi() == EXPLODER || e2->getTypeEnnemi() == BOSS3_SIDE)
-                                    {
-                                        cercleTir(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
-                                        manageexplosion.shakeScene(GameScene, view, 40, 10); // shake ecran quand explose
+                                    cercleTir(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
+                                    manageexplosion.shakeScene(GameScene, view, 40, 10); // shake ecran quand explose
                                         
-                                        //cercleExplosion(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
-                                    }
-                                    if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
+                                    //cercleExplosion(10, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);
+                                }
+                                if (score1 % 500 <= 10 && score1 > 100 && score1 > scoreLastPup + 50)        //on fait spawn un powerup a chaque 500 points.  le scoreLastPup sert a ne pas faire spawn 2 pup back to back parfois
+                                {
+                                    powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
+                                    scoreLastPup = score1;
+                                }
+                                if (e2->typeEntite == BOSS && e2->getTypeEnnemi() != BOSS3_SIDE)
+                                {
+                                    if (e2->getTypeEnnemi() == BOSS1_MAIN)
                                     {
-                                        powerupSpawn(1, ADDLIFE, e2->posX + e2->largeur / 2, e2->posY + e2->hauteur / 2);       //on fait spawn un powerup a la position de l'ennemi
-                                        scoreLastPup = score1;
+                                        music.stopMusic();
+                                        manageexplosion.bossdeath();
                                     }
-                                    if (e2->typeEntite == BOSS && e2->getTypeEnnemi() != BOSS3_SIDE)
-                                    {
-                                        if (e2->getTypeEnnemi() == BOSS1_MAIN)
-                                        {
-                                            music.stopMusic();
-                                            manageexplosion.bossdeath();
-                                        }
-                                        powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
-                                    }
+                                    powerupSpawn(1, ADDLIFE, e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                                 }
                             }
                         }
                     }
                 }
-                else
-                    e->collisionJoueur = false;
+            }
+            else
+                e->collisionJoueur = false;
 
             
             if (nbJoueur > 1 && joueur2!= nullptr)
@@ -1650,7 +1693,7 @@ int Interface::customPoints(typeEnnemis e)
         return 20;
         break;
     case TANK:
-        return 25;
+        return 40;
         break;
     case ARTILLEUR:
         return 30;
@@ -1659,10 +1702,10 @@ int Interface::customPoints(typeEnnemis e)
         return 20;
         break;
     case ZAPER:
-        return 35;
+        return 40;
         break;
     case AIMBOT:
-        return 35;
+        return 40;
         break;
     case BOSS1_MAIN:
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
@@ -1674,7 +1717,7 @@ int Interface::customPoints(typeEnnemis e)
         return 50;
         break;
     case SIDEBOMBER:
-        return 15;
+        return 20;
         break;
     case BOSS2_MAIN:
         powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
@@ -1900,6 +1943,17 @@ void Interface::executionJeu(int version)
             joueur->nbVies = 15;
             joueur2->nbVies = 15;
             updateHealthCounter();
+
+			unitVie2->show();
+			dixVie2->show();
+			coeur2->show();
+            
+            QGraphicsPixmapItem* x2 = new QGraphicsPixmapItem(*ListImages[68]);
+            x2->setPos(1825, 28);
+            x2->setScale(0.35);
+            x2->setZValue(50);
+            x2->show();
+            GameScene->addItem(x2);
             
         }
         firststart = false;
@@ -1951,57 +2005,53 @@ void Interface::updateHealthCounter()
 {
     if (joueur != nullptr)
     {
-        while (listeNbVie.size() > joueur->nbVies)
-        {
-            QGraphicsPixmapItem* lastHealth = listeNbVie.back();
-            GameScene->removeItem(lastHealth);
-            delete lastHealth;
-            listeNbVie.pop_back();
-        }
-        while (listeNbVie.size() < joueur->nbVies)
-        {
-            image = new QGraphicsPixmapItem(*ListImages[23]);
+        int uni = joueur->nbVies % 10;
+        int diz = (joueur->nbVies / 10) % 10;
 
-            if (listeNbVie.size() >= 19 && listeNbVie.size() < 29)
-                image->setPos(50 + 30 * (listeNbVie.size() - 19), 70);
-            else if (listeNbVie.size() > 9 && listeNbVie.size() < 19)
-                image->setPos(30 + 30 * (listeNbVie.size() - 10), 40);
-            else
-                image->setPos(10 + 30 * listeNbVie.size(), 10);
-
-            image->setScale(0.09);
-            image->setZValue(50);
-            image->show();
-            GameScene->addItem(image);
-            listeNbVie.push_back(image);
+        if(diz > 0)
+        {
+            unitVie->setPixmap(*ListImages[58 + uni]);
+            unitVie->setPos(130, 20);
+            dixVie->setPixmap(*ListImages[58 + diz]);
+			dixVie->setPos(105, 20);
+			dixVie->show();
+		}
+        else
+        {
+            unitVie->setPixmap(*ListImages[58 + uni]);
+			unitVie->setPos(105, 20);
+            dixVie->setPixmap(*ListImages[58 + diz]);
+			dixVie->hide();
         }
     }
-    if (nbJoueur > 1 && joueur2!=nullptr)
+    else if (joueur == nullptr)
+		unitVie->setPixmap(*ListImages[58]);
+    
+    if (nbJoueur > 1 && joueur2 != nullptr)
 	{
-		while (listeNbVie2.size() > joueur2->nbVies)
-		{
-			QGraphicsPixmapItem* lastHealth = listeNbVie2.back();
-			GameScene->removeItem(lastHealth);
-			delete lastHealth;
-			listeNbVie2.pop_back();
-		}
-		while (listeNbVie2.size() < joueur2->nbVies)
-		{
-            image = new QGraphicsPixmapItem(*ListImages[23]);
+        int uni2 = joueur2->nbVies % 10;
+        int diz2 = (joueur2->nbVies / 10) % 10;
 
-            if (listeNbVie2.size() >= 19 && listeNbVie2.size() < 29)
-                image->setPos(1640 + 30 * (listeNbVie2.size() - 19), 70);
-            else if (listeNbVie2.size() > 9 && listeNbVie2.size() < 19)
-                image->setPos(1620 + 30 * (listeNbVie2.size() - 10), 40);
-            else
-                image->setPos(1600 + 30 * listeNbVie2.size(), 10);
-			image->setScale(0.09);
-			image->setZValue(50);
-			image->show();
-			GameScene->addItem(image);
-			listeNbVie2.push_back(image);
-		}
+        if (diz2 > 0)
+        {
+            dixVie2->setPos(1860, 20);
+            unitVie2->setPos(1885, 20);
+            unitVie2->setPixmap(*ListImages[58 + uni2]);
+            unitVie2->setPos(1885, 20);
+            dixVie2->setPixmap(*ListImages[58 + diz2]);
+            dixVie2->setPos(1860, 20);
+            dixVie2->show();
+        }
+        else
+        {
+            unitVie2->setPixmap(*ListImages[58 + uni2]);
+            unitVie2->setPos(1860, 20);
+            dixVie2->setPixmap(*ListImages[58 + diz2]);
+            dixVie2->hide();
+        }
 	}
+	else if (nbJoueur > 1 && joueur2 == nullptr)
+		unitVie2->setPixmap(*ListImages[58]);
 
 }
 

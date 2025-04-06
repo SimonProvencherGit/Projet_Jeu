@@ -55,6 +55,13 @@ private:
     QGraphicsPixmapItem* centaines;
     QGraphicsPixmapItem* milliers;
 
+    QGraphicsPixmapItem* coeur;
+	QGraphicsPixmapItem* coeur2;
+	QGraphicsPixmapItem* dixVie;
+	QGraphicsPixmapItem* dixVie2;
+	QGraphicsPixmapItem* unitVie;
+	QGraphicsPixmapItem* unitVie2;
+
     HANDLE hSerial;
 
 
@@ -90,6 +97,7 @@ private:
     bool spawnAddLife;
     bool spawnPowerUpStart;
     int nbJoueur;
+
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites
