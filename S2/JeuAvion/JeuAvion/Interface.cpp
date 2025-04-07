@@ -1733,26 +1733,25 @@ void Interface::gererCollisions()
             
             if (nbJoueur > 1 && joueur2!= nullptr)
             {
-                if (joueur2 != nullptr)
+                
+                if (e->typeEntite == POWERUP && e->enCollision(joueur2->posX, joueur2->posY, joueur2->largeur, joueur2->hauteur))
                 {
-                    if (e->typeEntite == POWERUP && e->enCollision(joueur2->posX, joueur2->posY, joueur2->largeur, joueur2->hauteur))
+                    switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
                     {
-                        switch (e->power_up)        //on verifie quel type de powerup c'est pour faire les actions appropriees
-                        {
-                        case ADDLIFE:
-                            joueur2->nbVies++;
-                            updateHealthCounter();
-                            break;
+                    case ADDLIFE:
+                        joueur2->nbVies++;
+                        updateHealthCounter();
+                        break;
 
-                        case ADDBULLETS:
-                            joueur2->nbBulletTir += 2;
-                            joueur2->shootCooldown += 8;
-                            break;
-                        }
-                        e->enVie = false;
+                    case ADDBULLETS:
+                        joueur2->nbBulletTir += 2;
+                        joueur2->shootCooldown += 8;
+                        break;
                     }
+                    e->enVie = false;
                 }
-                else if (e->enCollision(joueur2->posX, joueur2->posY, joueur2->largeur, joueur2->hauteur) && joueur2->invincibleTimer <= 0 && joueur2->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
+
+                if (e->enCollision(joueur2->posX, joueur2->posY, joueur2->largeur, joueur2->hauteur) && joueur2->invincibleTimer <= 0 && joueur2->barrelRollTimer <= 0 && !e->isPlayer)     //on verifie si un entite entre en collision avec le joueur et verifie que e n'est pas joueur
                 {
                     if ((e->typeEntite == ENNEMI || e->typeEntite == BOSS) && e->collisionJoueur == false)
                     {
