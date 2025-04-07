@@ -772,7 +772,7 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	DamageImage = new QGraphicsPixmapItem(*ListImages[44]);
 	
 	if (xJoueur2 != -1)
-		nbVies *= 1.5;
+		nbVies *= 1.8;
 	//image->setScale(0.8);
 	//Originalimage->setScale(0.8);
 	//DamageImage->setScale(0.8);
