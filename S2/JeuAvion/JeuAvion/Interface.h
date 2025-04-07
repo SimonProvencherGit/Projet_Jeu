@@ -31,6 +31,8 @@ void setConsoleSize();
 class Interface
 {
 private:
+	QGraphicsRectItem* blackBackground;
+    Sprite* glitch;
     explosionmanager manageexplosion;
     Sprite* loadExplosion;
     Sprite* loadExplosion2;
@@ -135,6 +137,7 @@ public:
     void updateBarrelRollCounter();
     void updateExplosionCounter();
     void updateScore();
+	void glitchEffect(bool state);
 };
 
 #endif

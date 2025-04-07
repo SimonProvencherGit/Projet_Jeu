@@ -105,7 +105,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	nbVies = 20;
+	nbVies = 90;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
@@ -1192,6 +1192,10 @@ Boss3::Boss3(float x, float y) : Ennemi(x, y)
 	Originalimage = new QGraphicsPixmapItem(*ListImages[46]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[47]);
 	
+	image->setZValue(50);
+	DamageImage->setZValue(50);
+	Originalimage->setZValue(50);
+
 	GameScene->addItem(image);
 	//image->setScale(2);
 	//image->setRotation(180);
@@ -1256,6 +1260,10 @@ Boss3Side::Boss3Side(float x, float y) : Ennemi(x, y)
 	Originalimage = new QGraphicsPixmapItem(*ListImages[48]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[49]);
 	
+	image->setZValue(50);
+	DamageImage->setZValue(50);
+	Originalimage->setZValue(50);
+
 	GameScene->addItem(image);
 	image->setScale(0.68);
 	//image->setRotation(180);
@@ -1591,7 +1599,7 @@ angleBullet::angleBullet(float x, float y, int angle, char symb = 'o', bool isPl
 	image->setScale(0.5);
 	image->setPos(posX, posY);
 	image->setRotation(angle + 90);		//leave the +90, trust me bro
-	image->setZValue(15);
+	image->setZValue(60);
 	image->show();
 }
 

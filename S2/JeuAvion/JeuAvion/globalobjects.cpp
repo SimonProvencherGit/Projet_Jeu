@@ -3,6 +3,7 @@
 bool inspace = false;
 SFX sfxbossdeath;
 SFX sfx;
+SFX glitchSFX;
 Music music;
 SFX sfxWarning;
 SFX enemyexplosion;
@@ -17,10 +18,13 @@ QRect * basicbullet;
 void setallSFXVolume(float inputvolume)
 {      
     sfxWarning.setVolume(inputvolume);
-    enemyexplosion.setVolume(inputvolume);
+    enemyexplosion.setVolume(0.6*inputvolume);
     
     sfxbossdeath.setVolume(inputvolume);
     sfx.setVolume(inputvolume);
+
+	glitchSFX.setVolume(2*inputvolume);
+
 
 }//System de sauvegard des settings
 void savesettings() {

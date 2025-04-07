@@ -27,6 +27,7 @@ extern void setallSFXVolume(float inputvolume);
 extern void savesettings();
 extern void loadsettings();
 extern SFX sfx;
+extern SFX glitchSFX;
 extern SFX sfxbossdeath;
 extern Music music;
 extern SFX sfxWarning;

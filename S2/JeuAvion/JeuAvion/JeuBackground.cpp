@@ -181,6 +181,8 @@ void backgroundmanager::setspace()
 		Background2->pixmapItem->show();
 		GameScene->addItem(Background2->pixmapItem);
 		Background2->setframe(0);
+		Background1->pixmapItem->setZValue(0);
+		Background2->pixmapItem->setZValue(0);
 		GameScene->update();
 		mapframetimer = 500;
 		if(eastereggchancevalue == 3)
@@ -204,6 +206,8 @@ void backgroundmanager::setspace()
 		Background2->pixmapItem->show();
 		GameScene->addItem(Background2->pixmapItem);
 		Background2->setframe(0);
+		Background1->pixmapItem->setZValue(0);
+		Background2->pixmapItem->setZValue(0);
 		GameScene->update();
 		if (eastereggchancevalue == 3)
 		{
