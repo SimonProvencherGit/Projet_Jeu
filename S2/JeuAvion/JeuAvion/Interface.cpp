@@ -887,8 +887,8 @@ void Interface::progressionDifficulte()
 
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
-            enemySpawn(1, BASIC);   
-            enemySpawn(1, ARTILLEUR);
+            //enemySpawn(1, BASIC);   
+            //enemySpawn(1, ARTILLEUR);
             //enemySpawn(1, ZAPER);
             //enemySpawn(1, AIMBOT);
             //enemySpawn(2, SIDEBOMBER);
@@ -900,7 +900,7 @@ void Interface::progressionDifficulte()
             //enemySpawn(1, EXPLODER);
 
            /*if (spawnPowerUpStart)
-            {
+           {
                 //enemySpawn(1, EXPLODER);
                 enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
@@ -908,7 +908,7 @@ void Interface::progressionDifficulte()
                 spawnPowerUpStart = false;
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2 - 70);
                 powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-            }*/
+           }*/
             
 
             enemySpawnTimer = 0;        //on reset le timer pour pouvoir spanw la prochaine vague d'ennemis
@@ -1284,6 +1284,8 @@ void Interface::updateEntites()
     int frame;
     static int memPosXBoss3 = 0;
 	static int memPosYBoss3 = 0;
+	static bool oneShot = true;
+	static int bossMaxHp = 0;
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
     {
@@ -1407,6 +1409,11 @@ void Interface::updateEntites()
             //----------- update du 2e boss -------------------
             else if (e->getTypeEnnemi() == BOSS2_MAIN && e->moveTimer % e->shootCooldown == 0 && e->shoots)    //si c'est le 2e boss
             {
+                if (oneShot)
+                {
+					oneShot = false;
+					bossMaxHp = e->nbVies;
+                }
 
                 if (e->nbVies % 70 == 0 && spawnAddLife)
                 {
@@ -1419,7 +1426,7 @@ void Interface::updateEntites()
                 //if (e->moveTimer % 8 == 0)
                   //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
 
-                if (e->nbVies >= 170)
+                if (e->nbVies >= 2*bossMaxHp/3)
                 {
                     if (e->moveTimer % 125 == 0)
                     {
@@ -1428,18 +1435,18 @@ void Interface::updateEntites()
                     }
                     balayageTir(4, 2, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
-                    if (e->moveTimer % 12 == 0)
+                    if (e->moveTimer % 9 == 0)
                         randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
-                else if (e->nbVies < 170 && e->nbVies >= 80)
+                else if (e->nbVies < 2 * bossMaxHp / 3 && e->nbVies >= bossMaxHp/3)
                 {
                     balayageTir(4, 28, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                     if (e->moveTimer % 120 == 0)
                         cercleTir(25, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
-                    //if (e->moveTimer % 15 == 0)
-                      //  randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
+                    if (e->moveTimer % 18 == 0)
+                        randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2);
                 }
-                else if (e->nbVies < 80)
+                else if (e->nbVies < bossMaxHp/3)
                 {
                     if (e->moveTimer % 200 == 0)
                     {
@@ -1448,7 +1455,7 @@ void Interface::updateEntites()
                     }
                     balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
 
-                    if (e->moveTimer % 12 == 0)
+                    if (e->moveTimer % 5 == 0)
                         randomCibleTir(e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 20);
                 }
                 angleTirBoss += 5;
@@ -1541,9 +1548,47 @@ void Interface::randomTir(int x, int  y)
 
 void Interface::randomCibleTir(int x, int y)
 {
+    int joueurRand;
+    int dx = 0;
+	int dy = 0;
+
+    if (nbJoueur > 1)
+    {
+		joueurRand = rand() % 2;	
+		if (joueurRand == 0)
+        {
+            if(joueur != nullptr)
+            {
+                dx = joueur->posX - x;
+                dy = joueur->posY - y;
+			}
+			else if (joueur2 != nullptr)
+            {
+                dx = joueur2->posX - x;
+                dy = joueur2->posY - y;
+            }
+        }
+        else
+        {
+            if (joueur2 != nullptr)
+            {
+                dx = joueur2->posX - x;
+                dy = joueur2->posY - y;
+            }
+            else if(joueur!= nullptr)
+            {
+                dx = joueur->posX - x;
+                dy = joueur->posY - y;
+            }
+        }
+	}
+    else
+    {
+        dx = joueur->posX - x;
+        dy = joueur->posY - y;
+    }
+    
     //calcule l'angle entre le joueur et le boss et tire aleatoirement dans un cone de 40 degres vers le joueur
-    int dx = joueur->posX - x;
-    int dy = joueur->posY - y;
     double angle = atan2(dy, dx) * 180 / 3.14159265;     //retourne l'angle en degres entre le boss et le joueur         https://www.w3schools.com/cpp/ref_math_atan2.asp
     int randPos = rand() % 40;      //correspond a une variation possible de 40 degres
     bufferBulletsUpdate.emplace_back(make_unique<angleBullet>(x, y, angle - 20 + randPos, 'o', false));         //on tire aleatoirement dans un cone de 40 degres vers le joueur
@@ -1987,7 +2032,7 @@ void Interface::executionJeu(int version)
 
 
 
-            loadBarrelRoll2 = new Sprite("loadingBarrelRoll.png", "loadingBarrelRoll.json");
+            loadBarrelRoll2 = new Sprite("loadingBarrelRollP2.png", "loadingBarrelRollP2.json");
             loadBarrelRoll2->setpos(1775, 910);
             loadBarrelRoll2->start(170);
             loadBarrelRoll2->setframe(59);
