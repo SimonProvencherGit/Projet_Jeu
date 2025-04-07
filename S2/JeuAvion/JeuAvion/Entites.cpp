@@ -629,7 +629,7 @@ Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 	ammoType = LASER;
 	firstEntry = true;
 
-	if (xJoueur2 != -1)
+	if (p1EnVie && p2EnVie)
 		nbVies *= 1.5;
 
 	if ((rand() % 3) == 0)		//pour que les side boss side tirent a des moments differents cahque foais qu'il spawn
@@ -771,7 +771,7 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 	Originalimage = new QGraphicsPixmapItem(*ListImages[43]);
 	DamageImage = new QGraphicsPixmapItem(*ListImages[44]);
 	
-	if (xJoueur2 != -1)
+	if (p1EnVie && p2EnVie)
 		nbVies *= 1.8;
 	//image->setScale(0.8);
 	//Originalimage->setScale(0.8);
@@ -1185,7 +1185,7 @@ Boss3::Boss3(float x, float y) : Ennemi(x, y)
 	shootCooldown = 100;   // a toute les x frames l'entite va tirer
 	ammoType = MORTAR;
 
-	if (xJoueur2 != -1)
+	if (p1EnVie && p2EnVie)
 		nbVies *= 1.5;
 
 	image = new QGraphicsPixmapItem(*ListImages[46]);
