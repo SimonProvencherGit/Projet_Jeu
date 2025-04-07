@@ -1465,6 +1465,12 @@ void Interface::updateEntites()
             //----------- update du 3e boss -------------------
             else if (e->getTypeEnnemi() == BOSS3_MAIN)
             {
+				if (!oneShot)
+				{
+					bossMaxHp = e->nbVies;
+					oneShot = true;
+				}
+
                 if (boss3->posX > 0 && boss3->posY > 0)
                     for (auto& e : listEntites)
                         e->getPosBoss3(boss3->posX + boss3->largeur / 2 - 1, boss3->posY + boss3->hauteur / 2);            //donne la position du boss3 aux entites pour que les side boss puissent trourner autour
@@ -1474,12 +1480,12 @@ void Interface::updateEntites()
                 {
                     if (e->moveTimer % 18 == 0)
                     {
-                        if (e->nbVies < 200 && e->nbVies >= 90)
+                        if (e->nbVies >= bossMaxHp/2)
                         {
                             balayageTir(1, 5, e->posX + e->largeur / 2 + 4, e->posY + e->hauteur / 2 - 35);
                             balayageTir(1, 5, e->posX + e->largeur / 2 - 4, e->posY + e->hauteur / 2 - 35, 180);
                         }
-                        else if (e->nbVies < 90)
+                        else if (e->nbVies < bossMaxHp / 2)
                         {
 
                             balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 35);
