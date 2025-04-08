@@ -32,6 +32,7 @@ extern SFX sfxbossdeath;
 extern Music music;
 extern SFX sfxWarning;
 extern SFX enemyexplosion;
-
+extern QTimer Solotimer;
+extern QTimer Cooptimer;
 
 #endif 

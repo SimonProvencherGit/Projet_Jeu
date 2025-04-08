@@ -149,11 +149,21 @@ Interface::Interface()
 
     joueur2 = nullptr;
     boss3 = nullptr;
-	unitVie2 = nullptr;
-	dixVie2 = nullptr;
-	loadBarrelRoll2 = nullptr;
+    unitVie2 = nullptr;
+    dixVie2 = nullptr;
 
-	//rolling2 = nullptr;
+    //rolling2 = nullptr;
+
+    /*rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
+    rolling->setpos(joueur->posX, joueur->posY);
+    rolling->start(70);
+    rolling->setframe(1);
+
+    rolling->pixmapItem->setScale(0.26);
+    rolling->pixmapItem->setZValue(100);
+    rolling->pixmapItem->show();
+    GameScene->addItem(rolling->pixmapItem);
+    */
 
     joueur->AnimatedSprite->setpos(joueur->posX, joueur->posY);
     joueur->Proppeller1->setpos(joueur->posX, joueur->posY);
@@ -206,71 +216,31 @@ Interface::Interface()
     milliers->setZValue(100);
 
     coeur = new QGraphicsPixmapItem(*ListImages[23]);
-	coeur->setPos(10, 10);
+    coeur->setPos(10, 10);
     coeur->setScale(0.12);
     coeur->setZValue(50);
     coeur->show();
     GameScene->addItem(coeur);
 
-	QGraphicsPixmapItem* x = new QGraphicsPixmapItem(*ListImages[68]);
-	x->setPos(70, 28);
-	x->setScale(0.35);
-	x->setZValue(50);
-	x->show();
-	GameScene->addItem(x); 
+    QGraphicsPixmapItem* x = new QGraphicsPixmapItem(*ListImages[68]);
+    x->setPos(70, 28);
+    x->setScale(0.35);
+    x->setZValue(50);
+    x->show();
+    GameScene->addItem(x);
 
-	dixVie = new QGraphicsPixmapItem(*ListImages[58]);
-	dixVie->setPos(105, 20);
-	dixVie->setScale(0.45);
-	dixVie->setZValue(50);
-	dixVie->show();
-	GameScene->addItem(dixVie);
-	unitVie = new QGraphicsPixmapItem(*ListImages[58]);
-	unitVie->setPos(130, 20);
-	unitVie->setScale(0.45);
-	unitVie->setZValue(50);
-	unitVie->show();
-	GameScene->addItem(unitVie);
-
-    coeur2 = new QGraphicsPixmapItem(*ListImages[23]);
-    coeur2->setPos(1765, 10);
-    coeur2->setScale(0.12);
-    coeur2->setZValue(50);
-    coeur2->hide();
-    GameScene->addItem(coeur2);
-
-    
-
-    dixVie2 = new QGraphicsPixmapItem(*ListImages[58]);
-    dixVie2->setPos(1860, 20);
-    dixVie2->setScale(0.45);
-    dixVie2->setZValue(50);
-    dixVie2->hide();
-    GameScene->addItem(dixVie2);
-    unitVie2 = new QGraphicsPixmapItem(*ListImages[58]);
-    unitVie2->setPos(1885, 20);
-    unitVie2->setScale(0.45);
-    unitVie2->setZValue(50);
-    unitVie2->hide();
-    GameScene->addItem(unitVie2);
-
-	glitch = new Sprite("glitch.png", "glitch.json");
-	glitch->setpos(0, 0);
-	glitch->pixmapItem->setScale(4);
-	glitch->pixmapItem->setZValue(105);
-	glitch->start(70);
-	//glitch->pixmapItem->show();
-	GameScene->addItem(glitch->pixmapItem);
-	glitch->pixmapItem->hide();
-
-    blackBackground = new QGraphicsRectItem(-10, -10, 2560, 1440);
-    blackBackground->setBrush(Qt::black);
-	blackBackground->setZValue(101);
-    blackBackground->setOpacity(1);
-    //->show();
-	GameScene->addItem(blackBackground);
-	blackBackground->hide();
-
+    dixVie = new QGraphicsPixmapItem(*ListImages[58]);
+    dixVie->setPos(105, 20);
+    dixVie->setScale(0.45);
+    dixVie->setZValue(50);
+    dixVie->show();
+    GameScene->addItem(dixVie);
+    unitVie = new QGraphicsPixmapItem(*ListImages[58]);
+    unitVie->setPos(130, 20);
+    unitVie->setScale(0.45);
+    unitVie->setZValue(50);
+    unitVie->show();
+    GameScene->addItem(unitVie);
 }
 
 void Interface::gererInput()
@@ -1936,9 +1906,14 @@ void Interface::restart()
         else
             e->enVie = false;
     }
-	enleverEntites();
+    enleverEntites();
     gameOver = false;
-    listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2, HEIGHT - 1));   //ajoute le joueur a la liste d'entites
+    if (joueur != nullptr)
+    {
+        joueur2->enVie = false;
+        enleverEntites();
+    }
+    listEntites.emplace_back(make_unique<Joueur>(WIDTH / 2 - (72.5), HEIGHT - 66.25));   //ajoute le joueur a la liste d'entites
     joueur = static_cast<Joueur*>(listEntites.back().get());
     joueur->posX = (WIDTH / 2) - 50;
     score1 = 0;
@@ -1959,11 +1934,11 @@ void Interface::restart()
 
     updateHealthCounter();
 
-    if (nbJoueur > 1)
+    /*  if (nbJoueur > 1)
     {
         //listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
         //joueur2 = static_cast<Joueur*>(listEntites.back().get());
-        
+
         listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
         joueur2 = static_cast<Joueur*>(listEntites.back().get());
         QObject::connect(&tiltresetimerjoueur2, &QTimer::timeout, [=]() {
@@ -1978,11 +1953,31 @@ void Interface::restart()
         joueur2->AnimatedSprite->pixmapItem->setScale(0.32);
         joueur2->Proppeller1->pixmapItem->hide();
         GameScene->update();
-        
+
         joueur2->posX = (WIDTH / 2) + 50;
         updateHealthCounter();
-    }
+    }*/
+    music.stopMusic();
+    Cooptimer.stop();
+    Solotimer.stop();
 
+    if (loadBarrelRoll2 != nullptr)
+    {
+        delete unitVie2;
+        delete dixVie2;
+        delete loadBarrelRoll2;
+        loadBarrelRoll2 = nullptr;
+        delete loadExplosion2;
+        delete coeur2;
+        delete x2;
+    }
+    delete BackManager;
+    nbJoueur = 1;
+
+    firststart = true;
+    music.playMusic("MainMenu.wav", 65548, 63989);
+    GererMenu* menu = new GererMenu();
+    view->setScene(menu);
 }
 
 //enleve les entites mortes de la liste d'entites
@@ -2075,15 +2070,15 @@ void Interface::executionJeu(int version)
         timeouts.ReadTotalTimeoutConstant = 0;    // No additional wait time
         timeouts.ReadTotalTimeoutMultiplier = 0;  // No per-byte delay
         SetCommTimeouts(hSerial, &timeouts);
-        
+
         PurgeComm(hSerial, PURGE_RXCLEAR);
-        
+
 
         updateHealthCounter();
         updateBarrelRollCounter();
 
         BackManager = new backgroundmanager;
-       // BackManager->setspace();
+        // BackManager->setspace();
         BackManager->bougebackground();
 
         //proxy->setpos(0, 0);
@@ -2092,6 +2087,22 @@ void Interface::executionJeu(int version)
         //hideCursor();
         music.stopMusic();
         music.playMusic("Ocean.wav", 570, 86594);
+        loadBarrelRoll->setpos(1725, 980);
+        //loadBarrelRoll->start(170);
+        loadBarrelRoll->setframe(59);
+        loadBarrelRoll->pixmapItem->setScale(0.8);
+        loadBarrelRoll->pixmapItem->setZValue(100);
+        loadBarrelRoll->pixmapItem->show();
+
+
+
+
+        loadExplosion->setpos(-5, 980);
+        //loadExplosion->start(170);
+        loadExplosion->setframe(59);
+        loadExplosion->pixmapItem->setScale(0.8);
+        loadExplosion->pixmapItem->setZValue(100);
+        loadExplosion->pixmapItem->show();
 
         if (version > 0)     //si on a choisi autre chose que le mode seul on initialise le 2e joueur
         {
@@ -2101,6 +2112,28 @@ void Interface::executionJeu(int version)
             QObject::connect(&tiltresetimerjoueur2, &QTimer::timeout, [=]() {
                 resettilt(joueur2);
             });
+
+            coeur2 = new QGraphicsPixmapItem(*ListImages[23]);
+            coeur2->setPos(1765, 10);
+            coeur2->setScale(0.12);
+            coeur2->setZValue(50);
+            coeur2->hide();
+            GameScene->addItem(coeur2);
+
+
+
+            dixVie2 = new QGraphicsPixmapItem(*ListImages[58]);
+            dixVie2->setPos(1860, 20);
+            dixVie2->setScale(0.45);
+            dixVie2->setZValue(50);
+            dixVie2->hide();
+            GameScene->addItem(dixVie2);
+            unitVie2 = new QGraphicsPixmapItem(*ListImages[58]);
+            unitVie2->setPos(1885, 20);
+            unitVie2->setScale(0.45);
+            unitVie2->setZValue(50);
+            unitVie2->hide();
+            GameScene->addItem(unitVie2);
             joueur2->image->setPixmap(*ListImages[69]);
             joueur2->Originalimage->setPixmap(*ListImages[69]);
             joueur2->DamageImage->setPixmap(*ListImages[70]);
@@ -2120,6 +2153,12 @@ void Interface::executionJeu(int version)
 
             nbJoueur = 2;
 
+            x2 = new QGraphicsPixmapItem(*ListImages[68]);
+            x2->setPos(1825, 28);
+            x2->setScale(0.35);
+            x2->setZValue(50);
+            x2->show();
+            GameScene->addItem(x2);
 
 
             loadBarrelRoll2 = new Sprite("loadingBarrelRollP2.png", "loadingBarrelRollP2.json");
@@ -2143,7 +2182,7 @@ void Interface::executionJeu(int version)
             GameScene->addItem(loadExplosion2->pixmapItem);
             updateExplosionCounter();
 
-			updateHealthCounter();
+            updateHealthCounter();
             loadBarrelRoll->pixmapItem->setScale(0.6);
             loadBarrelRoll->setpos(-5, 910);
             loadBarrelRoll->pixmapItem->setZValue(500);
@@ -2153,25 +2192,19 @@ void Interface::executionJeu(int version)
             loadExplosion->pixmapItem->setZValue(500);
 
             milliers->setPos(WIDTH / 2 - 60, 10);
-			centaines->setPos(WIDTH / 2 - 30, 10);
+            centaines->setPos(WIDTH / 2 - 30, 10);
             dizaines->setPos(WIDTH / 2 + 0, 10);
             unites->setPos(WIDTH / 2 + 30, 10);
 
-            //joueur->nbVies = 15;
-            //joueur2->nbVies = 15;
+            joueur->nbVies = 15;
+            joueur2->nbVies = 15;
             updateHealthCounter();
 
-			unitVie2->show();
-			dixVie2->show();
-			coeur2->show();
-            
-            QGraphicsPixmapItem* x2 = new QGraphicsPixmapItem(*ListImages[68]);
-            x2->setPos(1825, 28);
-            x2->setScale(0.35);
-            x2->setZValue(50);
-            x2->show();
-            GameScene->addItem(x2);
-            
+            unitVie2->show();
+            dixVie2->show();
+            coeur2->show();
+
+
         }
         firststart = false;
     }

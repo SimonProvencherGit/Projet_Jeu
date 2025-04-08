@@ -23,6 +23,7 @@
 #include "JeuBackground.h"
 #include "Sprite.h"
 #include <QObject>
+#include "menu.h"
 
 using json = nlohmann::json;
 
@@ -63,6 +64,7 @@ private:
 	QGraphicsPixmapItem* dixVie2;
 	QGraphicsPixmapItem* unitVie;
 	QGraphicsPixmapItem* unitVie2;
+    QGraphicsPixmapItem* x2 = nullptr;
 
     HANDLE hSerial;
 

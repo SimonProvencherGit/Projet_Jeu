@@ -1,7 +1,9 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
-  main.cpp
+  Menu.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(15,18): warning C4305: 'initializing': truncation from 'double' to 'float'
-  (compiling source file 'main.cpp')
+  (compiling source file 'Menu.cpp')
   
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(691,32): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(725,32): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

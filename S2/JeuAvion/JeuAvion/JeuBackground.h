@@ -8,12 +8,14 @@
 class backgroundmanager {
 public:
 	backgroundmanager();
+	~backgroundmanager();
 	void setocean();
 	void setforest();
 	void setdesert();
 	void setspace();
 	void bougebackground();
 	void stopbackground();
+
 private:
 	void eastereggchance();
 	int initialback1y = 0;

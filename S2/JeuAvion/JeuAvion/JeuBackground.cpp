@@ -86,6 +86,23 @@ void backgroundmanager::setocean()
 	
 
 }
+backgroundmanager::~backgroundmanager()
+{
+	timerBack1->stop();
+	timerBack2->stop();
+	if (easteregg1 != nullptr && easteregg1 != nullptr)
+	{
+		easteregg1timer->stop();
+		easteregg2timer->stop();
+	}
+	delete timerBack1;
+	delete timerBack2;
+	delete easteregg1timer;
+	delete easteregg2timer;
+	delete Background1;
+	delete Background2;
+}
+
 void backgroundmanager::setforest()
 {
 	if (Background1 == nullptr && Background2 == nullptr)

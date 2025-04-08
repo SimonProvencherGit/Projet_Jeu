@@ -11,7 +11,8 @@ QGraphicsScene * GameScene = nullptr;
 QGraphicsView* view = nullptr;
 unique_ptr<QPixmap> ListImages[90];
 QRect * basicbullet;
-
+QTimer Solotimer;
+QTimer Cooptimer;
 
 
 // Ajouter toute les objets SFX pour gerer leurs volumes
