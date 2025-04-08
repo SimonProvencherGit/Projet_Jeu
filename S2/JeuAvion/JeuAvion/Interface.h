@@ -102,6 +102,7 @@ private:
     bool spawnPowerUpStart;
     int nbJoueur;
 
+
     //bool spawnPowerUp;
     //int nextPup;
     //vector<unique_ptr<PowerUp>> listPowerUps;       //pas besoin de le mettre dans une liste separe, un powerup est un entite et peut etre mis dans la liste d'entites

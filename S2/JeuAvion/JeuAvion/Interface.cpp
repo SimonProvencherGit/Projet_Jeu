@@ -413,7 +413,7 @@ void Interface::gererInput()
             {
                 if (explosionTimer == 0)
                 {
-                    cdExplosion = 900;      //set le cooldown de l'explosion
+                    cdExplosion = 1000;      //set le cooldown de l'explosion
                     enExplosion = true;
                     explosionTimer = cdExplosion;
                     explosionPosY = joueur->posY - 1;
@@ -422,8 +422,8 @@ void Interface::gererInput()
             }
             if (dataManette[6] == 1)            //muons ici 
             {
-                if (explosionTimer > 100)             //chaque muons charge 1/9 du cooldown de l'explosion
-                    explosionTimer -= 100;
+                if (explosionTimer >= 25)             //chaque muons charge 1/10 du cooldown de l'explosion
+                    explosionTimer -= 25;
                 else
                     explosionTimer = 0;
             }
@@ -568,7 +568,7 @@ void Interface::gererInput()
                     if (explosionTimer == 0)
                     {
 
-                        cdExplosion = 900;      //set le cooldown de l'explosion
+                        cdExplosion = 1000;      //set le cooldown de l'explosion
                         enExplosion = true;
                         explosionTimer = cdExplosion;
                         explosionPosY = joueur->posY - 1;
@@ -581,7 +581,7 @@ void Interface::gererInput()
                     if (explosionTimer == 0)
                     {
 
-                        cdExplosion = 900;      //set le cooldown de l'explosion
+                        cdExplosion = 1000;      //set le cooldown de l'explosion
                         enExplosion = true;
                         explosionTimer = cdExplosion;
                         explosionPosY = joueur->posY - 1;
@@ -700,7 +700,7 @@ void Interface::gererInput()
                     if (explosionTimer == 0)
                     {
 
-                        cdExplosion = 900;      //set le cooldown de l'explosion
+                        cdExplosion = 1000;      //set le cooldown de l'explosion
                         enExplosion = true;
                         explosionTimer = cdExplosion;
                         explosionPosY = joueur2->posY - 1;
@@ -835,7 +835,7 @@ void Interface::gererInput()
                     if (explosionTimer == 0)
                     {
 
-                        cdExplosion = 900;      //set le cooldown de l'explosion
+                        cdExplosion = 1000;      //set le cooldown de l'explosion
                         enExplosion = true;
                         explosionTimer = cdExplosion;
                         explosionPosY = joueur2->posY - 1;
@@ -854,8 +854,10 @@ void Interface::gererInput()
 
         if (explosionTimer > 0)
         {
-            explosionTimer--;       //if muons, met cette ligne en commentaire
+            if(!utiliseManette || !utiliseMuons)         //si on a pas la manette le cd de l'explosion baisse ici, sinon c les muons
+                explosionTimer--;       
             explosion();
+			updateExplosionCounter();
         }
     }
 
@@ -1142,7 +1144,7 @@ void Interface::progressionDifficulte()
                 Warning->start(32);
                 bossSpawnSound = true;
                 enemySpawnTimer = 0;
-                Warning->setpos(450, 400);
+                Warning->setpos(380, 400);
                 Warning->pixmapItem->setScale(2.4);
                 Warning->pixmapItem->setZValue(100);
                 Warning->pixmapItem->show();
@@ -1261,7 +1263,7 @@ void Interface::progressionDifficulte()
                 Warning = new Sprite("warning.png", "warning.json");
                 Warning->start(32);
                 bossSpawnSound = true;
-                Warning->setpos(450, 400);
+                Warning->setpos(380, 400);
                 Warning->pixmapItem->setScale(2.4);
                 Warning->pixmapItem->setZValue(100);
                 Warning->pixmapItem->show();
@@ -1362,7 +1364,7 @@ void Interface::progressionDifficulte()
                 Warning = new Sprite("warning.png", "warning.json");
                 Warning->start(32);
                 bossSpawnSound = true;
-                Warning->setpos(450, 400);
+                Warning->setpos(380, 400);
                 Warning->pixmapItem->setScale(2.4);
                 Warning->pixmapItem->setZValue(100);
                 Warning->pixmapItem->show();
@@ -2375,7 +2377,7 @@ void Interface::executionJeu(int version)
             loadBarrelRoll->pixmapItem->setZValue(500);
 
             loadExplosion->pixmapItem->setScale(0.6);
-            loadExplosion->setpos(-5, 1020);
+            loadExplosion->setpos(-5, 990);
             loadExplosion->pixmapItem->setZValue(500);
 
             milliers->setPos(WIDTH / 2 - 60, 10);
@@ -2540,7 +2542,7 @@ void Interface::updateExplosionCounter()
             numFrame = 59;
         else
         {
-            numFrame = (float(900 - explosionTimer) / float(900)) * 100;
+            numFrame = (float(1000 - explosionTimer) / float(1000)) * 100;
             numFrame = (numFrame * 59) / 100;
             if (numFrame > 59)
                 numFrame = 59;
@@ -2556,7 +2558,7 @@ void Interface::updateExplosionCounter()
 			numFrame = 59;
 		else
 		{
-			numFrame = (float(900 - explosionTimer) / float(900)) * 100;
+			numFrame = (float(1000 - explosionTimer) / float(1000)) * 100;
 			numFrame = (numFrame * 59) / 100;
 			if (numFrame > 59)
 				numFrame = 59;

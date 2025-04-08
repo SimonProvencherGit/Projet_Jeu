@@ -14,6 +14,7 @@ QRect * basicbullet;
 QTimer Solotimer;
 QTimer Cooptimer;
 bool utiliseManette = false;
+bool utiliseMuons = true;                                                                                                                  
 
 
 // Ajouter toute les objets SFX pour gerer leurs volumes

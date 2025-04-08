@@ -35,5 +35,6 @@ extern SFX enemyexplosion;
 extern QTimer Solotimer;
 extern QTimer Cooptimer;
 extern bool utiliseManette;
+extern bool utiliseMuons; 
 
 #endif 
