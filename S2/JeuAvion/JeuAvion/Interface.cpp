@@ -151,6 +151,7 @@ Interface::Interface()
     boss3 = nullptr;
 	unitVie2 = nullptr;
 	dixVie2 = nullptr;
+	loadBarrelRoll2 = nullptr;
 
 	//rolling2 = nullptr;
 
@@ -1124,7 +1125,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
     {
-        if (bossWaitTimer > 505)
+        if (bossWaitTimer > 508)
         {
             if (!ONESHOT)
             {
@@ -1265,7 +1266,7 @@ void Interface::progressionDifficulte()
         
         if (enemySpawnTimer >= 185 || cbVivant() < 4)
         {
-            if (!musicSpace)
+            /*if (!musicSpace)
             {
                 music.stopMusic();
                 music.playMusic("Space.wav", 21639, 115195);
@@ -1273,7 +1274,7 @@ void Interface::progressionDifficulte()
                 //BackManager->setspace();
                 //BackManager->bougebackground();
                 musicSpace = true;
-            }
+            }*/
 
             enemySpawn(1, TURRET);
             enemySpawn(1, AIMBOT);
@@ -1906,9 +1907,19 @@ int Interface::customPoints(typeEnnemis e)
         return 40;
         break;
     case BOSS3_MAIN:
+        if (cbVivant() == 0)
+        {
+			music.stopMusic();
+			music.playMusic("Space.wav", 21639, 115195);
+        }
         return 300;
         break;
     case BOSS3_SIDE:
+        if (cbVivant() == 0)
+        {
+            music.stopMusic();
+            music.playMusic("Space.wav", 21639, 115195);
+        }
         return 50;
         break;
     }

@@ -545,7 +545,7 @@ void explosionmanager::flash() {
 	flashtimer->start(48);
 	QTimer::singleShot(11000, [=]() {
 		flashtimer->stop();
-		//flashopacity = 0;
+		flashopacity = 0;
 		//maxbrightness = false;
 		delete flashsquare;
 		delete flashtimer;

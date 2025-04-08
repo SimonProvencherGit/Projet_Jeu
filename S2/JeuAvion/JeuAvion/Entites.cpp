@@ -105,7 +105,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 	
 	hauteur = 265 / 3.8; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
 	largeur = 290 / 4.2; //Diviser par 4 a cause du scale de 0.25 de l'image du joueur
-	nbVies = 90;
+	nbVies = 20;
 	attkDmg = 1;
 	vitesse = 1;
 	shootCooldown = 8;
@@ -1784,6 +1784,7 @@ AddLife::AddLife(float x, float y) : PowerUp(x, y, ADDLIFE)
 	GameScene->addItem(image);
 	//image->setRotation(180);
 	image->setScale(2.2);
+	image->setZValue(50);
 	image->show();
 }
 
@@ -1796,6 +1797,7 @@ AddBullet::AddBullet(float x, float y) : PowerUp(x, y, ADDBULLETS)
 	QPixmap pngImg(*ListImages[37]);
 	image = new QGraphicsPixmapItem(pngImg);
 	GameScene->addItem(image);
+	image->setZValue(50);
 	//image->setRotation(180);
 	image->setScale(0.6);
 	image->show();
