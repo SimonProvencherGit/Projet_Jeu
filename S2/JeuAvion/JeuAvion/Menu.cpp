@@ -514,6 +514,7 @@ void Quitter::nonPeser()
 void Quitter::quitter()
 {
 	view->hide();
+	view->viewport()->deleteLater();
 	QApplication::quit();
 }
 

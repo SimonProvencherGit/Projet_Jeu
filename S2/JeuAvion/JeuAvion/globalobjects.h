@@ -34,5 +34,6 @@ extern SFX sfxWarning;
 extern SFX enemyexplosion;
 extern QTimer Solotimer;
 extern QTimer Cooptimer;
+extern bool utiliseManette;
 
 #endif 

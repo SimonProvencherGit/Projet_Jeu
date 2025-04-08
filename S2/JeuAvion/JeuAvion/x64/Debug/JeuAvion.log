@@ -1,9 +1,8 @@
 ﻿   Qt/MSBuild: 3.3.1.1
    Qt: 6.8.2
-  Menu.cpp
+  Interface.cpp
 C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Entites.h(15,18): warning C4305: 'initializing': truncation from 'double' to 'float'
-  (compiling source file 'Menu.cpp')
+  (compiling source file 'Interface.cpp')
   
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(691,32): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Menu.cpp(725,32): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\JeuAvion\Interface.cpp(2521,39): warning C4101: 'e': unreferenced local variable
   JeuAvion.vcxproj -> C:\Users\Siméon\Documents\Ecole\GitHub\Projet_Jeu\S2\JeuAvion\x64\Debug\JeuAvion.exe

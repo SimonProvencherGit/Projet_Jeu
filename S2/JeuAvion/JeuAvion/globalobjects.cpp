@@ -13,6 +13,7 @@ unique_ptr<QPixmap> ListImages[90];
 QRect * basicbullet;
 QTimer Solotimer;
 QTimer Cooptimer;
+bool utiliseManette = false;
 
 
 // Ajouter toute les objets SFX pour gerer leurs volumes

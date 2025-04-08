@@ -245,7 +245,7 @@ Interface::Interface()
 
 void Interface::gererInput()
 {
-    //----------------------------------------------   test manette   ----------------------------------------------
+    //----------------------------------------------   partie manette   ----------------------------------------------
     if (pause == false)
     {
         //Fix rapide pour les coins l'animation quand l'avion est au coins
@@ -273,10 +273,19 @@ void Interface::gererInput()
             switch (dataManette[0])     //premiere valeur du data de la manette est un chiffre de 1 a 9 du joystick
             {
             case 1:
-                if (joueur->posX > 2)
-                    joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
-                else if (joueur->posX > 1)
+                if (joueur->posX > 0)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerright(joueur); // tilt le joueur a gauche
+                        tiltresetimerjoueur1.stop();
+                    }
                     joueur->posX -= 10;
+
+                }
+                if (joueur->posX < 0)
+                    joueur->posX = 0;
+
                 if (joueur->posY > 0)
                     joueur->posY -= 10;
                 if (joueur->posY < 0)
@@ -286,58 +295,99 @@ void Interface::gererInput()
             case 2:
                 if (joueur->posY > 0)
                     joueur->posY -= 10;
+                if (!joueur->doingbarrelroll)
+                    tiltresetimerjoueur1.start(10);
                 break;
 
             case 3:
                 if (joueur->posY > 0)
                     joueur->posY -= 10;
-                if (joueur->posX < WIDTH - joueur->largeur + 25)
+                if (joueur->posX < WIDTH - joueur->largeur)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerleft(joueur); // tilt le joueur a gauche
+                    }
                     joueur->posX += 10;
-                if (joueur->posX > WIDTH - joueur->largeur + 25)
-                    joueur->posX = WIDTH - joueur->largeur + 25;
+                    tiltresetimerjoueur1.stop();
+                }
+                if (joueur->posX > WIDTH - joueur->largeur)
+                    joueur->posX = WIDTH - joueur->largeur;
                 //else if (joueur->posX < WIDTH - 1)
                     //joueur->posX+=10;
                 break;
 
             case 4:
-                if (joueur->posX > 2)
-                    joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
-                else if (joueur->posX > 1)
+                if (joueur->posX > 0)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerright(joueur); // tilt le joueur a gauche
+                        tiltresetimerjoueur1.stop();
+                    }
                     joueur->posX -= 10;
+                }                  
+                if (joueur->posX < 0)
+                    joueur->posX = 0;               
                 break;
             case 5:
-                //le joystick est au centre donc on ne fait rien
+                if (!joueur->doingbarrelroll)
+                    tiltresetimerjoueur1.start(10);
                 break;
 
             case 6:
-                if (joueur->posX < WIDTH - joueur->largeur + 25)
+                if (joueur->posX < WIDTH - joueur->largeur)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerleft(joueur); // tilt le joueur a gauche
+                    }
                     joueur->posX += 10;
-                if (joueur->posX > WIDTH - joueur->largeur + 25)
-                    joueur->posX = WIDTH - joueur->largeur + 25;
+                    tiltresetimerjoueur1.stop();
+                }
+                if (joueur->posX > WIDTH - joueur->largeur)
+                    joueur->posX = WIDTH - joueur->largeur;
                 break;
 
             case 7:
                 if (joueur->posY < HEIGHT - 45)
                     joueur->posY += 10;
-                if (joueur->posX > 2)
-                    joueur->posX -= 10;      //on deplace le joueur de 2 vers la gauche
-                else if (joueur->posX > 1)
+                
+                if (joueur->posX > 0)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerright(joueur); // tilt le joueur a gauche
+                        tiltresetimerjoueur1.stop();
+                    }
                     joueur->posX -= 10;
+                }
+                if (joueur->posX < 0)
+                    joueur->posX = 0;
                 break;
 
             case 8:
                 if (joueur->posY < HEIGHT - 45)
                     joueur->posY += 10;
+                if (!joueur->doingbarrelroll)
+                    tiltresetimerjoueur1.start(10);
                 break;
 
             case 9:
                 if (joueur->posY < HEIGHT - 45)
                     joueur->posY += 10;
 
-                if (joueur->posX < WIDTH - joueur->largeur + 25)
+                if (joueur->posX < WIDTH - joueur->largeur)
+                {
+                    if (!joueur->doingbarrelroll)
+                    {
+                        tiltplayerleft(joueur); // tilt le joueur a gauche
+                    }
                     joueur->posX += 10;
-                if (joueur->posX > WIDTH - joueur->largeur + 25)
-                    joueur->posX = WIDTH - joueur->largeur + 25;
+                    tiltresetimerjoueur1.stop();
+                }
+                if (joueur->posX > WIDTH - joueur->largeur)
+                    joueur->posX = WIDTH - joueur->largeur;
                 break;
 
 
@@ -383,97 +433,19 @@ void Interface::gererInput()
             if (dataManette[5] == 1)
             {
                 if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
-                    joueur->barrelRoll = true;
-            }
-
-            if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
-            {
-                if (joueur->posX > 0)
                 {
-                    if (!joueur->doingbarrelroll)
-                    {
-                        tiltplayerright(joueur); // tilt le joueur a gauche
-                    }
-                    joueur->posX -= 10;//on deplace le joueur de 2 vers la gauche
-                    tiltresetimerjoueur1.stop();
-                }
-                if (joueur->posX < 0)
-                    joueur->posX = 0;
-            }
-            else if (GetAsyncKeyState('D') == 0 && !joueur->doingbarrelroll)
-            {
-                tiltresetimerjoueur1.start(10);
-
-            }
-
-            if (GetAsyncKeyState('D') < 0)
-            {
-                if (joueur->posX < WIDTH - joueur->largeur)
-                {
-                    if (!joueur->doingbarrelroll)
-                    {
-                        tiltplayerleft(joueur); // tilt le joueur a gauche
-                    }
-                    joueur->posX += 10;
-                    tiltresetimerjoueur1.stop();
-                }
-                if (joueur->posX > WIDTH - joueur->largeur)
-                    joueur->posX = WIDTH - joueur->largeur;
-            }
-            else if (GetAsyncKeyState('A') == 0 && !joueur->doingbarrelroll)
-            {
-                tiltresetimerjoueur1.start(10);
-
-            }
-
-            if (GetAsyncKeyState('W') < 0)
-            {
-                if (joueur->posY > 0)      //le joueur a acces au 9/10 de l'ecran
-                    joueur->posY -= 10;
-                if (joueur->posY < 0)
-                    joueur->posY = 0;
-            }
-
-            if (GetAsyncKeyState('S') < 0)
-            {
-                if (joueur->posY < HEIGHT - joueur->hauteur + 25)
-                    joueur->posY += 10;
-                if (joueur->posY > HEIGHT - joueur->hauteur + 25)
-                    joueur->posY = HEIGHT - joueur->hauteur + 25;
-            }
-            if (GetAsyncKeyState(VK_SPACE) < 0)
-            {
-                if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
-                {
-                    //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
-                    joueurTir(joueur);
-                    joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
-
-                }
-            }
-            if (GetAsyncKeyState('E') < 0)
-            {
-                if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
-                {
-
                     joueur->barrelRoll = true;
                     joueur->doingbarrelroll = true;
                     tiltresetimerjoueur1.stop();
                     //add function for barrelroll
                     joueur->tiltcounter = 0;
                     //joueur->AnimatedSprite->setframe(6);
-                    if (GetAsyncKeyState('D') < 0 && GetAsyncKeyState('A') == 0)
-                    {
+
+                    if (dataManette[0] == 3 || dataManette[0] == 6 || oldDataManette[0] == 9)
                         joueur->AnimatedSprite->startreverse(50);
-                    }
-                    if (GetAsyncKeyState('A') < 0 && GetAsyncKeyState('D') == 0)
-                    {
+                    else 
                         joueur->AnimatedSprite->start(50);
-                    }
-                    if (GetAsyncKeyState('A') == 0 && GetAsyncKeyState('D') == 0)
-                    {
-                        joueur->AnimatedSprite->start(50);
-                    }
+
                     joueur->Proppeller1->pixmapItem->hide();// turn off propeller
 
                     QTimer::singleShot(800, [=]() {
@@ -487,29 +459,134 @@ void Interface::gererInput()
                     });
                 }
             }
-            if (GetAsyncKeyState('Q') < 0)
+			//--------------------------------   partie clavier   ----------------------------------------------
+            if(!utiliseManette)
             {
-                if (explosionTimer == 0)
+                if (GetAsyncKeyState('A') < 0)   //on verifie si la fleche gauche ou D est pressee
                 {
-
-                    cdExplosion = 900;      //set le cooldown de l'explosion
-                    enExplosion = true;
-                    explosionTimer = cdExplosion;
-                    explosionPosY = joueur->posY - 1;
-                    manageexplosion.chainexplosion(joueur->posY);
+                    if (joueur->posX > 0)
+                    {
+                        if (!joueur->doingbarrelroll)
+                        {
+                            tiltplayerright(joueur); // tilt le joueur a gauche
+                        }
+                        joueur->posX -= 10;
+                        tiltresetimerjoueur1.stop();
+                    }
+                    if (joueur->posX < 0)
+                        joueur->posX = 0;
                 }
-            }
-
-            if (GetAsyncKeyState('R') < 0)
-            {
-                if (explosionTimer == 0)
+                else if (GetAsyncKeyState('D') == 0 && !joueur->doingbarrelroll)
                 {
+                    tiltresetimerjoueur1.start(10);
 
-                    cdExplosion = 900;      //set le cooldown de l'explosion
-                    enExplosion = true;
-                    explosionTimer = cdExplosion;
-                    explosionPosY = joueur->posY - 1;
-                    manageexplosion.chainexplosion(joueur->posY);
+                }
+
+                if (GetAsyncKeyState('D') < 0)
+                {
+                    if (joueur->posX < WIDTH - joueur->largeur)
+                    {
+                        if (!joueur->doingbarrelroll)
+                        {
+                            tiltplayerleft(joueur); // tilt le joueur a gauche
+                        }
+                        joueur->posX += 10;
+                        tiltresetimerjoueur1.stop();
+                    }
+                    if (joueur->posX > WIDTH - joueur->largeur)
+                        joueur->posX = WIDTH - joueur->largeur;
+                }
+                else if (GetAsyncKeyState('A') == 0 && !joueur->doingbarrelroll)
+                {
+                    tiltresetimerjoueur1.start(10);
+
+                }
+
+                if (GetAsyncKeyState('W') < 0)
+                {
+                    if (joueur->posY > 0)
+                        joueur->posY -= 10;
+                    if (joueur->posY < 0)
+                        joueur->posY = 0;
+                }
+
+                if (GetAsyncKeyState('S') < 0)
+                {
+                    if (joueur->posY < HEIGHT - joueur->hauteur + 25)
+                        joueur->posY += 10;
+                    if (joueur->posY > HEIGHT - joueur->hauteur + 25)
+                        joueur->posY = HEIGHT - joueur->hauteur + 25;
+                }
+                if (GetAsyncKeyState(VK_SPACE) < 0)
+                {
+                    if (joueur->shootTimer == 0 && joueur->barrelRollTimer <= 0)    //on tire si on peut
+                    {
+                        //listEntites.emplace_back(make_unique<BasicBullet>(joueur->posX + joueur->largeur / 2, joueur->posY - 1, true));
+                        joueurTir(joueur);
+                        joueur->shootTimer = joueur->shootCooldown;   //on reset le cooldown de tir du joueur pour que update puisse le faire baisser a chaque frame pour pouvoir retirer
+
+                    }
+                }
+                if (GetAsyncKeyState('E') < 0)
+                {
+                    if (joueur->barrelRoll == false && joueur->coolDownBarrelRoll <= 0)
+                    {
+
+                        joueur->barrelRoll = true;
+                        joueur->doingbarrelroll = true;
+                        tiltresetimerjoueur1.stop();
+                        //add function for barrelroll
+                        joueur->tiltcounter = 0;
+                        //joueur->AnimatedSprite->setframe(6);
+                        if (GetAsyncKeyState('D') < 0 && GetAsyncKeyState('A') == 0)
+                        {
+                            joueur->AnimatedSprite->startreverse(50);
+                        }
+                        if (GetAsyncKeyState('A') < 0 && GetAsyncKeyState('D') == 0)
+                        {
+                            joueur->AnimatedSprite->start(50);
+                        }
+                        if (GetAsyncKeyState('A') == 0 && GetAsyncKeyState('D') == 0)
+                        {
+                            joueur->AnimatedSprite->start(50);
+                        }
+                        joueur->Proppeller1->pixmapItem->hide();// turn off propeller
+
+                        QTimer::singleShot(800, [=]() {
+                            joueur->Proppeller1->pixmapItem->show();
+                        });
+
+                        QTimer::singleShot(800, [=]() {
+                            joueur->AnimatedSprite->stop();
+                            joueur->AnimatedSprite->setframe(5);
+                            joueur->doingbarrelroll = false;
+                        });
+                    }
+                }
+                if (GetAsyncKeyState('Q') < 0)
+                {
+                    if (explosionTimer == 0)
+                    {
+
+                        cdExplosion = 900;      //set le cooldown de l'explosion
+                        enExplosion = true;
+                        explosionTimer = cdExplosion;
+                        explosionPosY = joueur->posY - 1;
+                        manageexplosion.chainexplosion(joueur->posY);
+                    }
+                }
+
+                if (GetAsyncKeyState('R') < 0)
+                {
+                    if (explosionTimer == 0)
+                    {
+
+                        cdExplosion = 900;      //set le cooldown de l'explosion
+                        enExplosion = true;
+                        explosionTimer = cdExplosion;
+                        explosionPosY = joueur->posY - 1;
+                        manageexplosion.chainexplosion(joueur->posY);
+                    }
                 }
             }
         }
@@ -1095,7 +1172,7 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
     {
-        if (bossWaitTimer > 508)
+        if (bossWaitTimer > 350)
         {
             if (!ONESHOT)
             {
@@ -1106,7 +1183,7 @@ void Interface::progressionDifficulte()
                 ONESHOT = true;
             }
         }
-        if (bossWaitTimer > 520)
+        if (bossWaitTimer > 370)
         {
             if (!twoShot)
             {
@@ -1906,6 +1983,9 @@ void Interface::restart()
         else
             e->enVie = false;
     }
+	for (int i = 0; i < 7; i++)
+        dataManette[i] = 0;
+	
     enleverEntites();
     gameOver = false;
     if (joueur != nullptr)
@@ -1934,29 +2014,8 @@ void Interface::restart()
 
     updateHealthCounter();
 
-    /*  if (nbJoueur > 1)
-    {
-        //listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
-        //joueur2 = static_cast<Joueur*>(listEntites.back().get());
+	utiliseManette = false;
 
-        listEntites.emplace_back(make_unique<Joueur>((WIDTH / 2) + 50, HEIGHT - 70));   //ajoute le joueur a la liste d'entites
-        joueur2 = static_cast<Joueur*>(listEntites.back().get());
-        QObject::connect(&tiltresetimerjoueur2, &QTimer::timeout, [=]() {
-            resettilt(joueur2);
-        });
-        joueur2->image->setPixmap(*ListImages[69]);
-        joueur2->Originalimage->setPixmap(*ListImages[69]);
-        joueur2->DamageImage->setPixmap(*ListImages[70]);
-        joueur2->AnimatedSprite->setframe(5);
-        joueur2->AnimatedSprite->ChangeJson("barrel_roll2.json");
-        joueur2->AnimatedSprite->spritesheet = *ListImages[69];
-        joueur2->AnimatedSprite->pixmapItem->setScale(0.32);
-        joueur2->Proppeller1->pixmapItem->hide();
-        GameScene->update();
-
-        joueur2->posX = (WIDTH / 2) + 50;
-        updateHealthCounter();
-    }*/
     music.stopMusic();
     Cooptimer.stop();
     Solotimer.stop();
@@ -2245,7 +2304,7 @@ void Interface::executionJeu(int version)
     if (gameOver)
     {
         restart();
-        // CloseHandle(hSerial);  // Fermer le port série
+        CloseHandle(hSerial);  // Fermer le port série
     }
     //Sleep(1000);
     //showCursor();
@@ -2456,6 +2515,8 @@ void Interface::readSerial(HANDLE hSerial)
                 dataManette[4] = jsonData["but3"];      //gauche
                 dataManette[5] = jsonData["but4"];      //droite
 				dataManette[6] = jsonData["muon"];      //barrel roll
+
+                utiliseManette = true;
             }
             catch (json::parse_error& e) {
                 //cerr << "Erreur JSON : " << e.what() << endl;
