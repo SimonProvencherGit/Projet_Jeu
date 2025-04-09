@@ -201,6 +201,13 @@ Interface::Interface()
     milliers->show();
     milliers->setPos(1800, 10);
     milliers->setZValue(100);
+	dixMill = new QGraphicsPixmapItem(*ListImages[24]);
+	GameScene->addItem(dixMill);
+	dixMill->setScale(0.55);
+	dixMill->hide();
+	dixMill->setPos(1770, 10);
+	dixMill->setZValue(100);
+
 
     coeur = new QGraphicsPixmapItem(*ListImages[23]);
     coeur->setPos(10, 10);
@@ -1174,21 +1181,21 @@ void Interface::progressionDifficulte()
     {
         if (bossWaitTimer > 350)
         {
-            if (!ONESHOT)
+            if (!oneTime)
             {
                 //music.playMusic("Forest.wav", 21639, 115195);
                 BackManager->stopbackground();
                 BackManager->setforest();
                 BackManager->bougebackground();
-                ONESHOT = true;
+                oneTime = true;
             }
         }
         if (bossWaitTimer > 370)
         {
-            if (!twoShot)
+            if (!secondTime)
             {
                 music.playMusic("Forest.wav", 21639, 115195);
-                twoShot = true;
+                secondTime = true;
             }
             if (enemySpawnTimer >= 175 || cbVivant() < 7)
             {
@@ -1280,8 +1287,8 @@ void Interface::progressionDifficulte()
             {
                 enemySpawn(1, BOSS2_MAIN);
                 boss2Spawned = true;
-                ONESHOT = false;
-                twoShot = false;
+                oneTime = false;
+                secondTime = false;
 
                 memScore = score1 + 300;     //on garde le score en memoire lorsque le boss apparait, on y ajoute 250 pour le score du boss afin de connaitre le score qd le boss meurt afin de faire apparaitre les prochains ennemis
                 bossWaitTimer = 0;
@@ -1294,21 +1301,21 @@ void Interface::progressionDifficulte()
     {
         if (bossWaitTimer > 350)
         {
-            if (!ONESHOT)
+            if (!oneTime)
             {
                 //music.playMusic("Forest.wav", 21639, 115195);
                 BackManager->stopbackground();
                 BackManager->setdesert();
                 BackManager->bougebackground();
-                ONESHOT = true;
+                oneTime = true;
             }
         }
         if (bossWaitTimer > 370)
         {
-            if (!twoShot)
+            if (!secondTime)
             {
                 music.playMusic("Desert.wav", 21639, 115195);
-                twoShot = true;
+                secondTime = true;
             }
             if (enemySpawnTimer >= 185 || cbVivant() < 4)
             {
@@ -1326,7 +1333,7 @@ void Interface::progressionDifficulte()
         else
             bossWaitTimer++;
     }
-    else if (score1 >= memScore + 800 && score1 < memScore + 1500 && boss2Spawned)
+    else if (score1 >= memScore + 800 && score1 < memScore + 1500 && boss2Spawned && !boss3Spawned)
     {
         if (enemySpawnTimer >= 200 || cbVivant() < 4)
         {
@@ -1388,8 +1395,8 @@ void Interface::progressionDifficulte()
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
                 enemySpawn(1, BOSS3_MAIN);
-                ONESHOT = false;
-                twoShot = false;
+                oneTime = false;
+                secondTime = false;
                 nbPass = 0;
             }
             if (boss3 != nullptr)
@@ -1424,21 +1431,21 @@ void Interface::progressionDifficulte()
     {
         if (bossWaitTimer > 350)
         {
-            if (!ONESHOT)
+            if (!oneTime)
             {
                 //music.playMusic("Forest.wav", 21639, 115195);
                 BackManager->stopbackground();
                 BackManager->setspace();
                 BackManager->bougebackground();
-                ONESHOT = true;
+                oneTime = true;
             }
         }
         if (bossWaitTimer > 370)
         {
-            if (!twoShot)
+            if (!secondTime)
             {
                 music.playMusic("Space.wav", 21639, 115195);
-                twoShot = true;
+                secondTime = true;
             }
             if (enemySpawnTimer >= 185 || cbVivant() < 4)
             {
@@ -1685,61 +1692,7 @@ void Interface::updateEntites()
                         }
                         else if (e->nbVies < bossMaxHp / 2)
                         {
-                            /*if (oneGlitch)
-                            {
-								oneGlitch = false;
-								glitchEffect(true);
-								music.stopMusic();
-                                glitchSFX.playSFX("glitch.wav");
-								memVolume = sfx.getvolume();
-                                sfx.setVolume(0);
-                                
-								BackManager->stopbackground();
-                                BackManager->setspace();
-								BackManager->bougebackground();
-                            }
-                            else if (!oneGlitch)
-                            {
-                                if (glitchTimer < 5)
-                                {
-                                    if (nbJoueur > 1)
-                                    {
-										if (joueur != nullptr)
-											joueur->invincible = true;
-                                        if (joueur2 != nullptr)
-                                            joueur2->invincible = true;
-									}
-                                    else
-                                    {
-                                        if (joueur != nullptr)
-                                            joueur->invincible = true;
-                                    }
-                                        glitchTimer++;
-                                    
-								}
-                                else if(glitchTimer >= 5 && threeShot)
-                                {
-									threeShot = false;
-                                    glitchEffect(false);
-									sfx.setVolume(memVolume);
-									music.playMusic("Boss3.wav", 21639, 115195);
-
-                                    if (nbJoueur > 1)
-                                    {
-                                        if (joueur != nullptr)
-                                            joueur->invincible = false;
-                                        if (joueur2 != nullptr)
-                                            joueur2->invincible = false;
-                                    }
-                                    else
-                                    {
-                                        if (joueur != nullptr)
-                                            joueur->invincible = false;
-                                    }
-                                }
-                            }*/
-
-                            balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 35);
+                                                      balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 35);
                         }
                         angleTirBoss += 3;
                         if (angleTirBoss >= 360)
@@ -2155,6 +2108,9 @@ void Interface::restart()
     threeShot = true;
     allSideBossSpawned = false;
 
+    oneTime = false;
+    secondTime = false;
+
     BackManager->stopbackground();
     BackManager->setocean();
     BackManager->bougebackground();
@@ -2257,6 +2213,8 @@ void Interface::executionJeu(int version)
         if (hSerial == INVALID_HANDLE_VALUE) {
             cerr << "Erreur d'ouverture du port série." << endl;
         }
+        else
+			utiliseManette = true;  
 
         // Configurer les paramètres du port série
         DCB dcbSerialParams = { 0 };
@@ -2282,6 +2240,7 @@ void Interface::executionJeu(int version)
 
         updateHealthCounter();
         updateBarrelRollCounter();
+		updateScore();
 
         BackManager = new backgroundmanager;
         // BackManager->setspace();
@@ -2416,8 +2375,8 @@ void Interface::executionJeu(int version)
             dizaines->setPos(WIDTH / 2 + 0, 10);
             unites->setPos(WIDTH / 2 + 30, 10);
 
-            joueur->nbVies = 15;
-            joueur2->nbVies = 15;
+            //joueur->nbVies = 15;
+            //joueur2->nbVies = 15;
             updateHealthCounter();
 
             unitVie2->show();
@@ -2605,11 +2564,13 @@ void Interface::updateScore()
     int diz = (score1 / 10) % 10;
     int cent = (score1 / 100) % 10;
     int mill = (score1 / 1000) % 10;
+	int dixMilles = (score1 / 10000) % 10;
 
     unites->setPixmap(*ListImages[24 + uni]);
     dizaines->setPixmap(*ListImages[24 + diz]);
     centaines->setPixmap(*ListImages[24 + cent]);
     milliers->setPixmap(*ListImages[24 + mill]);
+	dixMill->setPixmap(*ListImages[24 + dixMilles]);
 
     /*if (cent == 0)
         centaines->hide();
@@ -2620,6 +2581,12 @@ void Interface::updateScore()
         milliers->hide();
     else
         milliers->show();
+	
+    if (dixMilles == 0)
+		dixMill->hide();
+    else
+		dixMill->show();
+
 
 }
 

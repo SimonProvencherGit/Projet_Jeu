@@ -619,7 +619,7 @@ void Boss1::update()
 Boss1Side::Boss1Side(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'B';
-	nbVies = 45;
+	nbVies = 35;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS1_SIDE;
 	hauteur = 30 * 2;
@@ -746,7 +746,7 @@ Boss2::Boss2(float x, float y) : Ennemi(x, y)
 {
 	symbole = '%';
 	
-	nbVies = 280;
+	nbVies = 260;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS2_MAIN;
 	ammoType = ANGLE;
@@ -1176,7 +1176,7 @@ void Turret::update()
 Boss3::Boss3(float x, float y) : Ennemi(x, y)
 {
 	symbole = 'M';
-	nbVies = 165;
+	nbVies = 155;
 	typeEntite = BOSS;
 	typeEnnemi = BOSS3_MAIN;
 	hauteur = 204;

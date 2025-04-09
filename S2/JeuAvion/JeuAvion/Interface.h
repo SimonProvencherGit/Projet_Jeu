@@ -57,6 +57,7 @@ private:
     QGraphicsPixmapItem* dizaines;
     QGraphicsPixmapItem* centaines;
     QGraphicsPixmapItem* milliers;
+	QGraphicsPixmapItem* dixMill;
 
     QGraphicsPixmapItem* coeur;
 	QGraphicsPixmapItem* coeur2;
@@ -106,6 +107,8 @@ private:
     int boss3WaitTimer = 0;
     bool threeShot = true;
     bool allSideBossSpawned = false;
+    bool oneTime = false;
+	bool secondTime = false;
 
 
     //bool spawnPowerUp;
