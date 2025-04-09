@@ -101,6 +101,11 @@ private:
     bool spawnAddLife;
     bool spawnPowerUpStart;
     int nbJoueur;
+    bool oneGlitch = true;
+    int glitchTimer = 0;
+    int boss3WaitTimer = 0;
+    bool threeShot = true;
+    bool allSideBossSpawned = false;
 
 
     //bool spawnPowerUp;

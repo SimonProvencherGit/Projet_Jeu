@@ -152,19 +152,6 @@ Interface::Interface()
     unitVie2 = nullptr;
     dixVie2 = nullptr;
 
-    //rolling2 = nullptr;
-
-    /*rolling = new Sprite("barrel_roll.png", "barrel_roll.json");
-    rolling->setpos(joueur->posX, joueur->posY);
-    rolling->start(70);
-    rolling->setframe(1);
-
-    rolling->pixmapItem->setScale(0.26);
-    rolling->pixmapItem->setZValue(100);
-    rolling->pixmapItem->show();
-    GameScene->addItem(rolling->pixmapItem);
-    */
-
     joueur->AnimatedSprite->setpos(joueur->posX, joueur->posY);
     joueur->Proppeller1->setpos(joueur->posX, joueur->posY);
     //joueur->AnimatedSprite->start(70);
@@ -241,6 +228,9 @@ Interface::Interface()
     unitVie->setZValue(50);
     unitVie->show();
     GameScene->addItem(unitVie);
+
+   
+
 }
 
 void Interface::gererInput()
@@ -1059,7 +1049,7 @@ void Interface::progressionDifficulte()
 {
     static int nbPass = 0;
     static bool spawnPup = false;
-    static bool allSideBossSpawned = false;
+    //static bool allSideBossSpawned = false;
     static bool ONESHOT = false;
 	static bool twoShot = false;
 	static bool musicSpace = false;
@@ -1067,8 +1057,7 @@ void Interface::progressionDifficulte()
     enemySpawnTimer++;
 
     if (score1 < 500)
-    {
-
+    {		
         if (enemySpawnTimer >= 250 || cbVivant() < 6)          //on fait spawn une vague d'ennemis a toutes les 70 frames
         {
             enemySpawn(1, BASIC);   
@@ -1086,7 +1075,8 @@ void Interface::progressionDifficulte()
             
 
            /*if (spawnPowerUpStart)
-           {          
+           {     
+			    //glitchEffect(true);
                 //enemySpawn(1, EXPLODER);
                 //enemySpawn(1, BOSS2_MAIN);
                 //enemySpawn(1, BOSS1_MAIN);
@@ -1300,7 +1290,7 @@ void Interface::progressionDifficulte()
                 bossWaitTimer++;
         }
     }
-    else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned)
+    else if (score1 >= memScore && score1 < memScore + 800 && boss2Spawned && !boss3Spawned)
     {
         if (bossWaitTimer > 350)
         {
@@ -1398,24 +1388,16 @@ void Interface::progressionDifficulte()
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
                 //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
                 enemySpawn(1, BOSS3_MAIN);
+                ONESHOT = false;
+                twoShot = false;
                 nbPass = 0;
             }
             if (boss3 != nullptr)
             {
                 if (enemySpawnTimer >= 42 && !allSideBossSpawned)
                 {
-                    if (spawnPowerUpStart)
-                    {
-                        spawnPowerUpStart = false;
-                        //powerupSpawn(1, ADDBULLETS, WIDTH / 2, HEIGHT / 2);
-                        //powerupSpawn(1, ADDBULLETS, WIDTH / 2 + 5, HEIGHT / 2);
-                        enemySpawn(1, BOSS3_MAIN);
-						ONESHOT = false;
-						twoShot = false;
-                    }
-
-                    if (boss3 != nullptr)
-                    {
+                    //if (boss3 != nullptr)
+                    //{
                         if (enemySpawnTimer >= 42 && !allSideBossSpawned)
                         {
                             if (boss3->posX > 0 && boss3->posY > 0)
@@ -1432,7 +1414,7 @@ void Interface::progressionDifficulte()
                             enemySpawnTimer = 0;
                             nbPass++;
                         }
-                    }
+                    //}
                     bossWaitTimer = 0;
                 }
             }
@@ -1440,28 +1422,49 @@ void Interface::progressionDifficulte()
     }
     else if (score1 >= memScore && boss3Spawned)
     {
-        
-        if (enemySpawnTimer >= 185 || cbVivant() < 4)
+        if (bossWaitTimer > 350)
         {
-            /*if (!musicSpace)
+            if (!ONESHOT)
             {
-                music.stopMusic();
-                music.playMusic("Space.wav", 21639, 115195);
-                //BackManager->stopbackground();
-                //BackManager->setspace();
-                //BackManager->bougebackground();
-                musicSpace = true;
-            }*/
-
-            enemySpawn(1, TURRET);
-            enemySpawn(1, AIMBOT);
-            enemySpawn(1, ORBITER);
-            enemySpawn(2, DIVEBOMBER);
-            enemySpawn(2, SIDEBOMBER);
-            enemySpawn(1, ARTILLEUR);
-
-            enemySpawnTimer = 0;
+                //music.playMusic("Forest.wav", 21639, 115195);
+                BackManager->stopbackground();
+                BackManager->setspace();
+                BackManager->bougebackground();
+                ONESHOT = true;
+            }
         }
+        if (bossWaitTimer > 370)
+        {
+            if (!twoShot)
+            {
+                music.playMusic("Space.wav", 21639, 115195);
+                twoShot = true;
+            }
+            if (enemySpawnTimer >= 185 || cbVivant() < 4)
+            {
+                /*if (!musicSpace)
+                {
+                    music.stopMusic();
+                    music.playMusic("Space.wav", 21639, 115195);
+                    //BackManager->stopbackground();
+                    //BackManager->setspace();
+                    //BackManager->bougebackground();
+                    musicSpace = true;
+                }*/
+
+                enemySpawn(1, TURRET);
+                enemySpawn(1, AIMBOT);
+                enemySpawn(1, ORBITER);
+                enemySpawn(2, DIVEBOMBER);
+                enemySpawn(2, SIDEBOMBER);
+                enemySpawn(1, ARTILLEUR);
+
+                enemySpawnTimer = 0;
+            }
+        }
+        
+        else 
+			bossWaitTimer++;
     }
 }
 
@@ -1470,16 +1473,16 @@ void Interface::updateEntites()
 {
     double angle;       //pour les ennemis qui ont besoin de l'angle entre eux et le joueur
     static int sideBoss3WaitTimer = 0;
-    static int boss3WaitTimer = 0;
+    //static int boss3WaitTimer = 0;
     int frame;
     static int memPosXBoss3 = 0;
 	static int memPosYBoss3 = 0;
 	static bool oneShot = true;
 	static bool twoShot = true;
-	static bool threeShot = true;
+	//static bool threeShot = true;
     static bool bossOneShot = true;
 	static int bossMaxHp = 0;
-    static int glitchTimer = 0;
+    //static int glitchTimer = 0;
 	static int memVolume = 0;
 
     for (auto& e : listEntites)     //on parcourt la liste d'entites
@@ -1682,9 +1685,9 @@ void Interface::updateEntites()
                         }
                         else if (e->nbVies < bossMaxHp / 2)
                         {
-                            if (twoShot)
+                            /*if (oneGlitch)
                             {
-								twoShot = false;
+								oneGlitch = false;
 								glitchEffect(true);
 								music.stopMusic();
                                 glitchSFX.playSFX("glitch.wav");
@@ -1695,7 +1698,7 @@ void Interface::updateEntites()
                                 BackManager->setspace();
 								BackManager->bougebackground();
                             }
-                            else if (!twoShot)
+                            else if (!oneGlitch)
                             {
                                 if (glitchTimer < 5)
                                 {
@@ -1734,7 +1737,7 @@ void Interface::updateEntites()
                                             joueur->invincible = false;
                                     }
                                 }
-                            }
+                            }*/
 
                             balayageTir(5, 1, e->posX + e->largeur / 2, e->posY + e->hauteur / 2 - 35);
                         }
@@ -2086,8 +2089,9 @@ int Interface::customPoints(typeEnnemis e)
     case BOSS3_MAIN:
         if (cbVivant() == 0)
         {
-			music.stopMusic();
-			music.playMusic("Space.wav", 21639, 115195);
+            music.stopMusic();
+            manageexplosion.bossdeath();
+			//music.playMusic("Space.wav", 21639, 115195);
         }
         return 300;
         break;
@@ -2095,7 +2099,8 @@ int Interface::customPoints(typeEnnemis e)
         if (cbVivant() == 0)
         {
             music.stopMusic();
-            music.playMusic("Space.wav", 21639, 115195);
+            manageexplosion.bossdeath();
+            //music.playMusic("Space.wav", 21639, 115195);
         }
         return 50;
         break;
@@ -2137,6 +2142,18 @@ void Interface::restart()
     bossSpawnSound = false;
     spawnAddLife = true;
     spawnPowerUpStart = true;
+
+	boss1Spawned = false;
+	boss2Spawned = false;
+	boss3Spawned = false;
+
+    oneGlitch = true;
+    glitch = nullptr;
+    blackBackground = nullptr;
+    glitchTimer = 0;
+	boss3WaitTimer = 0;
+    threeShot = true;
+    allSideBossSpawned = false;
 
     BackManager->stopbackground();
     BackManager->setocean();
@@ -2283,15 +2300,29 @@ void Interface::executionJeu(int version)
         loadBarrelRoll->pixmapItem->setZValue(100);
         loadBarrelRoll->pixmapItem->show();
 
-
-
-
         loadExplosion->setpos(-5, 980);
         //loadExplosion->start(170);
         loadExplosion->setframe(59);
         loadExplosion->pixmapItem->setScale(0.8);
         loadExplosion->pixmapItem->setZValue(100);
         loadExplosion->pixmapItem->show();
+
+        /*glitch = new Sprite("glitch.png", "glitch.json");
+        glitch->setpos(0, 0);
+        glitch->pixmapItem->setScale(4);
+        glitch->pixmapItem->setZValue(105);
+        //glitch->start(70);
+        //glitch->pixmapItem->show();
+        GameScene->addItem(glitch->pixmapItem);
+        glitch->pixmapItem->hide();
+
+        blackBackground = new QGraphicsRectItem(-10, -10, 2560, 1440);
+        blackBackground->setBrush(Qt::black);
+        blackBackground->setZValue(101);
+        blackBackground->setOpacity(1);
+        //->show();
+        GameScene->addItem(blackBackground);
+        blackBackground->hide();*/
 
         if (version > 0)     //si on a choisi autre chose que le mode seul on initialise le 2e joueur
         {
@@ -2594,18 +2625,18 @@ void Interface::updateScore()
 
 void Interface::glitchEffect(bool state)
 {
-	if (state)
+	/*if (state)
 	{
-        //glitch->start(70);
+        glitch->start(70);
 		glitch->pixmapItem->show();
 		blackBackground->show();
 	}
 	else
 	{
-		//glitch->stop();
+		glitch->stop();
 		glitch->pixmapItem->hide();
 		blackBackground->hide();
-	}
+	}*/
 }
 
 void Interface::readSerial(HANDLE hSerial)
