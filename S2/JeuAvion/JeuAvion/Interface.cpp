@@ -2137,8 +2137,12 @@ void Interface::restart()
     nbJoueur = 1;
 
     firststart = true;
-    music.playMusic("MainMenu.wav", 65548, 63989);
-    GererMenu* menu = new GererMenu();
+    //music.playMusic("MainMenu.wav", 65548, 63989);
+    //GererMenu* menu = new GererMenu();
+    //view->setScene(menu);
+
+    FinalScore* menu = new FinalScore();
+    music.playMusic("FinalScore.wav", 65548, 63989);
     view->setScene(menu);
 }
 
@@ -2423,6 +2427,25 @@ void Interface::executionJeu(int version)
     }
     if (gameOver)
     {
+        if (version > 0)
+        {
+            scoreFinale = score1 + score2;
+            if(nomEquipe != "")
+            {
+                Classement* classementCoop = new Classement(nullptr);
+                classementCoop->ajouter_score_coop();
+            }
+        }
+        else
+        {
+            scoreFinale = score1;
+            if(nomJoueur != "")
+            {
+                Classement* classementSolo = new Classement(nullptr);
+                classementSolo->ajouter_score_solo();
+            }
+        }
+
         restart();
         CloseHandle(hSerial);  // Fermer le port série
     }

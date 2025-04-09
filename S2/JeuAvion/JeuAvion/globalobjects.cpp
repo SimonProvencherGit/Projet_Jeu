@@ -14,7 +14,10 @@ QRect * basicbullet;
 QTimer Solotimer;
 QTimer Cooptimer;
 bool utiliseManette = false;
-bool utiliseMuons = true;                                                                                                                  
+bool utiliseMuons = true;     
+QString nomJoueur;
+QString nomEquipe;
+int scoreFinale;
 
 
 // Ajouter toute les objets SFX pour gerer leurs volumes

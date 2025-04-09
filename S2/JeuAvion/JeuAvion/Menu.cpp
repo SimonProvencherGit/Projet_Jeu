@@ -1,8 +1,6 @@
 #include "Menu.h"
 
 
-
-
 //// CHARGEMENT DES ASSETS /////
 
 void loadimages() { //Initialisation de toute les images.
@@ -179,9 +177,6 @@ void firststartSolo() {
 
 
 
-
-
-
 void firststartCoop() {
 	if (firstlaunchSolo == true && firstlaunchCoop == true) {
 		loadimages();
@@ -200,61 +195,36 @@ void firststartCoop() {
 
 
 
-
-
-
-
-
-
 ///////////////////////////////////
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-GererMenu::GererMenu(QObject* parent)
-	: QGraphicsScene(parent)
+GererMenu::GererMenu(QObject* parent) : QGraphicsScene(parent)
 {
+	setFondEcran();
 	this->setSceneRect(0, 0, 1920, 1080);
 
 	gameTitle = new QGraphicsTextItem("FLIGHT FRENZY");
-	gameTitle->setFont(QFont("Arial", 24, QFont::Bold));
+	gameTitle->setFont(QFont("Arial", 40, QFont::Bold));
 	gameTitle->setDefaultTextColor(Qt::black);
 	gameTitle->setPos((1920 - gameTitle->boundingRect().width()) / 2, 200);
 	addItem(gameTitle);
 
-	this->setBackgroundBrush(QBrush(QColor(135, 206, 250)));
-
 	QPushButton* jouerBouton = new QPushButton("JOUER");
-	jouerBouton->setGeometry(QRect(720, 350, 480, 47));
+	jouerBouton->setGeometry(QRect(720, 400, 480, 47));
 	proxyJouer = addWidget(jouerBouton);
 
 	QPushButton* audioBouton = new QPushButton("AUDIO");
-	audioBouton->setGeometry(QRect(720, 450, 480, 47));
+	audioBouton->setGeometry(QRect(720, 500, 480, 47));
 	proxyAudio = addWidget(audioBouton);
 
 	QPushButton* classementBouton = new QPushButton("CLASSEMENT");
-	classementBouton->setGeometry(QRect(720, 550, 480, 47));
+	classementBouton->setGeometry(QRect(720, 600, 480, 47));
 	proxyClassement = addWidget(classementBouton);
 
 	QPushButton* quitterBouton = new QPushButton("QUITTER");
-	quitterBouton->setGeometry(QRect(720, 650, 480, 47));
+	quitterBouton->setGeometry(QRect(720, 700, 480, 47));
 	proxyQuitter = addWidget(quitterBouton);
 	connect(jouerBouton, &QPushButton::clicked, this, &GererMenu::jouerPeser);
 	connect(audioBouton, &QPushButton::clicked, this, &GererMenu::audioPeser);
@@ -262,33 +232,27 @@ GererMenu::GererMenu(QObject* parent)
 	connect(quitterBouton, &QPushButton::clicked, this, &GererMenu::quitterPeser);
 }
 
-
 GererMenu::~GererMenu()
 {
 }
 
 void GererMenu::setFondEcran()
 {
-	QPixmap fondEcran("C:\\Users\\User\\OneDrive - USherbrooke\\Images\\Saved Pictures\\Air.png");
-	fondEcran.scaled(1200, 700);
-
-	QPalette couleurFond;
-	couleurFond.setBrush(QPalette::Window, fondEcran);
-	this->setPalette(couleurFond);
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void GererMenu::jouerPeser()
 {
 	ChoixMode* mode = new ChoixMode(nullptr);
 	view->setScene(mode);
-
 }
 
 void GererMenu::audioPeser()
 {
 	Audio* audio = new Audio(nullptr);
 	view->setScene(audio);
-
 }
 
 void GererMenu::classementPeser()
@@ -301,25 +265,24 @@ void GererMenu::quitterPeser()
 {
 	Quitter* quitter = new Quitter(nullptr);
 	view->setScene(quitter);
-
 }
 
 
 ChoixMode::ChoixMode(QObject* parent) : QGraphicsScene(parent)
 {
 	setFondEcran();
-
+	this->setSceneRect(0, 0, 1920, 1080);
 
 	soloBouton = new QPushButton("SOLO");
-	soloBouton->setGeometry(QRect(550, 200, 100, 50));
+	soloBouton->setGeometry(QRect(720, 400, 480, 47));
 	proxySolo = addWidget(soloBouton);
 
 	coopBouton = new QPushButton("COOP");
-	coopBouton->setGeometry(QRect(550, 300, 100, 50));
+	coopBouton->setGeometry(QRect(720, 500, 480, 47));
 	proxyCoop = addWidget(coopBouton);
 
 	revenirBouton = new QPushButton("REVENIR");
-	revenirBouton->setGeometry(QRect(550, 400, 100, 50));
+	revenirBouton->setGeometry(QRect(720, 600, 480, 47));
 	proxyRevenir = addWidget(revenirBouton);
 
 	connect(soloBouton, &QPushButton::clicked, this, &ChoixMode::soloPeser);
@@ -334,19 +297,15 @@ ChoixMode::~ChoixMode()
 
 void ChoixMode::setFondEcran()
 {
-	QPixmap fondEcran("C:\\Users\\User\\OneDrive - USherbrooke\\Images\\Saved Pictures\\Air.png");
-	fondEcran.scaled(1200, 700);
-
-	QPalette couleurFond;
-	couleurFond.setBrush(QPalette::Window, fondEcran);
-	this->setPalette(couleurFond);
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void ChoixMode::soloPeser()
 {
 	Utilisateur* utilisateur = new Utilisateur(nullptr);
 	view->setScene(utilisateur);
-
 }
 
 void ChoixMode::coopPeser()
@@ -362,46 +321,55 @@ void ChoixMode::revenirPeser()
 }
 
 
-
 Audio::Audio(QObject* parent) : QGraphicsScene(parent)
 {
+	setFondEcran();
+	this->setSceneRect(0, 0, 1920, 1080);
 
-	QFont font("Roboto", 14, QFont::Bold);
+	QFont font("Roboto", 20, QFont::Bold);
 
-	sfxTitle = new QLabel("SFX");
-	sfxTitle->setGeometry(QRect(550, 125, 100, 50));
-	proxySfxTitle = addWidget(sfxTitle);
+	sfxTitle = new QGraphicsTextItem("SFX");
+	sfxTitle->setFont(font);
+	sfxTitle->setDefaultTextColor(Qt::black);
+	sfxTitle->setPos(925, 275);
+	addItem(sfxTitle);
 
-	sfxValue = new QLabel(QString::number(sfx.getvolume()));
-	sfxValue->setGeometry(QRect(575, 185, 50, 50));
-	proxySfxValue = addWidget(sfxValue);
+	sfxValue = new QGraphicsTextItem(QString::number(sfx.getvolume()));
+	sfxValue->setFont(font);
+	sfxValue->setDefaultTextColor(Qt::black);
+	sfxValue->setPos(935, 350);
+	addItem(sfxValue);
 
-	musiqueTitle = new QLabel("MUSIQUE");
-	musiqueTitle->setGeometry(QRect(550, 325, 100, 50));
-	proxyMusiqueTitle = addWidget(musiqueTitle);
+	musiqueTitle = new QGraphicsTextItem("MUSIQUE");
+	musiqueTitle->setFont(font);
+	musiqueTitle->setDefaultTextColor(Qt::black);
+	musiqueTitle->setPos(890, 475);
+	addItem(musiqueTitle);
 
-	musiqueValue = new QLabel(QString::number(music.getvolume()));
-	musiqueValue->setGeometry(QRect(575, 385, 50, 50));
-	proxyMusiqueValue = addWidget(musiqueValue);
+	musiqueValue = new QGraphicsTextItem(QString::number(music.getvolume()));
+	musiqueValue->setFont(font);
+	musiqueValue->setDefaultTextColor(Qt::black);
+	musiqueValue->setPos(935, 550);
+	addItem(musiqueValue);
 
 	sfxBoutonUp = new QPushButton("+");
-	sfxBoutonUp->setGeometry(QRect(675, 200, 50, 20));
+	sfxBoutonUp->setGeometry(QRect(1050, 350, 80, 50));
 	proxySfxBoutonUp = addWidget(sfxBoutonUp);
 
 	sfxBoutonDown = new QPushButton("-");
-	sfxBoutonDown->setGeometry(QRect(475, 200, 50, 20));
+	sfxBoutonDown->setGeometry(QRect(790, 350, 80, 50));;
 	proxySfxBoutonDown = addWidget(sfxBoutonDown);
 
 	musiqueBoutonUp = new QPushButton("+");
-	musiqueBoutonUp->setGeometry(QRect(675, 400, 50, 20));
+	musiqueBoutonUp->setGeometry(QRect(1050, 550, 80, 50));
 	proxyMusiqueBoutonUp = addWidget(musiqueBoutonUp);
 
 	musiqueBoutonDown = new QPushButton("-");
-	musiqueBoutonDown->setGeometry(QRect(475, 400, 50, 20));
+	musiqueBoutonDown->setGeometry(QRect(790, 550, 80, 50));
 	proxyMusiqueBoutonDown = addWidget(musiqueBoutonDown);
 
 	revenirBouton = new QPushButton("REVENIR");
-	revenirBouton->setGeometry(QRect(550, 575, 100, 50));
+	revenirBouton->setGeometry(QRect(720, 700, 480, 47));
 	proxyRevenirBouton = addWidget(revenirBouton);
 
 	connect(sfxBoutonUp, &QPushButton::clicked, this, &Audio::sfxPlus);
@@ -409,9 +377,7 @@ Audio::Audio(QObject* parent) : QGraphicsScene(parent)
 	connect(musiqueBoutonUp, &QPushButton::clicked, this, &Audio::musiquePlus);
 	connect(musiqueBoutonDown, &QPushButton::clicked, this, &Audio::musiqueMoins);
 	revenirPeser();
-
 }
-
 
 Audio::~Audio()
 {
@@ -419,12 +385,9 @@ Audio::~Audio()
 
 void Audio::setFondEcran()
 {
-	QPixmap fondEcran("C:\\Users\\User\\OneDrive - USherbrooke\\Images\\Saved Pictures\\Air.png");
-	fondEcran.scaled(1200, 700);
-
-	QPalette couleurFond;
-	couleurFond.setBrush(QPalette::Window, fondEcran);
-	this->setPalette(couleurFond);
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void Audio::sfxPlus()
@@ -434,7 +397,7 @@ void Audio::sfxPlus()
 	//set le volume de toutes les SFX
 	setallSFXVolume(volume_SFX);
 	sfx.playSFX("pling.wav");
-	sfxValue->setText(QString::number(sfx.getvolume()));
+	sfxValue->setPlainText(QString::number(sfx.getvolume()));
 }
 
 void Audio::sfxMoins()
@@ -444,7 +407,7 @@ void Audio::sfxMoins()
 	//set le volume de toutes les SFX
 	setallSFXVolume(volume_SFX);
 	sfx.playSFX("pling.wav");
-	sfxValue->setText(QString::number(sfx.getvolume()));
+	sfxValue->setPlainText(QString::number(sfx.getvolume()));
 }
 
 void Audio::musiquePlus()
@@ -452,7 +415,7 @@ void Audio::musiquePlus()
 	float volume_musique;
 	volume_musique = min(music.getvolume() + 5, 100.0f);
 	music.setVolume(volume_musique);
-	musiqueValue->setText(QString::number(music.getvolume()));
+	musiqueValue->setPlainText(QString::number(music.getvolume()));
 }
 
 void Audio::musiqueMoins()
@@ -460,7 +423,7 @@ void Audio::musiqueMoins()
 	float volume_musique;
 	volume_musique = max(music.getvolume() - 5, 0.0f);
 	music.setVolume(volume_musique);
-	musiqueValue->setText(QString::number(music.getvolume()));
+	musiqueValue->setPlainText(QString::number(music.getvolume()));
 }
 
 void Audio::revenirPeser()
@@ -476,21 +439,26 @@ void Audio::revenir()
 	view->setScene(menu);
 }
 
+
 Quitter::Quitter(QObject* parent) : QGraphicsScene(parent)
 {
+	setFondEcran();
+	this->setSceneRect(0, 0, 1920, 1080);
 
-	//Boutons Choix de Mode
-	QFont font("Roboto", 18, QFont::Bold);
-	confirmationQuitter = new QLabel("ETES-VOUS CERTAIN DE VOULOIR QUITTER ?");
-	confirmationQuitter->setGeometry(QRect(250, 50, 700, 100));
-	proxyConfirmationQuitter = addWidget(confirmationQuitter);
+	QFont font("Roboto", 20, QFont::Bold);
+
+	confirmationQuitter = new QGraphicsTextItem("ETES-VOUS CERTAIN DE VOULOIR QUITTER ?");
+	confirmationQuitter->setFont(font);
+	confirmationQuitter->setDefaultTextColor(Qt::black);
+	confirmationQuitter->setPos(660, 250);
+	addItem(confirmationQuitter);
 
 	ouiBouton = new QPushButton("OUI");
-	ouiBouton->setGeometry(QRect(550, 300, 100, 50));
+	ouiBouton->setGeometry(QRect(720, 450, 480, 47));
 	proxyOuiBouton = addWidget(ouiBouton);
 
 	nonBouton = new QPushButton("NON");
-	nonBouton->setGeometry(QRect(550, 400, 100, 50));
+	nonBouton->setGeometry(QRect(720, 550, 480, 47));
 	proxyNonBouton = addWidget(nonBouton);
 
 
@@ -498,9 +466,18 @@ Quitter::Quitter(QObject* parent) : QGraphicsScene(parent)
 	ouiPeser();
 	nonPeser();
 }
+
 Quitter::~Quitter()
 {
 }
+
+void Quitter::setFondEcran()
+{
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
+}
+
 void Quitter::ouiPeser()
 {
 	connect(ouiBouton, &QPushButton::clicked, this, &Quitter::quitter);
@@ -528,32 +505,32 @@ void Quitter::revenir()
 
 Classement::Classement(QObject* parent) : QGraphicsScene(parent)
 {
+	setFondEcran();
+	this->setSceneRect(0, 0, 1920, 1080);
 
-	QFont font("Courier", 12, QFont::Bold);
-
-	revenirBouton = new QPushButton("REVENIR");
-	revenirBouton->setGeometry(QRect(550, 575, 100, 50));
-	proxyRevenirBouton = addWidget(revenirBouton);
+	QFont font("Courier", 16, QFont::Bold);
 
 	classementSolo = new QTextEdit;
-	classementSolo->setGeometry(QRect(150, 100, 330, 400));
+	classementSolo->setGeometry(QRect(460, 200, 400, 500));
 	classementSolo->setFont(font);
 	classementSolo->setReadOnly(true);
 	proxyClassementSolo = addWidget(classementSolo);
 	montrer_classement_solo();
 
 	classementCoop = new QTextEdit;
-	classementCoop->setGeometry(QRect(700, 100, 330, 400));
+	classementCoop->setGeometry(QRect(1060, 200, 400, 500));
 	classementCoop->setFont(font);
 	classementCoop->setReadOnly(true);
 	proxyClassementCoop = addWidget(classementCoop);
 	montrer_classement_coop();
 
+	revenirBouton = new QPushButton("REVENIR");
+	revenirBouton->setGeometry(QRect(720, 800, 480, 47));
+	proxyRevenirBouton = addWidget(revenirBouton);
 
 	//Signales
 	revenirPeser();
 }
-
 
 Classement::~Classement()
 {
@@ -561,12 +538,9 @@ Classement::~Classement()
 
 void Classement::setFondEcran()
 {
-	QPixmap fondEcran("C:\\Users\\User\\OneDrive - USherbrooke\\Images\\Saved Pictures\\Air.png");
-	fondEcran.scaled(1200, 700);
-
-	QPalette couleurFond;
-	couleurFond.setBrush(QPalette::Window, fondEcran);
-	this->setPalette(couleurFond);
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void Classement::revenirPeser()
@@ -603,9 +577,9 @@ void Classement::montrer_classement_solo()
 	}
 
 	ligneClassementSolo = "\tCLASSEMENT SOLO\n";
-	ligneClassementSolo += "=================================\n\n\n";
+	ligneClassementSolo += "==============================\n\n\n";
 	ligneClassementSolo += "TOP |      NOM     | SCORE\n";
-	ligneClassementSolo += "---------------------------------\n";
+	ligneClassementSolo += "------------------------------\n";
 
 	for (const auto& scores_solo : ScoreSolo) {
 		if (top < 10)
@@ -617,7 +591,7 @@ void Classement::montrer_classement_solo()
 		top++;
 	}
 
-	ligneClassementSolo += "---------------------------------\n";
+	ligneClassementSolo += "------------------------------\n";
 	classementSolo->setText(ligneClassementSolo);
 
 	ScoreSolo.clear();
@@ -646,9 +620,9 @@ void Classement::montrer_classement_coop()
 	}
 
 	ligneClassementCoop = "\tCLASSEMENT COOP\n";
-	ligneClassementCoop += "=================================\n\n\n";
+	ligneClassementCoop += "==============================\n\n\n";
 	ligneClassementCoop += "TOP |    EQUIPE    | SCORE\n";
-	ligneClassementCoop += "---------------------------------\n";
+	ligneClassementCoop += "------------------------------\n";
 
 	for (const auto& scores_coop : ScoreCoop) {
 		if (top < 10)
@@ -660,7 +634,7 @@ void Classement::montrer_classement_coop()
 		top++;
 	}
 
-	ligneClassementCoop += "---------------------------------\n";
+	ligneClassementCoop += "------------------------------\n";
 	classementCoop->setText(ligneClassementCoop);
 
 	ScoreCoop.clear();
@@ -672,17 +646,15 @@ void Classement::ajouter_score_solo() {
 	string nom_joueur;
 	int joueur_score;
 	vector<classement_solo> liste_scores;
-	//Utilisateur utilisateur;
-	Interface jeu;
 
 	while (scoresFileIn >> nom_joueur >> joueur_score) {
 		liste_scores.push_back({ 0, nom_joueur, joueur_score });
 	}
 	scoresFileIn.close();
 
-	//string nom;// = utilisateur.get_nom();
-	//int score = jeu.get_score_solo();
-	//liste_scores.push_back({ 0, nom, score });
+	string nom = nomJoueur.toStdString();
+	int score = scoreFinale;
+	liste_scores.push_back({ 0, nom, score });
 
 	sort(liste_scores.begin(), liste_scores.end(), [](const classement_solo& a, const classement_solo& b) {
 		return a.score > b.score;
@@ -698,7 +670,6 @@ void Classement::ajouter_score_solo() {
 	}
 
 	scoresFileOut.close();
-
 }
 
 void Classement::ajouter_score_coop() {
@@ -714,9 +685,9 @@ void Classement::ajouter_score_coop() {
 	}
 	scoresFileIn.close();
 
-	//string nom = equipe.get_equipe();
-	//int score = jeux->get_score_coop();
-	//liste_scores.push_back({ 0, nom, score });
+	string nom = nomEquipe.toStdString();
+	int score = scoreFinale;
+	liste_scores.push_back({ 0, nom, score });
 
 	sort(liste_scores.begin(), liste_scores.end(), [](const classement_coop& a, const classement_coop& b) {
 		return a.score > b.score;
@@ -737,18 +708,23 @@ void Classement::ajouter_score_coop() {
 
 JouerSolo::JouerSolo(QObject* parent) : QGraphicsScene(parent)
 {
-	QFont font("Roboto", 18, QFont::Bold);
+	setFondEcran();
+	this->setSceneRect(0, 0, 1920, 1080);
 
-	confirmationJouer = new QLabel("ETES-VOUS CERTAIN DE VOULOIR COMMENCER ?");
-	confirmationJouer->setGeometry(QRect(250, 50, 700, 100));
-	proxyConfirmationJouer = addWidget(confirmationJouer);
+	QFont font("Roboto", 20, QFont::Bold);
+
+	confirmationJouer = new QGraphicsTextItem("ETES-VOUS CERTAIN DE VOULOIR COMMENCER ?");
+	confirmationJouer->setPos(650, 250);
+	confirmationJouer->setDefaultTextColor(Qt::black);
+	confirmationJouer->setFont(font);
+	addItem(confirmationJouer);
 
 	ouiBouton = new QPushButton("OUI");
-	ouiBouton->setGeometry(QRect(550, 300, 100, 50));
+	ouiBouton->setGeometry(QRect(720, 450, 480, 47));
 	proxyOuiBouton = addWidget(ouiBouton);
 
 	nonBouton = new QPushButton("NON");
-	nonBouton->setGeometry(QRect(550, 400, 100, 50));
+	nonBouton->setGeometry(QRect(720, 550, 480, 47));
 	proxyNonBouton = addWidget(nonBouton);
 
 	//Signales
@@ -762,7 +738,9 @@ JouerSolo::~JouerSolo()
 
 void JouerSolo::setFondEcran()
 {
-
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void JouerSolo::ouiPeser()
@@ -788,39 +766,37 @@ void JouerSolo::commencerSolo()
 		music.playMusic("Ocean.wav", 0, 117000);
 	}
 	Solotimer.start(16);
-	//Classement classement;
-	//classement.ajouter_score_solo();
 }
 
 void JouerSolo::revenir()
 {
 	ChoixMode* mode = new ChoixMode(nullptr);
 	view->setScene(mode);
-
 }
 
 
 Utilisateur::Utilisateur(QObject* parent) : QGraphicsScene(parent)
 {
+	setFondEcran();
+	this->setSceneRect(0, 0, 1920, 1080);
 
-	//Texte Nom
-	QFont font("Roboto", 18, QFont::Bold);
+	QFont font("Roboto", 20, QFont::Bold);
 
-	entrerNom = new QLabel("ENTREZ VOTRE NOM DE JOUEUR:");
-	entrerNom->setGeometry(QRect(400, 150, 400, 100));
-	proxyEntrerNom = addWidget(entrerNom);
+	entrerNom = new QGraphicsTextItem("ENTREZ VOTRE NOM DE JOUEUR:");
+	entrerNom->setPos(730, 300);
+	entrerNom->setDefaultTextColor(Qt::black);
+	entrerNom->setFont(font);
+	addItem(entrerNom);
 
 	nomSolo = new QLineEdit;
-	nomSolo->setGeometry(QRect(450, 250, 300, 50));
+	nomSolo->setGeometry(QRect(810, 350, 300, 50));
 	proxyNomSolo = addWidget(nomSolo);
 
 	valider = new QPushButton("VALIDER");
-	valider->setGeometry(QRect(850, 250, 100, 50));
+	valider->setGeometry(QRect(720, 550, 480, 47));
 	proxyValider = addWidget(valider);
 
 	connect(valider, &QPushButton::clicked, this, &Utilisateur::suivant);
-
-
 }
 
 Utilisateur::~Utilisateur()
@@ -829,44 +805,48 @@ Utilisateur::~Utilisateur()
 
 void Utilisateur::setFondEcran()
 {
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void Utilisateur::suivant()
 {
+	
 	nomJoueur = nomSolo->text();
+	for (int i = 0; i < nomJoueur.size(); i++)
+	{
+		if (nomJoueur[i] == ' ')
+			nomJoueur[i] = '_';		
+	}
 	JouerSolo* jouer = new JouerSolo(nullptr);
 	view->setScene(jouer);
-	qDebug() << nomJoueur;
 }
 
-string Utilisateur::get_nom()
-{
-	return nomJoueur.toStdString();
-}
 
 JouerCoop::JouerCoop(QObject* parent) : QGraphicsScene(parent)
 {
+	setFondEcran();
+	this->setSceneRect(0, 0, 1920, 1080);
 
+	QFont font("Roboto", 20, QFont::Bold);
 
-	//Texte Jouer
-	QFont font("Roboto", 18, QFont::Bold);
-
-	confirmationJouer = new QLabel("ETES-VOUS CERTAIN DE VOULOIR COMMENCER ?");
-	confirmationJouer->setGeometry(QRect(250, 50, 700, 100));
-	proxyConfirmationJouer = addWidget(confirmationJouer);
+	confirmationJouer = new QGraphicsTextItem("ETES-VOUS CERTAIN DE VOULOIR COMMENCER ?");
+	confirmationJouer->setPos(650, 250);
+	confirmationJouer->setDefaultTextColor(Qt::black);
+	confirmationJouer->setFont(font);
+	addItem(confirmationJouer);
 
 	ouiBouton = new QPushButton("OUI");
-	ouiBouton->setGeometry(QRect(550, 300, 100, 50));
+	ouiBouton->setGeometry(QRect(720, 450, 480, 47));
 	proxyOuiBouton = addWidget(ouiBouton);
 
 	nonBouton = new QPushButton("NON");
-	nonBouton->setGeometry(QRect(550, 400, 100, 50));
+	nonBouton->setGeometry(QRect(720, 550, 480, 47));
 	proxyNonBouton = addWidget(nonBouton);
 
-
-
 	//Signales
-	ouiPeser(); //to fix
+	ouiPeser();
 	nonPeser();
 }
 
@@ -876,6 +856,9 @@ JouerCoop::~JouerCoop()
 
 void JouerCoop::setFondEcran()
 {
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void JouerCoop::ouiPeser()
@@ -912,25 +895,29 @@ void JouerCoop::revenir()
 
 }
 
+
 Equipe::Equipe(QObject* parent) : QGraphicsScene(parent)
 {
-	//Texte Equipe
-	QFont font("Roboto", 18, QFont::Bold);
+	setFondEcran();
+	this->setSceneRect(0, 0, 1920, 1080);
 
-	entrerEquipe = new QLabel("ENTREZ VOTRE NOM D'EQUIPE:");
-	entrerEquipe->setGeometry(QRect(400, 150, 400, 100));
-	proxyEntrerEquipe = addWidget(entrerEquipe);
+	QFont font("Roboto", 20, QFont::Bold);
+
+	entrerEquipe = new QGraphicsTextItem("ENTREZ VOTRE NOM D'EQUIPE:");
+	entrerEquipe->setPos(730, 300);
+	entrerEquipe->setDefaultTextColor(Qt::black);
+	entrerEquipe->setFont(font);
+	addItem(entrerEquipe);
 
 	nomCoop = new QLineEdit;
-	nomCoop->setGeometry(QRect(450, 250, 300, 50));
+	nomCoop->setGeometry(QRect(810, 350, 300, 50));
 	proxyNomCoop = addWidget(nomCoop);
 
 	valider = new QPushButton("VALIDER");
-	valider->setGeometry(QRect(850, 250, 100, 50));
+	valider->setGeometry(QRect(720, 550, 480, 47));
 	proxyValider = addWidget(valider);
 
 	connect(valider, &QPushButton::clicked, this, &Equipe::suivant);
-
 }
 
 Equipe::~Equipe()
@@ -939,23 +926,119 @@ Equipe::~Equipe()
 
 void Equipe::setFondEcran()
 {
-	QPixmap fondEcran("C:\\Users\\User\\OneDrive - USherbrooke\\Images\\Saved Pictures\\Air.png");
-	fondEcran.scaled(1200, 700);
-
-	QPalette couleurFond;
-	couleurFond.setBrush(QPalette::Window, fondEcran);
-	this->setPalette(couleurFond);
+	QPixmap fondEcran("Air.png");
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
 }
 
 void Equipe::suivant()
 {
 	nomEquipe = nomCoop->text();
+	for (int i = 0; i < nomEquipe.size(); i++)
+	{
+		if (nomEquipe[i] == ' ')
+			nomEquipe[i] = '_';
+	}
 	JouerCoop* jouer = new JouerCoop(nullptr);
 	view->setScene(jouer);
-	qDebug() << nomEquipe;
 }
 
-string Equipe::get_equipe()
+
+FinalScore::FinalScore(QObject* parent) : QGraphicsScene(parent)
 {
-	return nomEquipe.toStdString();
+	this->setSceneRect(0, 0, 1920, 1080);
+	setFondEcran();
+
+	NewRecordSprite = new Sprite("newrecord.png", "newrecord.json");
+	addItem(NewRecordSprite->pixmapItem);
+	NewRecordSprite->pixmapItem->setPos(0, 0);
+	NewRecordSprite->pixmapItem->hide();
+	NewRecordSprite->start(50);
+
+	gameTitle = new QGraphicsTextItem("FINAL SCORE:");
+	gameTitle->setFont(QFont("Arial", 30, QFont::Bold));
+	gameTitle->setDefaultTextColor(Qt::black);
+	gameTitle->setPos(810, 450);
+	addItem(gameTitle);
+
+	LeScore = new QGraphicsTextItem;
+	LeScore->setPlainText(QString::number(currentcount));
+	LeScore->setFont(QFont("Arial", 30, QFont::Bold));
+	LeScore->setDefaultTextColor(Qt::black);
+	LeScore->setPos(920, 550);
+	addItem(LeScore);
+
+	QObject::connect(&ScoreTimer, &QTimer::timeout, [=]()
+	{
+		compterscore();
+	});
+
+	ScoreTimer.start(30);
+}
+
+void FinalScore::skipcounter(QGraphicsSceneMouseEvent* event) {
+	if (skipped)
+	{
+		music.playMusic("MainMenu.wav", 65548, 63989);
+		GererMenu* menu = new GererMenu(nullptr);
+		view->setScene(menu);
+		NewRecordSprite->stop();
+		delete NewRecordSprite;
+		this->deleteLater();
+	}
+
+	currentcount = scoreFinale;
+	if (currentcount > record && !skipped)
+	{
+		sfx.playSFX("newrecord.wav");
+		NewRecordSprite->pixmapItem->show();
+	}
+	LeScore->setPlainText(QString::number(currentcount));
+	ScoreTimer.stop();
+	skipped = true;
+}
+
+FinalScore::~FinalScore()
+{
+}
+
+void FinalScore::setFondEcran()
+{
+	QPixmap fondEcran("Air.png");			
+	QPixmap fond = fondEcran.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	this->setBackgroundBrush(QBrush(fond));
+}
+
+void FinalScore::resetcompteur()
+{
+
+}
+
+void FinalScore::compterscore()
+{
+	if (currentcount <= scoreFinale)
+	{
+		sfx.playSFX("pling.wav");
+		LeScore->setPlainText(QString::number(currentcount));
+		currentcount += 10;
+
+	}
+	else
+	{
+		currentcount = scoreFinale;
+		if (currentcount > record)
+		{
+			sfx.playSFX("newrecord.wav");
+			NewRecordSprite->pixmapItem->show();
+		}
+		LeScore->setPlainText(QString::number(currentcount));
+		ScoreTimer.stop();
+		skipped = true;
+	}
+}
+
+void FinalScore::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	skipcounter(event);
+	QGraphicsScene::mousePressEvent(event);
 }

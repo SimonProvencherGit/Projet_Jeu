@@ -36,5 +36,8 @@ extern QTimer Solotimer;
 extern QTimer Cooptimer;
 extern bool utiliseManette;
 extern bool utiliseMuons; 
+extern QString nomJoueur;
+extern QString nomEquipe;
+extern int scoreFinale;
 
 #endif 

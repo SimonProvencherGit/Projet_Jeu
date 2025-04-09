@@ -1,0 +1,4 @@
+RICK 2250
+Morty 1700
+Jhon 240
+bob 40

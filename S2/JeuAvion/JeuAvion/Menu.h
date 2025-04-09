@@ -19,6 +19,7 @@
 #include <QPixmap>
 #include <QPalette>
 #include <QDebug>
+#include "Sprite.h"
 
 using namespace std;
 
@@ -85,10 +86,10 @@ private slots:
 
 private:
 	void revenirPeser();
-	QLabel* sfxTitle;
-	QLabel* musiqueTitle;
-	QLabel* sfxValue;
-	QLabel* musiqueValue;
+	QGraphicsTextItem* sfxTitle;
+	QGraphicsTextItem* musiqueTitle;
+	QGraphicsTextItem* sfxValue;
+	QGraphicsTextItem* musiqueValue;
 	QPushButton* sfxBoutonUp;
 	QPushButton* sfxBoutonDown;
 	QPushButton* musiqueBoutonUp;
@@ -124,7 +125,7 @@ private:
 	void nonPeser();
 	QPushButton* ouiBouton;
 	QPushButton* nonBouton;
-	QLabel* confirmationQuitter;
+	QGraphicsTextItem* confirmationQuitter;
 };
 
 class Classement : public QGraphicsScene
@@ -178,7 +179,6 @@ public:
 	Utilisateur(QObject* parent = nullptr);
 	~Utilisateur();
 	void setFondEcran();
-	string get_nom();
 
 private slots:
 	void suivant();
@@ -188,13 +188,9 @@ private:
 	QGraphicsProxyWidget* proxyNomSolo;
 	QGraphicsProxyWidget* proxyValider;
 	QLineEdit* nomSolo;
-	QLabel* entrerNom;
+	QGraphicsTextItem* entrerNom;
 	QPushButton* valider;
-	QString nomJoueur;
 };
-
-
-
 
 
 class JouerSolo : public QGraphicsScene
@@ -214,11 +210,12 @@ private:
 	void nonPeser();
 	QPushButton* ouiBouton;
 	QPushButton* nonBouton;
-	QLabel* confirmationJouer;
+	QGraphicsTextItem* confirmationJouer;
 	QGraphicsProxyWidget* proxyConfirmationJouer;
 	QGraphicsProxyWidget* proxyOuiBouton;
 	QGraphicsProxyWidget* proxyNonBouton;
 };
+
 
 class JouerCoop : public QGraphicsScene
 {
@@ -239,7 +236,7 @@ private:
 	void nonPeser();
 	QPushButton* ouiBouton;
 	QPushButton* nonBouton;
-	QLabel* confirmationJouer;
+	QGraphicsTextItem* confirmationJouer;
 };
 
 
@@ -251,7 +248,6 @@ public:
 	Equipe(QObject* parent = nullptr);
 	~Equipe();
 	void setFondEcran();
-	string get_equipe();
 
 private slots:
 	void suivant();
@@ -261,9 +257,36 @@ private:
 	QGraphicsProxyWidget* proxyNomCoop;
 	QGraphicsProxyWidget* proxyValider;
 	QLineEdit* nomCoop;
-	QLabel* entrerEquipe;
+	QGraphicsTextItem* entrerEquipe;
 	QPushButton* valider;
-	QString nomEquipe;
+};
+
+
+class FinalScore : public QGraphicsScene
+{
+
+
+public:
+	FinalScore(QObject* parent = nullptr);
+	~FinalScore();
+	void setFondEcran();
+
+
+private slots:
+	void suivant();
+private:
+	int currentcount = 0;
+	bool skipped = false;
+	int record = 1000;
+	void resetcompteur();
+	void compterscore();
+	Sprite* NewRecordSprite;
+	QGraphicsTextItem* gameTitle;
+	QGraphicsTextItem* LeScore;
+	QTimer ScoreTimer;
+protected:
+	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+	void skipcounter(QGraphicsSceneMouseEvent* event);
 };
 
 #endif
