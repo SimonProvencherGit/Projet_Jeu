@@ -205,11 +205,11 @@ GererMenu::GererMenu(QObject* parent) : QGraphicsScene(parent)
 	setFondEcran();
 	this->setSceneRect(0, 0, 1920, 1080);
 
-	gameTitle = new QGraphicsTextItem("FLIGHT FRENZY");
-	gameTitle->setFont(QFont("Arial", 40, QFont::Bold));
-	gameTitle->setDefaultTextColor(Qt::black);
-	gameTitle->setPos((1920 - gameTitle->boundingRect().width()) / 2, 200);
-	addItem(gameTitle);
+	gameTitle.load("Textures\\Scenery\\title.png");
+	title.setPixmap(gameTitle);
+	title.setPos((1920 - gameTitle.width()) / 2+20, 100);
+	title.show();
+	addItem(&title);
 
 	QPushButton* jouerBouton = new QPushButton("JOUER");
 	jouerBouton->setGeometry(QRect(720, 400, 480, 47));
@@ -245,6 +245,7 @@ void GererMenu::setFondEcran()
 
 void GererMenu::jouerPeser()
 {
+	sfx.playSFX("Select.wav");
 	ChoixMode* mode = new ChoixMode(nullptr);
 	view->setScene(mode);
 }
@@ -304,12 +305,14 @@ void ChoixMode::setFondEcran()
 
 void ChoixMode::soloPeser()
 {
+	sfx.playSFX("Select.wav");
 	Utilisateur* utilisateur = new Utilisateur(nullptr);
 	view->setScene(utilisateur);
 }
 
 void ChoixMode::coopPeser()
 {
+	sfx.playSFX("Select.wav");
 	Equipe* equipe = new Equipe(nullptr);
 	view->setScene(equipe);
 }
@@ -654,6 +657,19 @@ void Classement::ajouter_score_solo() {
 
 	string nom = nomJoueur.toStdString();
 	int score = scoreFinale;
+	
+	sort(liste_scores.begin(), liste_scores.end(), [](const classement_solo& a, const classement_solo& b) {
+		return a.score > b.score;
+		});
+	if (liste_scores[0].score != NULL)
+	{
+		record = liste_scores[0].score;
+	}
+	else
+	{
+		record = 0;
+	}
+
 	liste_scores.push_back({ 0, nom, score });
 
 	sort(liste_scores.begin(), liste_scores.end(), [](const classement_solo& a, const classement_solo& b) {
@@ -687,6 +703,18 @@ void Classement::ajouter_score_coop() {
 
 	string nom = nomEquipe.toStdString();
 	int score = scoreFinale;
+	
+	sort(liste_scores.begin(), liste_scores.end(), [](const classement_coop& a, const classement_coop& b) {
+		return a.score > b.score;
+		});
+	if(liste_scores[0].score != NULL)
+	{
+	record = liste_scores[0].score;
+	}
+	else
+	{
+		record = 0;
+	}
 	liste_scores.push_back({ 0, nom, score });
 
 	sort(liste_scores.begin(), liste_scores.end(), [](const classement_coop& a, const classement_coop& b) {
@@ -745,6 +773,7 @@ void JouerSolo::setFondEcran()
 
 void JouerSolo::ouiPeser()
 {
+	
 	connect(ouiBouton, &QPushButton::clicked, this, &JouerSolo::commencerSolo);
 }
 
@@ -755,6 +784,7 @@ void JouerSolo::nonPeser()
 
 void JouerSolo::commencerSolo()
 {
+	sfx.playSFX("Select.wav");
 	//execution du jeu solo
 	view->setScene(GameScene);
 	if (firstlaunchSolo)
@@ -873,6 +903,7 @@ void JouerCoop::nonPeser()
 
 void JouerCoop::commencerCoop()
 {
+	sfx.playSFX("Select.wav");
 	//execution du jeu coop
 	view->setScene(GameScene);
 	if (firstlaunchCoop)
@@ -951,7 +982,7 @@ FinalScore::FinalScore(QObject* parent) : QGraphicsScene(parent)
 
 	NewRecordSprite = new Sprite("newrecord.png", "newrecord.json");
 	addItem(NewRecordSprite->pixmapItem);
-	NewRecordSprite->pixmapItem->setPos(0, 0);
+	NewRecordSprite->pixmapItem->setPos(450, 100);
 	NewRecordSprite->pixmapItem->hide();
 	NewRecordSprite->start(50);
 
@@ -960,6 +991,12 @@ FinalScore::FinalScore(QObject* parent) : QGraphicsScene(parent)
 	gameTitle->setDefaultTextColor(Qt::black);
 	gameTitle->setPos(810, 450);
 	addItem(gameTitle);
+
+	click = new QGraphicsTextItem("CLIQUEZ POUR CONTINUER...");
+	click->setFont(QFont("Arial", 20, QFont::Bold));
+	click->setDefaultTextColor(Qt::black);
+	click->setPos(750, 1000);
+	addItem(click);
 
 	LeScore = new QGraphicsTextItem;
 	LeScore->setPlainText(QString::number(currentcount));
@@ -1018,7 +1055,7 @@ void FinalScore::compterscore()
 {
 	if (currentcount <= scoreFinale)
 	{
-		sfx.playSFX("pling.wav");
+		sfx.playSFX("counting.wav");
 		LeScore->setPlainText(QString::number(currentcount));
 		currentcount += 10;
 
@@ -1026,7 +1063,7 @@ void FinalScore::compterscore()
 	else
 	{
 		currentcount = scoreFinale;
-		if (currentcount > record)
+		if (currentcount > record && hasname)
 		{
 			sfx.playSFX("newrecord.wav");
 			NewRecordSprite->pixmapItem->show();

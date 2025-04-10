@@ -1824,11 +1824,13 @@ void Interface::gererCollisions()
                     {
                     case ADDLIFE:
                         joueur->nbVies++;
+                        glitchSFX.playSFX("abilityextralife.wav");
                         updateHealthCounter();
                         break;
 
                     case ADDBULLETS:
                         joueur->nbBulletTir += 2;
+                        glitchSFX.playSFX("abilityextralife.wav");
                         joueur->shootCooldown += 8;
                         break;
                     }
@@ -2142,7 +2144,7 @@ void Interface::restart()
     //view->setScene(menu);
 
     FinalScore* menu = new FinalScore();
-    music.playMusic("FinalScore.wav", 65548, 63989);
+    music.playMusic("FinalScore.wav", 2669, 45995);
     view->setScene(menu);
 }
 
@@ -2303,7 +2305,7 @@ void Interface::executionJeu(int version)
             coeur2->hide();
             GameScene->addItem(coeur2);
 
-
+            music.playMusic("Ocean2Player.wav", 665, 95200);
 
             dixVie2 = new QGraphicsPixmapItem(*ListImages[58]);
             dixVie2->setPos(1860, 20);
@@ -2425,6 +2427,7 @@ void Interface::executionJeu(int version)
         else if (nbJoueur == 2 && joueur == nullptr && joueur2 == nullptr)
             gameOver = true;
     }
+    hasname = false;
     if (gameOver)
     {
         if (version > 0)
@@ -2432,6 +2435,7 @@ void Interface::executionJeu(int version)
             scoreFinale = score1 + score2;
             if(nomEquipe != "")
             {
+                hasname = true;
                 Classement* classementCoop = new Classement(nullptr);
                 classementCoop->ajouter_score_coop();
             }
@@ -2441,6 +2445,7 @@ void Interface::executionJeu(int version)
             scoreFinale = score1;
             if(nomJoueur != "")
             {
+                hasname = true;
                 Classement* classementSolo = new Classement(nullptr);
                 classementSolo->ajouter_score_solo();
             }

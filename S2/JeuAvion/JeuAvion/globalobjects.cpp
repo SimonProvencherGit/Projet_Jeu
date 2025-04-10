@@ -18,6 +18,8 @@ bool utiliseMuons = true;
 QString nomJoueur;
 QString nomEquipe;
 int scoreFinale;
+int record = 0;
+bool hasname = false;
 
 
 // Ajouter toute les objets SFX pour gerer leurs volumes

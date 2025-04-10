@@ -38,7 +38,9 @@ private slots:
 	void classementPeser();
 	void quitterPeser();
 private:
-	QGraphicsTextItem* gameTitle;
+	QPixmap gameTitle;
+	QGraphicsPixmapItem title;
+	//QGraphicsTextItem* gameTitle;
 	QGraphicsProxyWidget* proxyJouer;
 	QGraphicsProxyWidget* proxyAudio;
 	QGraphicsProxyWidget* proxyClassement;
@@ -277,11 +279,11 @@ private slots:
 private:
 	int currentcount = 0;
 	bool skipped = false;
-	int record = 1000;
 	void resetcompteur();
 	void compterscore();
 	Sprite* NewRecordSprite;
 	QGraphicsTextItem* gameTitle;
+	QGraphicsTextItem* click;
 	QGraphicsTextItem* LeScore;
 	QTimer ScoreTimer;
 protected:

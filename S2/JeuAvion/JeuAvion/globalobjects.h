@@ -39,5 +39,7 @@ extern bool utiliseMuons;
 extern QString nomJoueur;
 extern QString nomEquipe;
 extern int scoreFinale;
+extern int record;
+extern bool hasname;
 
 #endif 

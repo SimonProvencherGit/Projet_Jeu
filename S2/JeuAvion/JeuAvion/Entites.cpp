@@ -91,7 +91,7 @@ Joueur::Joueur(float x, float y) : Entite(x, y, '^', 1, 1)  //on set les valeurs
 {
 	AnimatedSprite = new Sprite("barrel_roll.png", "barrel_roll.json");
 	Proppeller1 = new Sprite("player_propellor.png", "player_propellor.json");
-	Proppeller1->pixmapItem->setScale(0.31);
+	Proppeller1->pixmapItem->setScale(0.29);
 	Proppeller1->pixmapItem->setZValue(100);
 	Proppeller1->pixmapItem->show();
 	Proppeller1->start(30);
@@ -180,7 +180,7 @@ void Joueur::update()
 		invincibleTimer--;
 
 	AnimatedSprite->pixmapItem->setPos(posX - 20, posY);// update image du joueur
-	Proppeller1->setpos(posX-20, posY);
+	Proppeller1->setpos(posX-18, posY+3);
 	//if (shootTimer > 0)
 		//shootTimer--;
 	//image->setPos(posX, posY);// update image du joueur
